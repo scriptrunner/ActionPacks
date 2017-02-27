@@ -2,14 +2,13 @@
     .SYNOPSIS 
     Connect to Exchange Online.
 
-    .PARAMETER cred
-    Exchange Online credential
 #>
 
+[CmdletBinding()]
 param(
-   [PSCredential]$cred,
-   $Identity
-
+#   [PSCredential]$cred,
+    [Parameter(ParameterSetName='default')]
+    $Identity = $null
 )
 
 ###################################################################
@@ -17,26 +16,19 @@ param(
 # Requires .Net Framework 4.5
 # no addional install!
 # Create Session to Exchange Online
-$session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection -ErrorAction Stop -Verbose
+#$session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection -ErrorAction Stop -Verbose
 
-try 
-{
-    'Session created!'
-    Import-PSSession $session -DisableNameChecking
-
-    Get-Mailbox -Identity $Identity | fl
-
-    $a = Get-Mailbox
-	$SRXEnv.ResultMessage = $a
-	$a
-}
-finally 
-{
-    'finally:'
-    Get-PSSession
-    if ($session) 
-    {
-        'Removing Session...'
-        Remove-PSSession -Session $session 
+#    Import-PSSession $session -DisableNameChecking
+    Get-Variable | Where-Object -Property 'Name' -EQ -Value 'SRXEnv' | Select-Object -Property 'Value' | Select-Object -Property '*'
+    
+    if($Identity){
+        $mb = Get-Mailbox -Identity $Identity
     }
-}
+    else {
+        $mb = Get-Mailbox
+        
+    }
+    if($mb){
+        $SRXEnv.ResultMessage = $mb
+        $mb
+    }

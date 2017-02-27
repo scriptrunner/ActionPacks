@@ -22,4 +22,4 @@ Connect-MsolService -Credential $cred -Verbose
 # Get-MsolUser -all | fl
 # you can toggle betwenn list or table view by setting the # sign
 # the table view can be customized by adding other valid attributes or removing exiting attributes from the table
-Get-MsolUser -all | ft UserPrincipalName, Displayname, Country, City, isLicensed, ObjectId
+Get-MsolUser -all | Format-Table -Property @('UserPrincipalName', 'Displayname', 'Country', 'City', 'isLicensed', 'ObjectId')

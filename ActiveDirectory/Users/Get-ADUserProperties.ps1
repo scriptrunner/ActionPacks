@@ -67,19 +67,34 @@ else{
 
     if($Properties -eq '*'){
         if($dnsRoot){
-            Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
+            $user = Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
         }
         else {
-            Get-ADUser -Identity $UserName -Properties $Properties
+            $user = Get-ADUser -Identity $UserName -Properties $Properties
         }
     }
     else{
         if($dnsRoot){
-            Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1 | Select-Object -Property $Properties | Format-List
+            $user = Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
         }
         else {
-            Get-ADUser -Identity $UserName -Properties $Properties | Select-Object -Property $Properties | Format-List
+            $user = Get-ADUser -Identity $UserName -Properties $Properties
         }
     }
+    $user | Select-Object -Property $Properties | Format-List
 
+    if($SRXEnv) {
+        if($user){
+            [hashtable]$resultMessage = @{}
+            foreach($property in $Properties){
+                if($user[$property] -ne $null){
+                    $resultMessage.Add($property, $user[$property].Value)
+                }
+            }
+            $SRXEnv.ResultMessage = $resultMessage | Format-Table -HideTableHeaders
+        }
+        else {
+            $SRXEnv.ResultMessage = "No results for '$UserName'."
+        }
+    }
 }

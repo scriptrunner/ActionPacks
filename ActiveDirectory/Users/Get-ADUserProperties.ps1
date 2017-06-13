@@ -7,11 +7,11 @@ Gets the properties of the Active Directory account, or all available property n
 .DESCRIPTION
 Gets the properties of the Active Directory account, or all available property names.
 
-.PARAMETER SAMAccountName
-The sAMAccountName of the user or UserPrincipalName or Down-Level logon name
+.PARAMETER UserName
+The SAMAccountName or UserPrincipalName or Down-Level logon name of the user account
 
 .PARAMETER Properties
-List of properties to expand.Default is '*'
+List of properties to expand. e.g. * or SID, UserPrincipalName, SurName
 
 .PARAMETER PrintAvailablePropertyNames
 Show all available property names
@@ -22,11 +22,11 @@ Show all available property names
 
 .EXAMPLE
 
-    .\GetADUserProperties.ps1 -SAMAccountName 'hans.wurst'
+    .\GetADUserProperties.ps1 -UserName 'john.doe'
 
 .EXAMPLE
 
-    .\GetADUserProperties.ps1 -SAMAccountName 'hans.wurst' -Properties SID, UserPrincipalName
+    .\GetADUserProperties.ps1 -UserName 'john.doe' -Properties SID, UserPrincipalName, SurName
 
 .NOTES
 General notes
@@ -34,48 +34,51 @@ Requires ActiveDirectory module
 
 #>
     
-[CMDLetBinding()]
+[CmdLetBinding(DefaultParameterSetName="DefaultProperties")]
 param(
-    [Parameter(Mandatory=$true, ParameterSetName='SAMAccountName')]
-    [string]$SAMAccountName,
-    [Parameter(ParameterSetName='SAMAccountName')]
-    [string[]]$Properties = '*',
+    [Parameter(Mandatory=$true, ParameterSetName='DefaultProperties')]
+    [Parameter(Mandatory=$true, ParameterSetName='Properties')]
+    [string]$UserName,
+    [Parameter(Mandatory=$true, ParameterSetName='Properties')]
+    [string[]]$Properties,
     [Parameter(Mandatory=$true, ParameterSetName='PropertyNames')]
     [switch]$PrintAvailablePropertyNames
 )
 
 Import-Module ActiveDirectory
 
-
-if($PrintAvailablePropertyNames.IsPresent){
+if($PSCmdlet.ParameterSetName -eq 'PropertyNames'){
     Get-ADUser -Filter '*' -Properties '*' -ResultSetSize 1 | Select-Object -ExpandProperty 'PropertyNames'
 }
 else{
-    if($SAMAccountName.Contains('\')){
-        $domainName = $SAMAccountName.Split('\')[0]
-        $SAMAccountName = $SAMAccountName.Split('\')[1]
+    if($PSCmdlet.ParameterSetName -eq 'DefaultProperties'){
+        $Properties = @('Name', 'GivenName', 'Surname', 'DisplayName', 'Description', 'Office', 'EmailAddress', 'OfficePhone', 'Title', 'Department', 'Company', 'Street', 'PostalCode', 'City', 'SAMAccountName')
+    }
+    if($UserName.Contains('\')){
+        $domainName = $UserName.Split('\')[0]
+        $UserName = $UserName.Split('\')[1]
         $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
     }
-    if($SAMAccountName.Contains('@')){
-        $domainName = $SAMAccountName.Split('@')[1]
-        $SAMAccountName = $SAMAccountName.Split('@')[0]
+    if($UserName.Contains('@')){
+        $domainName = $UserName.Split('@')[1]
+        $UserName = $UserName.Split('@')[0]
         $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
     }
 
     if($Properties -eq '*'){
         if($dnsRoot){
-            Get-ADUser -Filter { SAMAccountName -eq $SAMAccountName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
+            Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
         }
         else {
-            Get-ADUser -Identity $SAMAccountName -Properties $Properties
+            Get-ADUser -Identity $UserName -Properties $Properties
         }
     }
     else{
         if($dnsRoot){
-            Get-ADUser -Filter { SAMAccountName -eq $SAMAccountName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1 | Select-Object -Property $Properties | Format-List
+            Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1 | Select-Object -Property $Properties | Format-List
         }
         else {
-            Get-ADUser -Identity $SAMAccountName -Properties $Properties | Select-Object -Property $Properties | Format-List
+            Get-ADUser -Identity $UserName -Properties $Properties | Select-Object -Property $Properties | Format-List
         }
     }
 

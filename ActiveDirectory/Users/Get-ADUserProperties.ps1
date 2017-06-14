@@ -2,19 +2,19 @@
 
 <#
 .SYNOPSIS
-Gets the properties of the Active Directory account, or all available property names.
+    Gets the properties of the Active Directory account, or all available property names.
 
 .DESCRIPTION
-Gets the properties of the Active Directory account, or all available property names.
+    Gets the properties of the Active Directory account, or all available property names.
 
 .PARAMETER UserName
-The SAMAccountName or UserPrincipalName or Down-Level logon name of the user account
+    The SAMAccountName or UserPrincipalName or Down-Level logon name of the user account
 
 .PARAMETER Properties
-List of properties to expand. e.g. * or SID, UserPrincipalName, SurName
+    List of properties to expand. e.g. * or SID, UserPrincipalName, SurName
 
 .PARAMETER PrintAvailablePropertyNames
-Show all available property names
+    Show all available property names
 
 .EXAMPLE
 
@@ -29,8 +29,14 @@ Show all available property names
     .\GetADUserProperties.ps1 -UserName 'john.doe' -Properties SID, UserPrincipalName, SurName
 
 .NOTES
-General notes
-Requires ActiveDirectory module
+    General notes
+
+    Requires ActiveDirectory module
+
+    Be aware that on remote targets CredSSP must be enabled.
+        To enable CredSSP run: 
+        @ remote machine: Enable-WSManCredSSP -Role Server –Force
+        @ ScriptRunner Host: Enable-WSManCredSSP -Role Client -DelegateComputer [remote computer name] -Force
 
 #>
     

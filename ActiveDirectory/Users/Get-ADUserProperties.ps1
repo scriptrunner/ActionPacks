@@ -67,7 +67,7 @@ else{
 
     if($Properties -eq '*'){
         if($dnsRoot){
-            $user = Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
+            $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot
         }
         else {
             $user = Get-ADUser -Identity $UserName -Properties $Properties
@@ -75,7 +75,7 @@ else{
     }
     else{
         if($dnsRoot){
-            $user = Get-ADUser -Filter { SAMAccountName -eq $UserName } -Properties $Properties -Server $dnsRoot -ResultSetSize 1
+            $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot
         }
         else {
             $user = Get-ADUser -Identity $UserName -Properties $Properties

@@ -37,7 +37,8 @@
     Requires ActiveDirectory module
 
     Be aware that on remote targets CredSSP must be enabled or ParameterSet 'WithAuthentication' must be used.
-        To enable CredSSP run: 
+
+    To enable CredSSP folowing 2 steps are : 
         @ remote machine: Enable-WSManCredSSP -Role Server –Force
         @ ScriptRunner Host: Enable-WSManCredSSP -Role Client -DelegateComputer [remote computer name] -Force
 

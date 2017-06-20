@@ -16,6 +16,9 @@
 .PARAMETER PrintAvailablePropertyNames
     Show all available property names
 
+.PARAMETER Credential
+    Credential for authentication @ active directory web services.
+
 .EXAMPLE
 
     .\GetADUserProperties.ps1 -PrintAvailablePropertyNames
@@ -33,8 +36,9 @@
 
     Requires ActiveDirectory module
 
-    Be aware that on remote targets CredSSP must be enabled.
-        To enable CredSSP run: 
+    Be aware that on remote targets CredSSP must be enabled or ParameterSet 'WithAuthentication' must be used.
+
+    To enable CredSSP folowing 2 steps are : 
         @ remote machine: Enable-WSManCredSSP -Role Server –Force
         @ ScriptRunner Host: Enable-WSManCredSSP -Role Client -DelegateComputer [remote computer name] -Force
 
@@ -44,9 +48,13 @@
 param(
     [Parameter(Mandatory=$true, ParameterSetName='DefaultProperties')]
     [Parameter(Mandatory=$true, ParameterSetName='Properties')]
+    [Parameter(Mandatory=$true, ParameterSetName='WithAuthentication')]
     [string]$UserName,
     [Parameter(Mandatory=$true, ParameterSetName='Properties')]
+    [Parameter(Mandatory=$true, ParameterSetName='WithAuthentication')]
     [string[]]$Properties,
+    [Parameter(Mandatory=$true, ParameterSetName='WithAuthentication')]
+    [pscredential]$Credential,
     [Parameter(Mandatory=$true, ParameterSetName='PropertyNames')]
     [switch]$PrintAvailablePropertyNames
 )
@@ -60,26 +68,38 @@ else{
     if($PSCmdlet.ParameterSetName -eq 'DefaultProperties'){
         $Properties = @('Name', 'GivenName', 'Surname', 'DisplayName', 'Description', 'Office', 'EmailAddress', 'OfficePhone', 'Title', 'Department', 'Company', 'Street', 'PostalCode', 'City', 'SAMAccountName')
     }
-    if($UserName.Contains('\')){
-        $domainName = $UserName.Split('\')[0]
-        $UserName = $UserName.Split('\')[1]
-        $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
-    }
-    if($UserName.Contains('@')){
-        $domainName = $UserName.Split('@')[1]
-        $UserName = $UserName.Split('@')[0]
-        $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
-    }
 
-    if($Properties -eq '*'){
+    if($PSCmdlet.ParameterSetName -eq 'WithAuthentication'){
+        if($UserName.Contains('\')){
+            $domainName = $UserName.Split('\')[0]
+            $UserName = $UserName.Split('\')[1]
+            $dnsRoot = Get-ADDomain -Identity $domainName -Credential $Credential | Select-Object -ExpandProperty 'DNSRoot'
+        }
+        if($UserName.Contains('@')){
+            $domainName = $UserName.Split('@')[1]
+            $UserName = $UserName.Split('@')[0]
+            $dnsRoot = Get-ADDomain -Identity $domainName -Credential $Credential | Select-Object -ExpandProperty 'DNSRoot'
+        }
+
         if($dnsRoot){
-            $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot
+            $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot -Credential $Credential
         }
         else {
-            $user = Get-ADUser -Identity $UserName -Properties $Properties
+            $user = Get-ADUser -Identity $UserName -Properties $Properties -Credential $Credential
         }
     }
     else{
+        if($UserName.Contains('\')){
+            $domainName = $UserName.Split('\')[0]
+            $UserName = $UserName.Split('\')[1]
+            $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
+        }
+        if($UserName.Contains('@')){
+            $domainName = $UserName.Split('@')[1]
+            $UserName = $UserName.Split('@')[0]
+            $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
+        }
+
         if($dnsRoot){
             $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot
         }
@@ -87,6 +107,7 @@ else{
             $user = Get-ADUser -Identity $UserName -Properties $Properties
         }
     }
+
     $user | Select-Object -Property $Properties | Format-List
 
     if($SRXEnv) {

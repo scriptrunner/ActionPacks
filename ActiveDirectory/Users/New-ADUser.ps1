@@ -1,4 +1,4 @@
-﻿#Requires Modules ActiveDirectory
+﻿#Requires -Modules ActiveDirectory
 
 <#
     .SYNOPSIS

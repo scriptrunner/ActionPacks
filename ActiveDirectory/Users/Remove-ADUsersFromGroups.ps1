@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-         Adds users to Active Directory groups
+         Removes users to Active Directory groups
     
     .DESCRIPTION
           

@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-         Creates a group in the OU path
+        Creates a group in the OU path
     
     .DESCRIPTION         
     

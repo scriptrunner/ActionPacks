@@ -1,154 +1,178 @@
+﻿#Requires Modules ActiveDirectory
+
 <#
-    .SYNOPSIS 
-		Creates a new user using the Active Directory Module.
-		It creates a new AD user, you are able to specify SamAccountName to meet your needs.
-		The number of User specific attributes is an example. The script can be enhanced with any 
-		attribute available to the PS comandlet New-ADUser.
+    .SYNOPSIS
+        Creates a user in the OU path
+    
+    .DESCRIPTION
+          
+    .Parameter UserName
+        Specifies the name of the new user
 
-	.PARAMETER RootPath
-		OU root (OU=Customer,DC=asr,DC=local)
+    .Parameter DomainAccount
+        Active Directory Credential for remote execution without CredSSP
 
-	.PARAMETER Customer
-		Customer/Country
+    .Parameter SAMAccountName
+        Specifies the Security Account Manager (SAM) account name of the user
 
-	.PARAMETER Type
-		Type of user: Admin, Test, User
+    .Parameter Description
+        Specifies a description of the user
 
-	.PARAMETER OUPath
-		Enter complete OU Path where to put the new user.
+    .Parameter DisplayName
+        Specifies the display name of the user
 
-    .PARAMETER SamAccountName
-        SamAccountName
+    .Parameter Password
+        Specifies a new password value for an account
 
-    .PARAMETER UserPassword
-        Initial password
+    .Parameter OUPath
+        Specifies the AD path
 
-	.PARAMETER Firstname
-		First Name of the new user
+    .Parameter ChangePasswordAtLogon
+        Specifies whether a password must be changed during the next logon attempt
 
-	.PARAMETER Lastname
-		Last Name of the new user
+    .Parameter CannotChangePassword
+        Specifies whether the account password can be changed
 
-	.PARAMETER Company
-		Employees Company Name
+    .Parameter PasswordNeverExpires
+        Specifies whether the password of an account can expire
 
-	.PARAMETER Department
-		Employees Department
+    .Parameter City
+        Specifies the user's town or city
 
-	.PARAMETER City
-		City of User
+    .Parameter PostalCode
+        Specifies the user's postal code or zip code
 
-	.PARAMETER StreetAddress
-		Employees Office Street Address
+    .Parameter Street
+        Specifies the user's street address
 
-	.PARAMETER userdomain
-		@yourdomain.local
+    .Parameter Company
+        Specifies the user's company
 
-	.PARAMETER maildomain
-		@yourmaildomain.com
+    .Parameter Department
+        Specifies the user's department
 
-		#TODO
-		mehr Parameter vgl. user list
-		Kommentare zu anpassungen
-		ResultMessage anpassen
+    .Parameter EMailAddress
+        Specifies the user's e-mail address
+
+    .Parameter GivenName
+        Specifies the user's given name
+
+    .Parameter Surname
+        Specifies the user's last name or surname
+
+    .Parameter DomainName
+        Name of Active Directory Domain
+    
+    .Parameter AuthType
+        Specifies the authentication method to use
 #>
 
-[CmdletBinding()]
-Param
-(
-    [Parameter(Mandatory=$true, ParameterSetName="Structured OU path")]
-  	[string]$RootPath = 'OU=Customer,DC=asr,DC=local',
-    [Parameter(Mandatory=$true, ParameterSetName="Structured OU path")]
-    [ValidateSet('Austria', 'Germany', 'Poland')]
-    [string]$Customer,
-    [Parameter(Mandatory=$true, ParameterSetName="Structured OU path")]
-    [ValidateSet('ADM', 'TEST', 'USR')]
-    [string]$Type,
-    [Parameter(Mandatory=$true, ParameterSetName="Enter OU path")]
+param(
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$Username,
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$Password,
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [PSCredential]$DomainAccount,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$SAMAccountName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$Description,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$DisplayName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$OUPath,
-    [Parameter(Mandatory=$true)]
-    [string]$SamAccountName,
-    [Parameter(Mandatory=$true)]
-    [string]$Firstname,
-    [Parameter(Mandatory=$true)]
-    [string]$Lastname,
-    [string]$UserPassword,
-    [string]$Company = 'ScriptRunner',
-    [ValidateSet('Software Products', 'Human Resources', 'Sales', 'Marketing', 'Management Board', 'IT Infrastructure', 'Customer Support')]
-    [string]$Department = 'Software Products',
-    [string]$City = 'Ettlingen',
-    [string]$StreetAddress = 'Ludwig-Erhard-Allee 2',
-  	[string]$userdomain = '@asr.local',
-	[string]$maildomain = '@scriptrunner.com'
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [switch]$ChangePasswordAtLogon,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [switch]$CannotChangePassword,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [switch]$PasswordNeverExpires,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$EmailAddress,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$GivenName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$Surname,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$Department,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$Company,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$PostalCode,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$City,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$Street,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$DomainName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Basic', 'Negotiate')]
+    [string]$AuthType="Negotiate"
 )
 
-function CreatePassword {
+Import-Module ActiveDirectory
 
-    param(
-        [int]$length = 8
-    )
+#Clear
+$ErrorActionPreference='Stop'
 
-    $numbers = $NULL
-    $cLetters = $NULL
-    $sLetters = $NULL
-    $specialSigns = @('!','"','#','%','&','§','=','+','-','_','<','>','@')
-    
-    For ($a=48; $a –le 57; $a++) {
-         $numbers += ,[char][byte]$a
+$Script:Pwd = ConvertTo-SecureString $Password -AsPlainText -Force
+$Script:User 
+$Script:Domain
+if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
     }
-    For ($a=65; $a –le 90; $a++) {
-        $cLetters += ,[char][byte]$a 
+    else{
+        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
-    For ($a=97; $a –le 122; $a++) {
-        $sLetters += ,[char][byte]$a
+}
+else{
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
     }
-
-    $a = @($numbers, $cLetters, $sLetters, $specialSigns)
-
-    [string]$password = [string]::Empty
-    for($i=0; $i -lt $length; $i++){
-        $j = Get-Random -Minimum 0 -Maximum 4
-        $k = Get-Random -Minimum 0 -Maximum ($a[$j].Length-1)
-        $password += "$($a[$j][$k])"
+    else{
+        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
-    return $password
 }
-
-if(-not $UserPassword){
-    $UserPassword = CreatePassword
+if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+    $Script:User = New-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -Name $UserName -Path $OUPath -Confirm:$false -AuthType $AuthType `
+                           -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -GivenName $GivenName -Surname $Surname `
+                           -AccountPassword $Pwd -EmailAddress $EmailAddress -Department $Department -Company $Company -City $City -PostalCode $PostalCode `
+                            -ChangePasswordAtLogon $ChangePasswordAtLogon.ToBool() -PasswordNeverExpires $PasswordNeverExpires.ToBool() -CannotChangePassword $CannotChangePassword.ToBool() `
+                            -UserPrincipalName ($SAMAccountName + '@' + $Domain.DNSRoot) -StreetAddress $Street -Enable $true -PassThru
 }
-
-if (-not $OUPath) {
-	$path = ("OU="+$Type), ("OU="+$Customer), $RootPath
-	$OUPath = $path -join ','
+else {
+    $Script:User = New-ADUser -Server $Script:Domain.PDCEmulator -Name $UserName -Path $OUPath -Confirm:$false -AuthType $AuthType `
+                        -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -GivenName $GivenName -Surname $Surname `
+                        -AccountPassword $Pwd -EmailAddress $EmailAddress -Department $Department -Company $Company -City $City -PostalCode $PostalCode `
+                        -ChangePasswordAtLogon $ChangePasswordAtLogon.ToBool() -PasswordNeverExpires $PasswordNeverExpires.ToBool() -CannotChangePassword $CannotChangePassword.ToBool() `
+                        -UserPrincipalName ($SAMAccountName + '@' + $Domain.DNSRoot) -StreetAddress $Street -Enable $true  -PassThru
 }
-"Creating user '$SamAccountName' in $OUPath..."
-
-try {
-	$SRXEnv.ResultMessage = New-ADUser -Name $SamAccountName`
-     -AccountPassword (ConvertTo-SecureString $UserPassword -AsPlainText -Force )`
-     -AllowReversiblePasswordEncryption $FALSE`
-     -PasswordNotRequired $FALSE`
-	 -ChangePasswordAtLogon $TRUE`
-	 -GivenName $Firstname`
-	 -Surname $Lastname`
-     -DisplayName "$Firstname $Lastname"`
-     -Description "$Lastname,$Firstname $SamAccountName"`
-     -SamAccountName $SamAccountName`
-     -userprincipalname ("$Firstname.$Lastname$userdomain")`
-     -EmailAddress "$Firstname.$Lastname$maildomain"`
-     -Company $Company`
-     -Department $Department`
-     -City $City`
-     -StreetAddress $StreetAddress`
-     -Path $OUPath`
-     -Enabled $TRUE`
-     -PassThru
-
-	$SRXEnv.ResultMessage
-}
-catch
-{
-    $SRXEnv.ResultMessage = $_.Exception.Message
-    throw
-}
+if($Script:User){
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = Write-Output "User $($UserName) created"
+    }
+    else {
+        Write-Output "User $($UserName) created"
+    }    
+}   

@@ -1,127 +1,95 @@
-#Requires -Modules ActiveDirectory
+﻿#Requires -Modules ActiveDirectory
 
 <#
-.SYNOPSIS
-    Gets the properties of the Active Directory account, or all available property names.
-
-.DESCRIPTION
-    Gets the properties of the Active Directory account, or all available property names.
-
-.PARAMETER UserName
-    The SAMAccountName or UserPrincipalName or Down-Level logon name of the user account
-
-.PARAMETER Properties
-    List of properties to expand. e.g. * or SID, UserPrincipalName, SurName
-
-.PARAMETER PrintAvailablePropertyNames
-    Show all available property names
-
-.PARAMETER Credential
-    Credential for authentication @ active directory web services.
-
-.EXAMPLE
-
-    .\GetADUserProperties.ps1 -PrintAvailablePropertyNames
-
-.EXAMPLE
-
-    .\GetADUserProperties.ps1 -UserName 'john.doe'
-
-.EXAMPLE
-
-    .\GetADUserProperties.ps1 -UserName 'john.doe' -Properties SID, UserPrincipalName, SurName
-
-.NOTES
-    General notes
-
-    Requires ActiveDirectory module
-
-    Be aware that on remote targets CredSSP must be enabled or ParameterSet 'WithAuthentication' must be used.
-
-    To enable CredSSP folowing 2 steps are : 
-        @ remote machine: Enable-WSManCredSSP -Role Server –Force
-        @ ScriptRunner Host: Enable-WSManCredSSP -Role Client -DelegateComputer [remote computer name] -Force
-
-#>
+    .SYNOPSIS
+         Gets the properties of the Active Directory account
     
-[CmdLetBinding(DefaultParameterSetName="DefaultProperties")]
+    .DESCRIPTION
+
+    .Parameter Username
+        Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
+
+    .Parameter DomainAccount
+        Active Directory Credential for remote execution without CredSSP
+    
+    .Parameter Properties
+        List of properties to expand. Use * for all properties
+
+    .Parameter DomainName
+        Name of Active Directory Domain
+    
+    .Parameter AuthType
+        Specifies the authentication method to use
+#>
+
 param(
-    [Parameter(Mandatory=$true, ParameterSetName='DefaultProperties')]
-    [Parameter(Mandatory=$true, ParameterSetName='Properties')]
-    [Parameter(Mandatory=$true, ParameterSetName='WithAuthentication')]
-    [string]$UserName,
-    [Parameter(Mandatory=$true, ParameterSetName='Properties')]
-    [Parameter(Mandatory=$true, ParameterSetName='WithAuthentication')]
-    [string[]]$Properties,
-    [Parameter(Mandatory=$true, ParameterSetName='WithAuthentication')]
-    [pscredential]$Credential,
-    [Parameter(Mandatory=$true, ParameterSetName='PropertyNames')]
-    [switch]$PrintAvailablePropertyNames
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$Username,
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [PSCredential]$DomainAccount,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string[]]$Properties="Name,GivenName,Surname,DisplayName,Description,Office,EmailAddress,OfficePhone,Title,Department,Company,Street,PostalCode,City,SAMAccountName",
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$DomainName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Basic', 'Negotiate')]
+    [string]$AuthType="Negotiate"
 )
 
 Import-Module ActiveDirectory
 
-if($PSCmdlet.ParameterSetName -eq 'PropertyNames'){
-    Get-ADUser -Filter '*' -Properties '*' -ResultSetSize 1 | Select-Object -ExpandProperty 'PropertyNames'
-}
-else{
-    if($PSCmdlet.ParameterSetName -eq 'DefaultProperties'){
-        $Properties = @('Name', 'GivenName', 'Surname', 'DisplayName', 'Description', 'Office', 'EmailAddress', 'OfficePhone', 'Title', 'Department', 'Company', 'Street', 'PostalCode', 'City', 'SAMAccountName')
-    }
+#Clear
+$ErrorActionPreference='Stop'
 
-    if($PSCmdlet.ParameterSetName -eq 'WithAuthentication'){
-        if($UserName.Contains('\')){
-            $domainName = $UserName.Split('\')[0]
-            $UserName = $UserName.Split('\')[1]
-            $dnsRoot = Get-ADDomain -Identity $domainName -Credential $Credential | Select-Object -ExpandProperty 'DNSRoot'
-        }
-        if($UserName.Contains('@')){
-            $domainName = $UserName.Split('@')[1]
-            $UserName = $UserName.Split('@')[0]
-            $dnsRoot = Get-ADDomain -Identity $domainName -Credential $Credential | Select-Object -ExpandProperty 'DNSRoot'
-        }
-
-        if($dnsRoot){
-            $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot -Credential $Credential
-        }
-        else {
-            $user = Get-ADUser -Identity $UserName -Properties $Properties -Credential $Credential
-        }
+$Script:User
+if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
     }
     else{
-        if($UserName.Contains('\')){
-            $domainName = $UserName.Split('\')[0]
-            $UserName = $UserName.Split('\')[1]
-            $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
-        }
-        if($UserName.Contains('@')){
-            $domainName = $UserName.Split('@')[1]
-            $UserName = $UserName.Split('@')[0]
-            $dnsRoot = Get-ADDomain -Identity $domainName | Select-Object -ExpandProperty 'DNSRoot'
-        }
-
-        if($dnsRoot){
-            $user = Get-ADUser -Identity $UserName -Properties $Properties -Server $dnsRoot
-        }
-        else {
-            $user = Get-ADUser -Identity $UserName -Properties $Properties
-        }
+        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
-
-    $user | Select-Object -Property $Properties | Format-List
-
-    if($SRXEnv) {
-        if($user){
-            [hashtable]$resultMessage = @{}
-            foreach($property in $Properties){
-                if($user[$property] -ne $null){
-                    $resultMessage.Add($property, $user[$property].Value)
-                }
+    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+}
+else{
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
+    }
+    else{
+        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
+    }
+    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType `
+        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+}
+if($null -ne $Script:User){
+    $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
+    if($Properties -eq '*'){
+        foreach($itm in $Script:User.PropertyNames){
+            if($null -ne $Script:User[$itm].Value){
+                $resultMessage.Add($itm,$Script:User[$itm].Value)
             }
-            $SRXEnv.ResultMessage = $resultMessage | Format-Table -HideTableHeaders
-        }
-        else {
-            $SRXEnv.ResultMessage = "No results for '$UserName'."
         }
     }
+    else {
+        foreach($itm in $Properties.Split(',')){
+            $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
+        }
+    }
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
+    }
+    else{
+        Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
+    }
+}
+else{
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = "User $($Username) not found"
+    }    
+    Write-Error "User $($Username) not found"
 }

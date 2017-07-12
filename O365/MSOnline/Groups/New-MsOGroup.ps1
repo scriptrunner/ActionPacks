@@ -5,7 +5,7 @@
         Requirements 
         64-bit OS for all Modules 
         Microsoft Online Sign-In Assistant for IT Professionals  
-        Azure Active Diretory Powershell Module v1
+        Azure Active Directory Powershell Module v1
 
     .DESCRIPTION  
 

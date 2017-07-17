@@ -22,10 +22,10 @@
         Specifies the credential to use to connect to Azure Active Directory
 
     .Parameter GroupObjectId
-        Specifies the unique ID of the group from which to get members
+        Specifies the unique ID of the group to remove
 
     .Parameter GroupName
-        Specifies the name of the group from which to get members
+        Specifies the display name of the group to remove
     
     .Parameter TenantId
         Specifies the unique ID of the tenant on which to perform the operation
@@ -49,7 +49,7 @@ param(
 # Import-Module MSOnline
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -72,5 +72,5 @@ else {
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Group not found"
     } 
-    Write-Error "Group not found"
+    Throw "Group not found"
 }

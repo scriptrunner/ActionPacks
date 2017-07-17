@@ -99,7 +99,7 @@ param(
 # Import-Module MSOnline
 
 #Clear
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -120,5 +120,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "User not created"
     }    
-    Write-Error "User not created"
+    Throw "User not created"
 }

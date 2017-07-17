@@ -25,7 +25,7 @@
         Specifies the unique ID of the group from which to get properties
 
     .Parameter GroupName
-        Specifies the name of the group from which to get properties
+        Specifies the display name of the group from which to get properties
 
     .Parameter TenantId
         Specifies the unique ID of the tenant on which to perform the operation
@@ -50,7 +50,7 @@ param(
 
 #Clear
 
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -74,5 +74,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Group not found"
     }    
-    Write-Error "Group not found"
+    Throw "Group not found"
 }

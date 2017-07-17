@@ -19,8 +19,17 @@
         © AppSphere AG
 
     .Parameter O365Account
-        Specifies the credential to use to connect to Azure Active Directory groups
+        Specifies the credential to use to connect to Azure Active Directory
 
+    .Parameter TargetGroupNames
+        Specifies the display names of the groups to which to add members
+
+    .Parameter GroupNames
+        Specifies the display names of the groups to add to the target groups
+
+    .Parameter UserNames
+        Specifies the Sign-In names, display names or user principal names of the users to add to the target groups
+    
     .Parameter GroupObjectIds
         Specifies the unique IDs of the groups to which to add members
 
@@ -38,11 +47,21 @@ param(
 <#
     [Parameter(Mandatory = $true)]
     [PSCredential]$O365Account,
-#>
-    [Parameter(Mandatory = $true)]
+#>  
+    [Parameter(Mandatory = $true,ParameterSetName = "Names")]
+    [string[]]$TargetGroupNames,
+    [Parameter(ParameterSetName = "Names")]
+    [string[]]$UserNames,
+    [Parameter(ParameterSetName = "Names")]
+    [string[]]$GroupNames,
+    [Parameter(Mandatory = $true,ParameterSetName = "IDs")]
     [guid[]]$GroupObjectIds,
+    [Parameter(ParameterSetName = "IDs")]
     [guid[]]$GroupIds,
+    [Parameter(ParameterSetName = "IDs")]
     [guid[]]$UserIds,
+    [Parameter(ParameterSetName = "Names")]
+    [Parameter(ParameterSetName = "IDs")]
     [guid]$TenantId
 )
  
@@ -50,12 +69,56 @@ param(
 
 #Clear
 
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
 $Script:result = @()
 $Script:err =$false
+if($PSCmdlet.ParameterSetName  -eq "Names"){
+    $GroupObjectIds=@()
+    $tmp
+    foreach($itm in $TargetGroupNames){
+        try{
+            $tmp = Get-MsolGroup -TenantId $TenantId | Where-Object -Property DisplayName -eq $itm 
+            $GroupObjectIds += $tmp.ObjectID
+        }
+        catch{
+            $Script:result += "Error: Target group $($itm) not found "
+            $Script:err = $true
+            continue
+        }
+    }
+    if($null -ne $UserNames){
+        $UserIds=@()
+        foreach($itm in $UserNames){
+            try{
+                $tmp = Get-MsolUser -TenantId $TenantId | `
+                    Where-Object {($_.DisplayName -eq $itm) -or ($_.SignInName -eq $itm) -or ($_.UserPrincipalName -eq $itm)} 
+                $UserIds += $tmp.ObjectID
+            }
+            catch{
+                $Script:result += "Error: User $($itm) not found "
+                $Script:err = $true
+                continue
+            }
+        }
+    }
+    if($null -ne $GroupNames){
+        $GroupIds=@()
+        foreach($itm in $GroupNames){
+            try{
+                $tmp = Get-MsolGroup -TenantId $TenantId | Where-Object -Property DisplayName -eq $itm
+                $GroupIds += $tmp.ObjectID
+            }
+            catch{
+                $Script:result += "Error:Group $($itm) not found"
+                $Script:err = $true
+                continue
+            }
+        }
+    }
+}
 forEach($gid in $GroupObjectIds){
     try{
         $grp = Get-MsolGroup -ObjectId $gid -TenantId $TenantId
@@ -123,7 +186,7 @@ forEach($gid in $GroupObjectIds){
 if($SRXEnv) {
     $SRXEnv.ResultMessage = $Script:result
     if($Script:err -eq $true){
-        Write-Error $Script:result
+       Throw $($Script:result -join ' ')
     }
 } 
 else{    

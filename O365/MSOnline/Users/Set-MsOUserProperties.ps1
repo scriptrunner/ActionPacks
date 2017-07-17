@@ -125,7 +125,7 @@ param(
 # Import-Module MSOnline
 
 #Clear
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -186,5 +186,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "User not found"
     }    
-    Write-Error "User not found"
+    Throw "User not found"
 }

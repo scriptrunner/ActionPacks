@@ -44,7 +44,7 @@ param(
 # Import-Module MSOnline
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -62,5 +62,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Group not created"
     }    
-    Write-Error "Group not created"
+    Throw "Group not created"
 }

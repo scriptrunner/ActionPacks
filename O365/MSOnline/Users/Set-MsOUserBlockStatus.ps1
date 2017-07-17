@@ -56,12 +56,12 @@ param(
 
 #Clear
 
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
 if($PSCmdlet.ParameterSetName  -eq "User object id"){
-    $Script:Usr = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object ObjectID
+    $Script:Usr = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object ObjectID,DisplayName
 }
 else{
     $Script:Usr = Get-MsolUser -TenantId $TenantId | `
@@ -81,5 +81,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "User not found"
     }
-    Write-Error  "User not found"
+    Throw  "User not found"
 }

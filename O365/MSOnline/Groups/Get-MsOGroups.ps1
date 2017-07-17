@@ -51,7 +51,7 @@ param(
 
 #Clear
 
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 #Connect-MsolService -Credential $O365Account
 

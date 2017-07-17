@@ -25,14 +25,14 @@
     .Parameter GroupObjectId
         Specifies the unique ID of the group to update
 
-    .Parameter GroupIds
-        Specifies the name of the group to update
+    .Parameter GroupName
+        Specifies the display name of the group to remove
 
     .Parameter Description
         Specifies a description of the group
 
     .Parameter DisplayName
-        Specifies a display name of the group
+        Specifies the new display name of the group
 
     .Parameter TenantId
         Specifies the unique ID of the tenant on which to perform the operation
@@ -63,7 +63,7 @@ param(
 
 #Clear
 
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -92,5 +92,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Group not found"
     }    
-    Write-Error "Group not found"
+    Throw "Group not found"
 }

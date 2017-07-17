@@ -71,7 +71,7 @@ param(
 
 #Clear
 
-$ErrorActionPreference='Stop'
+# $ErrorActionPreference='Stop'
 
 # Connect-MsolService -Credential $O365Account 
 
@@ -179,7 +179,7 @@ foreach($id in $RoleIds){
 if($SRXEnv) {
     $SRXEnv.ResultMessage = $Script:result
     if($Script:err -eq $true){
-        Write-Error $Script:result
+        Throw $($Script:result -join ' ')
     }
 } 
 else{    

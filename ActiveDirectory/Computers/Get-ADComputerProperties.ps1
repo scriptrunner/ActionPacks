@@ -51,7 +51,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 [string]$Script:sam=$Computername
 if(-not $Script:sam.EndsWith('$')){
@@ -103,5 +103,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Computer $($Computername) not found"
     }    
-    Write-Error "Computer $($Computername) not found"
+    Throw "Computer $($Computername) not found"
 }

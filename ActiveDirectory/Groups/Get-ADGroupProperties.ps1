@@ -51,7 +51,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:Grp 
 
@@ -100,5 +100,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Group $($GroupName) not found"
     }    
-    Write-Error "Group $($GroupName) not found"
+    Throw "Group $($GroupName) not found"
 }

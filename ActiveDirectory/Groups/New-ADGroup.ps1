@@ -83,7 +83,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){

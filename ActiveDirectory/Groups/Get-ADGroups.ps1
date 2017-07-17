@@ -45,7 +45,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:Grps
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){

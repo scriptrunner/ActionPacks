@@ -57,7 +57,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:NPwd = ConvertTo-SecureString $NewPassword -AsPlainText -Force
 $Script:User 
@@ -112,5 +112,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "User $($Username) not found"
     }    
-    Write-Error "User $($Username) not found"
+    Throw "User $($Username) not found"
 }

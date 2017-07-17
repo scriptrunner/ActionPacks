@@ -42,7 +42,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:Srv 
 $Script:Domain
@@ -89,5 +89,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Service account $($AccountName) not found"
     }    
-    Write-Error "Service account $($AccountName) not found"
+    Throw "Service account $($AccountName) not found"
 }

@@ -51,7 +51,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:User
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
@@ -99,5 +99,5 @@ else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "User $($Username) not found"
     }    
-    Write-Error "User $($Username) not found"
+    Throw "User $($Username) not found"
 }

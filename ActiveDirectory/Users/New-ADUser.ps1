@@ -141,7 +141,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:Pwd = ConvertTo-SecureString $Password -AsPlainText -Force
 $Script:User 

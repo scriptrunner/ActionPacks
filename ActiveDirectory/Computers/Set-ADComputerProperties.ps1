@@ -109,7 +109,7 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-$ErrorActionPreference='Stop'
+#$ErrorActionPreference='Stop'
 
 $Script:Domain 
 $Script:Cmp
@@ -220,12 +220,12 @@ if($null -ne $Script:Cmp){
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Computer $($Computername) not changed"
         }
-        Write-Error "Computer $($Computername) not changed"
+        Throw "Computer $($Computername) not changed"
     }
 }
 else{
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Computer $($Computername) not found"
     }
-    Write-Error "Computer $($Computername) not found"
+    Throw "Computer $($Computername) not found"
 }

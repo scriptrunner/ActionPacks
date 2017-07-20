@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-         Gets the properties of the Active Directory account
+        Gets the properties of the Active Directory group
     
     .DESCRIPTION  
 
@@ -14,18 +14,18 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
-    .Parameter Username
-        Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
-
-    .Parameter DomainAccount
-        Active Directory Credential for remote execution without CredSSP
+    .Parameter GroupName
+        DistinguishedName or SamAccountName of the Active Directory group
     
+    .Parameter DomainAccount
+        Active Directory Credential for remote execution on jumphost without CredSSP
+
     .Parameter Properties
         List of properties to expand. Use * for all properties
-
+    
     .Parameter DomainName
         Name of Active Directory Domain
-    
+
     .Parameter AuthType
         Specifies the authentication method to use
 #>
@@ -33,12 +33,12 @@
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$Username,
+    [string]$GroupName,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string[]]$Properties="Name,GivenName,Surname,DisplayName,Description,Office,EmailAddress,OfficePhone,Title,Department,Company,Street,PostalCode,City,SAMAccountName",
+    [string[]]$Properties="Name,Description,DistinguishedName,HomePage,SAMAccountName,SID",   
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
@@ -53,7 +53,8 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:User
+$Script:Grp 
+
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
         $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
@@ -61,8 +62,8 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+    $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -Properties *    
 }
 else{
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -71,21 +72,21 @@ else{
     else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+    $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType  `
+        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -Properties *    
 }
-if($null -ne $Script:User){
+if($null -ne $Script:Grp){
     $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
     if($Properties -eq '*'){
-        foreach($itm in $Script:User.PropertyNames){
-            if($null -ne $Script:User[$itm].Value){
-                $resultMessage.Add($itm,$Script:User[$itm].Value)
+        foreach($itm in $Script:Grp.PropertyNames){
+            if($null -ne $Script:Grp[$itm].Value){
+                $resultMessage.Add($itm,$Script:Grp[$itm].Value)
             }
         }
     }
     else {
         foreach($itm in $Properties.Split(',')){
-            $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
+            $resultMessage.Add($itm,$Script:Grp[$itm.Trim()].Value)
         }
     }
     if($SRXEnv) {
@@ -97,7 +98,7 @@ if($null -ne $Script:User){
 }
 else{
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($Username) not found"
+        $SRXEnv.ResultMessage = "Group $($GroupName) not found"
     }    
-    Throw "User $($Username) not found"
+    Throw "Group $($GroupName) not found"
 }

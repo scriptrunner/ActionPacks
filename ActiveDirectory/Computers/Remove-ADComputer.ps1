@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-         Gets the properties of the Active Directory account
+         Removes Active Directory computer
     
     .DESCRIPTION  
 
@@ -14,31 +14,25 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
-    .Parameter Username
-        Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
-
-    .Parameter DomainAccount
-        Active Directory Credential for remote execution without CredSSP
+    .Parameter Computername
+        DistinguishedName, DNSHostName or SamAccountName of the Active Directory computer
     
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
-
+    .Parameter DomainAccount
+        Active Directory Credential for remote execution on jumphost without CredSSP
+       
     .Parameter DomainName
         Name of Active Directory Domain
-    
-    .Parameter AuthType
+
+     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$Username,
+    [string]$Computername,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string[]]$Properties="Name,GivenName,Surname,DisplayName,Description,Office,EmailAddress,OfficePhone,Title,Department,Company,Street,PostalCode,City,SAMAccountName",
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
@@ -53,7 +47,12 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:User
+$Script:Domain 
+$Script:Cmp 
+[string]$Script:sam=$Computername
+if(-not $Script:sam.EndsWith('$')){
+    $Script:sam += '$'
+}
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
         $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
@@ -61,8 +60,8 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
 }
 else{
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -71,33 +70,29 @@ else{
     else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
+        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
 }
-if($null -ne $Script:User){
-    $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
-    if($Properties -eq '*'){
-        foreach($itm in $Script:User.PropertyNames){
-            if($null -ne $Script:User[$itm].Value){
-                $resultMessage.Add($itm,$Script:User[$itm].Value)
-            }
-        }
-    }
-    else {
-        foreach($itm in $Properties.Split(',')){
-            $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
-        }
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
+
+$Script:res
+if($null -ne $Cmp){
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        Remove-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false
     }
     else{
-        Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
+        Remove-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false 
     }
+    $res= "Computer $($Computername) deleted"
 }
 else{
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($Username) not found"
+        $SRXEnv.ResultMessage = "Computer $($Computername) not found"
     }    
-    Throw "User $($Username) not found"
+    Throw "Computer $($Computername) not found"
+}
+if($SRXEnv){
+    $SRXEnv.ResultMessage = $res
+}
+else{
+    Write-Output $res    
 }

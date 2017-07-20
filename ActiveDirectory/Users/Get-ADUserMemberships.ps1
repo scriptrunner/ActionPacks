@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-         Gets the properties of the Active Directory account
+         Gets the memberships of the Active Directory account
     
     .DESCRIPTION  
 
@@ -20,12 +20,9 @@
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
     
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
-
     .Parameter DomainName
         Name of Active Directory Domain
-    
+
     .Parameter AuthType
         Specifies the authentication method to use
 #>
@@ -36,9 +33,6 @@ param(
     [string]$Username,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string[]]$Properties="Name,GivenName,Surname,DisplayName,Description,Office,EmailAddress,OfficePhone,Title,Department,Company,Street,PostalCode,City,SAMAccountName",
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
@@ -53,7 +47,7 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:User
+$Script:User 
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
         $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
@@ -61,8 +55,8 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Properties MemberOf `
+        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}  | Select-Object MemberOf
 }
 else{
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -71,28 +65,20 @@ else{
     else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
+    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType -Properties MemberOf `
+        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} | Select-Object MemberOf
 }
+$Script:User
 if($null -ne $Script:User){
-    $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
-    if($Properties -eq '*'){
-        foreach($itm in $Script:User.PropertyNames){
-            if($null -ne $Script:User[$itm].Value){
-                $resultMessage.Add($itm,$Script:User[$itm].Value)
-            }
-        }
-    }
-    else {
-        foreach($itm in $Properties.Split(',')){
-            $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
-        }
+    $resultMessage = @()
+    foreach($itm in $Script:User.MemberOf){
+        $resultMessage = $resultMessage + $itm
     }
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
+        $SRXEnv.ResultMessage = $resultMessage 
     }
     else{
-        Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
+        Write-Output $resultMessage 
     }
 }
 else{

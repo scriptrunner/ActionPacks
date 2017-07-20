@@ -57,7 +57,7 @@ Function Write-Log {
     $timeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
     $line = "$timeStamp [$Level] $Message"
     if($LogFilePath) {
-        Add-Content -Path $LogFilePath -Value $line -PassThru -Force
+        Add-Content -Path $LogFilePath -Value $line -Encoding UTF8 -PassThru -Force
     }
     else {
         Write-Output $line
@@ -78,7 +78,7 @@ if(Test-Path -Path $CsvPath -ErrorAction SilentlyContinue){
     $logFilePath = Join-Path -Path $CsvPath -ChildPath $logFileName
     $csvFile = Get-ChildItem -Path $CsvPath -Filter "*.$FileExtension" -Recurse -Force | Select-Object -First 1
     if($csvFile){
-        Write-Log -LogFilePath $logFilePath -Message "Importing printers from '$($csvFile.FullName)'..."
+        Write-Log -LogFilePath $logFilePath -Message "Importing printers from '$($csvFile.FullName)' ..."
         $printers = Import-Csv -Path $CsvFile.FullName -Delimiter ';' -Encoding UTF8 -Header @('ComputerName', 'PrinterName', 'PrinterDriver', 'PrinterAddress', '_PrinterName', 'PrinterLocation', 'PrinterComment') 
         foreach($item in $printers){
             if($item.ComputerName -eq 'ComputerName'){

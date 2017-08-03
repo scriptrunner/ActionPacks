@@ -3,16 +3,8 @@
 Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
 
 .DESCRIPTION
-Clone a Git repository to ScriptRunner Library or pull updates to a local repository.  
+Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
-    © AppSphere AG
-    
 .PARAMETER GitRepoUrl
 URL of the git repository. e.g. 'https://github.com/PowerShell/PowerShell.git'
 
@@ -38,6 +30,15 @@ https://git-for-windows.github.io
 Optional: Git Credential Manager for Windows 
 https://github.com/Microsoft/Git-Credential-Manager-for-Windows
 
+Disclaimer
+
+    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+    The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
+    the use and the consequences of the use of this freely available script.
+    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
+    © AppSphere AG
+
 #>
 
 [CmdletBinding(DefaultParameterSetName='Credential')]
@@ -61,11 +62,17 @@ if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('
     $i = $GitRepoUrl.IndexOf('://')
     $i += 3
     if($PSCmdlet.ParameterSetName -eq 'Credential'){
+        if($GitUserCredential.UserName.Contains('@')){
+            throw "Invalid UserName '$($GitUserCredential.UserName)'. Do not use a email address. Use the git username instead."
+        }
         $cred = New-Object -TypeName 'System.Net.NetworkCredential' -ArgumentList @($GitUserCredential.UserName, $GitUserCredential.Password)
         $gitUrl = $GitRepoUrl.Insert($i, $cred.UserName + ':' + $([uri]::EscapeDataString($cred.Password)) + '@')
         Write-Output "$GitAction $($gitUrl.Replace($([uri]::EscapeDataString($cred.Password)), '*****')) ..."
     }
     if($PSCmdlet.ParameterSetName -eq 'UserName'){
+        if($GitUserName.Contains('@')){
+            throw "Invalid UserName '$GitUserName'. Do not use a email address. Use the git username instead."
+        }
         $gitUrl = $GitRepoUrl.Insert($i, $GitUserName + '@')
         Write-Output "$GitAction $gitUrl ..."
     }

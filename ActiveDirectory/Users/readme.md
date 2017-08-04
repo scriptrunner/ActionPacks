@@ -2,6 +2,7 @@ The use of the scripts requires the PowerShell Module ActiveDirectory
 
 Add-ADUsersToGroups.ps1
 	Adds users to Active Directory groups
+	
 Get-ADUserMemberships.ps1
 	Gets the memberships of the Active Directory account
 Get-ADUserProperties.ps1

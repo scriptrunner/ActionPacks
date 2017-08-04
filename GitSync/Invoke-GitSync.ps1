@@ -1,37 +1,40 @@
 ﻿<#
 .SYNOPSIS
-Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
+    Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
 
 .DESCRIPTION
-Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
+    Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
+    You must clone a repository first, before you can pull a repository.
+    You must user your git user account for authentication at the git service. An email address is not a valid username.
 
 .PARAMETER GitRepoUrl
-URL of the git repository. e.g. 'https://github.com/PowerShell/PowerShell.git'
+    URL of the git repository. e.g. 'https://github.com/PowerShell/PowerShell.git'
 
 .PARAMETER GitUserCredential
-Credential of a git user, who is authorized to access the given git repo.
+    Credential of a git user, who is authorized to access the given git repo. An email address is not a valid account name.
 
 .PARAMETER GitUserName
-UserName of a git user, who is authorized to access the given git repo.
+    UserName of a git user, who is authorized to access the given git repo. An email address is not a valid account name.
 
 .PARAMETER SRLibraryPath
-Path to the ScriptRunner Library Path. Default: 'C:\ProgramData\AppSphere\ScriptMgr'
+    Path to the ScriptRunner Library Path. Default: 'C:\ProgramData\AppSphere\ScriptMgr'
 
 .PARAMETER GitAction
-Clone or pull the given git repo.
+    Clone or pull the given git repo.
 
 .NOTES
-General notes
-Run as scheduled ScriptRunner Action on target 'Direct Service Execution'.
+    General notes
+    -------------------
+    Run as scheduled ScriptRunner Action on target 'Direct Service Execution'.
 
-Requires Git for Windows
-https://git-for-windows.github.io
+    Requires Git for Windows
+    https://git-for-windows.github.io
 
-Optional: Git Credential Manager for Windows 
-https://github.com/Microsoft/Git-Credential-Manager-for-Windows
+    Optional: Git Credential Manager for Windows 
+    https://github.com/Microsoft/Git-Credential-Manager-for-Windows
 
-Disclaimer
-
+    Disclaimer
+    -------------------
     This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
     The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
     The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
@@ -54,6 +57,8 @@ param(
     [string]$GitAction = 'pull'
 )
 
+$userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}[a-zA-Z0-9]{1,14}$'
+
 if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
     New-Item -Path $SRLibraryPath -ItemType 'Directory' -Force
 }
@@ -62,7 +67,7 @@ if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('
     $i = $GitRepoUrl.IndexOf('://')
     $i += 3
     if($PSCmdlet.ParameterSetName -eq 'Credential'){
-        if($GitUserCredential.UserName.Contains('@')){
+        if(-not ($GitUserCredential.UserName -match $userNamePattern)){
             throw "Invalid UserName '$($GitUserCredential.UserName)'. Do not use a email address. Use the git username instead."
         }
         $cred = New-Object -TypeName 'System.Net.NetworkCredential' -ArgumentList @($GitUserCredential.UserName, $GitUserCredential.Password)
@@ -70,7 +75,7 @@ if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('
         Write-Output "$GitAction $($gitUrl.Replace($([uri]::EscapeDataString($cred.Password)), '*****')) ..."
     }
     if($PSCmdlet.ParameterSetName -eq 'UserName'){
-        if($GitUserName.Contains('@')){
+        if(-not ($GitUserName -match $userNamePattern)){
             throw "Invalid UserName '$GitUserName'. Do not use a email address. Use the git username instead."
         }
         $gitUrl = $GitRepoUrl.Insert($i, $GitUserName + '@')

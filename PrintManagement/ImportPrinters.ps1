@@ -25,9 +25,9 @@ General notes
 
 CSV file pattern:
 #ComputerName;PrinterName;PrinterDriver;PrinterAddress;PrinterName;PrinterLocation;PrinterComment;
-HQSRVADM01;PRINTER1;"HP Universal Printing PCL 6";192.168.100.110;PRINTER1;Hameln, FRANZ, 1ETG, PRIVAT;HP Universal;
-HQSRVADM01;PRINTER2;"HP Universal Printing PCL 6";192.168.100.111;PRINTER2;Hameln, FRANZ, 2ETG, PRIVAT;HP Universal;
-HQSRVADM01;PRINTER3;"HP Universal Printing PCL 6";192.168.100.112;PRINTER3;Hameln, FRANZ, 3ETG, PRIVAT;HP Universal;
+HQSRVADM01;PRINTER1;"HP Universal Printing PCL 6";192.168.100.110;PRINTER1;DE, Ettlingen, Ludwig-Erhard-Str. 2, 1.OG, Raum 101;HP Universal;
+HQSRVADM01;PRINTER2;"HP Universal Printing PCL 6";192.168.100.111;PRINTER2;DE, Ettlingen, Ludwig-Erhard-Str. 2, 2.OG, Raum 212;HP Universal;
+HQSRVADM01;PRINTER3;"HP Universal Printing PCL 6";192.168.100.112;PRINTER3;DE, Ettlingen, Ludwig-Erhard-Str. 2, 3.OG, Raum 308;HP Universal;
 
 #>
 

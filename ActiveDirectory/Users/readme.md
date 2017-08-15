@@ -1,45 +1,47 @@
-# The use of the scripts requires the PowerShell Module ActiveDirectory
+# Manage Users
 
-+ Add-ADUsersToGroups.ps1
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory.
 
-    Adds users to Active Directory groups
++ `Add-ADUsersToGroups.ps1`
 
-+ Get-ADUserMemberships.ps1
+  Adds users to Active Directory groups.
 
-    Gets the memberships of the Active Directory account
++ `Get-ADUserMemberships.ps1`
 
-+ Get-ADUserProperties.ps1
+  Gets the memberships of the Active Directory account.
 
-    Gets the properties of the Active Directory account
++ `Get-ADUserProperties.ps1`
 
-+ Get-ADUsersWithDefinedStatus.ps1
+  Gets the properties of the Active Directory account.
 
-    Lists users where disabled, inactive, locked out and/or account is expired
++ `Get-ADUsersWithDefinedStatus.ps1`
 
-+ New-ADUser.ps1
+  Lists users where disabled, inactive, locked out and/or account is expired.
 
-    Creates a user in the OU path
++ `New-ADUser.ps1`
 
-+ Remove-ADServiceAccount.ps1
+  Creates a user in the OU path.
 
-    Removes Active Directory service account
++ `Remove-ADServiceAccount.ps1`
 
-+ Remove-ADUser.ps1
+  Removes Active Directory service account.
 
-    Removes Active Directory account
++ `Remove-ADUser.ps1`
 
-+ Remove-ADUsersFromGroups.ps1
+  Removes Active Directory account.
 
-    Removes users to Active Directory groups
++ `Remove-ADUsersFromGroups.ps1`
 
-+ Reset-ADUserPassword.ps1
+  Removes users to Active Directory groups.
 
-    Resets the password of the Active Directory account
++ `Reset-ADUserPassword.ps1`
 
-+ Set-ADUserDefinedStatus.ps1
+  Resets the password of the Active Directory account.
 
-    Enable, disable and/or unlock a Active Directory account
++ `Set-ADUserDefinedStatus.ps1`
 
-+ Set-ADUserProperties.ps1
-  
-    Sets the properties of the Active Directory user
+  Enable, disable and/or unlock a Active Directory account.
+
++ `Set-ADUserProperties.ps1`
+
+  Sets the properties of the Active Directory user.

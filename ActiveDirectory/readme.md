@@ -1,100 +1,101 @@
-The use of the scripts requires the PowerShell Module ActiveDirectory
+# Action Pack for Active Directory
 
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory.
 
-Computers
------------------------------------------------
-+ Get-ADComputerProperties.ps1
+## [Manage Computers](.\Computers)
 
-	Gets the properties of the Active Directory computer
++ `Get-ADComputerProperties.ps1`
 
-+ Get-ADComputersWithDefinedStatus.ps1
+  Gets the properties of the Active Directory computer.
 
-	Lists computers where disabled or inactive
++ `Get-ADComputersWithDefinedStatus.ps1`
 
-+ Remove-ADComputer.ps1
+  Lists computers where disabled or inactive.
 
-	Removes Active Directory computer
++ `Remove-ADComputer.ps1`
 
-+ Set-ADComputerDefinedStatus.ps1
+  Removes Active Directory computer.
 
-	Enable or disable a Active Directory computer
++ `Set-ADComputerDefinedStatus.ps1`
 
-+ Set-ADComputerProperties.ps1
+  Enable or disable a Active Directory computer.
 
-	Sets the properties of the Active Directory computer
-	
-Groups
----
-+ Get-ADEmptyGroups.ps1
++ `Set-ADComputerProperties.ps1`
 
-	Gets the Active Directory groups without members
+  Sets the properties of the Active Directory computer.
 
-+ Get-ADGroupMembers.ps1
+## [Manage Groups](.\Groups)
 
-	Gets the members of the Active Directory group
++ `Get-ADEmptyGroups.ps1`
 
-+ Get-ADGroupProperties.ps1
+  Gets the Active Directory groups without members.
 
-	Gets the properties of the Active Directory group
++ `Get-ADGroupMembers.ps1`
 
-+ Get-ADGroups.ps1
+  Gets the members of the Active Directory group.
 
-	Gets all groups from the OU path
++ `Get-ADGroupProperties.ps1`
 
-+ New-ADGroup.ps1
+  Gets the properties of the Active Directory group.
 
-	Creates a group in the OU path
++ `Get-ADGroups.ps1`
 
-+ Remove-ADGroup.ps1
+  Gets all groups from the OU path.
 
-	 Removes the Active Directory group
-	 
-+ Set-ADGroupProperties.ps1
++ `New-ADGroup.ps1`
 
-	Sets the properties of the Active Directory group
-	
-Users
----
-+ Add-ADUsersToGroups.ps1
+  Creates a group in the OU path.
 
-    Adds users to Active Directory groups
++ `Remove-ADGroup.ps1`
 
-+ Get-ADUserMemberships.ps1
+   Removes the Active Directory group.
 
-    Gets the memberships of the Active Directory account
++ `Set-ADGroupProperties.ps1`
 
-+ Get-ADUserProperties.ps1
+  Sets the properties of the Active Directory group.
 
-    Gets the properties of the Active Directory account
+## [Manage Users](.\Users)
 
-+ Get-ADUsersWithDefinedStatus.ps1
++ `Add-ADUsersToGroups.ps1`
 
-    Lists users where disabled, inactive, locked out and/or account is expired
+  Adds users to Active Directory groups.
 
-+ New-ADUser.ps1
++ `Get-ADUserMemberships.ps1`
 
-    Creates a user in the OU path
+  Gets the memberships of the Active Directory account.
 
-+ Remove-ADServiceAccount.ps1
++ `Get-ADUserProperties.ps1`
 
-    Removes Active Directory service account
+  Gets the properties of the Active Directory account.
 
-+ Remove-ADUser.ps1
++ `Get-ADUsersWithDefinedStatus.ps1`
 
-    Removes Active Directory account
+  Lists users where disabled, inactive, locked out and/or account is expired.
 
-+ Remove-ADUsersFromGroups.ps1
++ `New-ADUser.ps1`
 
-    Removes users to Active Directory groups
+  Creates a user in the OU path.
 
-+ Reset-ADUserPassword.ps1
++ `Remove-ADServiceAccount.ps1`
 
-    Resets the password of the Active Directory account
+  Removes Active Directory service account.
 
-+ Set-ADUserDefinedStatus.ps1
++ `Remove-ADUser.ps1`
 
-    Enable, disable and/or unlock a Active Directory account
+  Removes Active Directory account.
 
-+ Set-ADUserProperties.ps1
-  
-    Sets the properties of the Active Directory user
++ `Remove-ADUsersFromGroups.ps1`
+
+  Removes users to Active Directory groups.
+
++ `Reset-ADUserPassword.ps1`
+
+  Resets the password of the Active Directory account.
+
++ `Set-ADUserDefinedStatus.ps1`
+
+  Enable, disable and/or unlock a Active Directory account.
+
++ `Set-ADUserProperties.ps1`
+
+  Sets the properties of the Active Directory user.

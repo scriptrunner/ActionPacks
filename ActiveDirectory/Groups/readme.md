@@ -1,29 +1,31 @@
-The use of the scripts requires the PowerShell Module ActiveDirectory
+# Manage Groups
 
-+ Get-ADEmptyGroups.ps1
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory.
 
-	Gets the Active Directory groups without members
++ `Get-ADEmptyGroups.ps1`
 
-+ Get-ADGroupMembers.ps1
+  Gets the Active Directory groups without members.
 
-	Gets the members of the Active Directory group
++ `Get-ADGroupMembers.ps1`
 
-+ Get-ADGroupProperties.ps1
+  Gets the members of the Active Directory group.
 
-	Gets the properties of the Active Directory group
++ `Get-ADGroupProperties.ps1`
 
-+ Get-ADGroups.ps1
+  Gets the properties of the Active Directory group.
 
-	Gets all groups from the OU path
++ `Get-ADGroups.ps1`
 
-+ New-ADGroup.ps1
+  Gets all groups from the OU path.
 
-	Creates a group in the OU path
++ `New-ADGroup.ps1`
 
-+ Remove-ADGroup.ps1
+  Creates a group in the OU path.
 
-	 Removes the Active Directory group
-	 
-+ Set-ADGroupProperties.ps1
++ `Remove-ADGroup.ps1`
 
-	Sets the properties of the Active Directory group
+  Removes the Active Directory group.
+
++ `Set-ADGroupProperties.ps1`
+
+  Sets the properties of the Active Directory group.

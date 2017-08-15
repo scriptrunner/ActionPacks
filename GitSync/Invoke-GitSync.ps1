@@ -8,19 +8,21 @@
     You must user your git user account for authentication at the git service. An email address is not a valid username.
 
 .PARAMETER GitRepoUrl
-    URL of the git repository. e.g. 'https://github.com/PowerShell/PowerShell.git'
+    URL of the git repository. e.g. 'https://github.com/ScriptRunner/ActionPacks.git'
 
 .PARAMETER GitUserCredential
-    Credential of a git user, who is authorized to access the given git repo. An email address is not a valid account name.
+    Credential of a git user, who is authorized to access the given git repository.
+    Note that an email address is not a valid account name. You must use this ParameterSet for private repositories.
 
 .PARAMETER GitUserName
-    UserName of a git user, who is authorized to access the given git repo. An email address is not a valid account name.
+    UserName of a git user, who is authorized to access the given git repository.
+    Note that an email address is not a valid account name. You can use this ParameterSet for public repositories.
 
 .PARAMETER SRLibraryPath
     Path to the ScriptRunner Library Path. Default: 'C:\ProgramData\AppSphere\ScriptMgr'
 
 .PARAMETER GitAction
-    Clone or pull the given git repo.
+    Clone or pull the given git repository. Use clone for a initial download and pull to update already cloned repositories.
 
 .NOTES
     General notes

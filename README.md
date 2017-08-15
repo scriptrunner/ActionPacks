@@ -1,13 +1,13 @@
 # ScriptRunner ActionPacks
 
-## [Active Directory](.\ActiveDirectory)
+## [Active Directory](./ActiveDirectory)
 
-## [Exchange](.\Exchange)
+## [Exchange](./Exchange)
 
-## [Office 365](.\O365)
+## [Office 365](./O365)
 
-## [Git](.\GitSync)
+## [Git](./GitSync)
 
-## [Print Management](.\PrintManagement)
+## [Print Management](./PrintManagement)
 
-## [Team Foundation Server](.\TFS)
+## [Team Foundation Server](./TFS)

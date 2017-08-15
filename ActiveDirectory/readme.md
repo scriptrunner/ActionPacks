@@ -2,7 +2,7 @@
 
 > Note: The use of the scripts requires the PowerShell Module ActiveDirectory.
 
-## [Manage Computers](.\Computers)
+## [Manage Computers](./Computers)
 
 + `Get-ADComputerProperties.ps1`
 
@@ -24,7 +24,7 @@
 
   Sets the properties of the Active Directory computer.
 
-## [Manage Groups](.\Groups)
+## [Manage Groups](./Groups)
 
 + `Get-ADEmptyGroups.ps1`
 
@@ -54,7 +54,7 @@
 
   Sets the properties of the Active Directory group.
 
-## [Manage Users](.\Users)
+## [Manage Users](./Users)
 
 + `Add-ADUsersToGroups.ps1`
 

@@ -6,7 +6,7 @@
 
 ## [Office 365](./O365)
 
-## [Windows Print Management](./PrintManagement)
+## [Windows Print Management](./Printing)
 
 ## [Git Sync](./GitSync)
 

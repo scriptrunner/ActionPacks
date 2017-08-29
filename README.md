@@ -1,4 +1,4 @@
- Sync# ScriptRunner ActionPacks
+# ScriptRunner ActionPacks
 
 ## [Active Directory](./ActiveDirectory)
 

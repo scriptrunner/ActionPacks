@@ -10,4 +10,4 @@
 
 ## [Git Sync](./GitSync)
 
-## [Team Foundation Server Sync](./TFS)
+## [TFS Sync](./TFS)

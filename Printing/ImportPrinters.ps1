@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-Import print ports and printers from csv file to a print server.
+Import print ports and printers from csv file to a print server. 
 
 .DESCRIPTION
 Import print ports and printers from csv file to a print server. Script must be executed at the print server.

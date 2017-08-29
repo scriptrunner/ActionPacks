@@ -1,4 +1,4 @@
-# ScriptRunner ActionPacks
+ Sync# ScriptRunner ActionPacks
 
 ## [Active Directory](./ActiveDirectory)
 
@@ -8,6 +8,6 @@
 
 ## [Windows Print Management](./PrintManagement)
 
-## [Git](./GitSync)
+## [Git Sync](./GitSync)
 
-## [Team Foundation Server](./TFS)
+## [Team Foundation Server Sync](./TFS)

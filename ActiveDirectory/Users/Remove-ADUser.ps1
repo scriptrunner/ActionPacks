@@ -20,6 +20,9 @@
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
 
+    .Parameter DomainName
+        Name of Active Directory Domain
+
     .Parameter AuthType
         Specifies the authentication method to use
 #>

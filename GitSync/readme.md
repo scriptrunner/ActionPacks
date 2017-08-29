@@ -41,6 +41,7 @@ The script requires [Git for Windows](https://git-for-windows.github.io). You ca
     ![How-To set Action parameters](./images/Invoke-GitSync_ActionParameters.png)
 
 ## Links
+[ScriptRunner Action Packs](https://www.scriptrunner.com/action-packs)
 
 [Git for Windows](https://git-for-windows.github.io)
 

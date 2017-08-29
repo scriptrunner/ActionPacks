@@ -2,12 +2,12 @@
 
 ## [Active Directory](./ActiveDirectory)
 
-## [Exchange](./Exchange)
+## [Exchange Server](./Exchange)
 
 ## [Office 365](./O365)
 
-## [Git](./GitSync)
+## [Windows Print Management](./PrintManagement)
 
-## [Print Management](./PrintManagement)
+## [Git](./GitSync)
 
 ## [Team Foundation Server](./TFS)

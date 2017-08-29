@@ -60,6 +60,10 @@
 
   Adds users to Active Directory groups.
 
++ `Copy-ADUser.ps1`
+
+  Copy a Active Directory account
+
 + `Get-ADUserMemberships.ps1`
 
   Gets the memberships of the Active Directory account.

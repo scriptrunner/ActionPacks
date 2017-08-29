@@ -35,10 +35,6 @@
 #>
 
 param(
-<#
-    [Parameter(Mandatory = $true)]
-    [PSCredential]$O365Account,
-#>
     [switch]$IsAgentRole,
     [switch]$HasLicenseErrorsOnly,  
     [switch]$HasErrorsOnly,
@@ -46,14 +42,6 @@ param(
     [string]$GroupType='All',
     [guid]$TenantId
 )
-
-# Import-Module MSOnline
-
-#Clear
-
-# $ErrorActionPreference='Stop'
-
-#Connect-MsolService -Credential $O365Account
 
 if ($IsAgentRole -eq $true) {
     if([System.String]::IsNullOrWhiteSpace($GroupType -or $GroupType -eq 'All')){

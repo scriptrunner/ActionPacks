@@ -19,9 +19,6 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
-    .Parameter O365Account
-        Specifies the credential to use to connect to Azure Active Directory
-
     .Parameter RoleIds
         Specifies the unique IDs of the roles from which to remove members
 
@@ -45,12 +42,7 @@
 #>
 
 param(
-<#   
-    [Parameter(Mandatory = $true,ParameterSetName = "Names")]
     [Parameter(Mandatory = $true,ParameterSetName = "Ids")]
-    [PSCredential]$O365Account,    
- #>
-   [Parameter(Mandatory = $true,ParameterSetName = "Ids")]
     [guid[]]$RoleIds,
     [Parameter(ParameterSetName = "Ids")]
     [guid[]]$UserIds,
@@ -67,14 +59,6 @@ param(
     [guid]$TenantId
 )
  
-# Import-Module MSOnline
-
-#Clear
-
-# $ErrorActionPreference='Stop'
-
-# Connect-MsolService -Credential $O365Account 
-
 $Script:result = @()
 $Script:err = $false
 if($PSCmdlet.ParameterSetName  -eq "Names"){

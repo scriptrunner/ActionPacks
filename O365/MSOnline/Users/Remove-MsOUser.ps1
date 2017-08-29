@@ -18,9 +18,6 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
-    .Parameter O365Account
-        Specifies the credential to use to connect to Azure Active Directory
-
     .Parameter UserObjectId
         Specifies the unique object ID of the user to remove
 
@@ -35,11 +32,6 @@
 #>
 
 param(
-<#   
-    [Parameter(Mandatory = $true,ParameterSetName = "User name")]
-    [Parameter(Mandatory = $true,ParameterSetName = "User object id")]
-    [PSCredential]$O365Account,
- #>
     [Parameter(Mandatory = $true,ParameterSetName = "User object id")]
     [guid]$UserObjectId,
     [Parameter(Mandatory = $true,ParameterSetName = "User name")]
@@ -51,13 +43,6 @@ param(
     [Parameter(ParameterSetName = "User object id")]
     [guid]$TenantId
 )
-
-# Import-Module MSOnline
-
-#Clear
-# $ErrorActionPreference='Stop'
-
-# Connect-MsolService -Credential $O365Account 
 
 $Script:User 
 

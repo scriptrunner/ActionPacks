@@ -17,9 +17,6 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
-    .Parameter O365Account
-        Specifies the credential to use to connect to Azure Active Directory
-
     .Parameter GroupName
         Specifies the display name of the group
 
@@ -31,22 +28,11 @@
 #>
 
 param(
-<#
-    [Parameter(Mandatory = $true)]
-    [PSCredential]$O365Account,
-#>
     [Parameter(Mandatory = $true)]
     [string]$GroupName,
     [string]$Description,
     [guid]$TenantId
 )
-
-# Import-Module MSOnline
-
-#Clear
-#$ErrorActionPreference='Stop'
-
-# Connect-MsolService -Credential $O365Account 
 
 $Script:Grp = New-MsolGroup -DisplayName $GroupName -Description $Description -TenantId $TenantId | Select-Object *
 if($null -ne $Script:Grp){

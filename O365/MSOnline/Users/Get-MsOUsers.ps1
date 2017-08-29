@@ -18,9 +18,6 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
-    .Parameter O365Account
-        Specifies the credential to use to connect to Azure Active Directory
-
     .Parameter HasErrorsOnly
         Inidates that this cmdlet returns only users that have validation errors
 
@@ -41,10 +38,6 @@
 #>
 
 param(
-<#   
-    [Parameter(Mandatory)] 
-    [PSCredential]$O365Account,    
- #>
     [switch]$HasErrorsOnly,
     [switch]$OnlyDeletedUsers,
     [switch]$OnlyUnlicensedUsers,
@@ -54,13 +47,6 @@ param(
     [guid]$TenantId
 )
  
-# Import-Module MSOnline
-
-#Clear
-
-#$ErrorActionPreference='Stop'
-
-# Connect-MsolService -Credential $O365Account 
 
 $Script:result = @()
 $Script:Users =Get-MsolUser -TenantId $TenantId -ReturnDeletedUsers:$OnlyDeletedUsers -UnlicensedUsersOnly:$OnlyUnlicensedUsers -EnabledFilter $Filter `

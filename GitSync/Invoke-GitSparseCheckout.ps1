@@ -46,54 +46,96 @@
 
 #>
 
-[CmdletBinding(DefaultParameterSetName='Credential')]
+[CmdletBinding(DefaultParameterSetName='Default')]
 param(
     [Parameter(Mandatory = $true)]
     [string]$GitRepoUrl,
-    [Parameter(Mandatory = $true, ParameterSetName='Credential')]
+    [Parameter(Mandatory = $true, ParameterSetName='PrivateRepository')]
     [pscredential]$GitUserCredential,
-    [Parameter(Mandatory = $true, ParameterSetName='UserName')]
-    [string]$GitUserName,
-    [string]$GitSubDir,
+    [string[]]$SparseDirs,
     [string]$Branch = 'master',
-    [string]$SRLibraryPath = 'C:\Tmp\Git'
-#    [string]$SRLibraryPath = 'C:\ProgramData\AppSphere\ScriptMgr\Git'
-#    [ValidateSet('clone','pull')]
-#    [string]$GitAction = 'pull'
+    [string]$SRLibraryPath = 'C:\ProgramData\AppSphere\ScriptMgr\Git',
+    [string]$GitExePath = 'C:\Program Files\Git\cmd\git.exe',
+    [bool]$Cleanup = $false
 )
 
 $userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}[a-zA-Z0-9]{1,14}$'
 
+function Add-SRXResultMessage ([string]$Message) {
+    if($SRXEnv -and $Message){
+        if([string]::IsNullOrEmpty($SRXEnv.ResultMessage)){
+            $SRXEnv.ResultMessage = $Message
+        }
+        else{
+            $SRXEnv.ResultMessage += [System.Environment]::NewLine
+            $SRXEnv.ResultMessage += $Message
+        }
+    }
+}
+
+function Test-LastExitcode ([string]$ActionFailed) {
+    if ($LASTEXITCODE -ne 0) {
+        $err = $Error[0]
+        if($err){
+            if($SRXEnv){
+                $SRXEnv.ResultMessage += $err.Exception
+            }
+        }
+        $Script:currentLocation | Set-Location
+        Write-Error -Message "Failed to run '$ActionFailed'." -ErrorAction 'Stop'
+    }
+}
+
+function Invoke-GitCommand ([string[]]$ArgumentList){
+    if(-not $ArgumentList){
+        throw "Invalid command. No arguments specified."
+    }
+    try {
+        $result = & $script:GitExePath $ArgumentList
+        $result
+        Add-SRXResultMessage -Message $result
+    }    
+    catch {
+        $_
+    }    
+    finally{
+        Test-LastExitcode -ActionFailed "git $ArgumentList"
+    }    
+}    
+
+if(-not (Test-Path -Path $GitExePath -ErrorAction SilentlyContinue)){
+    throw "'$GitExePath' does not exist."
+}
+
 if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
     New-Item -Path $SRLibraryPath -ItemType 'Directory' -Force
 }
-
 if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('http://')){
-    $i = $GitRepoUrl.IndexOf('://')
-    $i += 3
-    if($PSCmdlet.ParameterSetName -eq 'Credential'){
+    if($PSCmdlet.ParameterSetName -eq 'PrivateRepository'){
+        $i = $GitRepoUrl.IndexOf('://')
+        $i += 3
         if(-not ($GitUserCredential.UserName -match $userNamePattern)){
             throw "Invalid UserName '$($GitUserCredential.UserName)'. Do not use a email address. Use the git username instead."
         }
         $cred = New-Object -TypeName 'System.Net.NetworkCredential' -ArgumentList @($GitUserCredential.UserName, $GitUserCredential.Password)
         $gitUrl = $GitRepoUrl.Insert($i, $cred.UserName + ':' + $([uri]::EscapeDataString($cred.Password)) + '@')
-        Write-Output "$GitAction $($gitUrl.Replace($([uri]::EscapeDataString($cred.Password)), '*****')) ..."
+        $GitRepoUrl = $($gitUrl.Replace($([uri]::EscapeDataString($cred.Password)), '*****'))
     }
-    if($PSCmdlet.ParameterSetName -eq 'UserName'){
-        if(-not ($GitUserName -match $userNamePattern)){
-            throw "Invalid UserName '$GitUserName'. Do not use a email address. Use the git username instead."
-        }
-        $gitUrl = $GitRepoUrl.Insert($i, $GitUserName + '@')
-        Write-Output "$GitAction $gitUrl ..."
+    else{
+        $gitUrl = $GitRepoUrl
     }
 }
 else {
     Write-Error -Message "Invalid git URL '$GitRepoUrl'." -ErrorAction 'Stop'
 }
 
-if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
-    $currentLocation = Get-Location
 
+if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
+    $Script:currentLocation = Get-Location
+    if($Cleanup){
+        Get-ChildItem | Remove-Item -Recurse -Force
+        Get-ChildItem -Hidden | Remove-Item -Recurse -Force
+    }
     # get repo name => set as base dir
     $i = $gitUrl.LastIndexOf('/')
     $i++
@@ -104,41 +146,46 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
         New-Item -Path $SRLibraryPath -ItemType Directory -Force
     }
+    Set-Location -Path $SRLibraryPath
     Write-Output "Local repository path: '$SRLibraryPath'."
 
-    Set-Location -Path $SRLibraryPath
-    try {
-        $resultMessage = & 'git.exe' @('init')
-        $resultMessage
-        $resultMessage = & 'git.exe' @('config', 'core.sparseCheckout', 'true')
-        $resultMessage
-        $resultMessage = & 'git.exe' @('remote', 'add', '-f', 'origin',  $gitUrl)
-        $resultMessage
-        $GitSubDir = $GitSubDir.Replace('\', '/').Trim()
-        Add-Content -Value "$GitSubDir" -Path '.\.git\info\sparse-checkout' -Force -Encoding UTF8
-        
-        # echo path/within_repo/to/desired_subdir/* > .git/info/sparse-checkout
-        $resultMessage = & 'git.exe' @('checkout', $Branch)
-        $resultMessage
+    # init new local repo
+    [string[]]$arguments = @('init')
+    Invoke-GitCommand $arguments
+    # activate sparse checkout
+    $arguments = @('config', 'core.sparseCheckout', 'true')
+    Invoke-GitCommand $arguments
+    # do not prompt for user/password
+    $arguments = @('config', 'core.askPass', 'false')
+    Invoke-GitCommand $arguments
+
+    $result = & $GitExePath @('remote', 'show')
+    if($result -and ($result -eq 'origin')){
+        Invoke-GitCommand @('remote', 'update')
     }
-    catch {
-        $_
+    else{
+        Invoke-GitCommand @('remote', 'add', '-f', 'origin',  $gitUrl)
     }
-    finally{
-        $currentLocation | Set-Location
-        if($SRXEnv){
-            $SRXEnv.ResultMessage = $resultMessage
-        }
-        if ($LASTEXITCODE -ne 0) {
-            $err = $Error[0]
-            $err
-            if($SRXEnv){
-                $SRXEnv.ResultMessage += $err.Exception
-            }
-            Write-Error -Message "Failed to $GitAction $GitRepoUrl" -ErrorAction 'Stop'
-        }
+    # setup sparse dirs
+    if(Test-Path -Path '.\.git\info\sparse-checkout' -ErrorAction SilentlyContinue){
+        'Found previous sparse dirs:'
+        Get-Content -Path '.\.git\info\sparse-checkout' -Force -Encoding UTF8
+        "Remove previous sparse dirs ..."
+        Remove-Item -Path '.\.git\info\sparse-checkout' -Force
     }
+    foreach($subDir in $SparseDirs){
+        "Add sparse dir:"
+        $subDir = $subDir.Replace('\', '/').Trim()
+        Add-Content -Value $subDir -Path '.\.git\info\sparse-checkout' -Force -Encoding UTF8 -PassThru
+    }
+    # checkout specified branch 
+    $arguments = @('checkout', $Branch)
+    Invoke-GitCommand $arguments
+
+    $Script:currentLocation | Set-Location
 }
 else {
     Write-Error -Message "ScriptRunner Library Path '$SRLibraryPath' does not exist." -ErrorAction 'Stop'
 }
+
+"done."

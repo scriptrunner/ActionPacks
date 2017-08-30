@@ -80,8 +80,8 @@
 
 param(    
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
-    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$OUPath,
+    #[Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,   
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$GivenName,
@@ -152,6 +152,8 @@ Import-Module ActiveDirectory
 $Script:Pwd = ConvertTo-SecureString $Password -AsPlainText -Force
 $Script:User 
 $Script:Domain
+$Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+                        ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
 
 if([System.String]::IsNullOrWhiteSpace($SAMAccountName)){
     $SAMAccountName= $GivenName + '.' + $Surname 
@@ -199,10 +201,29 @@ else {
                         -UserPrincipalName $UserPrincipalname -StreetAddress $Street -Enable $true  -PassThru
 }
 if($Script:User){
+    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties
+    $res=@{}
+    $res.add(' ',"User $($GivenName) $($Surname) with follow properties created:")
+    $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+    $res.Add('Path:', $tmp)
+    $res.Add('GivenName:', $Script:User.GivenName)
+    $res.Add('Surname:', $Script:User.Surname)
+    $res.Add('SAMAccountName:', $Script:User.SAMAccountName)
+    $res.Add('UserPrincipalName:', $Script:User.UserPrincipalName)
+    $res.Add('Name:', $Script:User.Name)
+    $res.Add('Description:', $Script:User.Description)
+    $res.Add('EmailAddress:', $Script:User.EmailAddress)
+    $res.Add('CannotChangePassword:', $Script:User.CannotChangePassword)
+    $res.Add('PasswordNeverExpires:', $Script:User.PasswordNeverExpires)
+    $res.Add('Department:', $Script:User.Department)
+    $res.Add('Company:', $Script:User.Company)
+    $res.Add('PostalCode:', $Script:User.PostalCode)
+    $res.Add('City:', $Script:User.City)
+    $res.Add('StreetAddress:', $Script:User.StreetAddress)
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = Write-Output "User $($UserName) created"
+        $SRXEnv.ResultMessage = $res | Format-Table -HideTableHeaders 
     }
     else {
-        Write-Output "User $($UserName) created"
+        Write-Output $res | Format-Table -HideTableHeaders
     }    
-}   
+} 

@@ -23,6 +23,12 @@
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
 
+    .Parameter OUPath
+        Set the OU Path or use a Query
+
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
+
     .Parameter DomainName
         Name of Active Directory Domain
     
@@ -39,6 +45,13 @@ param(
     [string[]]$GroupNames,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,

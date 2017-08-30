@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-        Copied Active Directory account
+        Copy a Active Directory account
     
     .DESCRIPTION  
 

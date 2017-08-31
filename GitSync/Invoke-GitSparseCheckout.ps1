@@ -90,7 +90,7 @@ function Test-LastExitcode ([string]$ActionFailed) {
             }
         }
         $Script:currentLocation | Set-Location
-        Write-Error -Message "Failed to run '$ActionFailed'." -ErrorAction 'Stop'
+        Write-Error -Message "Failed to run '$ActionFailed' with '$LASTEXITCODE'." -ErrorAction 'Stop'
     }
 }
 
@@ -99,7 +99,9 @@ function Invoke-GitCommand ([string[]]$ArgumentList){
         throw "Invalid command. No arguments specified."
     }
     try {
-        $result = & $script:GitExePath $ArgumentList
+        # redirect stderr of git.exe to stdout
+        # see: https://stackoverflow.com/questions/2095088/error-when-calling-3rd-party-executable-from-powershell-when-using-an-ide
+        $result = (& cmd.exe '/c' "`"$script:GitExePath`" 2>&1" $ArgumentList)
         $result
         Add-SRXResultMessage -Message $result
     }    
@@ -167,7 +169,7 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     $arguments = @('config', 'core.askPass', 'false')
     Invoke-GitCommand $arguments
 
-    $result = & $GitExePath @('remote', 'show')
+    $result = (& cmd.exe '/c' "`"$GitExePath`" 2>&1" @('remote', 'show'))
     if($result -and ($result -eq 'origin')){
         Invoke-GitCommand @('remote', 'update')
     }

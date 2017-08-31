@@ -24,6 +24,9 @@
 .PARAMETER GitAction
     Clone or pull the given git repository. Use clone for a initial download and pull to update already cloned repositories.
 
+.PARAMETER GitExePath
+    Path to the git execuatble. Default value is 'C:\Program Files\Git\cmd\git.exe'.
+
 .NOTES
     General notes
     -------------------
@@ -55,6 +58,7 @@ param(
     [Parameter(Mandatory = $true, ParameterSetName='UserName')]
     [string]$GitUserName, 
     [string]$SRLibraryPath = 'C:\ProgramData\AppSphere\ScriptMgr\Git',
+    [string]$GitExePath = 'C:\Program Files\Git\cmd\git.exe',
     [ValidateSet('clone','pull')]
     [string]$GitAction = 'pull'
 )
@@ -103,7 +107,7 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
 
     Set-Location -Path $SRLibraryPath
     try {
-        $resultMessage = & 'git.exe' @($GitAction, $gitUrl)
+        $resultMessage = (& cmd.exe '/c' "`"$GitExePath`" 2>&1" @($GitAction, $gitUrl))
         $resultMessage
     }
     catch {
@@ -117,10 +121,10 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
         if ($LASTEXITCODE -ne 0) {
             $err = $Error[0]
             $err
-            if($SRXEnv){
+            if($SRXEnv -and $err){
                 $SRXEnv.ResultMessage += $err.Exception
             }
-            Write-Error -Message "Failed to $GitAction $GitRepoUrl" -ErrorAction 'Stop'
+            Write-Error -Message "Failed to run '$GitAction $GitRepoUrl' with '$LASTEXITCODE'." -ErrorAction 'Stop'
         }
     }
 }

@@ -202,8 +202,7 @@ else {
 }
 if($Script:User){
     $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties
-    $res=@{}
-    $res.add(' ',"User $($GivenName) $($Surname) with follow properties created:")
+    $res=New-Object 'system.collections.generic.dictionary[string,string]'
     $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
     $res.Add('Path:', $tmp)
     $res.Add('GivenName:', $Script:User.GivenName)
@@ -220,10 +219,13 @@ if($Script:User){
     $res.Add('PostalCode:', $Script:User.PostalCode)
     $res.Add('City:', $Script:User.City)
     $res.Add('StreetAddress:', $Script:User.StreetAddress)
+    $Out =@()
+    $Out +="User $($GivenName) $($Surname) with follow properties created:"
+    $Out +=$res | Format-Table -HideTableHeaders
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $res | Format-Table -HideTableHeaders 
+        $SRXEnv.ResultMessage = $out
     }
     else {
-        Write-Output $res | Format-Table -HideTableHeaders
+        Write-Output $out 
     }    
 } 

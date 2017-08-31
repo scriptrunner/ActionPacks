@@ -1,11 +1,11 @@
 ﻿<#
 .SYNOPSIS
-    Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
+    Checkout the given SubDirs of a Git repository to ScriptRunner Library.
 
 .DESCRIPTION
-    Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
-    You must clone a repository first, before you can pull a repository.
-    You must user your git user account for authentication at the git service. An email address is not a valid username.
+    Checkout a Git repository to ScriptRunner Library.
+    If you specifiy SparseDirs, only the given directories will be checked out.
+    If you want to checkout a private repository, you must specify the GitUserCredential.
 
 .PARAMETER GitRepoUrl
     URL of the git repository. e.g. 'https://github.com/ScriptRunner/ActionPacks.git'
@@ -14,15 +14,23 @@
     Credential of a git user, who is authorized to access the given git repository.
     Note that an email address is not a valid account name. You must use this ParameterSet for private repositories.
 
-.PARAMETER GitUserName
-    UserName of a git user, who is authorized to access the given git repository.
-    Note that an email address is not a valid account name. You can use this ParameterSet for public repositories.
+.PARAMETER SparseDirs
+    Specify the list of subfolders you want to check out. If empty, all files will be checked out.
+    Example: "ActiveDirectory/*", "O365/*"
+
+.PARAMETER Branch
+    The remote branch to check out. Default value is 'master'.
 
 .PARAMETER SRLibraryPath
-    Path to the ScriptRunner Library Path. Default: 'C:\ProgramData\AppSphere\ScriptMgr'
+    Path to the ScriptRunner Library. Default value is 'C:\ProgramData\AppSphere\ScriptMgr'.
 
-.PARAMETER GitAction
-    Clone or pull the given git repository. Use clone for a initial download and pull to update already cloned repositories.
+.PARAMETER GitExePath
+    Path to the git execuatble. Default value is 'C:\Program Files\Git\cmd\git.exe'.
+
+.PARAMETER Cleanup
+    Cleanup the local repository before initialize a new repository.
+    All files and sub directories in the repository path will be removed.
+    Default value is 'false'.
 
 .NOTES
     General notes

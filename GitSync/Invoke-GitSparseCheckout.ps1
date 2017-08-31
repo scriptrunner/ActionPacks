@@ -69,14 +69,13 @@ param(
 
 $userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}[a-zA-Z0-9]{1,14}$'
 
-function Add-SRXResultMessage ([string]$Message) {
+function Add-SRXResultMessage ([string[]] $Message) {
     if($SRXEnv -and $Message){
         if([string]::IsNullOrEmpty($SRXEnv.ResultMessage)){
             $SRXEnv.ResultMessage = $Message
         }
         else{
-            $SRXEnv.ResultMessage += [System.Environment]::NewLine
-            $SRXEnv.ResultMessage += $Message
+            $SRXEnv.ResultMessage += $Message | Out-String
         }
     }
 }
@@ -86,7 +85,7 @@ function Test-LastExitcode ([string]$ActionFailed) {
         $err = $Error[0]
         if($err){
             if($SRXEnv){
-                $SRXEnv.ResultMessage += $err.Exception
+                $SRXEnv.ResultMessage += $err.Exception | Out-String
             }
         }
         $Script:currentLocation | Set-Location
@@ -142,10 +141,6 @@ else {
 
 if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     $Script:currentLocation = Get-Location
-    if($Cleanup){
-        Get-ChildItem | Remove-Item -Recurse -Force
-        Get-ChildItem -Hidden | Remove-Item -Recurse -Force
-    }
     # get repo name => set as base dir
     $i = $gitUrl.LastIndexOf('/')
     $i++
@@ -154,9 +149,15 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     Write-Output "Repository: '$repo'."
     $SRLibraryPath = Join-Path -Path $SRLibraryPath -ChildPath $repo
     if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
-        New-Item -Path $SRLibraryPath -ItemType Directory -Force
+        "Create directory '$SRLibraryPath' ..."
+        $null = New-Item -Path $SRLibraryPath -ItemType Directory -Force
     }
     Set-Location -Path $SRLibraryPath
+    if($Cleanup){
+        "Cleanup '$SRLibraryPath' ..."
+        Get-ChildItem | Remove-Item -Recurse -Force
+        Get-ChildItem -Hidden | Remove-Item -Recurse -Force
+    }
     Write-Output "Local repository path: '$SRLibraryPath'."
 
     # init new local repo

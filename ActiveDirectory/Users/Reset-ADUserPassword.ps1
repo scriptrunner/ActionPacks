@@ -119,7 +119,12 @@ if($null -ne $Script:User){
         $Out +=  "User $($Username) must change the password on next logon"
     }
     Start-Sleep -Seconds 5 # wait
-    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties -SearchBase $OUPath -SearchScope 'SubTree'
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+    }
+    else{
+        $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+    }
     $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
     $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
     $res.Add('Path:', $tmp)

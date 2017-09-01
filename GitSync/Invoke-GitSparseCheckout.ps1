@@ -1,11 +1,11 @@
 ﻿<#
 .SYNOPSIS
-    Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
+    Checkout the given SubDirs of a Git repository to ScriptRunner Library.
 
 .DESCRIPTION
-    Clone a Git repository to ScriptRunner Library or pull updates to a local repository.
-    You must clone a repository first, before you can pull a repository.
-    You must user your git user account for authentication at the git service. An email address is not a valid username.
+    Checkout a Git repository to ScriptRunner Library.
+    If you specifiy SparseDirs, only the given directories will be checked out.
+    If you want to checkout a private repository, you must specify the GitUserCredential.
 
 .PARAMETER GitRepoUrl
     URL of the git repository. e.g. 'https://github.com/ScriptRunner/ActionPacks.git'
@@ -14,15 +14,23 @@
     Credential of a git user, who is authorized to access the given git repository.
     Note that an email address is not a valid account name. You must use this ParameterSet for private repositories.
 
-.PARAMETER GitUserName
-    UserName of a git user, who is authorized to access the given git repository.
-    Note that an email address is not a valid account name. You can use this ParameterSet for public repositories.
+.PARAMETER SparseDirs
+    Specify the list of subfolders you want to check out. If empty, all files will be checked out.
+    Example: "ActiveDirectory/*", "O365/*"
+
+.PARAMETER Branch
+    The remote branch to check out. Default value is 'master'.
 
 .PARAMETER SRLibraryPath
-    Path to the ScriptRunner Library Path. Default: 'C:\ProgramData\AppSphere\ScriptMgr'
+    Path to the ScriptRunner Library. Default value is 'C:\ProgramData\AppSphere\ScriptMgr'.
 
-.PARAMETER GitAction
-    Clone or pull the given git repository. Use clone for a initial download and pull to update already cloned repositories.
+.PARAMETER GitExePath
+    Path to the git execuatble. Default value is 'C:\Program Files\Git\cmd\git.exe'.
+
+.PARAMETER Cleanup
+    Cleanup the local repository before initialize a new repository.
+    All files and sub directories in the repository path will be removed.
+    Default value is 'false'.
 
 .NOTES
     General notes
@@ -61,14 +69,13 @@ param(
 
 $userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}[a-zA-Z0-9]{1,14}$'
 
-function Add-SRXResultMessage ([string]$Message) {
+function Add-SRXResultMessage ([string[]] $Message) {
     if($SRXEnv -and $Message){
         if([string]::IsNullOrEmpty($SRXEnv.ResultMessage)){
             $SRXEnv.ResultMessage = $Message
         }
         else{
-            $SRXEnv.ResultMessage += [System.Environment]::NewLine
-            $SRXEnv.ResultMessage += $Message
+            $SRXEnv.ResultMessage += $Message | Out-String
         }
     }
 }
@@ -78,11 +85,11 @@ function Test-LastExitcode ([string]$ActionFailed) {
         $err = $Error[0]
         if($err){
             if($SRXEnv){
-                $SRXEnv.ResultMessage += $err.Exception
+                $SRXEnv.ResultMessage += $err.Exception | Out-String
             }
         }
         $Script:currentLocation | Set-Location
-        Write-Error -Message "Failed to run '$ActionFailed'." -ErrorAction 'Stop'
+        Write-Error -Message "Failed to run '$ActionFailed' with '$LASTEXITCODE'." -ErrorAction 'Stop'
     }
 }
 
@@ -91,7 +98,9 @@ function Invoke-GitCommand ([string[]]$ArgumentList){
         throw "Invalid command. No arguments specified."
     }
     try {
-        $result = & $script:GitExePath $ArgumentList
+        # redirect stderr of git.exe to stdout
+        # see: https://stackoverflow.com/questions/2095088/error-when-calling-3rd-party-executable-from-powershell-when-using-an-ide
+        $result = (& cmd.exe '/c' "`"$script:GitExePath`" 2>&1" $ArgumentList)
         $result
         Add-SRXResultMessage -Message $result
     }    
@@ -132,10 +141,6 @@ else {
 
 if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     $Script:currentLocation = Get-Location
-    if($Cleanup){
-        Get-ChildItem | Remove-Item -Recurse -Force
-        Get-ChildItem -Hidden | Remove-Item -Recurse -Force
-    }
     # get repo name => set as base dir
     $i = $gitUrl.LastIndexOf('/')
     $i++
@@ -144,9 +149,15 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     Write-Output "Repository: '$repo'."
     $SRLibraryPath = Join-Path -Path $SRLibraryPath -ChildPath $repo
     if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
-        New-Item -Path $SRLibraryPath -ItemType Directory -Force
+        "Create directory '$SRLibraryPath' ..."
+        $null = New-Item -Path $SRLibraryPath -ItemType Directory -Force
     }
     Set-Location -Path $SRLibraryPath
+    if($Cleanup){
+        "Cleanup '$SRLibraryPath' ..."
+        Get-ChildItem | Remove-Item -Recurse -Force
+        Get-ChildItem -Hidden | Remove-Item -Recurse -Force
+    }
     Write-Output "Local repository path: '$SRLibraryPath'."
 
     # init new local repo
@@ -159,7 +170,7 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
     $arguments = @('config', 'core.askPass', 'false')
     Invoke-GitCommand $arguments
 
-    $result = & $GitExePath @('remote', 'show')
+    $result = (& cmd.exe '/c' "`"$GitExePath`" 2>&1" @('remote', 'show'))
     if($result -and ($result -eq 'origin')){
         Invoke-GitCommand @('remote', 'update')
     }

@@ -26,6 +26,10 @@
 
   Creates a user in the OU path.
 
++ `Remove-ADMembersFromGroup.ps1`
+
+  Removes users to Active Directory group
+
 + `Remove-ADServiceAccount.ps1`
 
   Removes Active Directory service account.
@@ -42,10 +46,14 @@
 
   Resets the password of the Active Directory account.
 
-+ `Set-ADUserDefinedStatus.ps1`
++ `Set-ADUserExpirationDate.ps1`
 
-  Enable, disable and/or unlock a Active Directory account.
+  Sets the expiration date for an Active Directory account.
 
 + `Set-ADUserProperties.ps1`
 
   Sets the properties of the Active Directory user.
+
++ `Set-ADUserStatus.ps1`
+
+  Enable, disable and/or unlock a Active Directory account.

@@ -14,20 +14,23 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter Computername
         DistinguishedName, DNSHostName or SamAccountName of the Active Directory computer
     
     .Parameter DomainAccount
         Active Directory Credential for remote execution on jumphost without CredSSP
 
-    .Parameter Enable
-        Enables the Active Directory computer
-    
-    .Parameter Disable
-        Disables the Active Directory computer
+    .Parameter EnableStatus
+        Enables or disables the Active Directory computer
     
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
 
     .Parameter AuthType
         Specifies the authentication method to use
@@ -36,18 +39,23 @@
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,   
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$Computername,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [switch]$Enable,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [switch]$Disable,
+    [ValidateSet('Enable','Disable')]
+    [string]$EnableStatus='Enable',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
@@ -74,6 +82,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
     $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
 }
 else{
@@ -84,25 +93,12 @@ else{
         $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
     $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
 }
 if($null -ne $Cmp){    
     $res
-    if($Disable -eq $true){
-        if($Cmp.Enabled -eq $true){
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                Disable-ADAccount -Identity $Cmp -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType
-            }
-            else{
-                Disable-ADAccount -Identity $Cmp -Server $Domain.PDCEmulator -AuthType $AuthType
-            }
-            $res= "Computer $($Cmp.Name) disabled"
-        }
-        else{
-            $res= "Computer $($Cmp.Name) is not enabled"
-        }
-    }
-    if($Enable -eq $true){
+    if($EnableStatus -eq 'Enable'){
         if($Cmp.Enabled -eq $false){
             if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
                 Enable-ADAccount -Identity $Cmp -Credential $DomainAccount -AuthType $AuthType -Server $Domain.PDCEmulator
@@ -114,6 +110,20 @@ if($null -ne $Cmp){
         }
         else{
             $res= "Computer $($Cmp.Name) is not disabled"
+        }
+    }
+    else{
+        if($Cmp.Enabled -eq $true){
+            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                Disable-ADAccount -Identity $Cmp -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType
+            }
+            else{
+                Disable-ADAccount -Identity $Cmp -Server $Domain.PDCEmulator -AuthType $AuthType
+            }
+            $res= "Computer $($Cmp.Name) disabled"
+        }
+        else{
+            $res= "Computer $($Cmp.Name) is not enabled"
         }
     }
     if($SRXEnv) {

@@ -14,6 +14,9 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter Username
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
 
@@ -28,12 +31,18 @@
 
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
 
     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
 param(
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,   
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$Username,
@@ -50,6 +59,10 @@ param(
     [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
     [string]$AuthType="Negotiate"
 )
@@ -62,6 +75,8 @@ Import-Module ActiveDirectory
 $Script:NPwd = ConvertTo-SecureString $NewPassword -AsPlainText -Force
 $Script:User 
 $Script:Domain
+$Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+                        ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
 
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -71,6 +86,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
     $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} 
 }
 else{
@@ -81,17 +97,18 @@ else{
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
     $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
 }
 if($null -ne $Script:User){
-    $res=@()
+    $Out=@()
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         Set-ADAccountPassword -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset
     }
     else {
         Set-ADAccountPassword -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset
     }
-    $res = $res + "New password of user $($Username) is set"
+    $Out += "New password of user $($Username) is set"
     if($UserMustChangePasswordAtLogon -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
             Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User
@@ -99,13 +116,24 @@ if($null -ne $Script:User){
         else {
             Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User
         }
-        $res = $res +  "User $($Username) must change the password on next logon"
+        $Out +=  "User $($Username) must change the password on next logon"
     }
+    Start-Sleep -Seconds 5 # wait
+    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties -SearchBase $OUPath -SearchScope 'SubTree'
+    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
+    $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+    $res.Add('Path:', $tmp)
+    foreach($item in $Script:Properties){
+        if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
+            $res.Add($item + ':', $Script:User[$item])
+        }
+    }
+    $Out +=$res | Format-Table -HideTableHeaders
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$res
+        $SRXEnv.ResultMessage =$Out
     }
     else {
-        Write-Output $res
+        Write-Output $Out
     }
 }
 else{

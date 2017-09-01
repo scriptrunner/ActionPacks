@@ -26,17 +26,20 @@
     .Parameter OUPath
         Set the OU Path or use a Query
 
-    .Parameter SearchScope
-        Specifies the scope of an Active Directory search
-
     .Parameter DomainName
         Name of Active Directory Domain
     
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
+
     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
 param(
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string[]]$UserNames,
@@ -47,14 +50,11 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$OUPath,
+    [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Base','OneLevel','SubTree')]
     [string]$SearchScope='SubTree',
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
@@ -90,10 +90,12 @@ if($UserNames){
     foreach($name in $UserNames){
         if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
             $usr= Get-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+                -SearchBase $OUPath -SearchScope $SearchScope `
                 -Filter {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)} | Select-Object SAMAccountName
         }
         else {
             $usr= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+                -SearchBase $OUPath -SearchScope $SearchScope `
                 -Filter {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)} | Select-Object SAMAccountName
             
         }
@@ -110,11 +112,13 @@ foreach($usr in $UserSAMAccountNames){
     foreach($itm in $GroupNames){
         if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
             $grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
+                    -SearchBase $OUPath -SearchScope $SearchScope `
+                    -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
         }
         else {
             $grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
+                    -SearchBase $OUPath -SearchScope $SearchScope `
+                    -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
         }
         if($null -ne $grp){
             $founded += $itm

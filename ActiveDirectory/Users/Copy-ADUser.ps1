@@ -14,23 +14,11 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter SourceUsername
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory user
-
-    .Parameter NewUserName
-        Specifies the name of the new user
-
-    .Parameter Password
-        Specifies the password value for the new account
-    
-    .Parameter DisplayName
-        Specifies the new user's display name
-
-    .Parameter SamAccountName
-        Specifies the Security Account Manager (SAM) account name of the new user
-
-    .Parameter UserPrincipalName
-        Specifies the user principal name (UPN) in the format <user>@<DNS-domain-name>. 
     
     .Parameter GivenName
         Specifies the new user's given name
@@ -38,17 +26,38 @@
     .Parameter Surname
         Specifies the new user's last name or surname
 
+    .Parameter Password
+        Specifies the password value for the new account
+
+    .Parameter DomainAccount
+        Active Directory Credential for remote execution without CredSSP
+
+    .Parameter SamAccountName
+        Specifies the Security Account Manager (SAM) account name of the new user
+
+    .Parameter UserPrincipalName
+        Specifies the user principal name (UPN) in the format <user>@<DNS-domain-name>.
+
+    .Parameter NewUserName
+        Specifies the name of the new user 
+    
+    .Parameter DisplayName
+        Specifies the new user's display name
+
+    .Parameter EmailAddress
+        Specifies the user's e-mail address
+
     .Parameter CopyGroupMemberships
         Copies the group memberships too
 
     .Parameter ChangePasswordAtLogon
         Specifies whether a password must be changed during the next logon attempt
-
-    .Parameter DomainAccount
-        Active Directory Credential for remote execution without CredSSP
     
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
 
     .Parameter AuthType
         Specifies the authentication method to use
@@ -57,36 +66,42 @@
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,  
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$SourceUsername,
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$NewUserName,
+    [string]$GivenName,
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$Surname,    
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$Password,
-    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$DisplayName,    
-    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
-    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [PSCredential]$DomainAccount,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$SAMAccountName,
-    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
-    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$UserPrincipalName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$GivenName,
+    [string]$NewUserName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$Surname,
+    [string]$DisplayName, 
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$EmailAddress,   
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [switch]$CopyGroupMemberships,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [switch]$ChangePasswordAtLogon,
-    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
@@ -100,13 +115,31 @@ Import-Module ActiveDirectory
 
 #Clear
 #$ErrorActionPreference='Stop'
-$Script:Properties =@('AccountExpirationDate','accountExpires','AccountLockoutTime','AccountNotDelegated','AllowReversiblePasswordEncryption','CannotChangePassword','City','co','Company','Country','countryCode','Department','Description','Division', `
-                    'DoesNotRequirePreAuth','EmailAddress','Enabled','facsimileTelephoneNumber','Fax','HomeDirectory','HomedirRequired','HomeDrive','HomePage','HomePhone','Initials','ipPhone','mail','Manager','MNSLogonAccount','mobile','MobilePhone', `
+$Script:CopyProperties =@('AccountExpirationDate','accountExpires','AccountLockoutTime','AccountNotDelegated','AllowReversiblePasswordEncryption','CannotChangePassword','City','co','Company','Country','countryCode','Department','Description','Division', `
+                    'DoesNotRequirePreAuth','Enabled','facsimileTelephoneNumber','Fax','HomeDirectory','HomedirRequired','HomeDrive','HomePage','HomePhone','Initials','ipPhone','mail','Manager','MNSLogonAccount','mobile','MobilePhone', `
                     'Office','OfficePhone','Organization','OtherName','pager','PasswordExpired','PasswordNeverExpires','PasswordNotRequired','physicalDeliveryOfficeName','POBox','PostalCode','postOfficeBox','ProtectedFromAccidentalDeletion', `
-                    'ScriptPath','SmartcardLogonRequired','sn','st','State','StreetAddress','telephoneNumber','Title','TrustedForDelegation','TrustedToAuthForDelegation','UseDESKeyOnly','wWWHomePage')
+                    'ScriptPath','SmartcardLogonRequired','st','State','StreetAddress','telephoneNumber','Title','TrustedForDelegation','TrustedToAuthForDelegation','UseDESKeyOnly','wWWHomePage')
 $Script:User 
 $Script:Domain
 $Script:Pwd=ConvertTo-SecureString $Password -AsPlainText -force
+$Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+                        ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
+
+if([System.String]::IsNullOrWhiteSpace($SAMAccountName)){
+    $SAMAccountName= $GivenName + '.' + $Surname 
+}
+if([System.String]::IsNullOrWhiteSpace($NewUsername)){
+    $NewUsername= $GivenName + '_' + $Surname 
+}
+if([System.String]::IsNullOrWhiteSpace($DisplayName)){
+    $DisplayName= $GivenName + ', ' + $Surname 
+}
+if($UserPrincipalName.StartsWith('@')){
+    $UserPrincipalName = $GivenName + '.' + $Surname + $UserPrincipalName
+}
+if($EmailAddress.StartsWith('@')){
+   $EmailAddress = $GivenName + '.' + $Surname + $EmailAddress
+}
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
         $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount 
@@ -116,11 +149,15 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     }
     $Source= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
         -Filter {(SamAccountName -eq $SourceUserName) -or (DisplayName -eq $SourceUserName) -or (DistinguishedName -eq $SourceUserName) -or (UserPrincipalName -eq $SourceUserName)} `
-        -Properties $Script:Properties
+        -SearchBase $OUPath -SearchScope $SearchScope `
+        -Properties $Script:CopyProperties
     New-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
         -Instance $Source -Name $NewUserName -UserPrincipalName $UserPrincipalName -DisplayName $DisplayName `
+        -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
         -Path ($Source.DistinguishedName -split ",",2)[1] -SamAccountName $SAMAccountName -AccountPassword $Script:Pwd 
-    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName
+    Start-Sleep -Seconds 5 # wait
+    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName `
+                    -SearchBase $OUPath -SearchScope $SearchScope 
 }
 else{
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -130,12 +167,16 @@ else{
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
     $Source= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $SourceUserName) -or (DisplayName -eq $SourceUserName) -or (DistinguishedName -eq $SourceUserName) -or (UserPrincipalName -eq $SourceUserName)} `
-        -Properties $Script:Properties
+        -Properties $Script:CopyProperties
     New-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
         -Instance $Source -Name $NewUserName -DisplayName $DisplayName -SamAccountName $SAMAccountName `
+        -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
         -Path ($Source.DistinguishedName -split ",",2)[1] -UserPrincipalName $UserPrincipalName -AccountPassword $Script:Pwd
-    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName
+    Start-Sleep -Seconds 5 # wait
+    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName `
+                            -SearchBase $OUPath -SearchScope $SearchScope 
 }
 if($null -ne $Script:User){
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
@@ -166,14 +207,23 @@ if($null -ne $Script:User){
             Add-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUserName -memberOf $Groups
         }
     }
-    $res=@()
-    $res += $Script:User | Format-List
-    $res += "User $($NewUserName) created" 
+    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties -SearchBase $OUPath -SearchScope 'SubTree'
+    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
+    $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+    $res.Add('Path:', $tmp)
+    foreach($item in $Script:Properties){
+        if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
+            $res.Add($item + ':', $Script:User[$item])
+        }
+    }
+    $Out =@()
+    $Out +="User $($GivenName) $($Surname) with follow properties created:"
+    $Out +=$res | Format-Table -HideTableHeaders
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $res
+        $SRXEnv.ResultMessage = $Out
     } 
     else {
-        Write-Output $res
+        Write-Output $Out
     }
 }
 else{

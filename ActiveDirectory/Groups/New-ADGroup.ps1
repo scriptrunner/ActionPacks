@@ -14,6 +14,9 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter GroupName
         Specifies the name of the new group
     
@@ -28,9 +31,6 @@
 
     .Parameter DisplayName
         Specifies the display name of the group
-
-    .Parameter OUPath
-        Specifies the AD path
 
     .Parameter Scope
         Specifies the group scope of the group
@@ -48,6 +48,9 @@
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,  
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$GroupName,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
@@ -60,9 +63,6 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DisplayName,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$OUPath,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('DomainLocal', 'Global', 'Universal')]

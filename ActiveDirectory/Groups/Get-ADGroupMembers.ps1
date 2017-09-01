@@ -14,6 +14,9 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter GroupName
         DistinguishedName or SamAccountName of the Active Directory group
 
@@ -28,12 +31,18 @@
 
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
 
     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
 param(
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,  
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$GroupName,
@@ -48,6 +57,10 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
@@ -98,6 +111,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
     $Script:Grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} 
 }
 else{
@@ -108,6 +122,7 @@ else{
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }  
     $Script:Grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}
 }
 if($null -ne $Script:Grp){    

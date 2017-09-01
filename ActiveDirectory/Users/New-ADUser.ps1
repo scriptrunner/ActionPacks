@@ -80,7 +80,7 @@
 
 param(    
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
-    #[Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$OUPath,   
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
@@ -201,31 +201,23 @@ else {
                         -UserPrincipalName $UserPrincipalname -StreetAddress $Street -Enable $true  -PassThru
 }
 if($Script:User){
-    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties
-    $res=New-Object 'system.collections.generic.dictionary[string,string]'
+    Start-Sleep -Seconds 5 # wait
+    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties -SearchBase $OUPath -SearchScope 'SubTree'
+    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
     $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
     $res.Add('Path:', $tmp)
-    $res.Add('GivenName:', $Script:User.GivenName)
-    $res.Add('Surname:', $Script:User.Surname)
-    $res.Add('SAMAccountName:', $Script:User.SAMAccountName)
-    $res.Add('UserPrincipalName:', $Script:User.UserPrincipalName)
-    $res.Add('Name:', $Script:User.Name)
-    $res.Add('Description:', $Script:User.Description)
-    $res.Add('EmailAddress:', $Script:User.EmailAddress)
-    $res.Add('CannotChangePassword:', $Script:User.CannotChangePassword)
-    $res.Add('PasswordNeverExpires:', $Script:User.PasswordNeverExpires)
-    $res.Add('Department:', $Script:User.Department)
-    $res.Add('Company:', $Script:User.Company)
-    $res.Add('PostalCode:', $Script:User.PostalCode)
-    $res.Add('City:', $Script:User.City)
-    $res.Add('StreetAddress:', $Script:User.StreetAddress)
+    foreach($item in $Script:Properties){
+        if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
+            $res.Add($item + ':', $Script:User[$item])
+        }
+    }
     $Out =@()
     $Out +="User $($GivenName) $($Surname) with follow properties created:"
     $Out +=$res | Format-Table -HideTableHeaders
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $out
+        $SRXEnv.ResultMessage = $Out
     }
     else {
-        Write-Output $out 
+        Write-Output $Out 
     }    
 } 

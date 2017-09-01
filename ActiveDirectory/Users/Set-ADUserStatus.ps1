@@ -14,29 +14,35 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter Username
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
 
-    .Parameter Enable
-        Enables the Active Directory account
-    
-    .Parameter Disable
-        Disables the Active Directory account
+    .Parameter EnableStatus
+        Enables or disables the Active Directory account
         
     .Parameter UnLock
         Unlock the Active Directory account
 
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
     
     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
-param(
+param(    
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,   
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$Username,
@@ -44,16 +50,18 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [switch]$Enable,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [switch]$Disable,
+    [ValidateSet('Enable','Disable')]
+    [string]$EnableStatus='Enable',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [switch]$UnLock,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
@@ -67,6 +75,9 @@ Import-Module ActiveDirectory
 
 $Script:Domain 
 $Script:User 
+$Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+                        ,'Department','Company','PostalCode','City','StreetAddress','Enabled','DistinguishedName')
+
 if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
         $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
@@ -75,6 +86,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
     }
     $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Properties LockedOut,Enabled `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
 }
 else{
@@ -85,10 +97,11 @@ else{
         $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
     }
     $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Properties LockedOut,Enabled `
+        -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
 }
 if($null -ne $Script:User){
-    $res=@()
+    $Out=@()
     if($UnLock -eq $true){
         if($Script:User.LockedOut -eq $true){
             if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
@@ -97,27 +110,27 @@ if($null -ne $Script:User){
             else {
                 Unlock-ADAccount -Identity $Script:User -AuthType $AuthType -Server $Script:Domain.PDCEmulator
             }
-            $res = $res + "User $($Username) unlocked"
+            $Out += "User $($Username) unlocked"
         }
         else{
-            $res = $res +  "User $($Username) is not locked"
+            $Out += "User $($Username) is not locked"
         }
     }
-    if($Enable -eq $true){
+    if($EnableStatus -eq 'Enable'){
         if($Script:User.Enabled -eq $false){
             if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                Enable-ADAccount -Identity $Script:UserUser -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+                Enable-ADAccount -Identity $Script:User -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
             }
             else {
                 Enable-ADAccount -Identity $Script:User -AuthType $AuthType -Server $Script:Domain.PDCEmulator
             }
-            $res = $res +  "User $($Username) enabled"
+            $Out += "User $($Username) enabled"
         }
         else{
-            $res = $res +  "User $($Username) is not disabled"
+            $Out += "User $($Username) is not disabled"
         }
     }
-    if($Disable -eq $true){
+    else{
         if($Script:User.Enabled -eq $true){
             if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
                 Disable-ADAccount -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType
@@ -125,17 +138,28 @@ if($null -ne $Script:User){
             else {
                 Disable-ADAccount -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType
             }
-            $res = $res +  "User $($Username) disabled"
+            $Out += "User $($Username) disabled"
         }
         else{
-            $res = $res +  "User $($Username) is not enabled"
+            $Out += "User $($Username) is not enabled"
         }
     }
+    Start-Sleep -Seconds 5 # wait
+    $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties -SearchBase $OUPath -SearchScope 'SubTree'
+    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
+    $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+    $res.Add('Path:', $tmp)
+    foreach($item in $Script:Properties){
+        if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
+            $res.Add($item + ':', $Script:User[$item])
+        }
+    }
+    $Out +=$res | Format-Table -HideTableHeaders
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $res
+        $SRXEnv.ResultMessage = $Out
     }  
     else {
-        Write-Output $res
+        Write-Output $Out
     }
 }
 else{

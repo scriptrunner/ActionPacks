@@ -14,6 +14,9 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .Parameter OUPath
+        Specifies the AD path
+
     .Parameter DomainAccount
         Active Directory Credential for remote execution on jumphost without CredSSP
 
@@ -22,18 +25,21 @@
     
     .Parameter InActive
         Shows the inactive computers
-
-    .Parameter OUPath
-        Specifies the AD path
     
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
 
     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
 param(
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [switch]$Disabled,
@@ -44,10 +50,11 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$OUPath,
+    [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$DomainName,
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
@@ -71,7 +78,8 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $OUPath = $Domain.DistinguishedName
     }
     if($Disabled -eq $true){
-        $computers = Search-ADAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -ComputersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $computers = Search-ADAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -ComputersOnly `
+            -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($computers){
             foreach($itm in  $computers){
                 $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
@@ -80,7 +88,8 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         }
     }
     if($InActive -eq $true){
-        $computers = Search-ADAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -ComputersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $computers = Search-ADAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -ComputersOnly `
+            -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($computers){
             foreach($itm in  $computers){
                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
@@ -99,7 +108,8 @@ else{
         $OUPath = $Domain.DistinguishedName
     }
     if($Disabled -eq $true){
-        $computers = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -ComputersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $computers = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -ComputersOnly `
+            -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($computers){
             foreach($itm in  $computers){
                 $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
@@ -108,7 +118,8 @@ else{
         }
     }
     if($InActive -eq $true){
-        $computers = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -ComputersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $computers = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -ComputersOnly `
+            -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($computers){
             foreach($itm in  $computers){
                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            

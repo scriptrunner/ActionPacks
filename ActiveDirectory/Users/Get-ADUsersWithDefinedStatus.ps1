@@ -34,15 +34,18 @@
 
     .Parameter DomainName
         Name of Active Directory Domain
+        
+    .Parameter SearchScope
+        Specifies the scope of an Active Directory search
     
     .Parameter AuthType
         Specifies the authentication method to use
 #>
 
 param(
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string]$OUPath,
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,  
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
@@ -60,6 +63,10 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Base','OneLevel','SubTree')]
+    [string]$SearchScope='SubTree',
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
@@ -87,7 +94,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $OUPath = $Domain.DistinguishedName
     }
     if($Disabled -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                 $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
@@ -96,7 +103,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         }
     }
     if($InActive -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
@@ -105,7 +112,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         }
     } 
     if($Locked -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                $resultMessage = $resultMessage + ("Locked: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
@@ -114,7 +121,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         }
     } 
     if($Expired -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                $resultMessage = $resultMessage + ("Expired: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
@@ -133,7 +140,7 @@ else{
         $OUPath = $Domain.DistinguishedName
     }
     if($Disabled -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                 $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
@@ -142,7 +149,7 @@ else{
         }
     }
     if($InActive -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
@@ -151,7 +158,7 @@ else{
         }
     } 
     if($Locked -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                $resultMessage = $resultMessage + ("Locked: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
@@ -160,7 +167,7 @@ else{
         }
     } 
     if($Expired -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
         if($users){
             foreach($itm in  $users){
                $resultMessage = $resultMessage + ("Expired: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            

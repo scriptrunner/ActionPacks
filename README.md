@@ -16,4 +16,4 @@ Use cases for managing printers and print servers
 Use cases for managing GIT
 
 ## [TFS Sync](./TFS)
-Use cases for managing Tema Foundation Server
+Use cases for managing Team Foundation Server

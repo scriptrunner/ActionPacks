@@ -1,4 +1,5 @@
-﻿#Requires -Modules ActiveDirectory
+﻿#Requires -Version 4.0
+#Requires -Modules ActiveDirectory
 
 <#
     .SYNOPSIS
@@ -14,6 +15,9 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
 
+    .COMPONENT
+        Requires Module ActiveDirectory
+        
     .Parameter OUPath
         Specifies the AD path
 
@@ -32,7 +36,7 @@
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
 
-     .Parameter AuthType
+    .Parameter AuthType
         Specifies the authentication method to use
 #>
 

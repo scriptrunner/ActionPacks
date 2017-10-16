@@ -4,110 +4,28 @@
 
 ## [Manage Computers](./Computers)
 
-+ `Get-ADComputerProperties.ps1`
-
-  Gets the properties of the Active Directory computer.
-
-+ `Get-ADComputersWithDefinedStatus.ps1`
-
-  Lists computers where disabled or inactive.
-
-+ `Remove-ADComputer.ps1`
-
-  Removes Active Directory computer.
-
-+ `Set-ADComputerDefinedStatus.ps1`
-
-  Enable or disable a Active Directory computer.
-
-+ `Set-ADComputerProperties.ps1`
-
-  Sets the properties of the Active Directory computer.
++ Get/Set properties of the computer
++ Remove computer
++ Enable/Disable Computer
++ List of disabled computers
++ List of inactive computers
 
 ## [Manage Groups](./Groups)
 
-+ `Get-ADEmptyGroups.ps1`
-
-  Gets the Active Directory groups without members.
-
-+ `Get-ADGroupMembers.ps1`
-
-  Gets the members of the Active Directory group.
-
-+ `Get-ADGroupProperties.ps1`
-
-  Gets the properties of the Active Directory group.
-
-+ `Get-ADGroups.ps1`
-
-  Gets all groups from the OU path.
-
-+ `New-ADGroup.ps1`
-
-  Creates a group in the OU path.
-
-+ `Remove-ADGroup.ps1`
-
-   Removes the Active Directory group.
-
-+ `Set-ADGroupProperties.ps1`
-
-  Sets the properties of the Active Directory group.
++ Create/remove Active Directory group
++ Get/Set properties of the Active Directory group 
++ List of all Active Directory groups
++ List of members and sub groups of Active Directory group
++ List of Active Directory groups without members
 
 ## [Manage Users](./Users)
 
-+ `Add-ADUsersToGroups.ps1`
-
-  Adds users to Active Directory groups.
-
-+ `Copy-ADUser.ps1`
-
-  Copy a Active Directory account
-
-+ `Get-ADUserMemberships.ps1`
-
-  Gets the memberships of the Active Directory account.
-
-+ `Get-ADUserProperties.ps1`
-
-  Gets the properties of the Active Directory account.
-
-+ `Get-ADUsersWithDefinedStatus.ps1`
-
-  Lists users where disabled, inactive, locked out and/or account is expired.
-
-+ `New-ADUser.ps1`
-
-  Creates a user in the OU path.
-
-+ `Remove-ADMembersFromGroup.ps1`
-
-  Removes users to Active Directory group
-
-+ `Remove-ADServiceAccount.ps1`
-
-  Removes Active Directory service account.
-
-+ `Remove-ADUser.ps1`
-
-  Removes Active Directory account.
-
-+ `Remove-ADUsersFromGroups.ps1`
-
-  Removes users to Active Directory groups.
-
-+ `Reset-ADUserPassword.ps1`
-
-  Resets the password of the Active Directory account.
-
-+ `Set-ADUserExpirationDate.ps1`
-
-  Sets the expiration date for an Active Directory account.
-
-+ `Set-ADUserProperties.ps1`
-
-  Sets the properties of the Active Directory user.
-
-+ `Set-ADUserStatus.ps1`
-
-  Enable, disable and/or unlock a Active Directory account.
++ Create/copy/remove Active Directory user
++ Get/Set properties of the Active Directory user
++ Add/remove Active Directory users to Active Directory groups
++ Get memberships of the Active Directory user
++ Enable/Disable Active Directory account
++ Unlock/reset Active Directory account
++ Set the date when the Active Directory account expires
++ Remove Active Directory service account
++ List of Active Directory users whose account has expired, inactive, disabled or locked

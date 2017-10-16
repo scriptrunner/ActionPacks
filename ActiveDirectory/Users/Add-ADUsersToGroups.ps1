@@ -1,4 +1,5 @@
-﻿#Requires -Modules ActiveDirectory
+﻿#Requires -Version 4.0
+#Requires -Modules ActiveDirectory
 
 <#
     .SYNOPSIS
@@ -13,6 +14,9 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT
+        Requires Module ActiveDirectory
 
     .Parameter UserNames
         Comma separated display name, SAMAccountName, DistinguishedName or user principal name of the users added to the groups

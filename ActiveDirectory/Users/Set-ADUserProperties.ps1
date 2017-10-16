@@ -19,6 +19,9 @@
     .COMPONENT
         Requires Module ActiveDirectory
 
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
+
     .Parameter OUPath
         Specifies the AD path
 

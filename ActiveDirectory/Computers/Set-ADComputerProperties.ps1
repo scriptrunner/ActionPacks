@@ -17,7 +17,10 @@
         © AppSphere AG
 
     .COMPONENT
-        Requires Module ActiveDirectory        
+        Requires Module ActiveDirectory
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Computers
     
     .Parameter OUPath
         Specifies the AD path

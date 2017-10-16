@@ -18,6 +18,9 @@
     .COMPONENT
         Requires Module ActiveDirectory
 
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
+
     .Parameter UserNames
         Comma separated display name, SAMAccountName, DistinguishedName or user principal name of the users added to the groups
 

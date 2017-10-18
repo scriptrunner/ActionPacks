@@ -26,9 +26,8 @@
 .NOTES
     Use this script if Visual Studio is not installed at the machine. 
     Requires libraryies of TFS Power Tools. You can download install the TFS Power Tools from the Visual Studio Marketplace.
-    https://marketplace.visualstudio.com/items?itemName=AdamRDriscoll.PowerShellToolsforVisualStudio2017-18561
-    https://marketplace.visualstudio.com/items?itemName=AdamRDriscoll.PowerShellToolsforVisualStudio2015
-    https://marketplace.visualstudio.com/items?itemName=AdamRDriscoll.PowerShellToolsforVisualStudio2013
+    https://marketplace.visualstudio.com/items?itemName=TFSPowerToolsTeam.MicrosoftVisualStudioTeamFoundationServer2015Power
+    https://marketplace.visualstudio.com/items?itemName=TFSPowerToolsTeam.MicrosoftVisualStudioTeamFoundationServer2013Power
 
 #>
 

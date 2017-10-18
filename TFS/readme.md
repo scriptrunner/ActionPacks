@@ -34,14 +34,12 @@ The script requires the TFS Power Tools. You can download the Tools from the [Vi
 
 ## Links
 
-[TFS Power Tools for VisualStudio 2017](https://marketplace.visualstudio.com/items?itemName=AdamRDriscoll.PowerShellToolsforVisualStudio2017-18561)
+[TFS Power Tools for VisualStudio 2015](https://marketplace.visualstudio.com/items?itemName=TFSPowerToolsTeam.MicrosoftVisualStudioTeamFoundationServer2015Power)
 
-[TFS Power Tools for VisualStudio 2015](https://marketplace.visualstudio.com/items?itemName=AdamRDriscoll.PowerShellToolsforVisualStudio2015)
-
-[TFS Power Tools for VisualStudio 2013](https://marketplace.visualstudio.com/items?itemName=AdamRDriscoll.PowerShellToolsforVisualStudio2013)
+[TFS Power Tools for VisualStudio 2013](https://marketplace.visualstudio.com/items?itemName=TFSPowerToolsTeam.MicrosoftVisualStudioTeamFoundationServer2013Power)
 
 [ScriptRunner](https://scriptrunner.com "ScriptRunner")
 
 ## Notes
 
-The version of the TFS Power Tools must be the same as the version of your Visual Studio installation.
+You need to match the version of the TFS Power Tools with your Visual Studio client. If you have VS 2015 installed, you need to install the TFS 2015 power tools. Regardless of which version of TFS you are targeting.

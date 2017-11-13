@@ -13,7 +13,7 @@ Use cases to manage users, groups, and services in O365. Solutions with Azure AD
 Use cases for managing printers and print servers
 
 ## [Git Sync](./GitSync)
-Use cases for managing GIT
+Sync code projects from Git/Github into ScriptRunner repository or other local folder
 
 ## [TFS Sync](./TFS)
-Use cases for managing Team Foundation Server
+Sync code projects from Team Foundation Server into ScriptRunner repository or other local folder

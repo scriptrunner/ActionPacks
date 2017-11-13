@@ -1,83 +1,23 @@
-The use of the scripts requires a remote PowerShell session to Exchange Online
+# Action Pack for Exchange Online
+Use cases to manage distribution groups, mailboxes, resources and services
+> Note: The use of the scripts requires ScriptRunner Version 4.x or higher
 
-DistributionGroups
----
-+ Add-EOMembersToDistributionGroups.ps1
+## [Manage Distribution groups](./DistributionGroups)
++ Create distribution group
++ Add/remove members to distribution groups
++ List of mailboxes of distribution group
++ List of all distribution groups
 
-	Connect to Exchange Online and adds members to the Universal distribution groups
+## [Manage Mailboxes](./MailBoxes)
++ Get/Set properties of the mailbox
++ Create/remove mailbox
++ Enable/Disable Automatic Replies for a specified mailbox
++ Enable/Disable the mailbox ActiveSync setting
++ Enable/Disable the mailbox Archive setting
++ Get mailbox statistics
++ List of all mailboxes
 
-+ Get-EODistributionGroupMailboxes.ps1
-
-	Connect to Exchange Online and gets the Mailboxes from the Universal distribution group
-
-+ Get-EODistributionGroups.ps1
-
-	Connect to Exchange Online and gets the Universal distribution groups
-
-+ New-EODistributionGroup.ps1
-
-	Connect to Exchange Online and create distribution group or mail-enabled security group
-
-+ Remove-EOMembersFromDistributionGroups.ps1
-
-	Connect to Exchange Online and removes members from the Universal distribution groups
-
-Mailboxes
----
-+ Get-EOMailboxes.ps1
-
-	Connect to Exchange Online and gets the mailboxes
-
-+ Get-EOMailboxProperties.ps1
-
-	Connect to Exchange Online and gets the mailbox properties
-
-+ Get-EOMailboxStatistics.ps1
-
-	Connect to Exchange Online and retrieves the mailbox statistics for the mailbox of the user
-
-+ New-EOMailbox.ps1
-
-	Connect to Exchange Online and create mailbox and user account at the same time
-
-+ Remove-EOMailbox.ps1
-
-	Connect to Exchange Online and removes the mailbox
-	
-+ Set-EOMailboxActiveSync.ps1
-
-	Connect to Exchange Online and sets the mailbox ActiveSync setting to mailbox
-
-+ Set-EOMailboxArchive.ps1
-
-	Connect to Exchange Online and sets the mailbox Archive setting to mailbox
-	
-+ Set-EOMailboxProperties.ps1
-
-	Connect to Exchange Online and and sets the mailbox properties
-
-+ Set-EOOutOfOffice.ps1
-
-	Connect to Exchange Online and enable or disable Automatic Replies for a specified mailbox
-	
-Resources
----
-+ Get-EOResourceProperties.ps1
-
-	Connect to Exchange Online and gets the resource properties
-
-+ Get-EOResources.ps1
-
-	Connect to Exchange Online and gets the resources
-
-+ New-EOResource.ps1
-
-	Connect to Exchange Online and creates the resource
-
-+ Remove-EOResource.ps1
-
-	Connect to Exchange Online and removes the resource
-
-+ Set-EOResourceProperties.ps1
-
-	 Connect to Exchange Online and sets the resource properties
+## [Manage Resources](./Resources)
++ Get/Set properties of the resource
++ Create/remove resource
++ List of all resources

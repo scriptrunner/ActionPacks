@@ -9,7 +9,7 @@ Use cases for managing mailboxes, distribution lists, resources, and services in
 ## [Office 365](./O365)
 Use cases to manage users, groups, and services in O365. Solutions with Azure AD, Exchange Online and MSOnline
 
-## [Windows Print Management](./Printing)
+## [Windows Print Management](./WinPrintManagement)
 Use cases for managing printers and print servers
 
 ## [Git Sync](./GitSync)

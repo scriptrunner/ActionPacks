@@ -1,9 +1,8 @@
-﻿<#
+﻿#Requires -Version 4.0
+
+<#
     .SYNOPSIS
         Connect to Exchange Online and enable or disable Automatic Replies for a specified mailbox
-        Requirements 
-        64-bit OS for all Modules 
-        Microsoft Online Sign-In Assistant for IT Professionals  
     
     .DESCRIPTION  
 
@@ -14,6 +13,12 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT       
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
 
     .Parameter MailboxId
         Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set out of office

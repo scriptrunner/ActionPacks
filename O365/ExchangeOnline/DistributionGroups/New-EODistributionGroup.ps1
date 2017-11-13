@@ -1,9 +1,8 @@
-﻿<#
+﻿#Requires -Version 4.0
+
+<#
     .SYNOPSIS
         Connect to Exchange Online and create Universal distribution group or mail-enabled security group
-        Requirements 
-        64-bit OS for all Modules 
-        Microsoft Online Sign-In Assistant for IT Professionals  
     
     .DESCRIPTION  
 
@@ -14,6 +13,12 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT       
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/DistributionGroups
 
     .Parameter GroupName
         Specifies the unique name of the group. The maximum length is 64 characters

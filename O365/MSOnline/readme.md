@@ -10,7 +10,7 @@ Use cases to manage groups and users with Azure Active Directory Powershell Modu
 + List of all Active Directory groups
 + List of members and sub groups of Active Directory group
 
-## [Manage Users](./users)
+## [Manage Users](./Users)
 
 + Get/Set properties of the Active Directory user
 + Create/remove Active Directory user

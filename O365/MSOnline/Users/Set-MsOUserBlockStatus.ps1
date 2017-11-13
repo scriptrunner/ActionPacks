@@ -1,12 +1,9 @@
-﻿#Requires -Modules MSOnline
+﻿#Requires -Version 4.0
+#Requires -Modules MSOnline
 
 <#
     .SYNOPSIS
         Connect to MS Online and sets user can log on Azure Active Directory
-        Requirements 
-        64-bit OS for all Modules 
-        Microsoft Online Sign-In Assistant for IT Professionals  
-        Azure Active Directory Powershell Module v1
     
     .DESCRIPTION  
 
@@ -17,6 +14,13 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT       
+        Azure Active Directory Powershell Module v1
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Users
 
     .Parameter UserObjectId
         Specifies the unique ID of the user from which to get properties

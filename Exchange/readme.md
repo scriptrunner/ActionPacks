@@ -26,7 +26,6 @@ ScriptRunner Version 4.x or higher
 + Get mailbox statistics
 + List of all mailboxes
 
-
 ## [Manage Resources](./Resources)
 + Get/Set properties of the resource
 + Create/remove resource

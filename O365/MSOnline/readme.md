@@ -1,80 +1,21 @@
-The use of the scripts requires the PowerShell Module MSOnline
-This is the older MSOnline V1 PowerShell module for Azure Active Directory. 
-Customers are encouraged to use the newer Azure Active Directory V2 PowerShell module instead of this module
+# Action Pack for Azure Active Directory v1
+Use cases to manage groups and users with Azure Active Directory Powershell Module v1
+> Note: The use of the scripts requires the Azure Active Directory Powershell Module v1.<br>Requirements: ScriptRunner Version 4.x or higher
 
-Groups
----
-+ Add-MsOMembersToGroups.ps1
+## [Manage Groups](./Groups)
 
-	Connect to MS Online and adds members to Azure Active Directory groups
++ Get/Set properties of the Active Directory group
++ Create/remove Active Directory group
++ Add/remove Active Directory users to Active Directory groups
++ List of all Active Directory groups
++ List of members and sub groups of Active Directory group
 
-+ Get-MsOGroupMembers.ps1
+## [Manage Users](./users)
 
-	Connect to MS Online and gets the members from the Azure Active Directory group
-
-+ Get-MsOGroupProperties.ps1
-
-	Connect to MS Online and gets the properties from Azure Active Directory group
-
-+ Get-MsOGroups.ps1
-
-	Connect to MS Online and gets groups from Azure Active Directory
-
-+ New-MsOGroup.ps1
-
-	Connect to MS Online and adds a new group to the Azure Active Directory
-
-+ Remove-MsOGroup.ps1
-
-	Connect to MS Online and removes group from Azure Active Directory
-
-+ Remove-MsOMembersFromGroups.ps1
-
-	Connect to MS Online and remove members from Azure Active Directory groups
-
-+ Set-MsOGroupProperties.ps1
-
-	Connect to MS Online and updates the properties of a Azure Active Directory group
-	
-	
-Users
----
-+ Add-MsOUsersToRoles.ps1
-
-	Connect to MS Online and adds members to Azure Active Directory roles
-
-+ Get-MsOUserProperties.ps1 
-
-	Connect to MS Online and gets the properties from Azure Active Directory user
-
-+ Get-MsOUsers.ps1
-
-	Connect to MS Online and gets list of users from Azure Active Directory
-
-+ New-MsOUser.ps1
-
-	Connect to MS Online and creates a user in Azure Active Directory
-
-+ Remove-MsOUser.ps1
-
-	Connect to MS Online and remove a user from Azure Active Directory
-
-+ Remove-MsOUsersFromRoles.ps1
-
-	Connect to MS Online and removes members from Azure Active Directory roles
-
-+ Reset-MsOUserPassword.ps1
-
-	Connect to MS Online and resets the password from Azure Active Directory user
-
-+ Restore-MsOUser.ps1
-
-	Connect to MS Online and restores a user from Azure Active Directory
-
-+ Set-MsOUserBlockStatus.ps1
-
-	 Connect to MS Online and sets user can log on Azure Active Directory
-
-+ Set-O365UserProperties.ps1
-
-	Connect to MS Online and modifies a user in Azure Active Directory
++ Get/Set properties of the Active Directory user
++ Create/remove Active Directory user
++ Create/remove role memberships for Active Directory user
++ Reset password for Active Directory user 
++ Enable/Disable user can log on Azure Active Directory
++ Restore Active Directory user
++ List of all Active Directory users

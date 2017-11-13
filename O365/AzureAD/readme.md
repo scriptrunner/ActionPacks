@@ -14,7 +14,7 @@ Use cases to manage groups, users and roles with Azure Active Directory Powershe
 
 + Enable Active Directory Role 
 
-## [Manage Users](./users)
+## [Manage Users](./Users)
 
 + Get/Set properties of the Active Directory user
 + Create/remove Active Directory user

@@ -1,9 +1,9 @@
-﻿<#
+﻿#Requires -Version 4.0
+
+<#
     .SYNOPSIS
         Connect to Microsoft Exchange Server and gets the databases
         Can also be used as ScriptRunner Query
-        Requirements 
-        ScriptRunner Version 4.x or higher
     
     .DESCRIPTION  
 
@@ -13,7 +13,13 @@
         The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
-        © AppSphere AG 
+        © AppSphere AG  
+
+    .COMPONENT       
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/Resources
 #>
 
 param(

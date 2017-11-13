@@ -1,9 +1,9 @@
-﻿<#
+﻿#Requires -Version 4.0
+
+<#
     .SYNOPSIS
         Connect to Microsoft Exchange Server and create the mailbox
         Only parameters with value are set
-        Requirements 
-        ScriptRunner Version 4.x or higher
     
     .DESCRIPTION  
 
@@ -14,6 +14,12 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT       
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter Name
         Specifies the unique name of the mailbox. The maximum length is 64 characters.

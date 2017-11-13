@@ -1,8 +1,8 @@
-﻿<#
+﻿#Requires -Version 4.0
+
+<#
     .SYNOPSIS
         Connect to Microsoft Exchange Server and removes the address list
-        Requirements 
-        ScriptRunner Version 4.x or higher
     
     .DESCRIPTION  
 
@@ -13,7 +13,12 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
-        © AppSphere AG
+
+    .COMPONENT       
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/AddressLists
 
     .Parameter ListName
         Specifies the Name, Display name, Distinguished name or Guid of the address list to remove

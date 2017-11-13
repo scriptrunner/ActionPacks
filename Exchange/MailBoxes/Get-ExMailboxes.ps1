@@ -1,8 +1,8 @@
-﻿<#
+﻿#Requires -Version 4.0
+
+<#
     .SYNOPSIS
         Connect to Microsoft Exchange Server and gets the mailboxes
-        Requirements 
-        ScriptRunner Version 4.x or higher
     
     .DESCRIPTION  
 
@@ -13,6 +13,12 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG 
+
+    .COMPONENT       
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter EnabledMailboxOnly
         Specifies whether to include only enabled mailboxes in the results

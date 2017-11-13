@@ -1,14 +1,10 @@
-﻿#Requires -Modules AzureAD
+﻿#Requires -Version 4.0
+#Requires -Modules AzureAD
 
 <#
     .SYNOPSIS
         Connect to Azure Active Directory and modifies the user.
         Only parameters with value are set
-        ScriptRunner Version 4.x or higher
-        Requirements 
-        64-bit OS for all Modules 
-        Microsoft Online Sign-In Assistant for IT Professionals  
-        Azure Active Directory Powershell Module v2
     
     .DESCRIPTION  
 
@@ -19,6 +15,13 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT       
+        Azure Active Directory Powershell Module v2
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
     
     .Parameter UserObjectId
         Specifies the unique ID of the user from which to set properties

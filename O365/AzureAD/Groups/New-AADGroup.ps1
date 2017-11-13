@@ -1,12 +1,9 @@
-﻿#Requires -Modules AzureAD
+﻿#Requires -Version 4.0
+#Requires -Modules AzureAD
+
 <#
     .SYNOPSIS
         Connect to Azure Active Directory and adds a new group
-        Requirements 
-        ScriptRunner Version 4.x or higher
-        64-bit OS for all Modules 
-        Microsoft Online Sign-In Assistant for IT Professionals  
-        Azure Active Directory Powershell Module v2
 
     .DESCRIPTION  
 
@@ -17,6 +14,13 @@
         the use and the consequences of the use of this freely available script.
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
         © AppSphere AG
+
+    .COMPONENT       
+        Azure Active Directory Powershell Module v2
+        ScriptRunner Version 4.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups
 
     .Parameter GroupName
         Specifies the display name of the group

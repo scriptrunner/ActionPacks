@@ -72,7 +72,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
     if([System.String]::IsNullOrWhiteSpace($OUPath)){
         $OUPath = $Domain.DistinguishedName
     }
-    $Script:Grps = Get-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -SearchBase $OUPath `
+    $Script:Grps = Get-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType  `
         -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter * -Properties DistinguishedName, SamAccountName | Sort-Object -Property SAMAccountName
 }
@@ -86,7 +86,7 @@ else{
     if([System.String]::IsNullOrWhiteSpace($OUPath)){
         $OUPath = $Domain.DistinguishedName        
     }
-    $Script:Grps = Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType -SearchBase $OUPath `
+    $Script:Grps = Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType `
         -SearchBase $OUPath -SearchScope $SearchScope `
         -Filter * -Properties DistinguishedName, SamAccountName | Sort-Object -Property SAMAccountName
 }

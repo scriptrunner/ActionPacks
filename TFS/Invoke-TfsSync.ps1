@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Get latest version of a TFS Team Project.
+    Get the latest version of a TFS Team Project or subdirectories of a TFS Team Project.
 
 .DESCRIPTION
     Sync latest version of a TFS team project to local ScriptRunner script repository.
@@ -20,6 +20,9 @@
     Path to the ScriptRunner script repository.
     e.g. 'C:\ProgramData\AppSphere\ScriptMgr\TFS'
 
+.PARAMETER CleanSync
+    Cleanup the local workspace before getting the latest version.
+
 .EXAMPLE
     Invoke-TfsSync -TfsServerUri 'http://myTfsServer.MyDomain.com:8080/tfs/DefaultProjectCollection' -TeamProject '$/MyProjectName/MyBranch/SubFolderA/SubFolderB' -TfsCredential (Get-Credential -UserName 'myDomain\myUser' -Message 'TfsCredential')
     
@@ -31,7 +34,7 @@
 
 #>
 
-
+[CmdLetBinding()]
 param(
     [Parameter(Mandatory = $true)]
     [string]$TfsServerUri,
@@ -39,8 +42,28 @@ param(
     [pscredential]$TfsCredential,
     [Parameter(Mandatory = $true)]
     [string]$TeamProject,
-    [string]$SRLibraryPath = 'C:\ProgramData\AppSphere\ScriptMgr\TFS'
+    [string]$SRLibraryPath = 'C:\ProgramData\AppSphere\ScriptMgr\TFS',
+    [switch]$CleanSync
 )
+
+
+function GetLatest {
+    [CmdLetBinding()]
+    param(
+        $Workspace
+    )
+
+    $result = $Workspace.Get([Microsoft.TeamFoundation.VersionControl.Client.VersionSpec]::Latest, [Microsoft.TeamFoundation.VersionControl.Client.GetOptions]::Overwrite)
+    $result
+    if($result){
+        if($result.NumFailures -ne 0){
+            throw "Failed to get latest version to '$($Workspace.Name)' with $($result.NumFailures) errors."
+        }
+    }
+    else{
+        throw "Failed to get latest version to '$($Workspace.Name)'."
+    }
+}
 
 $ErrorActionPreference = 'Stop'
 
@@ -66,7 +89,14 @@ if ($teamProjectFolder.IndexOf('$/') -eq 0){
 }
 $localProjectPath = Join-Path -Path $SRLibraryPath -ChildPath $teamProjectFolder
 
-# Connect to production-TFS
+# cleanup local files
+if($CleanSync.IsPresent -and (Test-Path -Path $localProjectPath -ErrorAction SilentlyContinue)){
+    Write-Output "Cleanup '$localProjectPath' ..." 
+    Remove-Item -Path (Join-Path -Path $localProjectPath -ChildPath '*.*') -Recurse -Force
+    Remove-Item -Path $localProjectPath -Recurse -Force
+}
+
+# Connect to TFS
 Write-Output "Getting latest version of '$TeamProject' from '$TfsServerUri' ..."
 $tfsTeamProjects = [Microsoft.TeamFoundation.Client.TfsTeamProjectCollectionFactory]::GetTeamProjectCollection($TfsServerUri)
 $tfsTeamProjects.Credentials = $TfsCredential.GetNetworkCredential()
@@ -77,8 +107,9 @@ $tfsTeamProjects.ClientCredentials.Windows.Credentials = $TfsCredential.GetNetwo
 # Delete existing workspace manually before if that happens
 $workspace = $vcServer.TryGetWorkspace($localProjectPath)
 if($workspace){
+    Write-Output "Found local workspace '$($workspace.Name)'."
     try{
-        $workspace.Get()
+        GetLatest -Workspace $workspace
         Write-Output "Sync of latest version of '$TeamProject' to '$teamProjectFolder' succeed."
         exit
     }
@@ -97,11 +128,7 @@ if (-not $workspace) {
     $isTempWorkspace = $true
 }
 
-$itemSpecFullTeamProj = New-Object Microsoft.TeamFoundation.VersionControl.Client.ItemSpec($Teamproject, "Full")
-$fileRequest = New-Object Microsoft.TeamFoundation.VersionControl.Client.GetRequest($itemSpecFullTeamProj, [Microsoft.TeamFoundation.VersionControl.Client.VersionSpec]::Latest)
-if(-not $workspace.Get($fileRequest, [Microsoft.TeamFoundation.VersionControl.Client.GetOptions]::GetAll)){
-        throw "Get '$TeamProject' from '$TfsServerUri' failed."
-}
+GetLatest -Workspace $workspace
 
 if ($isTempWorkspace) {
     Write-Output "Deleting temporary workspace '$workSpaceGuid' ..."

@@ -14,9 +14,3 @@ Use cases for managing file servers, file & folder access rights, reports and mo
 
 ## [Windows Print Management](./WinPrintManagement)
 Use cases for managing printers and print servers
-
-## [Git Sync](./GitSync)
-Sync code projects from Git/Github into ScriptRunner repository or other local folder
-
-## [TFS Sync](./TFS)
-Sync code projects from Team Foundation Server into ScriptRunner repository or other local folder

@@ -1,4 +1,4 @@
-# ScriptRunner ActionPacks
+# ScriptRunner ActionPacks [![Help Contribute to Open Source](https://www.codetriage.com/scriptrunner/actionpacks/badges/users.svg)](https://www.codetriage.com/scriptrunner/actionpacks)
 Public PowerShell script gallery for ScriptRunner.  
 
 ## [Active Directory](./ActiveDirectory)

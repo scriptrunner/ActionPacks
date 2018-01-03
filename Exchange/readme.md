@@ -24,6 +24,8 @@ ScriptRunner Version 4.x or higher
 + Enable/Disable the mailbox ActiveSync setting
 + Enable/Disable the mailbox Archive setting
 + Get mailbox statistics
++ Set mailbox forward
++ Export mailbox
 + List of all mailboxes
 
 ## [Manage Resources](./Resources)

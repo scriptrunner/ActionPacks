@@ -3,6 +3,10 @@
 Note: The use of the scripts requires a remote PowerShell session to Microsoft Exchange Server.<br>
 Requirements: ScriptRunner Version 4.x or higher
 
++ [Export-ExMailbox.ps1](./Export-ExMailbox.ps1)
+
+	Exporting contents of a primary mailbox or archive to a .pst file
+    
 + [Get-ExMailboxes.ps1](./Get-ExMailboxes.ps1)
 
 	Connect to Microsoft Exchange Server and gets the mailboxes
@@ -34,6 +38,10 @@ Requirements: ScriptRunner Version 4.x or higher
 + [Set-ExMailboxEnableState.ps1](./Set-ExMailboxEnableState.ps1)
 
     Connect to Microsoft Exchange Server and enables oder disables the mailbox
+
++ [Set-ExMailboxForward.ps1](./Set-ExMailboxForward.ps1)
+
+    Connect to Microsoft Exchange Server and forwards mail from one mailbox to another mailbox
 
 + [Set-ExMailboxProperties.ps1](./Set-ExMailboxProperties.ps1)
 

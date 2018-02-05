@@ -1,0 +1,4 @@
+﻿DriverName;ComputerName;InfFilePath
+Brother PS Class Driver;Computer3000;
+Canon Inkjet 0253 Class Driver;Computer3000;"C:\Windows\Inf\canon0253.inf"
+Microsoft Print To Pdf;Computer3000;

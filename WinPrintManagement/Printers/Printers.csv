@@ -1,0 +1,4 @@
+﻿ComputerName;PrinterName;PrinterDriver;PortAddress;PortNumber;Shared;DifferentShareName;Comment;Location;Datatype;PrintProcessor;RenderingMode
+HQSRVADM01;PRINTER1;"HP Universal Printing PCL 6";10.1.1.1;9100;True;PRINTER1;"Printer 1";DE, Ettlingen, Ludwig-Erhard-Str. 2, 1.OG, Raum 101;RAW;WinPrint;SSR
+HQSRVADM01;PRINTER2;"HP Universal Printing PCL 6";10.1.1.2;9100;False;PRINTER2;"Printer 2";DE, Ettlingen, Ludwig-Erhard-Str. 2, 2.OG, Raum 212;RAW;WinPrint;SSR
+HQSRVADM01;PRINTER3;"HP Universal Printing PCL 6";10.1.1.3;9100;True;PRINTER3;"Printer 3";DE, Ettlingen, Ludwig-Erhard-Str. 2, 3.OG, Raum 308;RAW;WinPrint;SSR

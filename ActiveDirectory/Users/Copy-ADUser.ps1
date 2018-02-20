@@ -128,6 +128,7 @@ $Script:CopyProperties =@('AccountExpirationDate','accountExpires','AccountLocko
                     'ScriptPath','SmartcardLogonRequired','st','State','StreetAddress','telephoneNumber','Title','TrustedForDelegation','TrustedToAuthForDelegation','UseDESKeyOnly','wWWHomePage')
 $Script:User 
 $Script:Domain
+[string]$SearchScope='SubTree'
 $Script:Pwd=ConvertTo-SecureString $Password -AsPlainText -force
 $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
                         ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
@@ -163,8 +164,7 @@ if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
         -Path ($Source.DistinguishedName -split ",",2)[1] -SamAccountName $SAMAccountName -AccountPassword $Script:Pwd 
     Start-Sleep -Seconds 5 # wait
-    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName `
-                    -SearchBase $OUPath -SearchScope $SearchScope 
+    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName 
 }
 else{
     if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -182,8 +182,7 @@ else{
         -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
         -Path ($Source.DistinguishedName -split ",",2)[1] -UserPrincipalName $UserPrincipalName -AccountPassword $Script:Pwd
     Start-Sleep -Seconds 5 # wait
-    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName `
-                            -SearchBase $OUPath -SearchScope $SearchScope 
+    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName 
 }
 if($null -ne $Script:User){
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
@@ -197,7 +196,9 @@ if($null -ne $Script:User){
             $exists = Get-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUsername
             $Groups = Get-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SourceUsername `
                       |  Where-Object SID -ne $exists.SID # remove domain users
-            Add-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUserName -memberOf $Groups
+            if($null -ne $Groups){
+                Add-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUserName -memberOf $Groups
+            }
         }
     }
     else {
@@ -211,7 +212,9 @@ if($null -ne $Script:User){
             $exists = Get-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUsername
             $Groups = Get-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SourceUsername `
                       |  Where-Object SID -ne $exists.SID # remove domain users
-            Add-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUserName -memberOf $Groups
+            if($null -ne $Groups){
+                Add-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $NewUserName -memberOf $Groups
+            }
         }
     }
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){

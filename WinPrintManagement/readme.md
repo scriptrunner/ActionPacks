@@ -33,3 +33,8 @@ Windows Server 2012 introduced the Print Management Cmdlets in Windows PowerShel
 + Resume/suspend/restart print job
 + Remove print job
 + List of print jobs
+
+## [Queries](./_QUERY_)
+
++ Search printer on a computer
++ Search print jobs for a printer optionally with a specific status

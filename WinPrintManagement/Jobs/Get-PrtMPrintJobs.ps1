@@ -22,10 +22,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Jobs
 
 .Parameter PrinterName
-    Specifies the name of the printer from which to retrieve the print job information
+    Specifies the name of the printer from which to retrieve the print job informations
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the print job information
+    Specifies the name of the computer from which to retrieve the print job informations
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
@@ -43,7 +43,7 @@ Param(
     [string]$PrinterName,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties="ID,JobStatus,UserName,Position,Size,PagesPrinted,TotalPages,SubmittedTime,Priority"
+    [string]$Properties="ID,JobStatus,DocumentName,UserName,Position,Size,PagesPrinted,TotalPages,SubmittedTime,Priority"
 )
 
 Import-Module PrintManagement

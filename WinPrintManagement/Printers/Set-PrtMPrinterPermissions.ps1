@@ -36,9 +36,6 @@
 .Parameter Permission
     Specifies the permission for the specified printer
 
-.Parameter ADMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the permission to the specified printer. Use the comma to separate the members
-
 .Parameter PrintPermissionMembers
     SamAccountName or user principal name (UPN) of the users and groups to receive the print permission to the specified printer. Use the comma to separate the members
 
@@ -147,7 +144,7 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Printer=Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full
+    $Script:Printer=Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full -ErrorAction Stop
     if($null -ne $Script:Printer){
         $Script:secDesc = New-Object -TypeName Security.AccessControl.CommonSecurityDescriptor ($true, $false, $Script:Printer.PermissionSDDL)
         if($PSCmdlet.ParameterSetName  -eq "Single permission"){

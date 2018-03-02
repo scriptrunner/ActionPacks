@@ -48,7 +48,7 @@ Param(
     [int]$JobID,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties="ID,JobStatus,UserName,Position,Size,PagesPrinted,TotalPages,SubmittedTime,Priority"
+    [string]$Properties="ID,JobStatus,DocumentName,UserName,Position,Size,PagesPrinted,TotalPages,SubmittedTime,Priority"
 )
 
 Import-Module PrintManagement

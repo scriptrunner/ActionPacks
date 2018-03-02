@@ -150,7 +150,7 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Printer=Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full
+    $Script:Printer=Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full -ErrorAction Stop
     if($null -ne $Script:Printer){
         $Script:secDesc = New-Object -TypeName Security.AccessControl.CommonSecurityDescriptor ($true, $false, $Script:Printer.PermissionSDDL)
         if($PSCmdlet.ParameterSetName  -eq "Single permission"){

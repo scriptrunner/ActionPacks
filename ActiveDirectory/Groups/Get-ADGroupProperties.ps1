@@ -73,54 +73,61 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:Grp 
+try{
+    $Script:Grp 
 
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -Properties * -ErrorAction Stop 
     }
     else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType  `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -Properties *  -ErrorAction Stop   
     }
-    $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -Properties *    
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType  `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -Properties *    
-}
-if($null -ne $Script:Grp){
-    $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
-    if($Properties -eq '*'){
-        foreach($itm in $Script:Grp.PropertyNames){
-            if($null -ne $Script:Grp[$itm].Value){
-                $resultMessage.Add($itm,$Script:Grp[$itm].Value)
+    if($null -ne $Script:Grp){
+        $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
+        if($Properties -eq '*'){
+            foreach($itm in $Script:Grp.PropertyNames){
+                if($null -ne $Script:Grp[$itm].Value){
+                    $resultMessage.Add($itm,$Script:Grp[$itm].Value)
+                }
             }
         }
-    }
-    else {
-        foreach($itm in $Properties.Split(',')){
-            $resultMessage.Add($itm,$Script:Grp[$itm.Trim()].Value)
+        else {
+            foreach($itm in $Properties.Split(',')){
+                $resultMessage.Add($itm,$Script:Grp[$itm.Trim()].Value)
+            }
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
+        }
+        else{
+            Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
         }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
-    }
     else{
-        Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($GroupName) not found"
+        }    
+        Throw "Group $($GroupName) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($GroupName) not found"
-    }    
-    Throw "Group $($GroupName) not found"
+catch{
+    throw
+}
+finally{
 }

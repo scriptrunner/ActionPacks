@@ -88,62 +88,69 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:Grp
+try{
+    $Script:Grp
 
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
-    }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
-    }
-    $Script:Grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} 
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }  
-    $Script:Grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}
-}
-if($null -ne $Script:Grp){
-    if(-not [System.String]::IsNullOrWhiteSpace($Description)){
-        $Script:Grp.Description = $Description
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-        $Script:Grp.DisplayName = $DisplayName
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($HomePage)){
-        $Script:Grp.HomePage = $HomePage
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($Scope)){
-        $Script:Grp.GroupScope = $Scope
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($Category)){
-        $Script:Grp.GroupCategory = $Category
-    }
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        Set-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Grp 
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:Grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}  -ErrorAction Stop
     }
     else{
-        Set-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Grp
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }  
+        $Script:Grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($GroupName) changed"
-    } 
-    else{
-        Write-Output "Group $($GroupName) changed"
+    if($null -ne $Script:Grp){
+        if(-not [System.String]::IsNullOrWhiteSpace($Description)){
+            $Script:Grp.Description = $Description
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
+            $Script:Grp.DisplayName = $DisplayName
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($HomePage)){
+            $Script:Grp.HomePage = $HomePage
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($Scope)){
+            $Script:Grp.GroupScope = $Scope
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($Category)){
+            $Script:Grp.GroupCategory = $Category
+        }
+        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+            Set-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Grp  -ErrorAction Stop
+        }
+        else{
+            Set-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Grp -ErrorAction Stop
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($GroupName) changed"
+        } 
+        else{
+            Write-Output "Group $($GroupName) changed"
+        }
     }
+    else {
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($GroupName) not found"
+        }    
+    Throw "Group $($GroupName) not found"
+    }   
 }
-else {
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($GroupName) not found"
-    }    
-   Throw "Group $($GroupName) not found"
+catch{
+    throw
+}
+finally{
 }

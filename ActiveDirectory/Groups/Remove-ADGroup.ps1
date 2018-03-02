@@ -67,47 +67,54 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:Grp
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
-    }
-    $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}     
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType  `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}     
-}
-if($null -ne $Script:Grp){
+try{
+    $Script:Grp
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        Remove-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Grp -Confirm:$false
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -ErrorAction Stop
     }
     else{
-        Remove-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Grp -Confirm:$false
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:Grp= Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType  `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}      -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage="Group $($GroupName) deleted"
+    if($null -ne $Script:Grp){
+        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+            Remove-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Grp -Confirm:$false -ErrorAction Stop
+        }
+        else{
+            Remove-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Grp -Confirm:$false -ErrorAction Stop
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage="Group $($GroupName) deleted"
+        }
+        else
+        {
+            Write-Output "Group $($GroupName) deleted"
+        }
     }
-    else
-    {
-        Write-Output "Group $($GroupName) deleted"
-    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($GroupName) not found"
+        }    
+        Throw "Group $($GroupName) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($GroupName) not found"
-    }    
-    Throw "Group $($GroupName) not found"
+catch{
+    throw
+}
+finally{
 }

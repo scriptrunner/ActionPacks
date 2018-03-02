@@ -71,55 +71,61 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-#$ErrorActionPreference='Stop'
 
-$Script:User
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+try{
+    $Script:User
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties * -ErrorAction Stop
     }
     else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties * -ErrorAction Stop
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -Properties *
-}
-if($null -ne $Script:User){
-    $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
-    if($Properties -eq '*'){
-        foreach($itm in $Script:User.PropertyNames){
-            if($null -ne $Script:User[$itm].Value){
-                $resultMessage.Add($itm,$Script:User[$itm].Value)
+    if($null -ne $Script:User){
+        $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
+        if($Properties -eq '*'){
+            foreach($itm in $Script:User.PropertyNames){
+                if($null -ne $Script:User[$itm].Value){
+                    $resultMessage.Add($itm,$Script:User[$itm].Value)
+                }
             }
         }
-    }
-    else {
-        foreach($itm in $Properties.Split(',')){
-            $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
+        else {
+            foreach($itm in $Properties.Split(',')){
+                $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
+            }
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
+        }
+        else{
+            Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
         }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
-    }
     else{
-        Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User $($Username) not found"
+        }    
+        Throw "User $($Username) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($Username) not found"
-    }    
-    Throw "User $($Username) not found"
+catch{
+    throw
+}
+finally{
 }

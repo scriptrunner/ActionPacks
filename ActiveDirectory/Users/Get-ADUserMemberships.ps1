@@ -65,47 +65,53 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-#$ErrorActionPreference='Stop'
 
-$Script:User 
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+try{
+    $Script:User 
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Properties MemberOf `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop | Select-Object MemberOf
     }
     else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType -Properties MemberOf `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop | Select-Object MemberOf
     }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Properties MemberOf `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}  | Select-Object MemberOf
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:User= Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType -Properties MemberOf `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} | Select-Object MemberOf
-}
-$Script:User
-if($null -ne $Script:User){
-    $resultMessage = @()
-    foreach($itm in $Script:User.MemberOf){
-        $resultMessage = $resultMessage + $itm
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $resultMessage 
+    $Script:User
+    if($null -ne $Script:User){
+        $resultMessage = @()
+        foreach($itm in $Script:User.MemberOf){
+            $resultMessage = $resultMessage + $itm
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage 
+        }
+        else{
+            Write-Output $resultMessage 
+        }
     }
     else{
-        Write-Output $resultMessage 
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User $($Username) not found"
+        }    
+        Throw "User $($Username) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($Username) not found"
-    }    
-    Throw "User $($Username) not found"
+catch{
+    throw
+}
+finally{
 }

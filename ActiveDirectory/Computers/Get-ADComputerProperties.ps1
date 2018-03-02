@@ -72,58 +72,64 @@ Import-Module ActiveDirectory
 
 #Clear
 #$ErrorActionPreference='Stop'
-
-[string]$Script:sam=$Computername
-if(-not $Script:sam.EndsWith('$')){
-    $Script:sam += '$'
-}
-$Script:Cmp 
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+try{    
+    [string]$Script:sam=$Computername
+    if(-not $Script:sam.EndsWith('$')){
+        $Script:sam += '$'
+    }
+    $Script:Cmp 
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop    
     }
     else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop    
     }
-    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
-}
-if($null -ne $Cmp){
-    $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
-    if($Properties -eq '*'){
-        foreach($itm in $Script:Cmp.PropertyNames){
-            if($null -ne $Script:Cmp[$itm].Value){
-                $resultMessage.Add($itm,$Script:Cmp[$itm].Value)
+    if($null -ne $Cmp){
+        $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
+        if($Properties -eq '*'){
+            foreach($itm in $Script:Cmp.PropertyNames){
+                if($null -ne $Script:Cmp[$itm].Value){
+                    $resultMessage.Add($itm,$Script:Cmp[$itm].Value)
+                }
             }
         }
-    }
-    else {
-        foreach($itm in $Properties.Split(',')){
-            $resultMessage.Add($itm,$Script:Cmp[$itm.Trim()].Value)
+        else {
+            foreach($itm in $Properties.Split(',')){
+                $resultMessage.Add($itm,$Script:Cmp[$itm.Trim()].Value)
+            }
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
+        }
+        else{
+            Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
         }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $resultMessage  | Format-Table -HideTableHeaders -AutoSize
-    }
     else{
-        Write-Output $resultMessage | Format-Table -HideTableHeaders -AutoSize
-    }
-}
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Computer $($Computername) not found"
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Computer $($Computername) not found"
+        }    
+        Throw "Computer $($Computername) not found"
     }    
-    Throw "Computer $($Computername) not found"
+}
+catch{
+    throw
+}
+finally{
 }

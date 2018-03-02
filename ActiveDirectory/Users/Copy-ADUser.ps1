@@ -121,132 +121,138 @@ param(
 Import-Module ActiveDirectory
 
 #Clear
-#$ErrorActionPreference='Stop'
-$Script:CopyProperties =@('AccountExpirationDate','accountExpires','AccountLockoutTime','AccountNotDelegated','AllowReversiblePasswordEncryption','CannotChangePassword','City','co','Company','Country','countryCode','Department','Description','Division', `
-                    'DoesNotRequirePreAuth','Enabled','facsimileTelephoneNumber','Fax','HomeDirectory','HomedirRequired','HomeDrive','HomePage','HomePhone','Initials','ipPhone','mail','Manager','MNSLogonAccount','mobile','MobilePhone', `
-                    'Office','OfficePhone','Organization','OtherName','pager','PasswordExpired','PasswordNeverExpires','PasswordNotRequired','physicalDeliveryOfficeName','POBox','PostalCode','postOfficeBox','ProtectedFromAccidentalDeletion', `
-                    'ScriptPath','SmartcardLogonRequired','st','State','StreetAddress','telephoneNumber','Title','TrustedForDelegation','TrustedToAuthForDelegation','UseDESKeyOnly','wWWHomePage')
-$Script:User 
-$Script:Domain
-[string]$SearchScope='SubTree'
-$Script:Pwd=ConvertTo-SecureString $Password -AsPlainText -force
-$Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
-                        ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
+try{
+    $Script:CopyProperties =@('AccountExpirationDate','accountExpires','AccountLockoutTime','AccountNotDelegated','AllowReversiblePasswordEncryption','CannotChangePassword','City','co','Company','Country','countryCode','Department','Description','Division', `
+                        'DoesNotRequirePreAuth','Enabled','facsimileTelephoneNumber','Fax','HomeDirectory','HomedirRequired','HomeDrive','HomePage','HomePhone','Initials','ipPhone','mail','Manager','MNSLogonAccount','mobile','MobilePhone', `
+                        'Office','OfficePhone','Organization','OtherName','pager','PasswordExpired','PasswordNeverExpires','PasswordNotRequired','physicalDeliveryOfficeName','POBox','PostalCode','postOfficeBox','ProtectedFromAccidentalDeletion', `
+                        'ScriptPath','SmartcardLogonRequired','st','State','StreetAddress','telephoneNumber','Title','TrustedForDelegation','TrustedToAuthForDelegation','UseDESKeyOnly','wWWHomePage')
+    $Script:User 
+    $Script:Domain
+    [string]$SearchScope='SubTree'
+    $Script:Pwd=ConvertTo-SecureString $Password -AsPlainText -force
+    $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+                            ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
 
-if([System.String]::IsNullOrWhiteSpace($SAMAccountName)){
-    $SAMAccountName= $GivenName + '.' + $Surname 
-}
-if($SAMAccountName.Length -gt 20){
-    $SAMAccountName = $SAMAccountName.Substring(0,20)
-}
-if([System.String]::IsNullOrWhiteSpace($NewUsername)){
-    $NewUsername= $GivenName + '_' + $Surname 
-}
-if([System.String]::IsNullOrWhiteSpace($DisplayName)){
-    $DisplayName= $GivenName + ', ' + $Surname 
-}
-if($UserPrincipalName.StartsWith('@')){
-    $UserPrincipalName = $GivenName + '.' + $Surname + $UserPrincipalName
-}
-if($EmailAddress.StartsWith('@')){
-   $EmailAddress = $GivenName + '.' + $Surname + $EmailAddress
-}
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount 
+    if([System.String]::IsNullOrWhiteSpace($SAMAccountName)){
+        $SAMAccountName= $GivenName + '.' + $Surname 
     }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount 
+    if($SAMAccountName.Length -gt 20){
+        $SAMAccountName = $SAMAccountName.Substring(0,20)
     }
-    $Source= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -Filter {(SamAccountName -eq $SourceUserName) -or (DisplayName -eq $SourceUserName) -or (DistinguishedName -eq $SourceUserName) -or (UserPrincipalName -eq $SourceUserName)} `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Properties $Script:CopyProperties -ErrorAction Stop
-    New-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -Instance $Source -Name $NewUserName -UserPrincipalName $UserPrincipalName -DisplayName $DisplayName `
-        -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
-        -Path ($Source.DistinguishedName -split ",",2)[1] -SamAccountName $SAMAccountName -AccountPassword $Script:Pwd -ErrorAction Stop
-    Start-Sleep -Seconds 5 # wait
-    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName -ErrorAction Stop
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
+    if([System.String]::IsNullOrWhiteSpace($NewUsername)){
+        $NewUsername= $GivenName + '_' + $Surname 
     }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
+    if([System.String]::IsNullOrWhiteSpace($DisplayName)){
+        $DisplayName= $GivenName + ', ' + $Surname 
     }
-    $Source= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $SourceUserName) -or (DisplayName -eq $SourceUserName) -or (DistinguishedName -eq $SourceUserName) -or (UserPrincipalName -eq $SourceUserName)} `
-        -Properties $Script:CopyProperties -ErrorAction Stop
-    New-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -Instance $Source -Name $NewUserName -DisplayName $DisplayName -SamAccountName $SAMAccountName `
-        -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
-        -Path ($Source.DistinguishedName -split ",",2)[1] -UserPrincipalName $UserPrincipalName -AccountPassword $Script:Pwd -ErrorAction Stop
-    Start-Sleep -Seconds 5 # wait
-    $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName -ErrorAction Stop
-}
-if($null -ne $Script:User){
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if((-not [System.String]::IsNullOrWhiteSpace($GivenName)) -or(-not [System.String]::IsNullOrWhiteSpace($Surname))){
-            Set-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -GivenName $GivenName -Surname $Surname
-        }
-        if($ChangePasswordAtLogon -eq $true){
-            Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
-        }
-        if($CopyGroupMemberships){
-            $exists = Get-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
-            $Groups = Get-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SourceUsername `
-                      |  Where-Object SID -ne $exists.SID # remove domain users
-            if($null -ne $Groups){
-                Add-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -memberOf $Groups
-            }
-        }
+    if($UserPrincipalName.StartsWith('@')){
+        $UserPrincipalName = $GivenName + '.' + $Surname + $UserPrincipalName
     }
-    else {
-        if((-not [System.String]::IsNullOrWhiteSpace($GivenName)) -or(-not [System.String]::IsNullOrWhiteSpace($Surname))){
-            Set-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -GivenName $GivenName -Surname $Surname
-        }
-        if($ChangePasswordAtLogon -eq $true){
-            Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
-        }
-        if($CopyGroupMemberships){
-            $exists = Get-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
-            $Groups = Get-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SourceUsername `
-                      |  Where-Object SID -ne $exists.SID # remove domain users
-            if($null -ne $Groups){
-                Add-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -memberOf $Groups
-            }
-        }
+    if($EmailAddress.StartsWith('@')){
+    $EmailAddress = $GivenName + '.' + $Surname + $EmailAddress
     }
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount  -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount  -ErrorAction Stop
+        }
+        $Source= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -Filter {(SamAccountName -eq $SourceUserName) -or (DisplayName -eq $SourceUserName) -or (DistinguishedName -eq $SourceUserName) -or (UserPrincipalName -eq $SourceUserName)} `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Properties $Script:CopyProperties -ErrorAction Stop
+        New-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -Instance $Source -Name $NewUserName -UserPrincipalName $UserPrincipalName -DisplayName $DisplayName `
+            -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
+            -Path ($Source.DistinguishedName -split ",",2)[1] -SamAccountName $SAMAccountName -AccountPassword $Script:Pwd -ErrorAction Stop
+        Start-Sleep -Seconds 5 # wait
+        $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName -ErrorAction Stop
     }
     else{
-        $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Source= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $SourceUserName) -or (DisplayName -eq $SourceUserName) -or (DistinguishedName -eq $SourceUserName) -or (UserPrincipalName -eq $SourceUserName)} `
+            -Properties $Script:CopyProperties -ErrorAction Stop
+        New-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -Instance $Source -Name $NewUserName -DisplayName $DisplayName -SamAccountName $SAMAccountName `
+            -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
+            -Path ($Source.DistinguishedName -split ",",2)[1] -UserPrincipalName $UserPrincipalName -AccountPassword $Script:Pwd -ErrorAction Stop
+        Start-Sleep -Seconds 5 # wait
+        $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName -ErrorAction Stop
     }
-    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-    $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
-    $res.Add('Path:', $tmp)
-    foreach($item in $Script:Properties){
-        if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
-            $res.Add($item + ':', $Script:User[$item])
+    if($null -ne $Script:User){
+        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+            if((-not [System.String]::IsNullOrWhiteSpace($GivenName)) -or(-not [System.String]::IsNullOrWhiteSpace($Surname))){
+                Set-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -GivenName $GivenName -Surname $Surname
+            }
+            if($ChangePasswordAtLogon -eq $true){
+                Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
+            }
+            if($CopyGroupMemberships){
+                $exists = Get-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
+                $Groups = Get-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SourceUsername `
+                        |  Where-Object SID -ne $exists.SID # remove domain users
+                if($null -ne $Groups){
+                    Add-ADPrincipalGroupMembership -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -memberOf $Groups
+                }
+            }
+        }
+        else {
+            if((-not [System.String]::IsNullOrWhiteSpace($GivenName)) -or(-not [System.String]::IsNullOrWhiteSpace($Surname))){
+                Set-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -GivenName $GivenName -Surname $Surname
+            }
+            if($ChangePasswordAtLogon -eq $true){
+                Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
+            }
+            if($CopyGroupMemberships){
+                $exists = Get-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName
+                $Groups = Get-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SourceUsername `
+                        |  Where-Object SID -ne $exists.SID # remove domain users
+                if($null -ne $Groups){
+                    Add-ADPrincipalGroupMembership -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User.SAMAccountName -memberOf $Groups
+                }
+            }
+        }
+        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        }
+        else{
+            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        }
+        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res.Add('Path:', $tmp)
+        foreach($item in $Script:Properties){
+            if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
+                $res.Add($item + ':', $Script:User[$item])
+            }
+        }
+        $Out =@()
+        $Out +="User $($GivenName) $($Surname) with follow properties created:"
+        $Out +=$res | Format-Table -HideTableHeaders
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Out
+        } 
+        else {
+            Write-Output $Out
         }
     }
-    $Out =@()
-    $Out +="User $($GivenName) $($Surname) with follow properties created:"
-    $Out +=$res | Format-Table -HideTableHeaders
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Out
-    } 
-    else {
-        Write-Output $Out
-    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User $($SourceUserName) not copied"
+        }    
+        Throw "User $($SourceUserName) not copied"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($SourceUserName) not copied"
-    }    
-    Throw "User $($SourceUserName) not copied"
+catch{
+    throw
+}
+finally{
 }

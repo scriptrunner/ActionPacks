@@ -78,79 +78,85 @@ Import-Module ActiveDirectory
 
 #Clear
 #$ErrorActionPreference='Stop'
+try{
+    $Script:NPwd = ConvertTo-SecureString $NewPassword -AsPlainText -Force
+    $Script:User 
+    $Script:Domain
+    $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+                            ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
 
-$Script:NPwd = ConvertTo-SecureString $NewPassword -AsPlainText -Force
-$Script:User 
-$Script:Domain
-$Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
-                        ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
-
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
-    }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
-    }
-    $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} 
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
-}
-if($null -ne $Script:User){
-    $Out=@()
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        Set-ADAccountPassword -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}  -ErrorAction Stop
     }
-    else {
-        Set-ADAccountPassword -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset
+    else{
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop
     }
-    $Out += "New password of user $($Username) is set"
-    if($UserMustChangePasswordAtLogon -eq $true){
+    if($null -ne $Script:User){
+        $Out=@()
         if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User
+            Set-ADAccountPassword -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset -ErrorAction Stop
         }
         else {
-            Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User
+            Set-ADAccountPassword -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset -ErrorAction Stop
         }
-        $Out +=  "User $($Username) must change the password on next logon"
-    }
-    Start-Sleep -Seconds 5 # wait
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        $Out += "New password of user $($Username) is set"
+        if($UserMustChangePasswordAtLogon -eq $true){
+            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User -ErrorAction Stop
+            }
+            else {
+                Set-ADUser -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:User -ErrorAction Stop
+            }
+            $Out +=  "User $($Username) must change the password on next logon"
+        }
+        Start-Sleep -Seconds 5 # wait
+        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        }
+        else{
+            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
+        }
+        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res.Add('Path:', $tmp)
+        foreach($item in $Script:Properties){
+            if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
+                $res.Add($item + ':', $Script:User[$item])
+            }
+        }
+        $Out +=$res | Format-Table -HideTableHeaders
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage =$Out
+        }
+        else {
+            Write-Output $Out
+        }
     }
     else{
-        $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
-    }
-    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-    $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
-    $res.Add('Path:', $tmp)
-    foreach($item in $Script:Properties){
-        if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
-            $res.Add($item + ':', $Script:User[$item])
-        }
-    }
-    $Out +=$res | Format-Table -HideTableHeaders
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Out
-    }
-    else {
-        Write-Output $Out
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User $($Username) not found"
+        }    
+        Throw "User $($Username) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($Username) not found"
-    }    
-    Throw "User $($Username) not found"
+catch{
+    throw
+}
+finally{
 }

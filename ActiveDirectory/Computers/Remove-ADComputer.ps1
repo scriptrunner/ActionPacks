@@ -66,55 +66,61 @@ Import-Module ActiveDirectory
 
 #Clear
 #$ErrorActionPreference='Stop'
-
-$Script:Domain 
-$Script:Cmp 
-[string]$Script:sam=$Computername
-if(-not $Script:sam.EndsWith('$')){
-    $Script:sam += '$'
-}
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+try{
+    $Script:Domain 
+    $Script:Cmp 
+    [string]$Script:sam=$Computername
+    if(-not $Script:sam.EndsWith('$')){
+        $Script:sam += '$'
     }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
-    }
-    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
-}
-
-$Script:res
-if($null -ne $Cmp){
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        Remove-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *  -ErrorAction Stop   
     }
     else{
-        Remove-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false 
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
+        }
+        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop    
     }
-    $res= "Computer $($Computername) deleted"
+
+    $Script:res
+    if($null -ne $Cmp){
+        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+            Remove-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false -ErrorAction Stop
+        }
+        else{
+            Remove-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false  -ErrorAction Stop
+        }
+        $res= "Computer $($Computername) deleted"
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Computer $($Computername) not found"
+        }    
+        Throw "Computer $($Computername) not found"
+    }
+    if($SRXEnv){
+        $SRXEnv.ResultMessage = $res
+    }
+    else{
+        Write-Output $res    
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Computer $($Computername) not found"
-    }    
-    Throw "Computer $($Computername) not found"
+catch{
+    throw
 }
-if($SRXEnv){
-    $SRXEnv.ResultMessage = $res
-}
-else{
-    Write-Output $res    
+finally{
 }

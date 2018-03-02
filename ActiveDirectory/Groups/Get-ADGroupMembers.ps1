@@ -79,71 +79,78 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:Domain
-$Script:Grp
-$Script:resultMessage = @()
-function Get-NestedGroupMember($group) { 
-    $Script:resultMessage += "Group: $($group.DistinguishedName);$($group.SamAccountName)"
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            $members =Get-ADGroupMember -Identity $group -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType | `
-            Sort-Object -Property  @{Expression="objectClass";Descending=$true} , @{Expression="SamAccountName";Descending=$false}
-        }
-        else {
-            $members =Get-ADGroupMember -Identity $group -Server $Script:Domain.PDCEmulator -AuthType $AuthType | `
-            Sort-Object -Property  @{Expression="objectClass";Descending=$true} , @{Expression="SamAccountName";Descending=$false}
-        }
-        if($null -ne $members){
-            foreach($itm in $members){
-                if($itm.objectClass -eq "group"){
-                    if($Nested -eq $true){
-                        Get-NestedGroupMember($itm)
+try{
+    $Script:Domain
+    $Script:Grp
+    $Script:resultMessage = @()
+    function Get-NestedGroupMember($group) { 
+        $Script:resultMessage += "Group: $($group.DistinguishedName);$($group.SamAccountName)"
+            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                $members =Get-ADGroupMember -Identity $group -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType | `
+                Sort-Object -Property  @{Expression="objectClass";Descending=$true} , @{Expression="SamAccountName";Descending=$false}
+            }
+            else {
+                $members =Get-ADGroupMember -Identity $group -Server $Script:Domain.PDCEmulator -AuthType $AuthType | `
+                Sort-Object -Property  @{Expression="objectClass";Descending=$true} , @{Expression="SamAccountName";Descending=$false}
+            }
+            if($null -ne $members){
+                foreach($itm in $members){
+                    if($itm.objectClass -eq "group"){
+                        if($Nested -eq $true){
+                            Get-NestedGroupMember($itm)
+                        }
+                        else{
+                            $Script:resultMessage += "Group: $($itm.DistinguishedName);$($itm.SamAccountName)"
+                        }
                     }
                     else{
-                        $Script:resultMessage += "Group: $($itm.DistinguishedName);$($itm.SamAccountName)"
-                    }
-                }
-                else{
-                    if($ShowOnlyGroups -eq $false){
-                         $Script:resultMessage += "User: $($itm.DistinguishedName);$($itm.SamAccountName)"
+                        if($ShowOnlyGroups -eq $false){
+                            $Script:resultMessage += "User: $($itm.DistinguishedName);$($itm.SamAccountName)"
+                        }
                     }
                 }
             }
+    }
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
         }
-}
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        $Script:Grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}  -ErrorAction Stop
     }
     else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }  
+        $Script:Grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -ErrorAction Stop
     }
-    $Script:Grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} 
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }  
-    $Script:Grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}
-}
-if($null -ne $Script:Grp){    
-    Get-NestedGroupMember $Script:Grp
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:resultMessage
+    if($null -ne $Script:Grp){    
+        Get-NestedGroupMember $Script:Grp
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:resultMessage
+        }
+        else{
+            Write-Output $Script:resultMessage
+        }
     }
     else{
-        Write-Output $Script:resultMessage
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($GroupName) not found"
+        }    
+        Throw "Group $($GroupName) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($GroupName) not found"
-    }    
-    Throw "Group $($GroupName) not found"
+catch{
+    throw
+}
+finally{
 }

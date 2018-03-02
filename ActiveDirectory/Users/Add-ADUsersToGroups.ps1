@@ -72,85 +72,91 @@ Import-Module ActiveDirectory
 
 #Clear
 #$ErrorActionPreference='Stop'
-
-$Script:Domain
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+try{    
+    $Script:Domain
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
     }
     else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
     }
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
+
+    $res = @()
+    if($UserNames){    
+        $UserSAMAccountNames = @()
+        foreach($name in $UserNames){
+            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                $usr= Get-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+                    -SearchBase $OUPath -SearchScope $SearchScope `
+                    -Filter {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)} | Select-Object SAMAccountName
+            }
+            else {
+                $usr= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+                    -SearchBase $OUPath -SearchScope $SearchScope `
+                    -Filter {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)} | Select-Object SAMAccountName
+                
+            }
+            if($null -ne $usr){
+                $UserSAMAccountNames += $usr.SAMAccountName
+            }
+            else {
+                $res = $res + "User $($name) not found"
+            }
+        }
+    }
+    foreach($usr in $UserSAMAccountNames){
+        $founded = @()
+        foreach($itm in $GroupNames){
+            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                $grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+                        -SearchBase $OUPath -SearchScope $SearchScope `
+                        -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
+            }
+            else {
+                $grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
+                        -SearchBase $OUPath -SearchScope $SearchScope `
+                        -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
+            }
+            if($null -ne $grp){
+                $founded += $itm
+                try {
+                    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                        Add-ADGroupMember -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $grp -Members $usr
+                    }
+                    else {
+                        Add-ADGroupMember -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $grp -Members $usr 
+                    }
+                    $res = $res + "User $($usr) added to Group $($itm)"
+                }
+                catch {
+                    $res = $res + "Error: Add user $($usr) to Group $($itm) $($_.Exception.Message)"
+                }
+            }
+            else {
+                $res = $res + "Group $($itm) not found"
+            }        
+        }
+        $GroupNames=$founded
+    }
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $res
     }
     else{
-        $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
+        Write-Output $res
+    }   
 }
-
-$res = @()
-if($UserNames){    
-    $UserSAMAccountNames = @()
-    foreach($name in $UserNames){
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            $usr= Get-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                -SearchBase $OUPath -SearchScope $SearchScope `
-                -Filter {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)} | Select-Object SAMAccountName
-        }
-        else {
-            $usr= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                -SearchBase $OUPath -SearchScope $SearchScope `
-                -Filter {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)} | Select-Object SAMAccountName
-            
-        }
-        if($null -ne $usr){
-            $UserSAMAccountNames += $usr.SAMAccountName
-        }
-        else {
-            $res = $res + "User $($name) not found"
-        }
-    }
+catch{
+    throw
 }
-foreach($usr in $UserSAMAccountNames){
-    $founded = @()
-    foreach($itm in $GroupNames){
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            $grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                    -SearchBase $OUPath -SearchScope $SearchScope `
-                    -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
-        }
-        else {
-            $grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                    -SearchBase $OUPath -SearchScope $SearchScope `
-                    -Filter {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
-        }
-        if($null -ne $grp){
-            $founded += $itm
-            try {
-                if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                    Add-ADGroupMember -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $grp -Members $usr
-                }
-                else {
-                    Add-ADGroupMember -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $grp -Members $usr 
-                }
-                $res = $res + "User $($usr) added to Group $($itm)"
-            }
-            catch {
-                $res = $res + "Error: Add user $($usr) to Group $($itm) $($_.Exception.Message)"
-            }
-        }
-        else {
-            $res = $res + "Group $($itm) not found"
-        }        
-    }
-    $GroupNames=$founded
-}
-if($SRXEnv) {
-    $SRXEnv.ResultMessage = $res
-}
-else{
-    Write-Output $res
+finally{
 }

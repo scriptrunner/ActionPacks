@@ -92,37 +92,44 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
+try{
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }
+        if([System.String]::IsNullOrWhiteSpace($OUPath)){
+            $OUPath = $Domain.DistinguishedName
+        }
+        $Script:Grp= New-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -GroupCategory $Category -GroupScope $Scope -Name $GroupName -Path $OUPath  `
+                            -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -Confirm:$false  -AuthType $AuthType  -PassThru    -ErrorAction Stop 
     }
     else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        if([System.String]::IsNullOrWhiteSpace($OUPath)){
+            $OUPath = $Domain.DistinguishedName
+        }
+        $Script:Grp= New-ADGroup -Server $Domain.PDCEmulator -GroupCategory $Category -GroupScope $Scope -Name $GroupName -Path $OUPath  `
+                            -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -Confirm:$false  -AuthType $AuthType  -PassThru -ErrorAction Stop
     }
-    if([System.String]::IsNullOrWhiteSpace($OUPath)){
-        $OUPath = $Domain.DistinguishedName
-    }
-    $Script:Grp= New-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -GroupCategory $Category -GroupScope $Scope -Name $GroupName -Path $OUPath  `
-                        -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -Confirm:$false  -AuthType $AuthType  -PassThru    
+    if($null -ne $Script:Grp){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($Grp.DistinguishedName);$($Grp.SAMAccountName) created"
+        } 
+        else{
+            Write-Output "Group $($Grp.DistinguishedName);$($Grp.SAMAccountName) created"
+        }
+    }   
 }
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    if([System.String]::IsNullOrWhiteSpace($OUPath)){
-        $OUPath = $Domain.DistinguishedName
-    }
-    $Script:Grp= New-ADGroup -Server $Domain.PDCEmulator -GroupCategory $Category -GroupScope $Scope -Name $GroupName -Path $OUPath  `
-                        -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -Confirm:$false  -AuthType $AuthType  -PassThru
+catch{
+    throw
 }
-if($null -ne $Script:Grp){
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($Grp.DistinguishedName);$($Grp.SAMAccountName) created"
-    } 
-    else{
-        Write-Output "Group $($Grp.DistinguishedName);$($Grp.SAMAccountName) created"
-    }
+finally{
 }

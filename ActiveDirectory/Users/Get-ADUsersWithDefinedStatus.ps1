@@ -84,107 +84,113 @@ Import-Module ActiveDirectory
 
 #Clear
 #$ErrorActionPreference='Stop'
+try{
+    $resultMessage = @()
 
-$resultMessage = @()
-
-if([System.String]::IsNullOrWhiteSpace($OUPath)){
-    $OUPath = $Domain.DistinguishedName
-}
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
-    }    
     if([System.String]::IsNullOrWhiteSpace($OUPath)){
         $OUPath = $Domain.DistinguishedName
     }
-    if($Disabled -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-                $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
-            }
-            $resultMessage = $resultMessage + ''
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
         }
-    }
-    if($InActive -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-               $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-            }
-            $resultMessage = $resultMessage + ''
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
+        }    
+        if([System.String]::IsNullOrWhiteSpace($OUPath)){
+            $OUPath = $Domain.DistinguishedName
         }
-    } 
-    if($Locked -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-               $resultMessage = $resultMessage + ("Locked: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-            }
-            $resultMessage = $resultMessage + ''
-        }
-    } 
-    if($Expired -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-               $resultMessage = $resultMessage + ("Expired: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+        if($Disabled -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                    $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
+                }
+                $resultMessage = $resultMessage + ''
             }
         }
-    } 
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
+        if($InActive -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+                }
+                $resultMessage = $resultMessage + ''
+            }
+        } 
+        if($Locked -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                $resultMessage = $resultMessage + ("Locked: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+                }
+                $resultMessage = $resultMessage + ''
+            }
+        } 
+        if($Expired -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope  | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                $resultMessage = $resultMessage + ("Expired: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+                }
+            }
+        } 
     }
     else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }    
-    if([System.String]::IsNullOrWhiteSpace($OUPath)){
-        $OUPath = $Domain.DistinguishedName
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
+        }
+        else{
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }    
+        if([System.String]::IsNullOrWhiteSpace($OUPath)){
+            $OUPath = $Domain.DistinguishedName
+        }
+        if($Disabled -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                    $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
+                }
+                $resultMessage = $resultMessage + ''
+            }
+        }
+        if($InActive -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+                }
+                $resultMessage = $resultMessage + ''
+            }
+        } 
+        if($Locked -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                $resultMessage = $resultMessage + ("Locked: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+                }
+                $resultMessage = $resultMessage + ''
+            }
+        } 
+        if($Expired -eq $true){
+            $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+            if($users){
+                foreach($itm in  $users){
+                $resultMessage = $resultMessage + ("Expired: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
+                }
+            }
+        } 
+    } 
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $resultMessage 
     }
-    if($Disabled -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-                $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
-            }
-            $resultMessage = $resultMessage + ''
-        }
-    }
-    if($InActive -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-               $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-            }
-            $resultMessage = $resultMessage + ''
-        }
-    } 
-    if($Locked -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-               $resultMessage = $resultMessage + ("Locked: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-            }
-            $resultMessage = $resultMessage + ''
-        }
-    } 
-    if($Expired -eq $true){
-        $users = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-        if($users){
-            foreach($itm in  $users){
-               $resultMessage = $resultMessage + ("Expired: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-            }
-        }
-    } 
-} 
-if($SRXEnv) {
-    $SRXEnv.ResultMessage = $resultMessage 
+    else{
+        Write-Output $resultMessage 
+    }   
 }
-else{
-    Write-Output $resultMessage 
+catch{
+    throw
+}
+finally{
 }

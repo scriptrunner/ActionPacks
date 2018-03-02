@@ -74,75 +74,82 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 
-$Script:Domain
-$Script:Cmp 
-[string]$Script:sam=$Computername
-if(-not $Script:sam.EndsWith('$')){
-    $Script:sam += '$'
-}
+try{
+    $Script:Domain
+    $Script:Cmp 
+    [string]$Script:sam=$Computername
+    if(-not $Script:sam.EndsWith('$')){
+        $Script:sam += '$'
+    }
 
-if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount
-    }
-    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
-}
-else{
-    if([System.String]::IsNullOrWhiteSpace($DomainName)){
-        $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-    }
-    else{
-        $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-    }
-    $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
-        -SearchBase $OUPath -SearchScope $SearchScope `
-        -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *    
-}
-if($null -ne $Cmp){    
-    $res
-    if($EnableStatus -eq 'Enable'){
-        if($Cmp.Enabled -eq $false){
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                Enable-ADAccount -Identity $Cmp -Credential $DomainAccount -AuthType $AuthType -Server $Domain.PDCEmulator
-            }
-            else{
-                Enable-ADAccount -Identity $Cmp -AuthType $AuthType -Server $Domain.PDCEmulator
-            }
-            $res= "Computer $($Cmp.Name) enabled"
+    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
         }
         else{
-            $res= "Computer $($Cmp.Name) is not disabled"
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
         }
+        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop 
     }
     else{
-        if($Cmp.Enabled -eq $true){
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                Disable-ADAccount -Identity $Cmp -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType
-            }
-            else{
-                Disable-ADAccount -Identity $Cmp -Server $Domain.PDCEmulator -AuthType $AuthType
-            }
-            $res= "Computer $($Cmp.Name) disabled"
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
         }
         else{
-            $res= "Computer $($Cmp.Name) is not enabled"
+            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
+        }
+        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
+            -SearchBase $OUPath -SearchScope $SearchScope `
+            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop
+    }
+    if($null -ne $Cmp){    
+        $res
+        if($EnableStatus -eq 'Enable'){
+            if($Cmp.Enabled -eq $false){
+                if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                    Enable-ADAccount -Identity $Cmp -Credential $DomainAccount -AuthType $AuthType -Server $Domain.PDCEmulator -ErrorAction Stop
+                }
+                else{
+                    Enable-ADAccount -Identity $Cmp -AuthType $AuthType -Server $Domain.PDCEmulator -ErrorAction Stop
+                }
+                $res= "Computer $($Cmp.Name) enabled"
+            }
+            else{
+                $res= "Computer $($Cmp.Name) is not disabled"
+            }
+        }
+        else{
+            if($Cmp.Enabled -eq $true){
+                if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
+                    Disable-ADAccount -Identity $Cmp -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -ErrorAction Stop
+                }
+                else{
+                    Disable-ADAccount -Identity $Cmp -Server $Domain.PDCEmulator -AuthType $AuthType -ErrorAction Stop
+                }
+                $res= "Computer $($Cmp.Name) disabled"
+            }
+            else{
+                $res= "Computer $($Cmp.Name) is not enabled"
+            }
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res
+        }
+        else{
+            Write-Output $res
         }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $res
-    }
     else{
-        Write-Output $res
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Computer $($Computername) not found"
+        }    
+        Throw "Computer $($Computername) not found"
+    }   
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Computer $($Computername) not found"
-    }    
-    Throw "Computer $($Computername) not found"
+catch{
+    throw
+}
+finally{
 }

@@ -19,7 +19,7 @@
     Requires Module PrintManagement
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Jobs
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/_QUERY_
 
 .Parameter PrinterName
     Specifies the name of the printer from which to retrieve the print job informations

@@ -19,7 +19,7 @@
     Requires Module PrintManagement
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/_QUERY_
 
 .Parameter ComputerName
     Specifies the name of the computer from which to retrieve the printer information

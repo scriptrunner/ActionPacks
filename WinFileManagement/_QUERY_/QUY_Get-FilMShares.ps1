@@ -17,7 +17,7 @@
 .COMPONENT    
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Shares
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_QUERY_
 
 .Parameter ComputerName
     Specifies the name of the computer from which to retrieve the shares

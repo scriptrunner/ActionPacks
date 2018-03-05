@@ -12,12 +12,12 @@
     The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
     the use and the consequences of the use of this freely available script.
     PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
-    © AppSphere AG
+    ï¿½ AppSphere AG
 
 .COMPONENT    
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Shares
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
 
 .Parameter FolderName
     Specifies the folder name with the path

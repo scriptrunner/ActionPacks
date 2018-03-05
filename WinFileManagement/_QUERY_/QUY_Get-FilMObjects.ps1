@@ -17,7 +17,7 @@
 .COMPONENT    
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_QUERY_
 
 .Parameter StartObjectName
     Specifies the start folder or drive

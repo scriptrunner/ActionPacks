@@ -18,7 +18,7 @@
     Requires WinRm and WMI on the computer
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/Printing/Drives
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Drives
 
 .Parameter ComputerName
     Specifies the name of the computer from which to retrieve the disk informations. If Computername is not specified, the current computer is used.

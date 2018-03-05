@@ -17,7 +17,7 @@
 .COMPONENT    
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Shares
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
 
 .Parameter FolderName
     Specifies the folder name with the path

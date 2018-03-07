@@ -1,6 +1,6 @@
 # Queries
 
-> Note: The scripts must be stored in the folder \_QUERY_ to use them as queries
+> Note: The scripts must be stored in a folder named \_QUERY_ to use them as queries
 
 + [QUY_Get-FilMObjects.ps1](./QUY_Get-FilMObjects.ps1)
 

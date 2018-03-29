@@ -85,10 +85,10 @@ try {
     }
     if($null -eq $AccessAccount){
         if($true -eq $All){
-            $Script:adapters = Get-VMNetworkAdapter ComputerName $HostName -All -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:adapters = Get-VMNetworkAdapter -ComputerName $HostName -All -ErrorAction Stop | Select-Object $Properties.Split(',')
         }
         else {
-            $Script:adapters = Get-VMNetworkAdapter ComputerName $HostName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:adapters = Get-VMNetworkAdapter -ComputerName $HostName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
         }
     }
     else {

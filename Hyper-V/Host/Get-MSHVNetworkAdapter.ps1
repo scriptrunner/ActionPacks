@@ -91,10 +91,10 @@ try {
     }
     if($null -eq $AccessAccount){
         if([System.String]::IsNullOrWhiteSpace($SwitchName)){
-            $Script:adapter = Get-VMNetworkAdapter ComputerName $HostName -Name $AdapterName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:adapter = Get-VMNetworkAdapter -ComputerName $HostName -Name $AdapterName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
         }
         else {
-            $Script:adapter = Get-VMNetworkAdapter ComputerName $HostName -ManagementOS -Name $AdapterName -SwitchName $SwitchName -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:adapter = Get-VMNetworkAdapter -ComputerName $HostName -ManagementOS -Name $AdapterName -SwitchName $SwitchName -ErrorAction Stop | Select-Object $Properties.Split(',')
         }
     }
     else {

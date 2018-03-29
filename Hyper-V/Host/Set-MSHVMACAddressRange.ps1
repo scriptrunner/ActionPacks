@@ -66,7 +66,7 @@ try {
     }    
     [string]$Properties="Name,MacAddressMinimum,MacAddressMaximum"
     if($null -eq $AccessAccount){
-        Set-VMHost ComputerName $HostName -MacAddressMinimum $Minimum -MacAddressMaximum $Maximum -ErrorAction Stop
+        Set-VMHost -ComputerName $HostName -MacAddressMinimum $Minimum -MacAddressMaximum $Maximum -ErrorAction Stop
         $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
     }
     else {

@@ -21,11 +21,3 @@
 + [QUY_Get-MSHVVirtualMachineVLan.ps1](./QUY_Get-MSHVVirtualMachineVLan.ps1)
 
   Gets the virtual LAN settings configured on a virtual network adapter
-
-+ [QUY_Get-FilMPartitionNumbers.ps1](./QUY_Get-FilMPartitionNumbers.ps1)
-
-  Returns a list of the partition numbers on the disk
-
-+ [QUY_Get-FilMShares.ps1](./QUY_Get-FilMShares.ps1)
-
-  Retrieves the shares on the computer

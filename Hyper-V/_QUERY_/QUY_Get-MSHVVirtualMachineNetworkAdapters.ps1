@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets the snapshots associated with the virtual machine 
+        Gets the virtual network adapters of a virtual machine
     
     .DESCRIPTION  
         Use "Win2K12R2 or Win8.x" for execution on Windows Server 2012 R2 or on Windows 8.1,
@@ -21,28 +21,23 @@
         Requires Module Hyper-V
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
+        https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/_QUERY_
 
     .Parameter HostName
         Specifies the name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the virtual machine whose snapshots are to be retrieved
+        Specifies the virtual machine whose virtual network adapters are to be retrieved
 
     .Parameter AccessAccount
         Specifies the user account that have permission to perform this action
-
-    .Parameter SnapshotType
-        Specifies the type of the snapshots to be retrieved  
 #>
 
 param(
     [Parameter(Mandatory = $true)]
     [string]$VMName,
     [string]$HostName,
-    [PSCredential]$AccessAccount,
-    [ValidateSet('All','Standard', 'Recovery', 'Planned', 'Missing', 'Replica', 'AppConsistentReplica','SyncedReplica')]
-    [string]$SnapshotType = "All"
+    [PSCredential]$AccessAccount
 )
 
 Import-Module Hyper-V
@@ -50,25 +45,17 @@ Import-Module Hyper-V
 try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
-    }      
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
+    } 
     if($null -eq $AccessAccount){
-        $Script:VM = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
+        $Script:VM = Get-VM -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
-    }        
+    }             
     if($null -ne $Script:VM){
-        $Properties = "Name,Id,SnapshotType,Path,ParentCheckpointName,SizeOfSystemFiles,CreationTime"
-        if($SnapshotType -eq 'All'){
-            $Script:result = Get-VMSnapshot -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",") 
-        }
-        else {
-            $Script:result = Get-VMSnapshot -VM $Script:VM -SnapshotType $SnapshotType -ErrorAction Stop | Select-Object $Properties.Split(",") 
-        }
+        $Properties = @('Name','VMName','MacAddress','DynamicMacAddressEnabled','IPAddresses','Connected','SwitchName','AdapterId','Status','StatusDescription','IsManagementOs','IsExternalAdapter')
+        $Script:result = Get-VMNetworkAdapter -VM $Script:VM | Select-Object $Properties | Where-Object {$_.Connected -eq $true}
         
         if($SRXEnv) {
             $SRXEnv.ResultList =@()
@@ -76,18 +63,12 @@ try {
         }
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2 += "Name: $($item.Name) created: $($item.CreationTime)" # DisplayValue            
-                $SRXEnv.ResultList += $item.Name # Value
+                $SRXEnv.ResultList2 += "Name: $($item.Name) - Status: $($item.Status) - IPAddresses: $($item.IPAddresses)" # DisplayValue            
+                $SRXEnv.ResultList += $item.SwitchName # Value
             }
             else{
-                Write-Output $item.name
+                Write-Output $item.Name
             }
-        }
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
-        }    
-        else {
-            Write-Output $Script:output
         }
     }
     else{

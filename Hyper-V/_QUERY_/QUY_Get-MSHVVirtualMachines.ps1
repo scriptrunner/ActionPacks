@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS 
-    	Get the VMs on the local host.
+    	Get the VMs on the host
 
 	.DESCRIPTION
 

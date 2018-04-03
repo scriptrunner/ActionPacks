@@ -38,3 +38,8 @@ Use cases for managing the Hyper-V virtualization platform
 + Get/set floppy disk drive of a virtual machine
 + Export/import a virtual machine
 + List of virtual machines
+
+## [Queries](./_QUERY_)
+
++ Get virtual machines
++ Get drives, network adapters, VLan or snapshots from virtual machine

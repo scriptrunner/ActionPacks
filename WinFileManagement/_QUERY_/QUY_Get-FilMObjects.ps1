@@ -30,9 +30,6 @@
 
 .Parameter ObjectName
      Specifies the name of the object
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -78,12 +75,6 @@ try{
         else{
             Write-Output $item.name
         }
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
-    }
-    else{
-        Write-Output $Script:output
     }
 }
 catch{

@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Retrieves the shares on the computer
+    Gets the numbers of the disks
 
 .DESCRIPTION
 
@@ -14,43 +14,27 @@
     PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
     © AppSphere AG
 
-.COMPONENT    
-
+.COMPONENT
+    
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_QUERY_
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the shares
+    Specifies the name of the computer from which to retrieve the disk informations. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.Parameter SpecialShares
-    Indicates that the shares to be numerated should be special. Admin share, default shares, IPC$ share are examples of special shares
-
-.Parameter IncludeHidden
-    Indicates that shares that are created and used internally are also enumerated
 #>
 
 [CmdLetBinding()]
 Param(
     [string]$ComputerName,
-    [PSCredential]$AccessAccount,
-    [bool]$SpecialShares,
-    [switch]$IncludeHidden
+    [PSCredential]$AccessAccount
 )
 
 $Script:Cim=$null
-try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -or $Properties -eq '*'){
-        $Properties=@('*')
-    }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'Name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+$Script:output = @()
+try{ 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
@@ -59,21 +43,19 @@ try{
     }
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
-    }
-    $Script:Shares =Get-SmbShare -CimSession $Script:Cim -IncludeHidden:$IncludeHidden -Special $SpecialShares -ErrorAction Stop  `
-                            | Select-Object @("Name","Description","Path","ShareType") | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name
+    }    
+    $result = Get-Disk -CimSession $Script:Cim | Select-Object @("Number","FriendlyName")
     if($SRXEnv) {
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
-    }    
-    foreach($item in $Script:Shares){
-        if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name # Value
-            #$SRXEnv.ResultList2 += $item.Name # Value
-            $SRXEnv.ResultList2 += $item.Path # Display
+    }
+    foreach($item in $result){
+        if($SRXEnv) {            
+            $SRXEnv.ResultList += $item.Number.ToString() # Value            
+            $SRXEnv.ResultList2 += "$($item.FriendlyName) ($($item.Number.ToString()))" # Display
         }
         else{
-            Write-Output $item.Name
+            Write-Output $item.name
         }
     }
 }

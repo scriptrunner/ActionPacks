@@ -1,9 +1,14 @@
 # Action Pack for Windows File Server 
-Use cases for managing file servers, file & folder access rights, reports and more
+Use cases for managing file servers, file & folder access rights, reports and more.<br>
+Also managing storages, disks, partitions and volumes
 
-## [Manage Drives](./Drives)
+## [Manage Disks](./Disks)
 
 + Get drive capacities
++ Get, clear, initialize disk
++ Get, set, format, repair, optimize volume 
++ Get, set, create, resize, remove partition
++ Get, set storage setting
 
 ## [Manage Folder and files](./FolderAndFiles)
 
@@ -24,4 +29,7 @@ Use cases for managing file servers, file & folder access rights, reports and mo
 ## [Queries](./_QUERY_)
 
 + Search a list of objects
++ Search the names, numbers unique ids from disks
++ Search drive letters
++ Search partition numbers
 + Search the shares on the computer

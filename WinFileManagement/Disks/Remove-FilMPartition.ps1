@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Retrieves the disk capacities from the computer
+    Deletes the specified Partition object on an existing disk and any underlying Volume objects
 
 .DESCRIPTION
 
@@ -15,30 +15,40 @@
     © AppSphere AG
 
 .COMPONENT
-    Requires WinRm and WMI on the computer
-
+    
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Drives
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
+
+.Parameter DiskNumber
+    Specifies the disk number
+
+.Parameter PartitionNumber
+    Specifies the number of the partition
+
+.Parameter Confirm
+    Confirm that the cmdlet is running
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the disk informations. If Computername is not specified, the current computer is used.
+    Specifies the name of the computer from which to remove the partition. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
 Param(
+    [Parameter(Mandatory = $true)]
+    [int]$DiskNumber,
+    [Parameter(Mandatory = $true)]
+    [int]$PartitionNumber,
+    [bool]$Confirm = $false,
     [string]$ComputerName,
-    [PSCredential]$AccessAccount,
-    [switch]$OnlyLocalDisks 
+    [PSCredential]$AccessAccount
 )
 
 $Script:Cim=$null
 $Script:output = @()
+
 try{ 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
@@ -48,12 +58,14 @@ try{
     }
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
-    }    
-    Get-CimInstance -ClassName Win32_LogicalDisk -CimSession $Script:Cim | Foreach-Object {
-        if($OnlyLocalDisks -eq $true -and $_.DriveType -ne "3"){
-            continue        
-        }
-        $Script:output += "Drive $($_.DeviceID) free bytes $($_.FreeSpace) from $($_.Size)"
+    }         
+    $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber -PartitionNumber $PartitionNumber -ErrorAction Stop
+    if($Confirm -eq $true){
+        Remove-Partition -InputObject $Script:Parti -Confirm:$false -ErrorAction Stop 
+        $Script:output += "Partition: $($PartitionNumber) on disk: $($DiskNumber) removed"
+    }
+    else{
+        $Script:output += $Script:Parti
     }
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:output

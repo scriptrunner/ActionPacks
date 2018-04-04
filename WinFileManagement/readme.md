@@ -1,4 +1,4 @@
-# Action Pack for Windows File Server 
+# Action Pack for Windows File Server and Windows Storage Management
 Use cases for managing file servers, file & folder access rights, reports and more.<br>
 Also managing storages, disks, partitions and volumes
 

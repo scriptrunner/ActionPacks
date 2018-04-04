@@ -2,7 +2,7 @@
 
 > Note: The scripts must be stored in a folder named \_QUERY_ to use them as queries
 
-+ [QUY_Get-MSHVVirtualMachineDrives.ps1](./QUY_Get-MSHVVirtualMachineDrives.ps1)
++ [QUY_Get-MSHVVirtualMachineDrives](./QUY_Get-MSHVVirtualMachineDrives)
 
   Gets the virtual DVD, floppy disk drives attached to a virtual machine or snapshot
 

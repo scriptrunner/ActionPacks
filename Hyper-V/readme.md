@@ -43,3 +43,7 @@ Use cases for managing the Hyper-V virtualization platform
 
 + Get virtual machines
 + Get drives, network adapters, VLan or snapshots from virtual machine
+
+## [PS Direct](./PSDirect)
+
++ Enter a virtual machine and retrieve the computer name

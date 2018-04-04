@@ -1,4 +1,4 @@
-# PSDirect
+# PS Direct
 
 > Note: You must change the scripts, please red the comments
 

@@ -16,8 +16,8 @@ Use cases for managing the Hyper-V virtualization platform
 ## [Windows Client Management](./WinClientManagement)
 Use cases for managing Windows 10 clients
 
-## [Windows File Management](./WinFileManagement)
-Use cases for managing file servers, file & folder access rights, reports and more
+## [Windows File and Storage Management](./WinFileManagement)
+Use cases for managing file servers, file & folder access rights, reports, storages, disks, partitions, volumes and more
 
 ## [Windows Print Management](./WinPrintManagement)
 Use cases for managing printers and print servers

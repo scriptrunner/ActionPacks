@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Enters the virtual machine and retrieves the computer infos
+        Enters the virtual machine and retrieves the computer name
     
     .DESCRIPTION
         Use "Win2K12R2 or Win8.x" for execution on Windows Server 2012 R2 or on Windows 8.1,

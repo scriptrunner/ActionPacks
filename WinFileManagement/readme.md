@@ -14,6 +14,7 @@ Also managing storages, disks, partitions and volumes
 
 + Get/set permissions on a folder or file
 + Add/rename/move/remove an folder
++ Test path exists
 + List of folders or files
 + List with number and sizes of folders or files
 

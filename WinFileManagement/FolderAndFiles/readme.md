@@ -27,3 +27,7 @@
 + [Set-FilMObjectPermissions.ps1](./Set-FilMObjectPermissions.ps1)
 
   Changes permissions on a folder or file
+  
++ [Test-FilMPath.ps1](./Test-FilMPath.ps1)
+
+  Tests of a path exist

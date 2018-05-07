@@ -216,7 +216,7 @@ try{
             $prn =$PrinterName
             $cmd ={ Set-Printer -Name $Using:prn -PermissionSDDL $Using:perms }
             if($null -eq $AccessAccount){
-                Invoke-Command -ComputerName $ComputerName -ScriptBlock $cmd -ErrorAction Stop
+                Invoke-Command -ComputerName $ComputerName -validateset $cmd -ErrorAction Stop
             }
             else{
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock $cmd -ErrorAction Stop

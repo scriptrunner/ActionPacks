@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-         Removes users to Active Directory group
+         Removes users from Active Directory group
     
     .DESCRIPTION  
 

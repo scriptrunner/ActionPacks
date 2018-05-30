@@ -25,19 +25,19 @@
         Specifies the AD path
 
     .Parameter Username
-        Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
+        Display name, SAMAccountName, DistinguishedName or user principal name of an Active Directory account
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
 
     .Parameter Day
-        Specifies the day of the expiration date for an the Active Directory account
+        Specifies the day of the expiration date for an Active Directory account
 
     .Parameter Month
-        Specifies the day of the expiration date for an the Active Directory account
+        Specifies the day of the expiration date for an Active Directory account
 
     .Parameter Year
-        Specifies the day of the expiration date for an the Active Directory account
+        Specifies the day of the expiration date for an Active Directory account
         
     .Parameter NeverExpires
         Specifies the Active Directory account never expires        

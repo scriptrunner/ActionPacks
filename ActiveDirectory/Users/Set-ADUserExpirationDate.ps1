@@ -34,10 +34,10 @@
         Specifies the day of the expiration date for an Active Directory account
 
     .Parameter Month
-        Specifies the day of the expiration date for an Active Directory account
+        Specifies the month of the expiration date for an Active Directory account
 
     .Parameter Year
-        Specifies the day of the expiration date for an Active Directory account
+        Specifies the year of the expiration date for an Active Directory account
         
     .Parameter NeverExpires
         Specifies the Active Directory account never expires        

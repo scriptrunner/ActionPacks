@@ -33,11 +33,7 @@ Param(
 )
 
 $Script:Cim=$null
-$Script:output = @()
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
@@ -60,7 +56,7 @@ try{
             }
         }
         else{
-            Write-Output $item.name
+            Write-Output $item.DriveLetter
         }
     }
 }

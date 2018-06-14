@@ -50,7 +50,7 @@ Param(
     [string]$FolderName,
     [Parameter(Mandatory = $true)]
     [string]$Path,
-    [PSCredential]$AccessAccount,
+  #  [PSCredential]$AccessAccount,
     [string[]]$ModifyAccess,
     [string[]]$FullControlAccess,
     [string[]]$ReadAccess,
@@ -118,12 +118,12 @@ try{
         catch
         {$Script:output +="Error set $($Permission) access for $($Script:Identity) - $($_.Exception.Message)"}
     }
-    if($null -eq $AccessAccount){
+ #   if($null -eq $AccessAccount){
         $tmp = New-Item -Name $FolderName -Path $Path -ItemType "directory"  -ErrorAction Stop
-    }
-    else{
-        $tmp = New-Item -Name $FolderName -Path $Path -ItemType "directory"  -Credential $AccessAccount -ErrorAction Stop
-    }
+  #  }
+  #  else{
+   #     $tmp = New-Item -Name $FolderName -Path $Path -ItemType "directory"  -Credential $AccessAccount -ErrorAction Stop
+   # }
     $newFolder = "$($Path)\$($FolderName)"
     $Script:acl = Get-Acl -Path $newFolder -ErrorAction Stop    
     # Modify access

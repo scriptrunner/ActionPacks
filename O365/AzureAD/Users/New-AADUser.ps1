@@ -63,6 +63,9 @@
 
     .Parameter ShowInAddressList 
         Specifies show this user in the address list
+
+    .Parameter UserType 
+        Type of the user
 #>
 
 param(

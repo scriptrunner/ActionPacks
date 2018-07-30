@@ -1,4 +1,4 @@
-# Action Pack for Windows Client Management 
+# Action Pack for Windows System Management 
 Use cases for managing Windows 10 clients / Windows Server 2016 or later
 
 ## [Apps](./Clients/Apps)

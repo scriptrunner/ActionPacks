@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Backup
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Server/Backup
 
 
 .Parameter BackupSetID

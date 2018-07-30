@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Defender
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Defender
 
 .Parameter ComputerName
     Specifies an remote computer, if the name empty the local computer is used

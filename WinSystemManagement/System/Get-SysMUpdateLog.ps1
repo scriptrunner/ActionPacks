@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/System
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter LogPath
     Specifies the full path to which Get-WindowsUpdateLog writes WindowsUpdate.log, e.g. C:\Temp\WindowsUpdate.log. 

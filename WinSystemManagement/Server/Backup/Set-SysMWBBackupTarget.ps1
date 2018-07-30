@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Backup
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Server/Backup
 
 .Parameter NetworkPath 
     Specifies the path to the remote shared folder in which the server stores backups

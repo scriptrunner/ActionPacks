@@ -18,7 +18,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Firewall
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Firewall
 
 .Parameter RuleName
     Specifies that only matching firewall rule of the indicated name or display name are retrieved

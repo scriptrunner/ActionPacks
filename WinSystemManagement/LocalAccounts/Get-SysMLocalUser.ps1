@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/LocalAccounts
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/LocalAccounts
 
 .Parameter Name
     Specifies an name of user accounts, if the parameter empty all accounts retrieved. You can use the wildcard character

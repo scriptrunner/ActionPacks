@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/BitLocker
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
 
 .Parameter DriveLetter
     Specifies the drive letter

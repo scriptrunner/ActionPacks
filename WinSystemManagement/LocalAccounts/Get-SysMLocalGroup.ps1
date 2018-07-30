@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/LocalAccounts
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/LocalAccounts
 
 .Parameter Name
     Specifies an name of security group, if the parameter empty all groups retrieved. You can use the wildcard character

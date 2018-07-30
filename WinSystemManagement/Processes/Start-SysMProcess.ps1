@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Processes
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Processes
 
 .Parameter FilePath
     Specifies the path (optional) and file name of the program that runs in the process

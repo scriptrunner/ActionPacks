@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Backup
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Server/Backup
 
 .Parameter Times
     Specifies the times of day to create a backup. Time values are formatted as HH:MM and separated by a comma

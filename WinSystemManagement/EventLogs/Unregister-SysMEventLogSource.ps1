@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/EventLogs
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter Source
     Specifies the event source that unregisters. Enter the source name, not the executable name

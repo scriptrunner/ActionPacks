@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/_QUERY_
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_QUERY_
 
 .Parameter ComputerName
     Specifies the name of the computer from which to retrieve the schedule tasks.

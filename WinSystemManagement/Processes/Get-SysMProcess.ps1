@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Processes
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Processes
 
 .Parameter ComputerName
     Gets the active processes on the specified computer. The default is the local computer

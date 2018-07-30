@@ -18,7 +18,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/EventLogs
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
     Specifies the event log

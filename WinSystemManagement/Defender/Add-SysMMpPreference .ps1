@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Defender
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Defender
 
 .Parameter ExclusionExtension
     Specifies, comma separated, file name extensions, such as obj or lib, to exclude from scheduled, custom, and real-time scanning

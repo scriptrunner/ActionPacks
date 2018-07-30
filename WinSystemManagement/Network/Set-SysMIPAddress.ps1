@@ -19,7 +19,7 @@
     Requires Module NetTcpIp
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Network
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Network
 
 .Parameter AdapterName
     Specifies the friendly name of the interface. The cmdlet modifies IP addresses that match the alias

@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Network
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Network
 
 .Parameter AdapterName
     Specifies the friendly name of the interface. If the parameter is empty, the ip addresses from all adapters are retrieved

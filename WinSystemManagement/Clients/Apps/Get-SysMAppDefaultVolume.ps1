@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Apps
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Clients/Apps
  
 .Parameter ComputerName
     Specifies an remote computer, if the name empty the local computer is used

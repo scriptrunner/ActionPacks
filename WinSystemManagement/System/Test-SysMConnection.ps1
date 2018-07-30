@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/System
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter ComputerNames
     Specifies the computers to ping. Type the computer names or type IP addresses in IPv4 or IPv6 format. Use the comma to separate the names

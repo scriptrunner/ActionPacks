@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Defender
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Defender
 
 .Parameter UpdateSource
     Specifies that only matching firewall rules of the indicated name or display name are retrieved. Use * for all rules

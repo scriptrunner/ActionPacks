@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/BitLocker
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
     
 .Parameter ComputerName
     Specifies an remote computer, if the name empty the local computer is used

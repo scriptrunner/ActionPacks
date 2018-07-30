@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Services
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Services
 
 .Parameter ComputerName
     Gets the service running on the specified computer. The default is the local computer

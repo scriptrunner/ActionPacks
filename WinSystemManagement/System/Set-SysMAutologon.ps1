@@ -18,7 +18,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/System
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter EnableAutoLogon
     Enable or disable Windows Auto Logon 

@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/ScheduledTasks
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/ScheduledTasks
 
 .Parameter TaskName
     Specifies the name of a scheduled task

@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/LocalAccounts
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/LocalAccounts
 
 .Parameter Name
     Specifies the name of user account

@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Network
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Network
 
 
 .Parameter AdapterName

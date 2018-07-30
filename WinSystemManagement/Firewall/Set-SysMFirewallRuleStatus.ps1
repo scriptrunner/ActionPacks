@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Firewall
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Firewall
 
 .Parameter RuleName
     Specifies the name or display name of the firewall rule that will be enabled or disabled

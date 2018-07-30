@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Reporting
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Reporting
 
 .Parameter Status
     Specifies the status to set for Windows Error Reporting

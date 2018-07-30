@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Processes
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Processes
 
 .Parameter ComputerName
     Computer on which the process is running. The default is the local computer

@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/System
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter UpdateOption
     Specifies the option to Enable or Disable Automatic Updates  

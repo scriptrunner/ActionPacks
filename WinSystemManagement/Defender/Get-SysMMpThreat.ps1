@@ -17,7 +17,7 @@
 .COMPONENT
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Defender
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Defender
 
 .Parameter ThreatID
     Specifies the threat ID

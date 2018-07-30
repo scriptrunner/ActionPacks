@@ -1,0 +1,101 @@
+#Requires -Version 4.0
+
+<#
+.SYNOPSIS
+    Gets an app package installation log
+
+.DESCRIPTION
+
+.NOTES
+    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+    The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
+    the use and the consequences of the use of this freely available script.
+    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
+    © AppSphere AG
+
+.COMPONENT
+
+.LINK
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinClientManagement/Apps
+ 
+.Parameter ActivityID
+    Specifies an activity ID
+
+.Parameter ResultItems
+    Limit the number of the last logs
+
+.Parameter Properties
+    List of properties to expand, comma separated e.g. ID,UserID. Use * for all properties
+
+.Parameter ComputerName
+    Specifies an remote computer, if the name empty the local computer is used
+
+.Parameter AccessAccount
+    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+#>
+
+[CmdLetBinding()]
+Param(
+    [string]$ActivityID,
+    [string]$Properties = "Id,UserID,TimeCreated,ActivityId,LevelDisplayName",
+    [ValidateRange(1,100)]
+    [int]$ResultItems = 20,
+    [string]$ComputerName,    
+    [PSCredential]$AccessAccount
+)
+
+try{
+    $Script:output
+    
+    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
+        $Properties='*'
+    }
+    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
+        if([System.String]::IsNullOrWhiteSpace($ActivityID) -eq $true){
+            $Script:output = Get-AppxLog -All -ErrorAction Stop | Select-Object $Script:props -Last $ResultItems
+        }
+        else{
+            $Script:output = Get-AppxLog -ActivityId $ActivityID -ErrorAction Stop | Select-Object $Script:props
+        }
+    }
+    else {
+        if($null -eq $AccessAccount){
+            if([System.String]::IsNullOrWhiteSpace($ActivityID) -eq $true){
+                $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                    Get-AppxLog -All -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                } -ErrorAction Stop
+            }
+            else{
+                $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                    Get-AppxLog -ActivityId $Using:ActivityID -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                } -ErrorAction Stop
+            }
+        }
+        else {
+            if([System.String]::IsNullOrWhiteSpace($ActivityID) -eq $true){
+                $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                    Get-AppxLog -All -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                } -ErrorAction Stop
+            }
+            else{
+                $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                    Get-AppxLog -ActivityId $Using:ActivityID -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                } -ErrorAction Stop
+            }
+        }
+    }      
+    
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $Script:output
+    }
+    else{
+        Write-Output $Script:output
+    }
+}
+catch{
+    throw
+}
+finally{
+}

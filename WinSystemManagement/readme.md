@@ -1,4 +1,4 @@
-# Action Pack for Windows System Management 
+# Action Pack for Windows server and Windows 10 client 
 Use cases for managing systems settings in Windows server and Windows 10 client. The general part is working on both systems. Special scripts for Windows servers can be found in the subdirectory server. The same applies to Windows 10 clients.
 
 ## [Apps](./Clients/Apps)

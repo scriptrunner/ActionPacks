@@ -21,3 +21,6 @@ Use cases for managing file servers, file & folder access rights, reports, stora
 
 ## [Windows Print Management](./WinPrintManagement)
 Use cases for managing printers and print servers
+
+## [Windows Server and Windows10 Client Management](./WinsystemManagement)
+Use cases for managing Windows servers and Windows 10 clients.

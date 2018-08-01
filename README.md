@@ -13,14 +13,11 @@ Use cases to manage users, groups, and services in O365. Solutions with Azure AD
 ## [Hyper-V](./Hyper-V)
 Use cases for managing the Hyper-V virtualization platform
 
-## [Windows Client Management](./WinClientManagement)
-Use cases for managing Windows 10 clients
-
 ## [Windows File and Storage Management](./WinFileManagement)
 Use cases for managing file servers, file & folder access rights, reports, storages, disks, partitions, volumes and more
 
 ## [Windows Print Management](./WinPrintManagement)
 Use cases for managing printers and print servers
 
-## [Windows Server and Windows10 Client Management](./WinsystemManagement)
+## [Windows Server and Windows10 Client Management](./WinSystemManagement)
 Use cases for managing Windows servers and Windows 10 clients.

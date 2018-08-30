@@ -13,6 +13,9 @@ Use cases to manage users, groups, and services in O365. Solutions with Azure AD
 ## [Hyper-V](./Hyper-V)
 Use cases for managing the Hyper-V virtualization platform
 
+## [VMware](./VMware)
+Use cases for managing the VMware virtualization platform
+
 ## [Windows File and Storage Management](./WinFileManagement)
 Use cases for managing file servers, file & folder access rights, reports, storages, disks, partitions, volumes and more
 

@@ -87,9 +87,6 @@ Import-Module ActiveDirectory
 try{
     $resultMessage = @()
 
-    if([System.String]::IsNullOrWhiteSpace($OUPath)){
-        $OUPath = $Domain.DistinguishedName
-    }
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         if([System.String]::IsNullOrWhiteSpace($DomainName)){
             $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop

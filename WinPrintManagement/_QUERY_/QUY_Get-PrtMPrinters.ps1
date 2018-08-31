@@ -35,7 +35,7 @@
 Param(
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$PrinterName
+    [string]$PrinterFilter
 )
 
 Import-Module PrintManagement
@@ -46,23 +46,25 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     [string]$filter ="*"
-    if(-not [System.String]::IsNullOrWhiteSpace($PrinterName)){
-        $filter ="*$($PrinterName)*"
+    if(-not [System.String]::IsNullOrWhiteSpace($PrinterFilter)){
+        $filter = "*$($PrinterFilter)*"
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:Printers=Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName | Where-Object {$_.Type -eq 'Local'} `
+    $Script:Printers = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName | Where-Object {$_.Type -eq 'Local'} `
         | Select-Object Name,DriverName,PortName,Shared,Sharename,Comment,Location,Datatype,PrintProcessor,RenderingMode `
         | Where-Object {$_.Name -like $filter} `
         | Sort-Object Name
+
     foreach($item in $Script:Printers)
     {
         if($SRXEnv) {

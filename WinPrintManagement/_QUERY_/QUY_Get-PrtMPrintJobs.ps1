@@ -84,7 +84,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:Jobs =Get-PrintJob -CimSession $Script:Cim -PrinterName $PrinterName -ComputerName $ComputerName  `
+    $Script:Jobs = Get-PrintJob -CimSession $Script:Cim -PrinterName $PrinterName -ComputerName $ComputerName  `
         | Select-Object $Script:props | Sort-Object ID 
     foreach($item in $Script:Jobs)
     {

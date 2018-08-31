@@ -1,6 +1,7 @@
 # Queries
 
 > Note: The scripts must be stored in a folder named \_QUERY_ to use them as queries
+< <br>The use of the scripts requires the PowerShell Module Hyper-V
 
 + [QUY_Get-MSHVVirtualMachineDrives.ps1](./QUY_Get-MSHVVirtualMachineDrives.ps1)
 

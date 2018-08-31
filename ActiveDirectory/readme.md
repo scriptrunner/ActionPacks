@@ -29,3 +29,10 @@ Use cases for managing users, groups and computers in on prem AD
 + Set the date when the Active Directory account expires
 + Remove Active Directory service account
 + List of Active Directory users whose account has expired, inactive, disabled or locked
+
+## [Queries](./_QUERY_)
+
++ Search users whose account has expired, inactive, disabled or locked
++ Search users
+
+## [Library](./_LIB_)

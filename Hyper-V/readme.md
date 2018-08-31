@@ -39,11 +39,13 @@ Use cases for managing the Hyper-V virtualization platform
 + Export/import a virtual machine
 + List of virtual machines
 
+## [PS Direct](./PSDirect)
+
++ Enter a virtual machine and retrieve the computer name
+
 ## [Queries](./_QUERY_)
 
 + Get virtual machines
 + Get drives, network adapters, VLan or snapshots from virtual machine
 
-## [PS Direct](./PSDirect)
-
-+ Enter a virtual machine and retrieve the computer name
+## [Library](./_LIB_)

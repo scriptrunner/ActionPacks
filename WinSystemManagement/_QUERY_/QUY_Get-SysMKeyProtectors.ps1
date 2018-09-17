@@ -24,27 +24,34 @@
 
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    
+.Parameter DriveLetter
+    Specifies the drive letter, if the parameter empty all volumes retrieved
 #>
 
 [CmdLetBinding()]
 Param(
     [string]$ComputerName,    
-    [PSCredential]$AccessAccount
+    [PSCredential]$AccessAccount,
+    [string]$DriveLetter
 )
 
 try{
+    if([System.String]::IsNullOrWhiteSpace($DriveLetter)){
+        $DriveLetter = ""
+    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $Script:result = Get-BitLockerVolume -ErrorAction Stop | Select-Object MountPoint,KeyProtector
+        $Script:result = Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector
     }   
     else {
         if($null -eq $AccessAccount){
             $Script:result = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                Get-BitLockerVolume -ErrorAction Stop | Select-Object MountPoint,KeyProtector
+                Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector
             } -ErrorAction Stop
         }
         else {
             $Script:result = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                Get-BitLockerVolume -ErrorAction Stop | Select-Object MountPoint,KeyProtector
+                Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector
             } -ErrorAction Stop 
         }
     }

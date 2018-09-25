@@ -48,25 +48,25 @@ try{
     function GetAceDescription([int] $mask){
         [string[]]$tmp=@()
         $Script:AceDesc = ''
-        if($mask -band 131080){
+        if(($mask -band 131080) -eq 131080){
             $tmp += "Print"
         }
-        if($mask -band 524288){
+        if(($mask -band 524288) -eq 524288){
             $tmp += "Takeownership"
         }
-        if($mask -band 131072){
+        if(($mask -band 131072) -eq 131072){
             $tmp += "ReadPermissions"
         }
-        if($mask -band 262144){
+        if(($mask -band 262144) -eq 262144){
             $tmp += "ChangePermissions"
         }
-        if($mask -band 983052){
+        if(($mask -band 983052) -eq 983052){
             $tmp += "ManagePrinters"
         }
-        if($mask -band 983088){
+        if(($mask -band 983088) -eq 983088){
             $tmp += "ManageDocuments"
         }
-        if($mask -band 268435456){
+        if(($mask -band 268435456) -eq 268435456){
             $tmp += "Full control all operations"
         }   
         $Script:AceDesc =$tmp -join ","

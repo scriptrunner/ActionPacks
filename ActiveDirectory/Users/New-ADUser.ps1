@@ -17,6 +17,7 @@
 
     .COMPONENT
         Requires Module ActiveDirectory
+        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
@@ -97,7 +98,7 @@ param(
     [string]$Surname,
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$Password,
+    [securestring]$Password,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,    
     [Parameter(ParameterSetName = "Local or Remote DC")]
@@ -154,7 +155,6 @@ param(
 Import-Module ActiveDirectory
 
 try{
-    $Script:Pwd = ConvertTo-SecureString $Password -AsPlainText -Force
     $Script:User 
     $Script:Domain
     $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
@@ -170,10 +170,10 @@ try{
         $DisplayName= $GivenName + ', ' + $Surname 
     }
     if($UserPrincipalname.StartsWith('@')){
-    $UserPrincipalname = $GivenName + '.' + $Surname + $UserPrincipalname
+        $UserPrincipalname = $GivenName + '.' + $Surname + $UserPrincipalname
     }
     if($EmailAddress.StartsWith('@')){
-    $EmailAddress = $GivenName + '.' + $Surname + $EmailAddress
+        $EmailAddress = $GivenName + '.' + $Surname + $EmailAddress
     }
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         if([System.String]::IsNullOrWhiteSpace($DomainName)){
@@ -194,14 +194,14 @@ try{
     if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
         $Script:User = New-ADUser -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -Name $UserName -Path $OUPath -Confirm:$false -AuthType $AuthType `
                             -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -GivenName $GivenName -Surname $Surname `
-                            -AccountPassword $Pwd -EmailAddress $EmailAddress -Department $Department -Company $Company -City $City -PostalCode $PostalCode `
+                            -AccountPassword $Password -EmailAddress $EmailAddress -Department $Department -Company $Company -City $City -PostalCode $PostalCode `
                                 -ChangePasswordAtLogon $ChangePasswordAtLogon.ToBool() -PasswordNeverExpires $PasswordNeverExpires.ToBool() -CannotChangePassword $CannotChangePassword.ToBool() `
                                 -UserPrincipalName $UserPrincipalname -StreetAddress $Street -Enable $true -PassThru -ErrorAction Stop
     }
     else {
         $Script:User = New-ADUser -Server $Script:Domain.PDCEmulator -Name $UserName -Path $OUPath -Confirm:$false -AuthType $AuthType `
                             -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -GivenName $GivenName -Surname $Surname `
-                            -AccountPassword $Pwd -EmailAddress $EmailAddress -Department $Department -Company $Company -City $City -PostalCode $PostalCode `
+                            -AccountPassword $Password -EmailAddress $EmailAddress -Department $Department -Company $Company -City $City -PostalCode $PostalCode `
                             -ChangePasswordAtLogon $ChangePasswordAtLogon.ToBool() -PasswordNeverExpires $PasswordNeverExpires.ToBool() -CannotChangePassword $CannotChangePassword.ToBool() `
                             -UserPrincipalName $UserPrincipalname -StreetAddress $Street -Enable $true  -PassThru -ErrorAction Stop
     }
@@ -212,7 +212,8 @@ try{
         }
         else{
             $Script:User = Get-ADUser -Identity $SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
-        }    $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        }
+        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
         $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)
         foreach($item in $Script:Properties){

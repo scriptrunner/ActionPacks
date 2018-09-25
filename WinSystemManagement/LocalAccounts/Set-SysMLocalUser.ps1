@@ -16,6 +16,7 @@
     © AppSphere AG
 
 .COMPONENT
+    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/LocalAccounts
@@ -71,7 +72,7 @@ Param(
     [string]$FullName,    
     [Parameter(ParameterSetName = "ByName")]   
     [Parameter(ParameterSetName = "BySID")]  
-    [string]$Password,      
+    [securestring]$Password,      
     [Parameter(ParameterSetName = "ByName")]   
     [Parameter(ParameterSetName = "BySID")]  
     [bool]$PasswordNeverExpires,      
@@ -93,9 +94,6 @@ try{
     $Script:output
     $Script:user
     [string[]]$Properties = @("Name","Description","SID","Enabled","LastLogon")
-    if([System.String]::IsNullOrWhiteSpace($Password) -eq $false){
-        [securestring]$Script:pwd = ConvertTo-SecureString -String $Password -AsPlainText -Force                
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
             $Script:user = Get-LocalUser -Name $Name -ErrorAction Stop
@@ -113,7 +111,7 @@ try{
             $null = Set-LocalUser -InputObject $Script:user -FullName $NewName -ErrorAction Stop
         }            
         if($PSBoundParameters.ContainsKey('Password') -eq $true ){
-            $null = Set-LocalUser -InputObject $Script:user -Password $Script:pwd -ErrorAction Stop
+            $null = Set-LocalUser -InputObject $Script:user -Password $Password -ErrorAction Stop
         }
         if($PSBoundParameters.ContainsKey('PasswordNeverExpires') -eq $true ){
             $null = Set-LocalUser -InputObject $Script:user -PasswordNeverExpires $PasswordNeverExpires -ErrorAction Stop
@@ -155,7 +153,7 @@ try{
             }            
             if($PSBoundParameters.ContainsKey('Password') -eq $true ){
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    $null = Set-LocalUser -InputObject $Using:user -Password $Using:pwd -ErrorAction Stop
+                    $null = Set-LocalUser -InputObject $Using:user -Password $Using:Password -ErrorAction Stop
                 } -ErrorAction Stop
             }
             if($PSBoundParameters.ContainsKey('PasswordNeverExpires') -eq $true ){
@@ -205,7 +203,7 @@ try{
             }            
             if($PSBoundParameters.ContainsKey('Password') -eq $true ){
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    $null = Set-LocalUser -InputObject $Using:user -Password $Using:pwd -ErrorAction Stop
+                    $null = Set-LocalUser -InputObject $Using:user -Password $Using:Password -ErrorAction Stop
                 } -ErrorAction Stop
             }
             if($PSBoundParameters.ContainsKey('PasswordNeverExpires') -eq $true ){

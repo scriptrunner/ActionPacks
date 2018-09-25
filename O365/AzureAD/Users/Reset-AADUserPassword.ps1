@@ -17,7 +17,7 @@
 
     .COMPONENT       
         Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
@@ -42,7 +42,7 @@ param(
     [string]$UserName,
     [Parameter(ParameterSetName = "User name")]
     [Parameter(ParameterSetName = "User object id")]
-    [string]$NewPassword,
+    [securestring]$NewPassword,
     [Parameter(ParameterSetName = "User name")]
     [Parameter(ParameterSetName = "User object id")]
     [bool]$ForceChangePasswordNextLogin
@@ -52,23 +52,22 @@ try{
     $Script:User 
 
     if($PSCmdlet.ParameterSetName  -eq "User object id"){
-        $Script:User = Get-AzureADUser -ObjectId $UserObjectId   | Select-Object *
+        $Script:User = Get-AzureADUser -ObjectId $UserObjectId -ErrorAction Stop  | Select-Object *
     }
     else{
-        $Script:User = Get-AzureADUser -All $true  | `
+        $Script:User = Get-AzureADUser -All $true -ErrorAction Stop  | `
             Where-Object {($_.DisplayName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
             Select-Object *
     }
     if($null -ne $Script:User){
-        $Script:NPwd = ConvertTo-SecureString $NewPassword -AsPlainText -Force
         $res=@()
         if($PSBoundParameters.ContainsKey('ForceChangePasswordNextLogin') -eq $true ){
-            Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $Script:NPwd -ForceChangePasswordNextLogin $ForceChangePasswordNextLogin
+            Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $NewPassword -ForceChangePasswordNextLogin $ForceChangePasswordNextLogin -ErrorAction Stop
             $res = "New password of user $($Script:User.DisplayName) is set. "
             $res += "User must change the password next time they sign in = $($ForceChangePasswordNextLogin)"
         }
         else {
-            Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $Script:NPwd 
+            Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $NewPassword -ErrorAction Stop
             $res = "New password of user $($Script:User.DisplayName) is set"
         }
         if($SRXEnv) {
@@ -84,6 +83,9 @@ try{
         }    
         Throw "User not found"
     }
+}
+catch{
+    throw
 }
 finally{
  

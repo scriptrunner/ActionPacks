@@ -15,6 +15,7 @@
     © AppSphere AG
 
 .COMPONENT
+    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
@@ -51,9 +52,9 @@ Param(
     [Parameter(Mandatory = $true, ParameterSetName = "AdAccountOrGroup")]    
     [switch]$AdAccountOrGroup,
     [Parameter(Mandatory = $true, ParameterSetName = "ByPassword")]    
-    [string]$Password,
+    [securestring]$Password,
     [Parameter(Mandatory = $true, ParameterSetName = "ByRecoveryPassword")]    
-    [string]$RecoveryPassword,
+    [securestring]$RecoveryPassword,
     [Parameter(Mandatory = $true, ParameterSetName = "ByRecoveryKeyPath")]    
     [string]$RecoveryKeyPath,
     [Parameter(ParameterSetName = "AdAccountOrGroup")]    
@@ -77,8 +78,7 @@ try{
             Unlock-BitLocker -MountPoint $DriveLetter -AdAccountOrGroup -Confirm:$false -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "ByPassword"){
-            [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
-            Unlock-BitLocker -MountPoint $DriveLetter -Password $tmpPwd -Confirm:$false -ErrorAction Stop
+            Unlock-BitLocker -MountPoint $DriveLetter -Password $Password -Confirm:$false -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "ByRecoveryPassword"){
             Unlock-BitLocker -MountPoint $DriveLetter -RecoveryPassword $RecoveryPassword -Confirm:$false -ErrorAction Stop
@@ -96,9 +96,8 @@ try{
                 } -ErrorAction Stop
             } 
             elseif($PSCmdlet.ParameterSetName -eq "ByPassword"){
-                [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Unlock-BitLocker -MountPoint $Using:DriveLetter -Password $Using:tmpPwd -Confirm:$false -ErrorAction Stop
+                    Unlock-BitLocker -MountPoint $Using:DriveLetter -Password $Using:Password -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "ByRecoveryPassword"){
@@ -122,9 +121,8 @@ try{
                 }-ErrorAction Stop
             } 
             elseif($PSCmdlet.ParameterSetName -eq "ByPassword"){
-                [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Unlock-BitLocker -MountPoint $Using:DriveLetter -Password $Using:tmpPwd -Confirm:$false -ErrorAction Stop
+                    Unlock-BitLocker -MountPoint $Using:DriveLetter -Password $Using:Password -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "ByRecoveryPassword"){

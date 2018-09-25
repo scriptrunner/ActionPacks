@@ -15,6 +15,7 @@
     © AppSphere AG
 
 .COMPONENT
+    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/LocalAccounts
@@ -57,7 +58,7 @@ Param(
     [string]$Description,     
     [switch]$AccountNeverExpires,     
     [string]$FullName,    
-    [string]$Password,    
+    [securestring]$Password,    
     [switch]$PasswordNeverExpires,      
     [switch]$UserMayNotChangePassword,  
     [switch]$Disabled,
@@ -70,9 +71,6 @@ try{
     if([System.String]::IsNullOrWhiteSpace($Description) -eq $false){
         $Description = " "
     }
-    if([System.String]::IsNullOrWhiteSpace($Password) -eq $false){
-        $Script:pwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
-    }
     [string[]]$Properties = @("Name","Description","SID","Enabled","LastLogon")
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
@@ -83,7 +81,7 @@ try{
         }
         else {
             $null = New-LocalUser -Name $Name -Description $Description -AccountNeverExpires:$AccountNeverExpires -Disabled:$Disabled `
-                -FullName $FullName -Password $Script:pwd -PasswordNeverExpires:$PasswordNeverExpires `
+                -FullName $FullName -Password $Script:Password -PasswordNeverExpires:$PasswordNeverExpires `
                 -UserMayNotChangePassword:$UserMayNotChangePassword -Confirm:$False -ErrorAction Stop
         }
         $Script:output = Get-LocalUser -Name $Name | Select-Object $Properties
@@ -100,7 +98,7 @@ try{
             else {
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     $null = New-LocalUser -Name $Using:Name -Description $Using:Description -AccountNeverExpires:$Using:AccountNeverExpires `
-                        -FullName $Using:FullName -Password $Using:pwd -PasswordNeverExpires:$Using:PasswordNeverExpires `
+                        -FullName $Using:FullName -Password $Using:Password -PasswordNeverExpires:$Using:PasswordNeverExpires `
                         -UserMayNotChangePassword:$Using:UserMayNotChangePassword -Disabled:$Using:Disabled -Confirm:$False -ErrorAction Stop
                 } -ErrorAction Stop
             }
@@ -119,7 +117,7 @@ try{
             else {
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                     $null = New-LocalUser -Name $Using:Name -Description $Using:Description -AccountNeverExpires:$Using:AccountNeverExpires `
-                        -FullName $Using:FullName -Password $Using:pwd -PasswordNeverExpires:$Using:PasswordNeverExpires `
+                        -FullName $Using:FullName -Password $Using:Password -PasswordNeverExpires:$Using:PasswordNeverExpires `
                         -UserMayNotChangePassword:$Using:UserMayNotChangePassword -Disabled:$Using:Disabled -Confirm:$False -ErrorAction Stop
                 } -ErrorAction Stop
             }

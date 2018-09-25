@@ -17,6 +17,7 @@
 
     .COMPONENT
         Requires Module ActiveDirectory
+        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
@@ -85,7 +86,7 @@ param(
     [string]$Surname,    
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$Password,
+    [securestring]$Password,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
@@ -120,7 +121,6 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
 try{
     $Script:CopyProperties =@('AccountExpirationDate','accountExpires','AccountLockoutTime','AccountNotDelegated','AllowReversiblePasswordEncryption','CannotChangePassword','City','co','Company','Country','countryCode','Department','Description','Division', `
                         'DoesNotRequirePreAuth','Enabled','facsimileTelephoneNumber','Fax','HomeDirectory','HomedirRequired','HomeDrive','HomePage','HomePhone','Initials','ipPhone','mail','Manager','MNSLogonAccount','mobile','MobilePhone', `
@@ -129,7 +129,7 @@ try{
     $Script:User 
     $Script:Domain
     [string]$SearchScope='SubTree'
-    $Script:Pwd=ConvertTo-SecureString $Password -AsPlainText -force
+
     $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
                             ,'Department','Company','PostalCode','City','StreetAddress','DistinguishedName')
 
@@ -165,7 +165,7 @@ try{
         New-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
             -Instance $Source -Name $NewUserName -UserPrincipalName $UserPrincipalName -DisplayName $DisplayName `
             -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
-            -Path ($Source.DistinguishedName -split ",",2)[1] -SamAccountName $SAMAccountName -AccountPassword $Script:Pwd -ErrorAction Stop
+            -Path ($Source.DistinguishedName -split ",",2)[1] -SamAccountName $SAMAccountName -AccountPassword $Password -ErrorAction Stop
         Start-Sleep -Seconds 5 # wait
         $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Identity $SAMAccountName -ErrorAction Stop
     }
@@ -183,7 +183,7 @@ try{
         New-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
             -Instance $Source -Name $NewUserName -DisplayName $DisplayName -SamAccountName $SAMAccountName `
             -GivenName $GivenName -Surname $Surname -EmailAddress $EmailAddress `
-            -Path ($Source.DistinguishedName -split ",",2)[1] -UserPrincipalName $UserPrincipalName -AccountPassword $Script:Pwd -ErrorAction Stop
+            -Path ($Source.DistinguishedName -split ",",2)[1] -UserPrincipalName $UserPrincipalName -AccountPassword $Password -ErrorAction Stop
         Start-Sleep -Seconds 5 # wait
         $Script:User=Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $SAMAccountName -ErrorAction Stop
     }

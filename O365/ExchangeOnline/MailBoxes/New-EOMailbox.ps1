@@ -16,7 +16,7 @@
         © AppSphere AG
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
+        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
@@ -64,7 +64,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$UserPrincipalName ,
     [Parameter(Mandatory = $true)]
-    [string]$Password,
+    [securestring]$Password,
     [string]$Alias,
     [string]$DisplayName ,    
     [string]$WindowsEmailAddress ,
@@ -76,48 +76,48 @@ param(
     [switch]$AccountDisabled
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
 
 try{
-        $pwd = ConvertTo-SecureString $Password -AsPlainText -Force
-        $box = New-Mailbox -Name $Name -MicrosoftOnlineServicesID $UserPrincipalName -Password $pwd -ResetPasswordOnNextLogon:$ResetPasswordOnNextLogon  -Force -Confirm:$false
-        if($null -ne $box){
-            if($PSBoundParameters.ContainsKey('AccountDisabled') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -AccountDisabled $AccountDisabled.ToBool() -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -Alias $Alias -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -DisplayName $DisplayName -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -FirstName $FirstName -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -LastName $LastName -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('Office') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -Office  $Office -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('Phone') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -Phone $Phone -Confirm:$false
-            }
-            if($PSBoundParameters.ContainsKey('WindowsEmailAddress') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -WindowsEmailAddress $WindowsEmailAddress -Confirm:$false
-            }
-            $resultMessage = @()
-            $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `
-                    Select-Object AccountDisabled,Alias,DisplayName,Name,FirstName,LastName,Office,Phone,WindowsEmailAddress, `
-                                  ResetPasswordOnNextLogon,UserPrincipalName              
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage  
-            }
-            else{
-                Write-Output $resultMessage
-            }
+    $box = New-Mailbox -Name $Name -MicrosoftOnlineServicesID $UserPrincipalName -Password $Password -ResetPasswordOnNextLogon:$ResetPasswordOnNextLogon  -Force -Confirm:$false 
+    if($null -ne $box){
+        if($PSBoundParameters.ContainsKey('AccountDisabled') -eq $true ){
+            Set-Mailbox -Identity $box.UserPrincipalName -AccountDisabled $AccountDisabled.ToBool() -Confirm:$false 
         }
+        if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
+            Set-Mailbox -Identity $box.UserPrincipalName -Alias $Alias -Confirm:$false
+        }
+        if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
+            Set-Mailbox -Identity $box.UserPrincipalName -DisplayName $DisplayName -Confirm:$false
+        }
+        if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
+            Set-User -Identity $box.UserPrincipalName -FirstName $FirstName -Confirm:$false
+        }
+        if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
+            Set-User -Identity $box.UserPrincipalName -LastName $LastName -Confirm:$false
+        }
+        if($PSBoundParameters.ContainsKey('Office') -eq $true ){
+            Set-User -Identity $box.UserPrincipalName -Office  $Office -Confirm:$false
+        }
+        if($PSBoundParameters.ContainsKey('Phone') -eq $true ){
+            Set-User -Identity $box.UserPrincipalName -Phone $Phone -Confirm:$false
+        }
+        if($PSBoundParameters.ContainsKey('WindowsEmailAddress') -eq $true ){
+            Set-Mailbox -Identity $box.UserPrincipalName -WindowsEmailAddress $WindowsEmailAddress -Confirm:$false
+        }
+        $resultMessage = @()
+        $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `
+                Select-Object AccountDisabled,Alias,DisplayName,Name,FirstName,LastName,Office,Phone,WindowsEmailAddress, `
+                                ResetPasswordOnNextLogon,UserPrincipalName              
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  
+        }
+        else{
+            Write-Output $resultMessage
+        }
+    }
+}
+catch{
+    throw
 }
 finally{
     

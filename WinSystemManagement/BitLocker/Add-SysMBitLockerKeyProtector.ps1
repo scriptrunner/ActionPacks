@@ -15,6 +15,7 @@
     © AppSphere AG
 
 .COMPONENT
+    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
@@ -90,12 +91,12 @@ Param(
     [Parameter(Mandatory = $true,ParameterSetName = "StartupKeyProtector")]
     [switch]$StartupKeyProtector,
     [Parameter(Mandatory = $true,ParameterSetName = "PasswordProtector")]
-    [string]$Password,
+    [securestring]$Password,
     [Parameter(Mandatory = $true,ParameterSetName = "RecoveryPasswordProtector")]
-    [string]$RecoveryPassword,
+    [securestring]$RecoveryPassword,
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndPinProtector")]
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndPinAndStartupKeyProtector")]
-    [string]$Pin,
+    [securestring]$Pin,
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndStartupKeyProtector")]
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndPinAndStartupKeyProtector")]
     [Parameter(Mandatory = $true,ParameterSetName = "StartupKeyProtector")]
@@ -139,27 +140,24 @@ try{
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false -TpmProtector -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-            [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -TpmAndPinProtector -Pin $tmpPin -ErrorAction Stop
+                -TpmAndPinProtector -Pin $Pin -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndStartupKeyProtector"){
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
                 -TpmAndStartupKeyProtector -StartupKeyPath $StartupKeyPath -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-            [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -TpmAndPinAndStartupKeyProtector -Pin $tmpPin -StartupKeyPath $StartupKeyPath -ErrorAction Stop
+                -TpmAndPinAndStartupKeyProtector -Pin $Pin -StartupKeyPath $StartupKeyPath -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "StartupKeyProtector"){
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
                 -StartupKeyProtector -StartupKeyPath $StartupKeyPath -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-            [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -PasswordProtector -Password $tmpPwd -ErrorAction Stop
+                -PasswordProtector -Password $Password -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "RecoveryPasswordProtector"){
             Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
@@ -186,10 +184,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Add-BitLockerKeyProtector -MountPoint $Using:DriveLetter -Confirm:$false `
-                         -TpmAndPinProtector -Pin $Using:tmpPin -ErrorAction Stop
+                         -TpmAndPinProtector -Pin $Using:Pin -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndStartupKeyProtector"){
@@ -199,10 +196,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Add-BitLockerKeyProtector -MountPoint $Using:DriveLetter -Confirm:$false `
-                        -TpmAndPinAndStartupKeyProtector -Pin $Using:tmpPin -StartupKeyPath $Using:StartupKeyPath -ErrorAction Stop
+                        -TpmAndPinAndStartupKeyProtector -Pin $Using:Pin -StartupKeyPath $Using:StartupKeyPath -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "StartupKeyProtector"){
@@ -212,10 +208,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-                [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Add-BitLockerKeyProtector -MountPoint $Using:DriveLetter -Confirm:$false `
-                        -PasswordProtector -Password $Using:tmpPwd -ErrorAction Stop
+                        -PasswordProtector -Password $Using:Password -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "RecoveryPasswordProtector"){
@@ -248,10 +243,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{                    
                     Add-BitLockerKeyProtector -MountPoint $Using:DriveLetter -Confirm:$false `
-                        -TpmAndPinProtector -Pin $Using:tmpPin -ErrorAction Stop
+                        -TpmAndPinProtector -Pin $Using:Pin -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndStartupKeyProtector"){
@@ -261,10 +255,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{                    
                     Add-BitLockerKeyProtector -MountPoint $Using:DriveLetter -Confirm:$false `
-                        -TpmAndPinAndStartupKeyProtector -Pin $Using:tmpPin -StartupKeyPath $Using:StartupKeyPath -ErrorAction Stop
+                        -TpmAndPinAndStartupKeyProtector -Pin $Using:Pin -StartupKeyPath $Using:StartupKeyPath -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "StartupKeyProtector"){
@@ -274,10 +267,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-                [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{                    
                     Add-BitLockerKeyProtector -MountPoint $Using:DriveLetter -Confirm:$false `
-                        -PasswordProtector -Password $Using:tmpPwd -ErrorAction Stop
+                        -PasswordProtector -Password $Using:Password -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "RecoveryPasswordProtector"){

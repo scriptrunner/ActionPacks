@@ -17,6 +17,7 @@
 
     .COMPONENT
         Requires Module ActiveDirectory
+        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
@@ -55,7 +56,7 @@ param(
     [string]$Username,
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$NewPassword,
+    [securestring]$NewPassword,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
@@ -79,7 +80,6 @@ Import-Module ActiveDirectory
 #Clear
 #$ErrorActionPreference='Stop'
 try{
-    $Script:NPwd = ConvertTo-SecureString $NewPassword -AsPlainText -Force
     $Script:User 
     $Script:Domain
     $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
@@ -110,10 +110,10 @@ try{
     if($null -ne $Script:User){
         $Out=@()
         if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            Set-ADAccountPassword -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset -ErrorAction Stop
+            Set-ADAccountPassword -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Password -Reset -ErrorAction Stop
         }
         else {
-            Set-ADAccountPassword -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Script:NPwd -Reset -ErrorAction Stop
+            Set-ADAccountPassword -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType -NewPassword $Password -Reset -ErrorAction Stop
         }
         $Out += "New password of user $($Username) is set"
         if($UserMustChangePasswordAtLogon -eq $true){

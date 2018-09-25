@@ -15,6 +15,7 @@
     © AppSphere AG
 
 .COMPONENT
+    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
@@ -102,12 +103,12 @@ Param(
     [Parameter(Mandatory = $true,ParameterSetName = "StartupKeyProtector")]
     [switch]$StartupKeyProtector,
     [Parameter(Mandatory = $true,ParameterSetName = "PasswordProtector")]
-    [string]$Password,
+    [securestring]$Password,
     [Parameter(Mandatory = $true,ParameterSetName = "RecoveryPasswordProtector")]
-    [string]$RecoveryPassword,
+    [securestring]$RecoveryPassword,
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndPinProtector")]
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndPinAndStartupKeyProtector")]
-    [string]$Pin,
+    [securestring]$Pin,
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndStartupKeyProtector")]
     [Parameter(Mandatory = $true,ParameterSetName = "TpmAndPinAndStartupKeyProtector")]
     [Parameter(Mandatory = $true,ParameterSetName = "StartupKeyProtector")]
@@ -194,9 +195,8 @@ try{
                 -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-            [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
             Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -TpmAndPinProtector -Pin $tmpPin  `
+                -TpmAndPinProtector -Pin $Pin  `
                 -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndStartupKeyProtector"){
@@ -205,9 +205,8 @@ try{
                 -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-            [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
             Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -TpmAndPinAndStartupKeyProtector -Pin $tmpPin -StartupKeyPath $StartupKeyPath `
+                -TpmAndPinAndStartupKeyProtector -Pin $Pin -StartupKeyPath $StartupKeyPath `
                 -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "StartupKeyProtector"){
@@ -216,9 +215,8 @@ try{
                 -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-            [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
             Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -PasswordProtector -Password $tmpPwd `
+                -PasswordProtector -Password $Password `
                 -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "RecoveryPasswordProtector"){
@@ -252,10 +250,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Enable-BitLocker -MountPoint $Using:DriveLetter -EncryptionMethod $Using:EncryptionMethod -Confirm:$false `
-                         -TpmAndPinProtector -Pin $Using:tmpPin `
+                         -TpmAndPinProtector -Pin $Using:Pin `
                          -HardwareEncryption:$Using:HardwareEncryption -SkipHardwareTest:$Using:SkipHardwareTest -UsedSpaceOnly:$Using:UsedSpaceOnly  `
                          -ErrorAction Stop
                 } -ErrorAction Stop
@@ -269,10 +266,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Enable-BitLocker -MountPoint $Using:DriveLetter -EncryptionMethod $Using:EncryptionMethod -Confirm:$false `
-                         -TpmAndPinAndStartupKeyProtector -Pin $Using:tmpPin -StartupKeyPath $Using:StartupKeyPath `
+                         -TpmAndPinAndStartupKeyProtector -Pin $Using:Pin -StartupKeyPath $Using:StartupKeyPath `
                          -HardwareEncryption:$Using:HardwareEncryption -SkipHardwareTest:$Using:SkipHardwareTest -UsedSpaceOnly:$Using:UsedSpaceOnly  `
                          -ErrorAction Stop
                 } -ErrorAction Stop
@@ -286,10 +282,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-                [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Enable-BitLocker -MountPoint $Using:DriveLetter -EncryptionMethod $Using:EncryptionMethod -Confirm:$false `
-                         -PasswordProtector -Password $Using:tmpPwd `
+                         -PasswordProtector -Password $Using:Password `
                          -HardwareEncryption:$Using:HardwareEncryption -SkipHardwareTest:$Using:SkipHardwareTest -UsedSpaceOnly:$Using:UsedSpaceOnly  `
                          -ErrorAction Stop
                 } -ErrorAction Stop
@@ -332,10 +327,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{                    
                     Enable-BitLocker -MountPoint $Using:DriveLetter -EncryptionMethod $Using:EncryptionMethod -Confirm:$false `
-                        -TpmAndPinProtector -Pin $Using:tmpPin `
+                        -TpmAndPinProtector -Pin $Using:Pin `
                         -HardwareEncryption:$Using:HardwareEncryption -SkipHardwareTest:$Using:SkipHardwareTest -UsedSpaceOnly:$Using:UsedSpaceOnly  `
                         -ErrorAction Stop
                 } -ErrorAction Stop
@@ -349,10 +343,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-                [securestring]$tmpPin = ConvertTo-SecureString -String $Pin -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{                    
                     Enable-BitLocker -MountPoint $Using:DriveLetter -EncryptionMethod $Using:EncryptionMethod -Confirm:$false `
-                        -TpmAndPinAndStartupKeyProtector -Pin $Using:tmpPin -StartupKeyPath $Using:StartupKeyPath `
+                        -TpmAndPinAndStartupKeyProtector -Pin $Using:Pin -StartupKeyPath $Using:StartupKeyPath `
                         -HardwareEncryption:$Using:HardwareEncryption -SkipHardwareTest:$Using:SkipHardwareTest -UsedSpaceOnly:$Using:UsedSpaceOnly  `
                         -ErrorAction Stop
                 } -ErrorAction Stop
@@ -366,10 +359,9 @@ try{
                 } -ErrorAction Stop
             }
             elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-                [securestring]$tmpPwd = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{                    
                     Enable-BitLocker -MountPoint $Using:DriveLetter -EncryptionMethod $Using:EncryptionMethod -Confirm:$false `
-                        -PasswordProtector -Password $Using:tmpPwd `
+                        -PasswordProtector -Password $Using:Password `
                         -HardwareEncryption:$Using:HardwareEncryption -SkipHardwareTest:$Using:SkipHardwareTest -UsedSpaceOnly:$Using:UsedSpaceOnly  `
                         -ErrorAction Stop
                 } -ErrorAction Stop

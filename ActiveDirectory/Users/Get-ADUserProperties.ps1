@@ -54,7 +54,7 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string[]]$Properties="Name,GivenName,Surname,DisplayName,Description,Office,EmailAddress,OfficePhone,Title,Department,Company,Street,PostalCode,City,SAMAccountName",
+    [string[]]$Properties="Name,GivenName,Surname,DisplayName,Description,Office,EmailAddress,OfficePhone,Title,Department,Company,StreetAddress,PostalCode,City,SAMAccountName",
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,

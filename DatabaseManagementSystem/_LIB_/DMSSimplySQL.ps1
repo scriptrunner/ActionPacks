@@ -20,7 +20,7 @@ function OpenSQlConnection(){
             Requires Module SimplySQL
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/_LIB_
+            https://github.com/scriptrunner/ActionPacks/blob/master/DatabaseManagementSystem/_LIB_
 
         .Parameter ServerName
             The datasource for the connection

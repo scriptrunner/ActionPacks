@@ -19,7 +19,7 @@
     Requires Module SimplySQL
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/SimplySQL
+    https://github.com/scriptrunner/ActionPacks/blob/master/DatabaseManagementSystem/SimplySQL
  
 .Parameter ConnectionName
     User defined name for the connection, default is SRConnection

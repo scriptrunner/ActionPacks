@@ -21,7 +21,7 @@
     Requires Library script DMSSimplySQL.ps1
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/SimplySQL
+    https://github.com/scriptrunner/ActionPacks/blob/master/DatabaseManagementSystem/SimplySQL
 
 .Parameter ServerName
     The datasource for the connection

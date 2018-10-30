@@ -4,7 +4,7 @@ Public PowerShell script gallery for ScriptRunner.
 ## [Active Directory](./ActiveDirectory)
 Use cases for managing users, groups and computers in on prem AD
 
-## [Database Management System](./DatabaseManagementSystem)
+## [Database Management Systems](./DBSystems)
 Use cases for managing Database systems
 
 ## [Exchange Server](./Exchange)

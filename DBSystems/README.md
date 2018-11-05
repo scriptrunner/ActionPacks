@@ -9,6 +9,12 @@
 ## [Queries](./_QUERY_)
 
 + Get all connections with SimplySQL
++ Get specified columns from the specified table with SimplySQL
++ Get ScriptRunner-Reports from the ScriptRunner database with SimplySQL
+
+## [Samples](./Samples)
+
++ Get error statistic, runtime report, usage report, reports from ScriptRunner database with SimplySQL
 
 ## [SimplySQL](./SimplySQL)
 

@@ -129,7 +129,7 @@ function InvokeQuery(){
           Requires Module SimplySQL
 
       .LINK
-          https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/_LIB_
+          https://github.com/scriptrunner/ActionPacks/tree/master/DBSystems/_LIB_
 
       .Parameter QuerySQL
           SQL statement to run
@@ -148,7 +148,8 @@ function InvokeQuery(){
       Param(
           [switch]$UseTransaction,
           [string]$QuerySQL,
-          [int32]$Timeout,
+          [int32]$Timeout = -1,
+          [switch]$ReturnResult,
           [string]$ConnectionName = "SRConnection"
       )
 
@@ -158,6 +159,9 @@ function InvokeQuery(){
                 Start-SqlTransaction -ConnectionName $ConnectionName -ErrorAction Stop
                 $Global:QueryResult = Invoke-SqlQuery -ConnectionName $ConnectionName -Query $QuerySQL -CommandTimeout $Timeout -ErrorAction Stop
                 Complete-SqlTransaction -ConnectionName $ConnectionName -ErrorAction Stop
+                if($ReturnResult){
+                    return $Global:QueryResult
+                }
             }
             catch{
                 Undo-SqlTransaction -ConnectionName $ConnectionName -ErrorAction Stop
@@ -165,7 +169,12 @@ function InvokeQuery(){
             }
         }
         else{
-            $Global:QueryResult = Invoke-SqlQuery -ConnectionName $ConnectionName -Query $QuerySQL -CommandTimeout $Timeout -ErrorAction Stop
+            if($ReturnResult){
+                return Invoke-SqlQuery -ConnectionName $ConnectionName -Query $QuerySQL -CommandTimeout $Timeout -ErrorAction Stop
+            }
+            else {
+                $Global:QueryResult = Invoke-SqlQuery -ConnectionName $ConnectionName -Query $QuerySQL -CommandTimeout $Timeout -ErrorAction Stop
+            }
         }
       }
       catch{
@@ -207,13 +216,17 @@ function InvokeScalarQuery(){
 
         .Parameter ConnectionName
             User defined name for the connection, default is SRConnection
+                        
+        .Parameter ReturnResult
+            Returns the result
         #>
 
         [CmdLetBinding()]
         Param(
             [switch]$UseTransaction,
             [string]$ScalarQuery,
-            [int32]$Timeout,
+            [int32]$Timeout = -1,
+            [switch]$ReturnResult,
             [string]$ConnectionName = "SRConnection"
         )
 
@@ -223,6 +236,9 @@ function InvokeScalarQuery(){
                     Start-SqlTransaction -ConnectionName $ConnectionName -ErrorAction Stop
                     $Global:ScalarResult = Invoke-SqlScalar -ConnectionName $ConnectionName -Query $ScalarQuery -CommandTimeout $Timeout -ErrorAction Stop
                     Complete-SqlTransaction -ConnectionName $ConnectionName -ErrorAction Stop
+                    if($ReturnResult){
+                        return $Global:ScalarResult
+                    }
                 }
                 catch{
                     Undo-SqlTransaction -ConnectionName $ConnectionName -ErrorAction Stop
@@ -230,7 +246,12 @@ function InvokeScalarQuery(){
                 }
             }
             else{
-                $Global:ScalarResult = Invoke-SqlScalar -ConnectionName $ConnectionName -Query $ScalarQuery -CommandTimeout $Timeout -ErrorAction Stop
+                if($ReturnResult){
+                    return Invoke-SqlScalar -ConnectionName $ConnectionName -Query $ScalarQuery -CommandTimeout $Timeout -ErrorAction Stop
+                }
+                else{
+                    $Global:ScalarResult = Invoke-SqlScalar -ConnectionName $ConnectionName -Query $ScalarQuery -CommandTimeout $Timeout -ErrorAction Stop
+                }
             }
         }
         catch{

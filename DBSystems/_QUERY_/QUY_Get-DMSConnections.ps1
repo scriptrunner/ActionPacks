@@ -19,7 +19,7 @@
     Requires Module SimplySQL
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/blob/master/DatabaseManagementSystem/_QUERY_
+    https://github.com/scriptrunner/ActionPacks/blob/master/DBSystems/_QUERY_
 #>
 
 [CmdLetBinding()]

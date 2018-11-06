@@ -20,7 +20,7 @@
     Requires Module SimplySQL
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/blob/master/DatabaseManagementSystem/SimplySQL
+    https://github.com/scriptrunner/ActionPacks/blob/master/DBSystems/SimplySQL
 
 .Parameter ServerName
     The datasource for the connection

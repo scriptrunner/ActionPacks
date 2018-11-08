@@ -66,29 +66,33 @@ param(
     try{
         $box = Get-Mailbox -Identity $MailboxId 
         if($null -ne $box){
+            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                    'Identity' = $box.UserPrincipalName
+                                    'Confirm' = $false
+                                    }
             if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -Alias $Alias -Confirm:$false
+                Set-Mailbox @cmdArgs -Alias $Alias
             }
             if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -DisplayName $DisplayName -Confirm:$false
+                Set-Mailbox @cmdArgs -DisplayName $DisplayName
             }
             if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -FirstName $FirstName -Confirm:$false
+                Set-User @cmdArgs -FirstName $FirstName
             }
             if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -LastName $LastName -Confirm:$false
+                Set-User @cmdArgs -LastName $LastName
             }
             if($PSBoundParameters.ContainsKey('Office') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -Office  $Office -Confirm:$false
+                Set-User @cmdArgs -Office $Office
             }
             if($PSBoundParameters.ContainsKey('Phone') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -Phone $Phone -Confirm:$false
+                Set-User @cmdArgs -Phone $Phone
             }
             if($PSBoundParameters.ContainsKey('WindowsEmailAddress') -eq $true ){
-                Set-Mailbox -Identity $box.UserPrincipalName -WindowsEmailAddress $WindowsEmailAddress -Confirm:$false
+                Set-Mailbox @cmdArgs -WindowsEmailAddress $WindowsEmailAddress
             }
             if($PSBoundParameters.ContainsKey('ResetPasswordOnNextLogon') -eq $true ){
-                Set-User -Identity $box.UserPrincipalName -ResetPasswordOnNextLogon  $ResetPasswordOnNextLogon.ToBool() -Confirm:$false
+                Set-User @cmdArgs -ResetPasswordOnNextLogon  $ResetPasswordOnNextLogon.ToBool()
             }
             $resultMessage = @()
             $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `

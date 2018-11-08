@@ -60,23 +60,28 @@ param(
         $Script:grp = Get-DistributionGroup -Identity $GroupName
        
         if($null -ne $Script:grp){    
+            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Identity' = $Script:grp.Name
+                            'ForceUpgrade' = $null
+                            'Confirm' = $false
+                            }
             if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
-                Set-DistributionGroup -Identity $Script:grp.Name -Alias $Alias -ForceUpgrade -Confirm:$false
+                Set-DistributionGroup @cmdArgs -Alias $Alias
             }
             if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-                Set-DistributionGroup -Identity $Script:grp.Name -DisplayName $DisplayName -ForceUpgrade -Confirm:$false
+                Set-DistributionGroup  @cmdArgs -DisplayName $DisplayName
             }
             if($PSBoundParameters.ContainsKey('ManagedBy') -eq $true ){
-                Set-DistributionGroup -Identity $Script:grp.Name -ManagedBy $ManagedBy -ForceUpgrade -Confirm:$false
+                Set-DistributionGroup  @cmdArgs -ManagedBy $ManagedBy
             }
             if($PSBoundParameters.ContainsKey('PrimarySmtpAddress') -eq $true ){
-                Set-DistributionGroup -Identity $Script:grp.Name -PrimarySmtpAddress $PrimarySmtpAddress -ForceUpgrade -Confirm:$false
+                Set-DistributionGroup  @cmdArgs -PrimarySmtpAddress $PrimarySmtpAddress
             }
             if($PSBoundParameters.ContainsKey('MemberDepartRestriction') -eq $true ){
-                Set-DistributionGroup -Identity $Script:grp.Name -MemberDepartRestriction $MemberDepartRestriction -ForceUpgrade -Confirm:$false
+                Set-DistributionGroup  @cmdArgs -MemberDepartRestriction $MemberDepartRestriction
             }            
             if($PSBoundParameters.ContainsKey('MemberJoinRestriction') -eq $true ){
-                Set-DistributionGroup -Identity $Script:grp.Name -MemberJoinRestriction $MemberJoinRestriction -ForceUpgrade -Confirm:$false
+                Set-DistributionGroup  @cmdArgs -MemberJoinRestriction $MemberJoinRestriction
             }
             $res=@("Universal distribution group $($GroupName) modified")
             $res += Get-DistributionGroup -Identity $Script:grp.Name | Select-Object *

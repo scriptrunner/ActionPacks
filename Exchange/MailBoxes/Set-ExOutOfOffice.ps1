@@ -117,7 +117,7 @@ param(
             $resultMessage = @()
             if($PSCmdlet.ParameterSetName  -eq "Disable Auto Reply"){
                 Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState Disabled -Confirm:$false
-                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
+                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-Object * | Format-List
                 $resultMessage += "Mailbox $($box.UserPrincipalName) disabled"
             }
             else {
@@ -129,9 +129,9 @@ param(
                     $type = 'None'
                 }
                 if(($type -eq 'All') -or ($type -eq 'Known')){
-                if([System.String]::IsNullOrWhiteSpace($ExternalText)){
-                    $ExternalText=$InternalText
-                }
+                    if([System.String]::IsNullOrWhiteSpace($ExternalText)){
+                        $ExternalText = $InternalText
+                    }
                 }
                 if($PSCmdlet.ParameterSetName  -eq "Schedule Auto Reply"){
                     [datetime]$start = New-Object DateTime $StartYear, $StartMonth, $StartDay, $StartHour, $StartMinute, 0

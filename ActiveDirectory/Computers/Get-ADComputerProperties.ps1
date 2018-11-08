@@ -65,42 +65,44 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType="Negotiate" 
 )
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
 try{    
     [string]$Script:sam=$Computername
     if(-not $Script:sam.EndsWith('$')){
         $Script:sam += '$'
     }
-    $Script:Cmp 
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }
-        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop    
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
     }
-    if($null -ne $Cmp){
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'AuthType' = $AuthType
+                'Filter' = {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)}
+                'Server' = $Domain.PDCEmulator
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Properties' = '*'
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    } 
+    $Script:Cmp= Get-ADComputer @cmdArgs
+
+    if($null -ne $Script:Cmp){
         $resultMessage = New-Object System.Collections.Specialized.OrderedDictionary
         if($Properties -eq '*'){
             foreach($itm in $Script:Cmp.PropertyNames){

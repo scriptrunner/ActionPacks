@@ -61,8 +61,6 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
 try{
     $Script:Srv 
     $Script:Domain
@@ -71,35 +69,49 @@ try{
     if(-not $Script:sam.EndsWith('$')){
     #  $Script:sam += '$'
     }
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:Srv= Get-ADServiceAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType `
-                -SearchBase $OUPath -SearchScope $SearchScope `
-                -Filter {(SamAccountName -eq $sam) -or (DistinguishedName -eq $AccountName)}  -ErrorAction Stop
+    if([System.String]::IsNullOrWhiteSpace($SamAccountName)){
+        $SamAccountName = "*"
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }
-        $Script:Srv= Get-ADServiceAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-                -SearchBase $OUPath -SearchScope $SearchScope `
-                -Filter {(SamAccountName -eq $sam) -or (DistinguishedName -eq $AccountName)}  -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
+    }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Filter' = {(SamAccountName -eq $sam) -or (DistinguishedName -eq $AccountName)}
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+
+    $Script:Srv = Get-ADServiceAccount @cmdArgs
+
     if($null -ne $Script:Srv){
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            Remove-ADServiceAccount -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Srv -Confirm:$false -ErrorAction Stop
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Confirm' = $false 
+                'Identity' = $Script:Srv
+                }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
         }
-        else {
-            Remove-ADServiceAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Srv -Confirm:$false -ErrorAction Stop
-        }
+        
+        Remove-ADServiceAccount @cmdArgs
+        
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Service account $($AccountName) deleted"
         } 

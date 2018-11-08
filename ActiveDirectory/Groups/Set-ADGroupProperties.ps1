@@ -85,34 +85,34 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:Grp
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
+    }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
 
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:Grp= Get-ADGroup -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)}  -ErrorAction Stop
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Filter' = {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} 
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }  
-        $Script:Grp= Get-ADGroup -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} -ErrorAction Stop
-    }
+
+    $Script:Grp = Get-ADGroup @cmdArgs
     if($null -ne $Script:Grp){
         if(-not [System.String]::IsNullOrWhiteSpace($Description)){
             $Script:Grp.Description = $Description
@@ -129,12 +129,16 @@ try{
         if(-not [System.String]::IsNullOrWhiteSpace($Category)){
             $Script:Grp.GroupCategory = $Category
         }
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            Set-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Grp  -ErrorAction Stop
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                    'Server' = $Domain.PDCEmulator
+                    'AuthType' = $AuthType
+                    'Instance' =$Script:Grp
+                    }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
         }
-        else{
-            Set-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Grp -ErrorAction Stop
-        }
+        Set-ADGroup @cmdArgs
+        
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Group $($GroupName) changed"
         } 

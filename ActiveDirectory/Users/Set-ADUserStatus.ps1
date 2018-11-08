@@ -77,46 +77,49 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
 try{
     $Script:Domain 
     $Script:User 
     $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
                             ,'Department','Company','PostalCode','City','StreetAddress','Enabled','DistinguishedName')
 
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Properties LockedOut,Enabled `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }
-        $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType -Properties LockedOut,Enabled `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
     }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Filter' = {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Properties' = @('LockedOut','Enabled')
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    $Script:User= Get-ADUser @cmdArgs
+
     if($null -ne $Script:User){
         $Out=@()
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                    'Server' = $Domain.PDCEmulator
+                    'AuthType' = $AuthType
+                    'Identity' = $Script:User
+                    }
         if($UnLock -eq $true){
             if($Script:User.LockedOut -eq $true){
-                if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                    Unlock-ADAccount -Identity $Script:User -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator -ErrorAction Stop
-                }
-                else {
-                    Unlock-ADAccount -Identity $Script:User -AuthType $AuthType -Server $Script:Domain.PDCEmulator -ErrorAction Stop
-                }
+                Unlock-ADAccount @cmdArgs                
                 $Out += "User $($Username) unlocked"
             }
             else{
@@ -125,12 +128,7 @@ try{
         }
         if($EnableStatus -eq 'Enable'){
             if($Script:User.Enabled -eq $false){
-                if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                    Enable-ADAccount -Identity $Script:User -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator -ErrorAction Stop
-                }
-                else {
-                    Enable-ADAccount -Identity $Script:User -AuthType $AuthType -Server $Script:Domain.PDCEmulator -ErrorAction Stop
-                }
+                Enable-ADAccount @cmdArgs
                 $Out += "User $($Username) enabled"
             }
             else{
@@ -139,12 +137,7 @@ try{
         }
         else{
             if($Script:User.Enabled -eq $true){
-                if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                    Disable-ADAccount -Identity $Script:User -Credential $DomainAccount -Server $Script:Domain.PDCEmulator -AuthType $AuthType -ErrorAction Stop
-                }
-                else {
-                    Disable-ADAccount -Identity $Script:User -Server $Script:Domain.PDCEmulator -AuthType $AuthType -ErrorAction Stop
-                }
+                Disable-ADAccount @cmdArgs
                 $Out += "User $($Username) disabled"
             }
             else{
@@ -152,12 +145,9 @@ try{
             }
         }
         Start-Sleep -Seconds 5 # wait
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
-        }
-        else{
-            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties $Script:Properties -AuthType $AuthType -Server $Script:Domain.PDCEmulator
-        }
+        $cmdArgs['Identity'] = $Script:User.SAMAccountName
+        $Script:User = Get-ADUser @cmdArgs -Properties $Script:Properties
+        
         $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
         $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)

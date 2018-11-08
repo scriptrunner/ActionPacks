@@ -54,9 +54,9 @@ param(
     [string]$OUPath,  
     [PSCredential]$DomainAccount,
     [bool]$Disabled,
-    [bool]$InActive,
-    [bool]$Locked,
-    [bool]$Expired,
+    [bool]$InActive ,
+    [bool]$Locked ,
+    [bool]$Expired ,
     [string]$DomainName,
     [ValidateSet('Base','OneLevel','SubTree')]
     [string]$SearchScope='SubTree',
@@ -68,59 +68,45 @@ Import-Module ActiveDirectory
 
 try{
     $Script:users = @()
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
     if($null -ne $DomainAccount){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        if($Disabled -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                 | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
-        }
-        if($InActive -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                 | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
-        } 
-        if($Locked -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                 | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
-        } 
-        if($Expired -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                 | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
-        } 
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        if($Disabled -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName           
-        }
-        if($InActive -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName            
-        } 
-        if($Locked -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -LockedOut -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
-                                | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName            
-        } 
-        if($Expired -eq $true){
-            $Script:users += Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountExpired -UsersOnly -SearchBase $OUPath -SearchScope $SearchScope `
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
+    }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'AuthType' = $AuthType
+                'UsersOnly' = $null
+                'Server' = $Domain.PDCEmulator
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }                
+    if($Disabled -eq $true){
+        $Script:users += Search-ADAccount @cmdArgs -AccountDisabled  `
                                 | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
-        } 
+    }
+    if($InActive -eq $true){
+        $Script:users += Search-ADAccount @cmdArgs -AccountInactive  `
+                                | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
+    } 
+    if($Locked -eq $true){
+        $Script:users += Search-ADAccount @cmdArgs -LockedOut `
+                                | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
+    } 
+    if($Expired -eq $true){
+        $Script:users += Search-ADAccount @cmdArgs -AccountExpired `
+                                | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
     } 
     if($SRXEnv) {
         $SRXEnv.ResultList =@()

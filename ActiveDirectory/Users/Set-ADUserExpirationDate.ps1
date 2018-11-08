@@ -91,63 +91,56 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
 try{
     $Script:Domain 
     $Script:User 
 
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }
-        $Script:User= Get-ADUser -Server $Script:Domain.PDCEmulator -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)} -ErrorAction Stop
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
     }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Filter' = {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    $Script:User= Get-ADUser @cmdArgs
+
     if($null -ne $Script:User){
         $Out=''
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Identity' = $Script:User.SamAccountName
+                }
         if($NeverExpires -eq $true){
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                Set-ADUser -Identity $Script:User.SamAccountName -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator -AccountExpirationDate $null -ErrorAction Stop
-            }
-            else {
-                Set-ADUser -Identity $Script:User.SamAccountName -AuthType $AuthType -Server $Script:Domain.PDCEmulator -AccountExpirationDate $null -ErrorAction Stop
-            }
+           Set-ADUser @cmdArgs -AccountExpirationDate $null        
         }
         else{
             [datetime]$start = New-Object DateTime $Year, $Month, $Day
             if($start.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
                 Throw "Expiration date is in the past"
             }
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                Set-ADUser -Identity $Script:User.SamAccountName -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator -AccountExpirationDate $start -ErrorAction Stop
-            }
-            else {
-                Set-ADUser -Identity $Script:User.SamAccountName -AuthType $AuthType -Server $Script:Domain.PDCEmulator -AccountExpirationDate $start -ErrorAction Stop
-            }
+            Set-ADUser @cmdArgs -AccountExpirationDate $start
         }
         Start-Sleep -Seconds 5 # wait
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties * -Credential $DomainAccount -AuthType $AuthType -Server $Script:Domain.PDCEmulator
-        }
-        else{
-            $Script:User = Get-ADUser -Identity $Script:User.SAMAccountName -Properties * -AuthType $AuthType -Server $Script:Domain.PDCEmulator
-        }
+        $Script:User = Get-ADUser @cmdArgs -Properties *
+        
         if([System.String]::IsNullOrWhiteSpace($Script:User.AccountExpirationDate)){
             $Out = "Account for user $($Username) never expires"
         }

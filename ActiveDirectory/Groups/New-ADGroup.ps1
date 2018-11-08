@@ -89,36 +89,39 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        $Script:Grp= New-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -GroupCategory $Category -GroupScope $Scope -Name $GroupName -Path $OUPath  `
-                            -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -Confirm:$false  -AuthType $AuthType  -PassThru    -ErrorAction Stop 
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        $Script:Grp= New-ADGroup -Server $Domain.PDCEmulator -GroupCategory $Category -GroupScope $Scope -Name $GroupName -Path $OUPath  `
-                            -Description $Description -DisplayName $DisplayName -SamAccountName $SAMAccountName -Confirm:$false  -AuthType $AuthType  -PassThru -ErrorAction Stop
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
     }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'PassThru' = $null
+                'Confirm' = $false
+                'SamAccountName' = $SAMAccountName 
+                'DisplayName' = $DisplayName
+                'Description' = $Description
+                'Path' = $OUPath
+                'Name' = $GroupName
+                'GroupScope' = $Scope
+                'GroupCategory' = $Category
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    $Script:Grp = New-ADGroup @cmdArgs
+
     if($null -ne $Script:Grp){
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Group $($Grp.DistinguishedName);$($Grp.SAMAccountName) created"

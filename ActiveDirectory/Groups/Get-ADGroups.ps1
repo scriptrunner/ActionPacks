@@ -58,39 +58,35 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:Grps
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        $Script:Grps = Get-ADGroup -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType  `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter * -Properties DistinguishedName, SamAccountName -ErrorAction Stop | Sort-Object -Property SAMAccountName
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName        
-        }
-        $Script:Grps = Get-ADGroup -Server $Domain.PDCEmulator -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter * -Properties DistinguishedName, SamAccountName -ErrorAction Stop | Sort-Object -Property SAMAccountName
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
     }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Filter' = '*'
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Properties' = @('DistinguishedName', 'SamAccountName')
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    $Script:Grps = Get-ADGroup @cmdArgs | Sort-Object -Property SAMAccountName
+
     if($null -ne $Script:Grps){ 
         $resultMessage = @()
         foreach($itm in $Script:Grps){

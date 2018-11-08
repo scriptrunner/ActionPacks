@@ -55,36 +55,36 @@ param(
 Import-Module ActiveDirectory
 
 try{
-    $Script:users = @()
     if([System.String]::IsNullOrWhiteSpace($SamAccountName)){
         $SamAccountName = "*"
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
     if($null -ne $DomainAccount){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        $Script:users += Get-ADUser -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType -Filter {SamAccountName -like $SamAccountName} `
-                                -SearchBase $OUPath -SearchScope $SearchScope -Properties DistinguishedName, DisplayName, SamAccountName | Sort-Object -Property DisplayName
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        $Script:users += Get-ADUser -Server $Domain.PDCEmulator -AuthType $AuthType -Filter {SamAccountName -like $SamAccountName} `
-                            -SearchBase $OUPath -SearchScope $SearchScope -Properties DistinguishedName, DisplayName, SamAccountName | Sort-Object -Property DisplayName
-    } 
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
+    }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Filter' = {SamAccountName -like $SamAccountName}
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Properties' = @('DistinguishedName', 'DisplayName', 'SamAccountName')
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    $Script:users = Get-ADUser @cmdArgs | Sort-Object -Property DisplayName
+    
     if($SRXEnv) {
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()

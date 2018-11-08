@@ -70,70 +70,52 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
 try{
     $resultMessage = @()
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        if($Disabled -eq $true){
-            $computers = Search-ADAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -ComputersOnly `
-                -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-            if($computers){
-                foreach($itm in  $computers){
-                    $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
-                }
-                $resultMessage = $resultMessage + ''  
-            }
-        }
-        if($InActive -eq $true){
-            $computers = Search-ADAccount -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -ComputersOnly `
-                -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-            if($computers){
-                foreach($itm in  $computers){
-                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-                }
-            }
-        } 
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }    
-        if([System.String]::IsNullOrWhiteSpace($OUPath)){
-            $OUPath = $Domain.DistinguishedName
-        }
-        if($Disabled -eq $true){
-            $computers = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountDisabled -ComputersOnly `
-                -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-            if($computers){
-                foreach($itm in  $computers){
-                    $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
+    }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'AuthType' = $AuthType
+                'ComputersOnly' = $null
+                'Server' = $Domain.PDCEmulator
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
                 }
-                $resultMessage = $resultMessage + ''
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    if($Disabled -eq $true){
+        $computers = Search-ADAccount @cmdArgs -AccountDisabled  `
+             | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        if($computers){
+            foreach($itm in  $computers){
+                $resultMessage = $resultMessage + ("Disabled: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)
+            }
+            $resultMessage = $resultMessage + ''  
+        }
+    }
+    if($InActive -eq $true){
+        $computers = Search-ADAccount @cmdArgs -AccountInactive `
+            -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
+        if($computers){
+            foreach($itm in  $computers){
+            $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
             }
         }
-        if($InActive -eq $true){
-            $computers = Search-ADAccount -Server $Domain.PDCEmulator -AuthType $AuthType -AccountInactive -ComputersOnly `
-                -SearchBase $OUPath -SearchScope $SearchScope | Select-Object DistinguishedName, SAMAccountName | Sort-Object -Property SAMAccountName
-            if($computers){
-                foreach($itm in  $computers){
-                $resultMessage = $resultMessage + ("Inactive: " + $itm.DistinguishedName + ';' +$itm.SamAccountName)            
-                }
-            }
-        } 
     } 
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $resultMessage 
     }

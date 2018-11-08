@@ -128,9 +128,6 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:Domain 
     $Script:Cmp
@@ -138,29 +135,34 @@ try{
     if(-not $Script:sam.EndsWith('$')){
         $Script:sam += '$'
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
+    }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
 
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'AuthType' = $AuthType
+                'Filter' = {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)}
+                'Server' = $Domain.PDCEmulator
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Properties' = '*'
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Script:Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType  -ErrorAction Stop
-        }
-        else{
-            $Script:Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType  -ErrorAction Stop
-        }
-        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop
-    }
+
+    $Script:Cmp= Get-ADComputer @cmdArgs
+
     if($null -ne $Script:Cmp){
         if(-not [System.String]::IsNullOrWhiteSpace($DNSHostName)){
             $Script:Cmp.DNSHostName = $DNSHostName
@@ -183,67 +185,38 @@ try{
         if($PSBoundParameters.ContainsKey('TrustedForDelegation') -eq $true){
             $Script:Cmp.TrustedForDelegation = $TrustedForDelegation
         }
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            $Script:Cmp = Set-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Cmp -PassThru
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                    'AuthType' = $AuthType
+                    'Server' = $Domain.PDCEmulator
+                    'PassThru' = $null
+                    }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
         }
-        else{
-            $Script:Cmp = Set-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Instance $Script:Cmp -PassThru
-        }
+
+        $Script:Cmp= Set-ADComputer @cmdArgs -Instance $Script:Cmp 
+        $cmdArgs.Add("Identity", $Script:Cmp.SamAccountName)
+
         if($Script:Cmp -and $PSBoundParameters.ContainsKey('AllowDialin') -eq $true){
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                $Script:Cmp=Set-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Replace @{msnpallowdialin=$AllowDialin} -PassThru
-            }
-            else{
-                $Script:Cmp=Set-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Replace @{msnpallowdialin=$AllowDialin} -PassThru
-            }
+            $Script:Cmp= Set-ADComputer @cmdArgs -Replace @{msnpallowdialin=$AllowDialin} 
         }
         if($Script:Cmp -and $PSBoundParameters.ContainsKey('EnableCallback') -eq $true -and $EnableCallback -eq $true) {        
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-                $Script:Cmp=Set-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Replace @{msRADIUSServiceType=4} -PassThru
-            }
-            else{
-                $Script:Cmp=Set-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Replace @{msRADIUSServiceType=4} -PassThru
-            }
+            $Script:Cmp= Set-ADComputer @cmdArgs -Replace @{msRADIUSServiceType=4} 
         }  
         if($Script:Cmp -and $PSBoundParameters.ContainsKey('EnableCallback') -eq $true -and $EnableCallback -eq $false) {  
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){      
-                $Script:Cmp=Set-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Remove @{msRADIUSServiceType=4} -PassThru
-            }
-            else{
-                $Script:Cmp=Set-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Remove @{msRADIUSServiceType=4} -PassThru
-            }
+            $Script:Cmp= Set-ADComputer @cmdArgs -Remove @{msRADIUSServiceType=4}
         }  
         if($Script:Cmp -and (-not [System.String]::IsNullOrWhiteSpace($CallbackNumber))) {
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){      
-                $Script:Cmp=Set-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity `
-                    $Script:Cmp.SamAccountName -Replace @{'msRADIUSCallbackNumber'=$CallbackNumber;'msRADIUSServiceType'=4} -PassThru -ErrorAction Stop
-            }
-            else{
-                $Script:Cmp=Set-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity `
-                    $Script:Cmp.SamAccountName -Replace @{'msRADIUSCallbackNumber'=$CallbackNumber;'msRADIUSServiceType'=4} -PassThru -ErrorAction Stop
-            }
+            $Script:Cmp= Set-ADComputer @cmdArgs -Replace @{'msRADIUSCallbackNumber'=$CallbackNumber;'msRADIUSServiceType'=4} 
         }    
         if($Script:Cmp -and (-not [System.String]::IsNullOrWhiteSpace($NewSAMAccountName))){
-            if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){      
-                $Script:Cmp = Set-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Replace @{'SAMAccountName'=$NewSAMAccountName} -PassThru -ErrorAction Stop
-            }
-            else{
-                $Script:Cmp = Set-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Script:Cmp.SamAccountName -Replace @{'SAMAccountName'=$NewSAMAccountName} -PassThru -ErrorAction Stop
-            }
+            $Script:Cmp= Set-ADComputer @cmdArgs -Replace @{'SAMAccountName'=$NewSAMAccountName}
         }
-        if($null -ne $Script:Cmp){
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Computer $($Computername) changed"
-            }
-            else{
-                Write-Output "Computer $($Computername) changed"
-            }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Computer $($Computername) changed"
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Computer $($Computername) not changed"
-            }
-            Throw "Computer $($Computername) not changed"
+            Write-Output "Computer $($Computername) changed"
         }
     }
     else{

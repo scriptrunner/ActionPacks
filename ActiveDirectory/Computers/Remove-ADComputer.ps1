@@ -64,46 +64,51 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
-try{
-    $Script:Domain 
+try{    
     $Script:Cmp 
     [string]$Script:sam=$Computername
     if(-not $Script:sam.EndsWith('$')){
         $Script:sam += '$'
     }
-    if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType -Credential $DomainAccount -ErrorAction Stop
-        }
-        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -Credential $DomainAccount -AuthType $AuthType `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties *  -ErrorAction Stop   
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'AuthType' = $AuthType
+                            }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DomainName)){
-            $Domain = Get-ADDomain -Current LocalComputer -AuthType $AuthType 
-        }
-        else{
-            $Domain = Get-ADDomain -Identity $DomainName -AuthType $AuthType 
-        }
-        $Script:Cmp= Get-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType  `
-            -SearchBase $OUPath -SearchScope $SearchScope `
-            -Filter {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} -Properties * -ErrorAction Stop    
+    if([System.String]::IsNullOrWhiteSpace($DomainName)){
+        $cmdArgs.Add("Current", 'LocalComputer')
     }
+    else {
+        $cmdArgs.Add("Identity", $DomainName)
+    }
+    $Domain = Get-ADDomain @cmdArgs
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'AuthType' = $AuthType
+                'Filter' = {(SamAccountName -eq $sam) -or (DNSHostName -eq $Computername) -or (DistinguishedName -eq $Computername)} 
+                'Server' = $Domain.PDCEmulator
+                'SearchBase' = $OUPath 
+                'SearchScope' = $SearchScope
+                'Properties' = '*'
+                }
+    if($null -ne $DomainAccount){
+        $cmdArgs.Add("Credential", $DomainAccount)
+    }
+    $Cmp= Get-ADComputer  @cmdArgs   
 
     $Script:res
     if($null -ne $Cmp){
-        if($PSCmdlet.ParameterSetName  -eq "Remote Jumphost"){
-            Remove-ADComputer -Credential $DomainAccount -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false -ErrorAction Stop
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                'AuthType' = $AuthType
+                'Identity' = $Cmp
+                'Server' = $Domain.PDCEmulator
+                'Confirm' = $false 
+                }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
         }
-        else{
-            Remove-ADComputer -Server $Domain.PDCEmulator -AuthType $AuthType -Identity $Cmp -Confirm:$false  -ErrorAction Stop
-        }
+        Remove-ADComputer @cmdArgs
         $res= "Computer $($Computername) deleted"
     }
     else{

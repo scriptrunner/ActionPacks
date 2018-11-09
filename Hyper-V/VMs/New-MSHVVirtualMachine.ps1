@@ -150,62 +150,50 @@ try {
     if([System.String]::IsNullOrWhiteSpace($VMName)){
         $VMName = " "
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        if([System.String]::IsNullOrWhiteSpace($FilePath)){
-            $vmHost = Get-VMHost -ComputerName $HostName | Select-Object *
-            $FilePath = $vmHost.VirtualMachinePath
-        }
-        if(($PSBoundParameters.ContainsKey('NewVHDPath') -eq $true)  -and (-not [System.String]::IsNullOrWhiteSpace($NewVHDPath))){
-            if($NewVHDSize -lt 1048576){ # lower then 1 MB
-                $NewVHDSize = 1073741824 # default 1 GB
-            }
-            $Script:VM = New-VM -ComputerName $HostName -Name $VMName -MemoryStartupBytes $StartupMemory -Generation $Generation -BootDevice $BootDevice `
-                                        -Path $FilePath -NewVHDPath $NewVHDPath -NewVHDSizeBytes $NewVHDSize -ErrorAction Stop
-        }
-        elseif(($PSBoundParameters.ContainsKey('VHDPath') -eq $true)  -and (-not [System.String]::IsNullOrWhiteSpace($VHDPath))){
-            $Script:VM = New-VM -ComputerName $HostName -Name $VMName -MemoryStartupBytes $StartupMemory -Generation $Generation -BootDevice $BootDevice `
-                            -Path $FilePath -VHDPath $VHDPath -ErrorAction Stop
-
-        }
-        else{
-            $Script:VM = New-VM -ComputerName $HostName -Name $VMName -MemoryStartupBytes $StartupMemory -Generation $Generation -BootDevice $BootDevice `
-                            -Path $FilePath -NoVHD -ErrorAction Stop
-            
-        }
-        if($PSBoundParameters.ContainsKey('Notes') -eq $true){
-            Set-VM -VM $Script:VM -Notes $Notes -ErrorAction Stop
-        }        
-        if($PSBoundParameters.ContainsKey('SwitchName') -eq $true){
-            Connect-VMNetworkAdapter -ComputerName $HostName -VMName $Script:VM.VMName -SwitchName $SwitchName -ErrorAction Stop
-        }
+        $cmdArgs.Add('ComputerName' ,$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if([System.String]::IsNullOrWhiteSpace($FilePath)){
-            $vmHost = Get-VMHost -CimSession $Script:Cim | Select-Object *
-            $FilePath = $vmHost.VirtualMachinePath
+        $cmdArgs.Add('CimSession' ,$Script:Cim)
+    }
+    
+    if([System.String]::IsNullOrWhiteSpace($FilePath)){
+        $vmHost = Get-VMHost @cmdArgs | Select-Object *
+        $FilePath = $vmHost.VirtualMachinePath
+    }
+    $cmdArgs.Add('Name', $VMName )
+    $cmdArgs.Add('MemoryStartupBytes', $StartupMemory )
+    $cmdArgs.Add('Generation', $Generation)
+    $cmdArgs.Add('BootDevice', $BootDevice)
+    $cmdArgs.Add('Path', $FilePath)
+    $cmdArgs.Add('Force', $null)
+    if(($PSBoundParameters.ContainsKey('NewVHDPath') -eq $true)  -and (-not [System.String]::IsNullOrWhiteSpace($NewVHDPath))){
+        if($NewVHDSize -lt 1048576){ # lower then 1 MB
+            $NewVHDSize = 1073741824 # default 1 GB
         }
-        if(($PSBoundParameters.ContainsKey('NewVHDPath') -eq $true)  -and (-not [System.String]::IsNullOrWhiteSpace($NewVHDPath))){
-            if($NewVHDSize -lt 1048576){ # lower then 1 MB
-                $NewVHDSize = 1073741824 # default 1 GB
-            }
-            $Script:VM = New-VM -CimSession $Script:Cim -Name $VMName -MemoryStartupBytes $StartupMemory -Generation $Generation -BootDevice $BootDevice `
-                                        -Path $FilePath -NewVHDPath $NewVHDPath -NewVHDSizeBytes $NewVHDSize -Force -ErrorAction Stop
-        }
-        elseif(($PSBoundParameters.ContainsKey('VHDPath') -eq $true)  -and (-not [System.String]::IsNullOrWhiteSpace($VHDPath))){
-            $Script:VM = New-VM -CimSession $Script:Cim -Name $VMName -MemoryStartupBytes $StartupMemory -Generation $Generation -BootDevice $BootDevice `
-                            -Path $FilePath -VHDPath $VHDPath -Force -ErrorAction Stop
+        $Script:VM = New-VM @cmdArgs -NewVHDPath $NewVHDPath -NewVHDSizeBytes $NewVHDSize
+    }
+    elseif(($PSBoundParameters.ContainsKey('VHDPath') -eq $true)  -and (-not [System.String]::IsNullOrWhiteSpace($VHDPath))){
+        $Script:VM = New-VM @cmdArgs -VHDPath $VHDPath
 
-        }
-        else{
-            $Script:VM = New-VM -CimSession $Script:Cim -Name $VMName -MemoryStartupBytes $StartupMemory -Generation $Generation -BootDevice $BootDevice `
-                            -Path $FilePath -NoVHD -Force -ErrorAction Stop
-            
-        }
-        if($PSBoundParameters.ContainsKey('SwitchName') -eq $true){
-            Connect-VMNetworkAdapter -CimSession $Script:Cim -VMName $Script:VM.VMName -SwitchName $SwitchName -ErrorAction Stop
-        }
-    }   
+    }
+    else{
+        $Script:VM = New-VM @cmdArgs -NoVHD        
+    }
+    $cmdArgs = @{'ErrorAction' = 'Stop'}
+    if($null -eq $AccessAccount){
+        $cmdArgs.Add('ComputerName' ,$HostName)
+    }
+    else {
+        $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
+        $cmdArgs.Add('CimSession' ,$Script:Cim)
+    }
+    if($PSBoundParameters.ContainsKey('SwitchName') -eq $true){
+        Connect-VMNetworkAdapter @cmdArgs -VMName $Script:VM.VMName -SwitchName $SwitchName
+    }       
+
     if($ProcessorCount -gt 1){
         Set-VM -VM $Script:VM -ProcessorCount $ProcessorCount -ErrorAction Stop
     }
@@ -221,12 +209,8 @@ try {
             Set-VMMemory -VM $Script:VM -MaximumBytes $MemoryMaximum -ErrorAction Stop
         }
     }
-    if($null -eq $Script:Cim){
-        $Script:output = Get-VM -ComputerName $HostName -Id $Script:VM.Id | Select-Object $Properties.Split(',')
-    }
-    else {
-        $Script:output = Get-VM -CimSession $Script:Cim -Id $Script:VM.Id | Select-Object $Properties.Split(',')
-    }
+    $Script:output = Get-VM @cmdArgs -Id $Script:VM.Id | Select-Object $Properties.Split(',')
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

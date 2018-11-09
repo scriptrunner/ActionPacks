@@ -110,63 +110,42 @@ try {
         $Script:remAddr = $NetworksToRemove.Split(',')
     }
     [string]$Properties="Name,VirtualMachineMigrationEnabled,MaximumVirtualMachineMigrations,UseAnyNetworkForMigration,VirtualMachineMigrationAuthenticationType,VirtualMachineMigrationPerformanceOption"
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        if($Action -eq 'Enable'){
-            Enable-VMMigration -ComputerName $HostName -ErrorAction Stop
-        }
-        else {
-            Disable-VMMigration -ComputerName $HostName-VMReplicationServer -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('MaxVirtualMachineMigrations') -eq $true ){
-            Set-VMHost -ComputerName $HostName -MaximumVirtualMachineMigrations $MaxVirtualMachineMigrations -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('EnableUseAnyNetworkForMigration') -eq $true ){
-            Set-VMHost -ComputerName $HostName -UseAnyNetworkForMigration $EnableUseAnyNetworkForMigration -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('VMMigrationAuthenticationType') -eq $true ){
-            Set-VMHost -ComputerName $HostName -VirtualMachineMigrationAuthenticationType $VMMigrationAuthenticationType -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('VMMigrationPerformanceOption') -eq $true ){
-            Set-VMHost -ComputerName $HostName -VirtualMachineMigrationPerformanceOption $VMMigrationPerformanceOption -ErrorAction Stop
-        }
-        foreach($mask in $Script:addAddr){
-            Add-VMMigrationNetwork -ComputerName $HostName -Subnet $mask -ErrorAction Stop
-        }
-        foreach($maskR in $Script:remAddr){
-            Remove-VMMigrationNetwork -ComputerName $HostName -Subnet $maskR -ErrorAction Stop
-        }
-        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
-        $Script:output += Get-VMMigrationNetwork -ComputerName $HostName | Select-Object *
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($Action -eq 'Enable'){
-            Enable-VMMigration -CimSession $Script:Cim -ErrorAction Stop
-        }
-        else {
-            Disable-VMMigration -CimSession $Script:Cim -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('MaxVirtualMachineMigrations') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -MaximumVirtualMachineMigrations $MaxVirtualMachineMigrations -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('EnableUseAnyNetworkForMigration') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -UseAnyNetworkForMigration $EnableUseAnyNetworkForMigration -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('VMMigrationAuthenticationType') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -VirtualMachineMigrationAuthenticationType $VMMigrationAuthenticationType -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('VMMigrationPerformanceOption') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -VirtualMachineMigrationPerformanceOption $VMMigrationPerformanceOption -ErrorAction Stop
-        }        
-        foreach($mask in $Script:addAddr){
-            Add-VMMigrationNetwork -CimSession $Script:Cim -Subnet $mask.Trim() -ErrorAction Stop
-        }
-        foreach($maskR in $Script:remAddr){
-            Remove-VMMigrationNetwork -CimSession $Script:Cim -Subnet $maskR.Trim() -ErrorAction Stop
-        }
-        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
-        $Script:output += Get-VMMigrationNetwork -CimSession $Script:Cim | Select-Object *
-    }         
+        $cmdArgs.Add('CimSession',$Script:Cim)
+    } 
+    
+    if($Action -eq 'Enable'){
+        Enable-VMMigration @cmdArgs
+    }
+    else {
+        Disable-VMMigration @cmdArgs
+    }
+    if($PSBoundParameters.ContainsKey('MaxVirtualMachineMigrations') -eq $true ){
+        Set-VMHost @cmdArgs -MaximumVirtualMachineMigrations $MaxVirtualMachineMigrations
+    }
+    if($PSBoundParameters.ContainsKey('EnableUseAnyNetworkForMigration') -eq $true ){
+        Set-VMHost @cmdArgs -UseAnyNetworkForMigration $EnableUseAnyNetworkForMigration
+    }
+    if($PSBoundParameters.ContainsKey('VMMigrationAuthenticationType') -eq $true ){
+        Set-VMHost @cmdArgs -VirtualMachineMigrationAuthenticationType $VMMigrationAuthenticationType
+    }
+    if($PSBoundParameters.ContainsKey('VMMigrationPerformanceOption') -eq $true ){
+        Set-VMHost @cmdArgs -VirtualMachineMigrationPerformanceOption $VMMigrationPerformanceOption
+    }        
+    foreach($mask in $Script:addAddr){
+        Add-VMMigrationNetwork @cmdArgs -Subnet $mask.Trim()
+    }
+    foreach($maskR in $Script:remAddr){
+        Remove-VMMigrationNetwork @cmdArgs -Subnet $maskR.Trim()
+    }
+    $Script:output = Get-VMHost @cmdArgs | Select-Object $Properties.Split(',')
+    $Script:output += Get-VMMigrationNetwork @cmdArgs | Select-Object *
+            
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

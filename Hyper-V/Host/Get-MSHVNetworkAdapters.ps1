@@ -83,23 +83,22 @@ try {
             }
         }
     }
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        if($true -eq $All){
-            $Script:adapters = Get-VMNetworkAdapter -ComputerName $HostName -All -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
-        else {
-            $Script:adapters = Get-VMNetworkAdapter -ComputerName $HostName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($true -eq $All){
-            $Script:adapters = Get-VMNetworkAdapter -CimSession $Script:Cim -All -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
-        else {
-            $Script:adapters = Get-VMNetworkAdapter -CimSession $Script:Cim -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
+        $cmdArgs.Add('CimSession',$Script:Cim)
     }     
+    if($true -eq $All){
+        $cmdArgs.Add('All',$null)
+    }
+    else {        
+        $cmdArgs.Add('ManagementOS',$null)
+    }
+    $Script:adapters = Get-VMNetworkAdapter @cmdArgs | Select-Object $Properties.Split(',')    
     if($null -ne $Script:adapters){
         if($true -eq $IncludeVlanProperties){
             ForEach($ada in $Script:adapters){
@@ -119,6 +118,7 @@ try {
             $Script:output = $Script:adapters
         }      
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

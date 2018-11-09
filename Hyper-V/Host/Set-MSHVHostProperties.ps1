@@ -84,43 +84,32 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }   
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        if($PSBoundParameters.ContainsKey('PathVirtualHardDisks') -eq $true ){
-            Set-VMHost -ComputerName $HostName -VirtualHardDiskPath $PathVirtualHardDisks -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('PathVirtualMachines') -eq $true ){
-            Set-VMHost -ComputerName $HostName -VirtualMachinePath $PathVirtualMachines -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('EnableNumaSpanning') -eq $true ){
-            Set-VMHost -ComputerName $HostName -NumaSpanningEnabled $EnableNumaSpanning -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('MaximumStorageMigrations') -eq $true ){
-            Set-VMHost -ComputerName $HostName -MaximumStorageMigrations $MaximumStorageMigrations -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('EnableEnhancedSessionMode') -eq $true ){
-            Set-VMHost -ComputerName $HostName -EnableEnhancedSessionMode $EnableEnhancedSessionMode -ErrorAction Stop
-        }
-        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($PSBoundParameters.ContainsKey('PathVirtualHardDisks') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -VirtualHardDiskPath $PathVirtualHardDisks -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('PathVirtualMachines') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -VirtualMachinePath $PathVirtualMachines -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('EnableNumaSpanning') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -NumaSpanningEnabled $EnableNumaSpanning -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('MaximumStorageMigrations') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -MaximumStorageMigrations $MaximumStorageMigrations -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('EnableEnhancedSessionMode') -eq $true ){
-            Set-VMHost -CimSession $Script:Cim -EnableEnhancedSessionMode $EnableEnhancedSessionMode -ErrorAction Stop
-        }
-        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
-    }     
+        $cmdArgs.Add('CimSession',$Script:Cim)
+    } 
+    
+    if($PSBoundParameters.ContainsKey('PathVirtualHardDisks') -eq $true ){
+        Set-VMHost @cmdArgs -VirtualHardDiskPath $PathVirtualHardDisks
+    }
+    if($PSBoundParameters.ContainsKey('PathVirtualMachines') -eq $true ){
+        Set-VMHost @cmdArgs -VirtualMachinePath $PathVirtualMachines
+    }
+    if($PSBoundParameters.ContainsKey('EnableNumaSpanning') -eq $true ){
+        Set-VMHost @cmdArgs -NumaSpanningEnabled $EnableNumaSpanning
+    }
+    if($PSBoundParameters.ContainsKey('MaximumStorageMigrations') -eq $true ){
+        Set-VMHost @cmdArgs -MaximumStorageMigrations $MaximumStorageMigrations
+    }
+    if($PSBoundParameters.ContainsKey('EnableEnhancedSessionMode') -eq $true ){
+        Set-VMHost @cmdArgs -EnableEnhancedSessionMode $EnableEnhancedSessionMode
+    }
+    $Script:output = Get-VMHost @cmdArgs | Select-Object $Properties.Split(',')
+        
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

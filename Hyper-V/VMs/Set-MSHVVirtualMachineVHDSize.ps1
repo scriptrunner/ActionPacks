@@ -82,19 +82,24 @@ param(
 Import-Module Hyper-V
 
 try {
+    $Script:output = @()    
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }    
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        $Script:VM = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
+        $cmdArgs.Add('ComputerName', $HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
-    }        
+        $cmdArgs.Add('CimSession', $Script:Cim)
+    }           
+    
+    $Script:VM = Get-VM @cmdArgs | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
+            
     if($null -ne $Script:VM){
         if($ControllerType -eq "SCSI"){
             $Script:drvs = Get-VMScsiController -VM $Script:VM -ControllerNumber $ControllerNumber -ErrorAction Stop | Select-Object drives
@@ -102,30 +107,23 @@ try {
         else {
             $Script:drvs = Get-VMIdeController -VM $Script:VM -ControllerNumber $ControllerNumber -ErrorAction Stop | Select-Object drives
         }
+        $cmdArgs.Add('Path','')
+        $getArgs = $cmdArgs.Clone()             
+        if($ResizeToMinimumSize -eq $true){
+            $cmdArgs.Add('ToMinimumSize',$null)
+        }
+        else {
+            $cmdArgs.Add('SizeBytes',$SizeofVHD)
+        }
         foreach($drive in $Script:drvs.Drives){
             if($drive.ControllerLocation -eq $ControllerLocation){
-                if($ResizeToMinimumSize -eq $true){
-                    if($null -eq $AccessAccount){
-                        Resize-VHD -ComputerName $HostName -Path $drive.Path -ToMinimumSize -ErrorAction Stop 
-                        $Script:output = Get-VHD -ComputerName $HostName -Path $drive.Path | Select-Object *
-                    }
-                    else {
-                        Resize-VHD -CimSession $Script:Cim -Path $drive.Path -ToMinimumSize -ErrorAction Stop 
-                        $Script:output = Get-VHD -CimSession $Script:Cim -Path $drive.Path | Select-Object *
-                    }
-                }
-                else {
-                    if($null -eq $AccessAccount){
-                        Resize-VHD -ComputerName $HostName -Path $drive.Path -SizeBytes $SizeofVHD -ErrorAction Stop 
-                        $Script:output = Get-VHD -ComputerName $HostName -Path $drive.Path | Select-Object *
-                    }
-                    else{
-                        Resize-VHD -CimSession $Script:Cim -Path $drive.Path -SizeBytes $SizeofVHD -ErrorAction Stop 
-                        $Script:output = Get-VHD -CimSession $Script:Cim -Path $drive.Path | Select-Object *
-                    }
-                }
+                $cmdArgs['Path'] = $drive.Path
+                $getArgs['Path'] = $drive.Path
+                Resize-VHD @cmdArgs 
+                $Script:output += Get-VHD @getArgs | Select-Object *
             }
         }
+
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output
         }    

@@ -67,13 +67,17 @@ try {
     if([System.String]::IsNullOrWhiteSpace($Properties)){
         $Properties='*'
     }     
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        $Script:output = Get-VMSwitch -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.Name -eq $SwitchName -or $_.ID -eq $SwitchName} | Select-Object $Properties.Split(',')
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        $Script:output = Get-VMSwitch -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.Name -eq $SwitchName -or $_.ID -eq $SwitchName}  | Select-Object $Properties.Split(',')
-    }     
+        $cmdArgs.Add('CimSession',$Script:Cim)
+    } 
+    $Script:output = Get-VMSwitch @cmdArgs | Where-Object {$_.Name -eq $SwitchName -or $_.ID -eq $SwitchName} | Select-Object $Properties.Split(',')
+    
     if($null -ne $Script:output){
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output

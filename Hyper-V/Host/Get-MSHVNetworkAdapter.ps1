@@ -89,23 +89,21 @@ try {
             }
         }
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'ManagementOS' = $null
+                            'Name' = $AdapterName
+                            }
     if($null -eq $AccessAccount){
-        if([System.String]::IsNullOrWhiteSpace($SwitchName)){
-            $Script:adapter = Get-VMNetworkAdapter -ComputerName $HostName -Name $AdapterName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
-        else {
-            $Script:adapter = Get-VMNetworkAdapter -ComputerName $HostName -ManagementOS -Name $AdapterName -SwitchName $SwitchName -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if([System.String]::IsNullOrWhiteSpace($SwitchName)){
-            $Script:adapter = Get-VMNetworkAdapter -CimSession $Script:Cim -Name $AdapterName -ManagementOS -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
-        else {
-            $Script:adapter = Get-VMNetworkAdapter -CimSession $Script:Cim -ManagementOS -Name $AdapterName -SwitchName $SwitchName -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
+        $cmdArgs.Add('CimSession',$Script:Cim)
     }     
+    if([System.String]::IsNullOrWhiteSpace($SwitchName) -eq $false){
+        $cmdArgs.Add('SwitchName', $SwitchName)
+    }
+    $Script:adapter = Get-VMNetworkAdapter @cmdArgs | Select-Object $Properties.Split(',')
     if($null -ne $Script:adapter){
         $Script:output += $Script:adapter
         if($true -eq $IncludeVlanProperties){

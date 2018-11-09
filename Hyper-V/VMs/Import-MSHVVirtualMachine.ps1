@@ -93,89 +93,34 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Path' = $Path 
+                            }
     if($null -eq $AccessAccount){
-        if($Register -eq $true){
-            Import-VM -ComputerName $HostName -Path $Path -Register -ErrorAction Stop
-        }
-        elseif(($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true) -and 
-            ($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true) -and
-            ($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true)){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VirtualMachinePath $VirtualMachinePath -SnapshotFilePath $SnapshotFilePath -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop
-        } 
-        elseif(($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true) -and 
-            ($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true)){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -SnapshotFilePath $SnapshotFilePath -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop
-        } 
-        elseif(($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true) -and 
-                ($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true)){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VirtualMachinePath $VirtualMachinePath  -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop
-        } 
-        elseif(($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true) -and 
-                ($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true)){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -SnapshotFilePath $SnapshotFilePath -VirtualMachinePath $VirtualMachinePath -ErrorAction Stop
-        } 
-        elseif($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -SnapshotFilePath $SnapshotFilePath -ErrorAction Stop
-        } 
-        elseif($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VirtualMachinePath $VirtualMachinePath -ErrorAction Stop
-        } 
-        elseif($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true){
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop
-        }            
-        else{
-            Import-VM -ComputerName $HostName -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId  -ErrorAction Stop
-        }
+        $cmdArgs.Add('ComputerName', $HostName)
     }
     else {
-        $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount        
-        if($Register -eq $true){
-            Import-VM -CimSession $Script:Cim -Path $Path -Register -ErrorAction Stop
-        }
-        elseif(($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true) -and 
-            ($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true) -and
-            ($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true)){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VirtualMachinePath $VirtualMachinePath -SnapshotFilePath $SnapshotFilePath -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
+        $cmdArgs.Add('CimSession', $Script:Cim)
+    }
+
+    if($Register -eq $true){
+        Import-VM @cmdArgs -Register
+    }
+    else {
+        $cmdArgs.Add('GenerateNewId', $GenerateNewId)
+        if($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true){
+            $cmdArgs.Add('SnapshotFilePath', $SnapshotFilePath)
         } 
-        elseif(($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true) -and 
-            ($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true)){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -SnapshotFilePath $SnapshotFilePath -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop                
+        if($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true){
+            $cmdArgs.Add('VirtualMachinePath', $VirtualMachinePath)
         } 
-        elseif(($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true) -and 
-                ($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true)){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VirtualMachinePath $VirtualMachinePath  -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop             
-        } 
-        elseif(($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true) -and 
-                ($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true)){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -SnapshotFilePath $SnapshotFilePath -VirtualMachinePath $VirtualMachinePath -ErrorAction Stop             
-        } 
-        elseif($PSBoundParameters.ContainsKey('SnapshotFilePath') -eq $true){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -SnapshotFilePath $SnapshotFilePath -ErrorAction Stop
-        } 
-        elseif($PSBoundParameters.ContainsKey('VirtualMachinePath') -eq $true){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VirtualMachinePath $VirtualMachinePath -ErrorAction Stop
-        } 
-        elseif($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true){
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId `
-                    -VhdDestinationPath $VhdDestinationPath -ErrorAction Stop
-        }            
-        else{
-            Import-VM -CimSession $Script:Cim -Path $Path -Copy:$Copy -GenerateNewId:$GenerateNewId -ErrorAction Stop
-        }
-    }     
+        if($PSBoundParameters.ContainsKey('VhdDestinationPath') -eq $true){
+            $cmdArgs.Add('VhdDestinationPath', $VhdDestinationPath)
+        }  
+        Import-VM @cmdArgs        
+    }        
+       
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Virtual machine imported from $($Path)"
     }    

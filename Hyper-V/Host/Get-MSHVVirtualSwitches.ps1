@@ -67,24 +67,21 @@ try {
     }
     if([System.String]::IsNullOrWhiteSpace($Properties)){
         $Properties='*'
-    }     
+    }  
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        if($SwitchType -eq 'All'){
-            $Script:output = Get-VMSwitch -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
-        else {
-            $Script:output = Get-VMSwitch -ComputerName $HostName -SwitchType $SwitchType -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($SwitchType -eq 'All'){
-            $Script:output = Get-VMSwitch -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
-        else {
-            $Script:output = Get-VMSwitch -CimSession $Script:Cim -SwitchType $SwitchType -ErrorAction Stop | Select-Object $Properties.Split(',')
-        }
+        $cmdArgs.Add('CimSession',$Script:Cim)
     }     
+    if($SwitchType -ne 'All'){
+        $cmdArgs.Add('SwitchType',$SwitchType)
+    }    
+    $Script:output = Get-VMSwitch @cmdArgs | Select-Object $Properties.Split(',')
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

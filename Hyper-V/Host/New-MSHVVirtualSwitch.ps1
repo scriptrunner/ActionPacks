@@ -93,26 +93,34 @@ try {
     if([System.String]::IsNullOrWhiteSpace($Properties)){
         $Properties='*'
     }     
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Name' = $SwitchName   
+                            'Notes' = $Notes 
+                            'EnableIov' = $EnableIov         
+                            }
+    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
+                            'Name' = $SwitchName  
+                            } 
     if($null -eq $AccessAccount){
-        if($SwitchType -ne 'External'){
-            $Script:switch = New-VMSwitch -ComputerName $HostName -Name $SwitchName -SwitchType $SwitchType -Notes $Notes -EnableIov $EnableIov -ErrorAction Stop
-        }
-        else {
-            $Script:switch = New-VMSwitch -ComputerName $HostName -Name $SwitchName -NetAdapterName $NetAdapterName -Notes $Notes -AllowManagementOS $AllowManagementOS -EnableIov $EnableIov -ErrorAction Stop
-        }
-        $Script:output = Get-VMSwitch -ComputerName $HostName -Name $SwitchName -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $cmdArgs.Add('ComputerName',$HostName)
+        $getArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($SwitchType -ne 'External'){
-            $Script:switch = New-VMSwitch -CimSession $Script:Cim -Name $SwitchName -SwitchType $SwitchType -Notes $Notes -EnableIov $EnableIov -ErrorAction Stop
-        }
-        else {
-            $Script:switch = New-VMSwitch -CimSession $Script:Cim -Name $SwitchName -NetAdapterName $NetAdapterName -Notes $Notes -AllowManagementOS $AllowManagementOS -EnableIov $EnableIov -ErrorAction Stop
-        }
-        $Script:output = Get-VMSwitch -CimSession $Script:Cim -Name $SwitchName -ErrorAction Stop | Select-Object $Properties.Split(',')
-
-    }   
+        $cmdArgs.Add('CimSession',$Script:Cim)
+        $getArgs.Add('CimSession',$Script:Cim)
+    }  
+    if($SwitchType -ne 'External'){
+        $cmdArgs.Add('SwitchType',$SwitchType)
+    }
+    else {
+        $cmdArgs.Add('NetAdapterName', $NetAdapterName)
+        $cmdArgs.Add('AllowManagementOS', $AllowManagementOS)
+    }
+    $Script:switch = New-VMSwitch @cmdArgs        
+    $Script:output = Get-VMSwitch @getArgs | Select-Object $Properties.Split(',')
+  
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

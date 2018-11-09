@@ -99,55 +99,41 @@ try {
         $HostName = "."
     }    
     [string]$Properties="ReplicationEnabled,AllowedAuthenticationType,KerberosAuthenticationPort,CertificateAuthenticationPort,AllowAnyServer,ReplicationAllowedFromAnyServer,DefaultStorageLocation,StatusDescriptions"
-    if($null -eq $AccessAccount){        
-        if($Action -eq "Enable"){
-            Set-VMReplicationServer -ComputerName $HostName -ReplicationEnabled $true -AllowedAuthenticationType $AuthenticationType -ErrorAction Stop
-        }
-        else {
-            Set-VMReplicationServer -ComputerName $HostName -ReplicationEnabled $false -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('KerberosAuthenticationPort') -eq $true ){
-            Set-VMReplicationServer -ComputerName $HostName -KerberosAuthenticationPort $KerberosAuthenticationPort -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('CertificateAuthenticationPort') -eq $true ){
-            Set-VMReplicationServer -ComputerName $HostName -CertificateAuthenticationPort $CertificateAuthenticationPort -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('Certificate') -eq $true ){
-            Set-VMReplicationServer -ComputerName $HostName -CertificateThumbprint $Certificate -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('AllowedFromAnyServer') -eq $true ){
-            Set-VMReplicationServer -ComputerName $HostName -ReplicationAllowedFromAnyServer $AllowedFromAnyServer -DefaultStorageLocation $DefaultStorageLocation -Force -ErrorAction Stop
-        }
-        elseif($PSBoundParameters.ContainsKey('DefaultStorageLocation') -eq $true ){
-            Set-VMReplicationServer -ComputerName $HostName -DefaultStorageLocation $DefaultStorageLocation -Force -ErrorAction Stop
-        }
-        $Script:output = Get-VMReplicationServer -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Force' = $null    
+                            }
+    if($null -eq $AccessAccount){
+        $cmdArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($Action -eq "Enable"){
-            Set-VMReplicationServer -CimSession $Script:Cim -ReplicationEnabled $true -AllowedAuthenticationType $AuthenticationType -Force #-ErrorAction Stop
-        }
-        else {
-            Set-VMReplicationServer -CimSession $Script:Cim -ReplicationEnabled $false -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('KerberosAuthenticationPort') -eq $true ){
-            Set-VMReplicationServer -CimSession $Script:Cim -KerberosAuthenticationPort $KerberosAuthenticationPort -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('CertificateAuthenticationPort') -eq $true ){
-            Set-VMReplicationServer -CimSession $Script:Cim -CertificateAuthenticationPort $CertificateAuthenticationPort -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('Certificate') -eq $true ){
-            Set-VMReplicationServer -CimSession $Script:Cim -CertificateThumbprint $Certificate -Force -ErrorAction Stop
-        }
-        if($PSBoundParameters.ContainsKey('AllowedFromAnyServer') -eq $true ){
-            Set-VMReplicationServer -CimSession $Script:Cim -ReplicationAllowedFromAnyServer $AllowedFromAnyServer -DefaultStorageLocation $DefaultStorageLocation -Force -ErrorAction Stop
-        }
-        elseif($PSBoundParameters.ContainsKey('DefaultStorageLocation') -eq $true ){
-            Set-VMReplicationServer -CimSession $Script:Cim -DefaultStorageLocation $DefaultStorageLocation -Force -ErrorAction Stop
-        }
-        $Script:output = Get-VMReplicationServer -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
-    }         
+        $cmdArgs.Add('CimSession',$Script:Cim)
+    } 
+    
+    if($Action -eq "Enable"){
+        Set-VMReplicationServer @cmdArgs -ReplicationEnabled $true -AllowedAuthenticationType $AuthenticationType
+    }
+    else {
+        Set-VMReplicationServer @cmdArgs -ReplicationEnabled $false
+    }
+    if($PSBoundParameters.ContainsKey('KerberosAuthenticationPort') -eq $true ){
+        Set-VMReplicationServer @cmdArgs -KerberosAuthenticationPort $KerberosAuthenticationPort
+    }
+    if($PSBoundParameters.ContainsKey('CertificateAuthenticationPort') -eq $true ){
+        Set-VMReplicationServer @cmdArgs -CertificateAuthenticationPort $CertificateAuthenticationPort
+    }
+    if($PSBoundParameters.ContainsKey('Certificate') -eq $true ){
+        Set-VMReplicationServer @cmdArgs -CertificateThumbprint $Certificate
+    }
+    if($PSBoundParameters.ContainsKey('AllowedFromAnyServer') -eq $true ){
+        Set-VMReplicationServer @cmdArgs -ReplicationAllowedFromAnyServer $AllowedFromAnyServer -DefaultStorageLocation $DefaultStorageLocation
+    }
+    elseif($PSBoundParameters.ContainsKey('DefaultStorageLocation') -eq $true ){
+        Set-VMReplicationServer @cmdArgs -DefaultStorageLocation $DefaultStorageLocation
+    }
+    $cmdArgs.Remove('Force')
+    $Script:output = Get-VMReplicationServer @cmdArgs | Select-Object $Properties.Split(',')
+             
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

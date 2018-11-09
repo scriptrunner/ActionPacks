@@ -60,25 +60,22 @@ try {
         $HostName = "."
     }    
     [string]$Properties="Name,EnableEnhancedSessionMode,MemoryCapacity,LogicalProcessorCount,MacAddressMinimum,MacAddressMaximum"
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
+    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
-        if($Action -eq 'Enable'){
-            Set-VMHost -ComputerName $HostName -EnableEnhancedSessionMode $true -ErrorAction Stop
-        }
-        else {
-            Set-VMHost -ComputerName $HostName -EnableEnhancedSessionMode $false -ErrorAction Stop
-        }
-        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $cmdArgs.Add('ComputerName',$HostName)
+        $getArgs.Add('ComputerName',$HostName)
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        if($Action -eq 'Enable'){
-            Set-VMHost -CimSession $Script:Cim -EnableEnhancedSessionMode $true -ErrorAction Stop
-        }
-        else {
-            Set-VMHost -CimSession $Script:Cim -EnableEnhancedSessionMode $false -ErrorAction Stop
-        }
-        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
-    }         
+        $cmdArgs.Add('CimSession',$Script:Cim)
+        $getArgs.Add('CimSession',$Script:Cim)
+    } 
+    $cmdArgs.Add('EnableEnhancedSessionMode', ($Action -eq 'Enable'))
+
+    Set-VMHost @cmdArgs
+    $Script:output = Get-VMHost @getArgs | Select-Object $Properties.Split(',')
+             
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }    

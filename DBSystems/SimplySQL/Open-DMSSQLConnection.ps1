@@ -51,12 +51,15 @@ Param(
 Import-Module SimplySQL
 
 try{
-    if($null -eq $SQLCredential){
-        $Script:output = Open-SqlConnection -Server $ServerName -Database $DatabaseName -CommandTimeout $CommandTimeout -ConnectionName $ConnectionName -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'ConnectionName' = $ConnectionName
+                            'Server' = $ServerName
+                            'CommandTimeout' = $CommandTimeout
+                            'Database' = $DatabaseName}
+    if($null -ne $SQLCredential){
+        $cmdArgs.Add("Credential", $SQLCredential)
     }
-    else{
-        $Script:output = Open-SqlConnection -Server $ServerName -Database $DatabaseName -CommandTimeout $CommandTimeout -Credential $SQLCredential -ConnectionName $ConnectionName -ErrorAction Stop
-    }
+    $Script:output = Open-SqlConnection @cmdArgs
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

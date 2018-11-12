@@ -161,38 +161,23 @@ try{
         }
     }
     else {
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
+        if($ProcessID -le 0){
+            $cmdArgs.Add('Name', $ProcessName)
+        }
+        else {
+            $cmdArgs.Add('ID', $ProcessID)
+        }
         if($IncludeUserName -eq $true){
-            if($ProcessID -le 0){
-                $Script:output = Get-Process -Name $ProcessName -IncludeUserName | Select-Object $Script:props
-            }
-            else {
-                $Script:output = Get-Process -ID $ProcessID -IncludeUserName | Select-Object $Script:props
-            }
+            $cmdArgs.Add('IncludeUserName',$null)            
         }
         elseif($FileVersionInfo -eq $true){
-            if($ProcessID -le 0){
-                $Script:output = Get-Process -Name $ProcessName -FileVersionInfo | Select-Object $Script:props
-            }
-            else {
-                $Script:output = Get-Process -ID $ProcessID -FileVersionInfo | Select-Object $Script:props
-            }
+            $cmdArgs.Add('FileVersionInfo',$null)
         }
         elseif($Module -eq $true){
-            if($ProcessID -le 0){
-                $Script:output = Get-Process -Name $ProcessName -Module | Select-Object $Script:props
-            }
-            else {
-                $Script:output = Get-Process -ID $ProcessID -Module | Select-Object $Script:props
-            }
+            $cmdArgs.Add('Module',$null)
         }
-        else{
-            if($ProcessID -le 0){
-                $Script:output = Get-Process -Name $ProcessName | Select-Object $Script:props
-            }
-            else {
-                $Script:output = Get-Process -ID $ProcessID | Select-Object $Script:props
-            }
-        }
+        $Script:output = Get-Process @cmdArgs | Select-Object $Script:props
     }
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

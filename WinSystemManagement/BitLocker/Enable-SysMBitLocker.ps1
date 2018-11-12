@@ -185,50 +185,51 @@ try{
     [string[]]$Properties = @("MountPoint","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'MountPoint' = $DriveLetter
+                                'EncryptionMethod' = $EncryptionMethod
+                                'HardwareEncryption' = $HardwareEncryption.ToBool()
+                                'SkipHardwareTest' = $SkipHardwareTest.ToBool()
+                                'UsedSpaceOnly' = $UsedSpaceOnly.ToBool()
+                                'Confirm' = $false}
         if($PSCmdlet.ParameterSetName -eq "AdAccountOrGroupProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod  -Confirm:$false `
-                -AdAccountOrGroup $AdAccountOrGroup -AdAccountOrGroupProtector `
-                -Service:$Service -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('AdAccountOrGroup', $AdAccountOrGroup)
+            $cmdArgs.Add('AdAccountOrGroupProtector', $null)
+            $cmdArgs.Add('Service', $Service)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod  -Confirm:$false -TpmProtector  `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('TpmProtector', $null)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -TpmAndPinProtector -Pin $Pin  `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('TpmAndPinProtector', $null)
+            $cmdArgs.Add('Pin', $Pin)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndStartupKeyProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -TpmAndStartupKeyProtector -StartupKeyPath $StartupKeyPath `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('TpmAndStartupKeyProtector', $null)
+            $cmdArgs.Add('StartupKeyPath', $StartupKeyPath)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -TpmAndPinAndStartupKeyProtector -Pin $Pin -StartupKeyPath $StartupKeyPath `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('TpmAndPinAndStartupKeyProtector', $null)
+            $cmdArgs.Add('Pin', $Pin)
+            $cmdArgs.Add('StartupKeyPath', $StartupKeyPath)
         }
         elseif($PSCmdlet.ParameterSetName -eq "StartupKeyProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -StartupKeyProtector -StartupKeyPath $StartupKeyPath `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('StartupKeyProtector', $null)
+            $cmdArgs.Add('StartupKeyPath', $StartupKeyPath)
         }
         elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -PasswordProtector -Password $Password `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('PasswordProtector', $null)
+            $cmdArgs.Add('Password', $Password)
         }
         elseif($PSCmdlet.ParameterSetName -eq "RecoveryPasswordProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -RecoveryPasswordProtector -RecoveryPassword $RecoveryPassword `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('RecoveryPasswordProtector', $null)
+            $cmdArgs.Add('RecoveryPassword', $RecoveryPassword)
         }
         elseif($PSCmdlet.ParameterSetName -eq "RecoveryKeyProtector"){
-            Enable-BitLocker -MountPoint $DriveLetter -EncryptionMethod $EncryptionMethod -Confirm:$false `
-                -RecoveryKeyProtector -RecoveryKeyPath $RecoveryKeyPath `
-                -HardwareEncryption:$HardwareEncryption -SkipHardwareTest$SkipHardwareTest -UsedSpaceOnly:$UsedSpaceOnly -ErrorAction Stop
+            $cmdArgs.Add('RecoveryKeyProtector', $null)
+            $cmdArgs.Add('RecoveryKeyPath', $RecoveryKeyPath)
         }
+        Enable-BitLocker @cmdArgs
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }
     else {

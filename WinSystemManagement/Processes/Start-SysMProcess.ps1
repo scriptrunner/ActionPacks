@@ -65,51 +65,26 @@ try{
     if([System.String]::IsNullOrWhiteSpace($WorkingDirectory) -eq $true){
         $WorkingDirectory = " "
     }
-    
-    if([System.String]::IsNullOrWhiteSpace($Verb) -eq $true){
-        if($null -eq $AccessAccount){
-            if($NoNewWindow -eq $false){
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList `
-                    -WorkingDirectory $WorkingDirectory -WindowStyle $WindowStyle -PassThru -ErrorAction Stop
-            }
-            else {
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList `
-                    -WorkingDirectory $WorkingDirectory -NoNewWindow -PassThru -ErrorAction Stop
-            }
-        }
-        else {
-            if($NoNewWindow -eq $false){
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList -Credential $AccessAccount `
-                    -WorkingDirectory $WorkingDirectory -WindowStyle $WindowStyle -PassThru -ErrorAction Stop
-            }
-            else {
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList -Credential $AccessAccount `
-                    -WorkingDirectory $WorkingDirectory -NoNewWindow -PassThru -ErrorAction Stop
-            }
-        }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'PassThru' = $null
+                            'WorkingDirectory' = $WorkingDirectory
+                            'FilePath' = $FilePath
+                            'ArgumentList' = $ArgumentList
+                            }
+    if([System.String]::IsNullOrWhiteSpace($Verb) -eq $false){
+        $cmdArgs.Add('Verb', $Verb)
+    }
+    if($null -ne $AccessAccount){
+        $cmdArgs.Add('Credential' ,$AccessAccount)
+    }
+    if($NoNewWindow -eq $false){
+        $cmdArgs.Add('WindowStyle', $WindowStyle)
     }
     else {
-        if($null -eq $AccessAccount){
-            if($NoNewWindow -eq $false){
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList -Verb $Verb `
-                    -WorkingDirectory $WorkingDirectory -WindowStyle $WindowStyle -PassThru -ErrorAction Stop
-            }
-            else {
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList -Verb $Verb `
-                    -WorkingDirectory $WorkingDirectory -NoNewWindow -PassThru -ErrorAction Stop
-            }
-        }
-        else {
-            if($NoNewWindow -eq $false){
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList -Verb $Verb -Credential $AccessAccount `
-                    -WorkingDirectory $WorkingDirectory -WindowStyle $WindowStyle -PassThru -ErrorAction Stop
-            }
-            else {
-                $Script:process = Start-Process -FilePath $FilePath -ArgumentList $ArgumentList -Verb $Verb -Credential $AccessAccount `
-                    -WorkingDirectory $WorkingDirectory -NoNewWindow -PassThru -ErrorAction Stop
-            }
-        }
+        $cmdArgs.Add('NoNewWindow',$null)
     }
+        
+    $Script:process = Start-Process @cmdArgs
     $Script:output = Get-Process -ID $Script:process.ID -IncludeUserName | Select-Object $Properties
 
     if($SRXEnv) {

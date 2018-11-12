@@ -57,40 +57,22 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     }   
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'ComputerName' = $ComputerName 
+                            'Source' = $SourceName
+                            'LogName' = $LogName
+                            }
     if(-not [System.String]::IsNullOrWhiteSpace($CategoryResourceFile)){
-        if((-not [System.String]::IsNullOrWhiteSpace($MessageResourceFile)) -and `
-            (-not [System.String]::IsNullOrWhiteSpace($ParameterResourceFile))){
-                New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName -CategoryResourceFile $CategoryResourceFile `
-                    -ParameterResourceFile $ParameterResourceFile -MessageResourceFile $MessageResourceFile -ErrorAction Stop 
-        }    
-        elseif(-not [System.String]::IsNullOrWhiteSpace($MessageResourceFile)){
-            New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName `
-                -CategoryResourceFile $CategoryResourceFile  -MessageResourceFile $MessageResourceFile -ErrorAction Stop 
-        }
-        elseif(-not [System.String]::IsNullOrWhiteSpace($ParameterResourceFile)){
-            New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName `
-                -ParameterResourceFile $ParameterResourceFile -CategoryResourceFile $CategoryResourceFile -ErrorAction Stop 
-        }
-        else {
-            New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName `
-                -CategoryResourceFile $CategoryResourceFile -ErrorAction Stop 
-        }
+        $cmdArgs.Add('CategoryResourceFile', $CategoryResourceFile)
     }
-    elseif(-not [System.String]::IsNullOrWhiteSpace($MessageResourceFile)){
-        if(-not [System.String]::IsNullOrWhiteSpace($ParameterResourceFile)){
-            New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName `
-                -ParameterResourceFile $ParameterResourceFile -MessageResourceFile $MessageResourceFile -ErrorAction Stop    
-        }
-        else {
-            New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName -MessageResourceFile $MessageResourceFile -ErrorAction Stop    
-        }
+    if(-not [System.String]::IsNullOrWhiteSpace($MessageResourceFile)){
+        $cmdArgs.Add('MessageResourceFile', $MessageResourceFile)
     }
-    elseif(-not [System.String]::IsNullOrWhiteSpace($ParameterResourceFile)){
-        New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName -ParameterResourceFile $ParameterResourceFile -ErrorAction Stop
+    if(-not [System.String]::IsNullOrWhiteSpace($ParameterResourceFile)){
+        $cmdArgs.Add('ParameterResourceFile', $ParameterResourceFile)
     }
-    else{   
-        New-EventLog -ComputerName $ComputerName -Source $SourceName -LogName $LogName -ErrorAction Stop
-    }    
+    New-EventLog @cmdArgs
+
     $Script:output = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $LogName  | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

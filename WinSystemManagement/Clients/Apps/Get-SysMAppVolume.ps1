@@ -51,15 +51,18 @@ try{
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                }
         if($Online -eq $true){
-            $Script:output = Get-AppxVolume -Online -ErrorAction Stop | Format-List
+            $cmdArgs.Add('Online',$null)
         }
         elseif($Offline -eq $true){
-            $Script:output = Get-AppxVolume -Offline -ErrorAction Stop | Format-List
+            $cmdArgs.Add('Offline',$null)
         }
         else {
-            $Script:output = Get-AppxVolume -Path $Path -ErrorAction Stop | Format-List
+            $cmdArgs.Add('Path',$Path)
         }
+        $Script:output = Get-AppxVolume @cmdArgs | Format-List
     }
     else {
         if($null -eq $AccessAccount){

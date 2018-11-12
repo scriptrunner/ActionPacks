@@ -52,15 +52,14 @@ try{
     [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
         if($LastStatus -eq $true){
-            $Script:output = Get-ComputerRestorePoint -LastStatus -ErrorAction Stop
+            $cmdArgs.Add('LastStatus',$null)
         }
         elseif ($RestorePointID -gt 0) {
-            $Script:output = Get-ComputerRestorePoint -RestorePoint $RestorePointID -ErrorAction Stop | Select-Object $Script:props
+            $cmdArgs.Add('RestorePoint',$RestorePoint)
         }
-        else {
-            $Script:output = Get-ComputerRestorePoint -ErrorAction Stop | Select-Object $Script:props
-        }
+        $Script:output = Get-ComputerRestorePoint @cmdArgs | Select-Object $Script:props
     }
     else {
         if($null -eq $AccessAccount){

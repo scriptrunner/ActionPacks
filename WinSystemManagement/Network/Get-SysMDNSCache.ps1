@@ -58,37 +58,20 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'CimSession' = $Script:Cim
+    }
     if($Section -ne "None"){
-        if($Status -ne "None"){
-            if($Type -ne "None"){
-                $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Section $Section -Status $Status -Type $Type -ErrorAction Stop
-            }
-            else{
-                $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Section $Section -Status $Status -ErrorAction Stop
-            }
-        }
-        elseif($Type -ne "None"){
-            $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Section $Section -Type $Type -ErrorAction Stop
-        }
-        else{
-            $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Section $Section -ErrorAction Stop
-        }
+        $cmdArgs.Add('Section', $Section)
     }
-    elseif($Status -ne "None"){
-        if($Type -ne "None"){
-            $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Status $Status -Type $Type -ErrorAction Stop
-        }
-        else{
-            $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Status $Status -ErrorAction Stop
-        }
+    if($Status -ne "None"){
+        $cmdArgs.Add('Status', $Status)
     }
-    elseif($Type -ne "None"){
-        $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -Type $Type -ErrorAction Stop
+    if($Type -ne "None"){
+        $cmdArgs.Add('Type', $Type)
     }
-    else
-    {
-        $Script:Msg = Get-DnsClientcache -CimSession $Script:Cim -ErrorAction Stop
-    }
+    $Script:Msg = Get-DnsClientcache @cmdArgs
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Msg 
     }

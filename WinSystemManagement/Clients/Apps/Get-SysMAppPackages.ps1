@@ -63,7 +63,7 @@ Param(
 
 try{
     $Script:output
-    if(($PackageTypeFilter -eq $null) -or ($PackageTypeFilter.Length -lt 0)){
+    if(($null -eq $PackageTypeFilter) -or ($PackageTypeFilter.Length -lt 0)){
         $PackageTypeFilter = @("None", "Main", "Framework", "Resource", "Bundle", "Xap")
     }
     if([System.String]::IsNullOrWhiteSpace($Name) -eq $true){
@@ -77,26 +77,21 @@ try{
     }
     [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
-        if([System.String]::IsNullOrWhiteSpace($Volume) -eq $true){
-            if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
-                $Script:output = Get-AppxPackage -AllUsers:$AllUsers -PackageTypeFilter $PackageTypeFilter -Name $Name `
-                                -Publisher $Publisher -ErrorAction Stop | Select-Object $Script:props
-            }
-            else{
-                $Script:output = Get-AppxPackage -User $User -PackageTypeFilter $PackageTypeFilter -Name $Name `
-                                    -Publisher $Publisher -ErrorAction Stop | Select-Object $Script:props
-            }
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'Publisher' = $Publisher
+                                'PackageTypeFilter' = $PackageTypeFilter 
+                                'Name' = $Name
+                                }
+        if([System.String]::IsNullOrWhiteSpace($Volume) -eq $false){
+            $cmdArgs.Add('Volume', $Volume)
         }
-        else{
-            if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
-                $Script:output = Get-AppxPackage -AllUsers:$AllUsers -PackageTypeFilter $PackageTypeFilter -Name $Name `
-                                -Publisher $Publisher -Volume $Volume -ErrorAction Stop | Select-Object $Script:props
-            }
-            else{
-                $Script:output = Get-AppxPackage -User $User -PackageTypeFilter $PackageTypeFilter -Name $Name `
-                                    -Publisher $Publisher -Volume $Volume -ErrorAction Stop | Select-Object $Script:props
-            }
+        if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
+            $cmdArgs.Add('AllUsers', $AllUsers.ToBool())
         }
+        else {
+            $cmdArgs.Add('User', $User)
+        }
+        $Script:output = Get-AppxPackage @cmdArgs | Select-Object $Script:props
     }
     else {
         if($null -eq $AccessAccount){

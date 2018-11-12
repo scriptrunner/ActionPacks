@@ -54,19 +54,17 @@ try{
         }
     }
     [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
-
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'ComputerName' = $ComputerName}
     if([System.String]::IsNullOrWhiteSpace($ServiceName) -eq $false){
-        $Script:output = Get-Service -ComputerName $ComputerName -Name $ServiceName -ErrorAction Stop `
-                        | Select-Object $Script:props | Sort-Object DisplayName | Format-List
+        $cmdArgs.Add('Name', $ServiceName)
     }
     elseif([System.String]::IsNullOrWhiteSpace($ServiceDisplayName) -eq $false){
-        $Script:output = Get-Service -ComputerName $ComputerName -DisplayName $ServiceDisplayName -ErrorAction Stop `
-                        | Select-Object $Script:props | Sort-Object DisplayName | Format-List
+        $cmdArgs.Add('DisplayName', $ServiceDisplayName)
     }
-    else {
-        $Script:output = Get-Service -ComputerName $ComputerName -ErrorAction Stop `
-                        | Select-Object $Script:props | Sort-Object DisplayName | Format-List
-    }
+    $Script:output = Get-Service @cmdArgs | Select-Object $Script:props `
+                         | Sort-Object DisplayName | Format-List
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

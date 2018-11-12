@@ -51,15 +51,21 @@ Param(
 
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'Package' = $Package 
+                                'Confirm' = $false
+                                }
         if([System.String]::IsNullOrWhiteSpace($User) -eq $false){
-            $null = Remove-AppxPackage -User $User -Package $Package -Confirm:$false -ErrorAction Stop
+            $cmdArgs.Add('User', $User)
         }
         elseif($AllUsers -eq $true){
-            $null = Remove-AppxPackage -AllUsers -Package $Package -Confirm:$false -ErrorAction Stop
+            $cmdArgs.Add('AllUsers', $null)
+            
         }
         else{
-            $null = Remove-AppxPackage -PreserveApplicationData:$PreserveApplicationData -Package $Package -Confirm:$false -ErrorAction Stop
+            $cmdArgs.Add('PreserveApplicationData', $PreserveApplicationData.ToBool())
         }
+        $null = Remove-AppxPackage @cmdArgs
     }
     else {
         if($null -eq $AccessAccount){

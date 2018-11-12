@@ -68,35 +68,26 @@ try{
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $old = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ErrorAction Stop
-    if([System.String]::IsNullOrWhiteSpace($AddressFamily) -eq $true){
-        if([System.String]::IsNullOrWhiteSpace($DefaultGateway) -eq $true){
-            New-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -IPAddress $IPAddress -ErrorAction Stop
-        }
-        else{
-            if($PrefixLength -gt 0){
-                New-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -IPAddress $IPAddress -PrefixLength $PrefixLength -DefaultGateway $DefaultGateway -ErrorAction Stop
-            }
-            else {
-                New-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -IPAddress $IPAddress -DefaultGateway $DefaultGateway -ErrorAction Stop                
-            }
-        }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'CimSession' = $Script:Cim
+                            'InterfaceAlias' = $AdapterName 
+                            'IPAddress' = $IPAddress
+                            }
+    if([System.String]::IsNullOrWhiteSpace($AddressFamily) -eq $false){
+        $cmdArgs.Add('AddressFamily', $AddressFamily)
     }
-    else{
-        if([System.String]::IsNullOrWhiteSpace($DefaultGateway) -eq $true){
-            New-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -IPAddress $IPAddress -AddressFamily $AddressFamily -ErrorAction Stop
-        }
-        else{
-            if($PrefixLength -gt 0){
-                New-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -IPAddress $IPAddress -PrefixLength $PrefixLength -AddressFamily $AddressFamily -DefaultGateway $DefaultGateway -ErrorAction Stop
-            }
-            else {
-                New-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -IPAddress $IPAddress -AddressFamily $AddressFamily -DefaultGateway $DefaultGateway -ErrorAction Stop
-            }
-        }
+    if([System.String]::IsNullOrWhiteSpace($DefaultGateway) -eq $false){
+        $cmdArgs.Add('DefaultGateway', $DefaultGateway)
     }
+    if($PrefixLength -gt 0){
+        $cmdArgs.Add('PrefixLength', $PrefixLength)
+    }
+    New-NetIPAddress @cmdArgs
+
     if($null -ne $old){
         Remove-NetIPAddress -InputObject $old -Confirm:$false
     }
+
     $Script:Msg = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName | Select-Object $Script:Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Msg

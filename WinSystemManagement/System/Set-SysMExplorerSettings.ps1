@@ -72,13 +72,13 @@ try{
                 }
                 $Script:value = 0
                 if($HideFileExtensions -eq $true){$Script:value = 1}
-                Set-ItemProperty -Path $regKey -Name HideFileExt -Value $Script:value -Force -ErrorAction Stop
+                Set-ItemProperty -Path $regKey -Name "HideFileExt" -Value $Script:value -Force -ErrorAction Stop
                 $Script:value = 1
                 if($ShowHiddenFilesFoldersDrives -eq $false){$Script:value = 2}
-                Set-ItemProperty -Path $regKey -Name Hidden -Value $Script:value -Force -ErrorAction Stop
+                Set-ItemProperty -Path $regKey -Name "Hidden" -Value $Script:value -Force -ErrorAction Stop
                 $Script:value = 0
                 if($CheckBoxesToSelectItems -eq $true){$Script:value = 1}
-                Set-ItemProperty -Path $regKey -Name AutoCheckSelect -Value $Script:value -Force -ErrorAction Stop
+                Set-ItemProperty -Path $regKey -Name "AutoCheckSelect" -Value $Script:value -Force -ErrorAction Stop
             }
         }
         finally{
@@ -105,13 +105,13 @@ try{
                     if((Test-Path -Path $Using:regKey) -eq $true){
                         [int]$setValue = 0;
                         if($Using:HideFileExtensions -eq $true){$setValue = 1};
-                        Set-ItemProperty -Path $Using:regKey -Name HideFileExt -Value $setValue -Force -ErrorAction Stop;
+                        Set-ItemProperty -Path $Using:regKey -Name "HideFileExt" -Value $setValue -Force -ErrorAction Stop;
                         $setValue = 1;
                         if($Using:ShowHiddenFilesFoldersDrives -eq $false){$setValue = 2};
-                        Set-ItemProperty -Path $Using:regKey -Name Hidden -Value $setValue -Force -ErrorAction Stop;
+                        Set-ItemProperty -Path $Using:regKey -Name "Hidden" -Value $setValue -Force -ErrorAction Stop;
                         $setValue = 0;
                         if($Using:CheckBoxesToSelectItems -eq $true){$setValue = 1};
-                        Set-ItemProperty -Path $Using:regKey -Name AutoCheckSelect -Value $setValue -Force -ErrorAction Stop;
+                        Set-ItemProperty -Path $Using:regKey -Name "AutoCheckSelect" -Value $setValue -Force -ErrorAction Stop;
                         Remove-PSDrive -Name HKU -ErrorAction Ignore
                     } 
                 } -ErrorAction Stop
@@ -136,13 +136,13 @@ try{
                     if((Test-Path -Path $Using:regKey) -eq $true){
                         [int]$setValue = 0;
                         if($Using:HideFileExtensions -eq $true){$setValue = 1};
-                        Set-ItemProperty -Path $Using:regKey -Name HideFileExt -Value $setValue -Force -ErrorAction Stop;
+                        Set-ItemProperty -Path $Using:regKey -Name "HideFileExt" -Value $setValue -Force -ErrorAction Stop;
                         $setValue = 1;
                         if($Using:ShowHiddenFilesFoldersDrives -eq $false){$setValue = 2};
-                        Set-ItemProperty -Path $Using:regKey -Name Hidden -Value $setValue -Force -ErrorAction Stop;
+                        Set-ItemProperty -Path $Using:regKey -Name "Hidden" -Value $setValue -Force -ErrorAction Stop;
                         $setValue = 0;
                         if($Using:CheckBoxesToSelectItems -eq $true){$setValue = 1};
-                        Set-ItemProperty -Path $Using:regKey -Name AutoCheckSelect -Value $setValue -Force -ErrorAction Stop;
+                        Set-ItemProperty -Path $Using:regKey -Name "AutoCheckSelect" -Value $setValue -Force -ErrorAction Stop;
                         Remove-PSDrive -Name HKU -ErrorAction Ignore
                     } 
                 } -ErrorAction Stop

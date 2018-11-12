@@ -130,43 +130,48 @@ Param(
 try{
     $Script:output
     [string[]]$Properties = @("MountPoint","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
-    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'MountPoint' = $DriveLetter
+                                'Confirm' = $false}
         if($PSCmdlet.ParameterSetName -eq "AdAccountOrGroupProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -AdAccountOrGroup $AdAccountOrGroup -AdAccountOrGroupProtector -Service:$Service -ErrorAction Stop
+            $cmdArgs.Add('AdAccountOrGroup', $AdAccountOrGroup)
+            $cmdArgs.Add('AdAccountOrGroupProtector', $null)
+            $cmdArgs.Add('Service', $Service)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false -TpmProtector -ErrorAction Stop
+            $cmdArgs.Add('TpmProtector', $null)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -TpmAndPinProtector -Pin $Pin -ErrorAction Stop
+            $cmdArgs.Add('TpmAndPinProtector', $null)
+            $cmdArgs.Add('Pin', $Pin)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndStartupKeyProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -TpmAndStartupKeyProtector -StartupKeyPath $StartupKeyPath -ErrorAction Stop
+            $cmdArgs.Add('TpmAndStartupKeyProtector', $null)
+            $cmdArgs.Add('StartupKeyPath', $StartupKeyPath)
         }
         elseif($PSCmdlet.ParameterSetName -eq "TpmAndPinAndStartupKeyProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -TpmAndPinAndStartupKeyProtector -Pin $Pin -StartupKeyPath $StartupKeyPath -ErrorAction Stop
+            $cmdArgs.Add('TpmAndPinAndStartupKeyProtector', $null)
+            $cmdArgs.Add('StartupKeyPath', $StartupKeyPath)
+            $cmdArgs.Add('Pin', $Pin)
         }
         elseif($PSCmdlet.ParameterSetName -eq "StartupKeyProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -StartupKeyProtector -StartupKeyPath $StartupKeyPath -ErrorAction Stop
+            $cmdArgs.Add('StartupKeyProtector', $null)
+            $cmdArgs.Add('StartupKeyPath', $StartupKeyPath)
         }
         elseif($PSCmdlet.ParameterSetName -eq "PasswordProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -PasswordProtector -Password $Password -ErrorAction Stop
+            $cmdArgs.Add('PasswordProtector', $null)
+            $cmdArgs.Add('Password', $Password)
         }
         elseif($PSCmdlet.ParameterSetName -eq "RecoveryPasswordProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -RecoveryPasswordProtector -RecoveryPassword $RecoveryPassword -ErrorAction Stop
+            $cmdArgs.Add('RecoveryPasswordProtector', $null)
+            $cmdArgs.Add('RecoveryPassword', $RecoveryPassword)
         }
         elseif($PSCmdlet.ParameterSetName -eq "RecoveryKeyProtector"){
-            Add-BitLockerKeyProtector -MountPoint $DriveLetter -Confirm:$false `
-                -RecoveryKeyProtector -RecoveryKeyPath $RecoveryKeyPath -ErrorAction Stop
+            $cmdArgs.Add('RecoveryKeyProtector', $null)
+            $cmdArgs.Add('RecoveryKeyPath', $RecoveryKeyPath)
         }
+        Add-BitLockerKeyProtector @cmdArgs
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }
     else {

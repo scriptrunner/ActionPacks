@@ -107,36 +107,39 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'CimSession' = $Script:Cim 
+                            'ComputerName' = $ComputerName}
     if($PSCmdlet.ParameterSetName  -eq "Local"){
-        Add-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -Name $PortName 
+        $cmdArgs.Add('Name', $PortName )
     }
     if($PSCmdlet.ParameterSetName  -eq "LPR Port"){
-        Add-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -HostName $HostName -PrinterName $PrinterName
-        $Script:Port =Get-PrinterPort -Name $PrinterName
+        $cmdArgs.Add('HostName', $HostName)
+        $cmdArgs.Add('PrinterName', $PrinterName)
+        Add-PrinterPort @cmdArgs
+        $Script:Port = Get-PrinterPort -Name $PrinterName
     }
     if($PSCmdlet.ParameterSetName  -eq "TCP Port"){
-        if([System.string]::IsNullOrWhiteSpace($SNMPCommunity) -and $SNMP -le 0){
-            Add-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -PrinterHostAddress $PrinterHostAddress `
-                                        -Name $PortName -PortNumber $PortNumber
-        }
-        else {
-            Add-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -PrinterHostAddress $PrinterHostAddress -PortNumber $PortNumber `
-                    -SNMP $SNMP -SNMPCommunity $SNMPCommunity -Name $PortName
+        $cmdArgs.Add('PrinterHostAddress', $PrinterHostAddress)
+        $cmdArgs.Add('Name', $PortName) 
+        $cmdArgs.Add('PortNumber', $PortNumber)
+        if(([System.string]::IsNullOrWhiteSpace($SNMPCommunity) -eq $false) -and ($SNMP -gt 0)){
+            $cmdArgs.Add('SNMP', $SNMP)
+            $cmdArgs.Add('SNMPCommunity', $SNMPCommunity)
         }
     }
     if($PSCmdlet.ParameterSetName  -eq "TCP LPR Port"){
-        if([System.string]::IsNullOrWhiteSpace($SNMPCommunity) -and $SNMP -le 0){
-            Add-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -Name $PortName `
-                         -LprHostAddress $LprHostAddress -LprQueueName $LprQueueName
-        }
-        else{
-            Add-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -Name $PortName `
-                            -LprHostAddress $LprHostAddress -LprQueueName $LprQueueName `
-                            -SNMP $SNMP -SNMPCommunity $SNMPCommunity 
+        $cmdArgs.Add('LprHostAddress', $LprHostAddress)
+        $cmdArgs.Add('Name', $PortName) 
+        $cmdArgs.Add('LprQueueName', $LprQueueName)
+        if(([System.string]::IsNullOrWhiteSpace($SNMPCommunity) -eq $false) -and ($SNMP -gt 0)){
+            $cmdArgs.Add('SNMP', $SNMP)
+            $cmdArgs.Add('SNMPCommunity', $SNMPCommunity)
         }
     }
     if($null -eq $Script:Port){
-        $Script:Port =Get-PrinterPort -Name $PortName
+        Add-PrinterPort @cmdArgs
+        $Script:Port = Get-PrinterPort -Name $PortName
     }
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Port 

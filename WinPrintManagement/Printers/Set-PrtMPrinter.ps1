@@ -97,32 +97,37 @@ try{
         $Script:Output += "Printer $($PrinterName) not found"
     }
     else{
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'CimSession' = $Script:Cim
+                                'ComputerName' = $ComputerName
+                                'Name' = $PrinterName
+                                'Confirm' = $false}
         if($PSBoundParameters.ContainsKey('Shared') -eq $true){
             if([System.String]::IsNullOrWhiteSpace($ShareName)){
                 $ShareName=$PrinterName
             }
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Shared -ShareName $ShareName -Name $PrinterName 
+            Set-Printer @cmdArgs -Shared -ShareName $ShareName
         }
         if($PSBoundParameters.ContainsKey('PrintProcessor') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -PrintProcessor $PrintProcessor
+            Set-Printer  -PrintProcessor $PrintProcessor
         }
         if($PSBoundParameters.ContainsKey('Comment') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -Comment $Comment
+            Set-Printer @cmdArgs -Comment $Comment
         }
         if($PSBoundParameters.ContainsKey('DriverName') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -DriverName $DriverName
+            Set-Printer @cmdArgs -DriverName $DriverName
         }
         if($PSBoundParameters.ContainsKey('Location') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -Location $Location
+            Set-Printer @cmdArgs -Location $Location
         }
         if($PSBoundParameters.ContainsKey('Datatype') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -Datatype $Datatype
+            Set-Printer @cmdArgs -Datatype $Datatype
         }
         if($PSBoundParameters.ContainsKey('RenderingMode') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -RenderingMode $RenderingMode
+            Set-Printer @cmdArgs -RenderingMode $RenderingMode
         }
         if($PSBoundParameters.ContainsKey('PortName') -eq $true){
-            Set-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Name $PrinterName -PortName $PortName
+            Set-Printer @cmdArgs -PortName $PortName
         }
         $Script:Output += "Printer: $($PrinterName) changed"
     }   

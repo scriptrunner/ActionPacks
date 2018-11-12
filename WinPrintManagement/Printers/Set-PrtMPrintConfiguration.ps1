@@ -79,17 +79,21 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'PrinterName' = $PrinterName 
+                            'ComputerName' = $ComputerName 
+                            'CimSession' = $Script:Cim}
     if($PSBoundParameters.ContainsKey('Collate') -eq $true){
-        Set-PrintConfiguration -PrinterName $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Collate $Collate -ErrorAction Stop
+        Set-PrintConfiguration @cmdArgs -Collate $Collate
     }
     if($PSBoundParameters.ContainsKey('Color') -eq $true){
-        Set-PrintConfiguration -PrinterName $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Color $Color -ErrorAction Stop
+        Set-PrintConfiguration @cmdArgs -Color $Color
     }
     if($PSBoundParameters.ContainsKey('DuplexingMode') -eq $true){
-        Set-PrintConfiguration -PrinterName $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -DuplexingMode $DuplexingMode -ErrorAction Stop
+        Set-PrintConfiguration @cmdArgs -DuplexingMode $DuplexingMode
     }
     if($PSBoundParameters.ContainsKey('PaperSize') -eq $true){
-        Set-PrintConfiguration -PrinterName $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -PaperSize $PaperSize -ErrorAction Stop
+        Set-PrintConfiguration @cmdArgs -PaperSize $PaperSize
     }
 
     if($SRXEnv) {

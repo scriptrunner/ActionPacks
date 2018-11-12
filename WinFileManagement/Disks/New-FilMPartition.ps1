@@ -96,21 +96,17 @@ try{
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     $Script:Disk = Get-Disk -CimSession $Script:Cim -Number $Number -ErrorAction Stop
-    if([System.String]::IsNullOrWhiteSpace($MbrType)){
-        if($Size -gt 0){
-            $Script:Parti = New-Partition -InputObject $Script:Disk -AssignDriveLetter:$AssignDriveLetter -Size $Size -ErrorAction Stop
-        }
-        else{
-            $Script:Parti = New-Partition -InputObject $Script:Disk -AssignDriveLetter:$AssignDriveLetter -UseMaximumSize:$UseMaximumSize -ErrorAction Stop
-        }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'InputObject' = $Script:Disk
+                            'AssignDriveLetter' = $AssignDriveLetter}
+    if($Size -gt 0){
+        $cmdArgs.Add('Size',$Size)
     }
-    else{
-        if($Size -gt 0){
-            $Script:Parti = New-Partition -InputObject $Script:Disk -AssignDriveLetter:$AssignDriveLetter -Size $Size -MbrType $MbrType -ErrorAction Stop
-        }
-        else{
-            $Script:Parti = New-Partition -InputObject $Script:Disk -AssignDriveLetter:$AssignDriveLetter -UseMaximumSize:$UseMaximumSize -MbrType $MbrType -ErrorAction Stop
-        }
+    else {
+        $cmdArgs.Add('UseMaximumSize',$Size)
+    }
+    if([System.String]::IsNullOrWhiteSpace($MbrType) -eq $false){
+        $cmdArgs.Add('MbrType', $MbrType)
     }    
     Start-Sleep -Seconds 5
     if(-not [System.String]::IsNullOrWhiteSpace($DriveLetter)){

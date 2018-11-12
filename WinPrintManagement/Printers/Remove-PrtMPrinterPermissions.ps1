@@ -106,7 +106,7 @@ try{
             $Script:AceValue =262144
         }
         elseif($Permission -eq "ManagePrinter" ){
-            $Script:AceValue =983052
+            $Script:AceValue = 851972
         }
         elseif($Permission -eq "ManageDocuments"){
             $Script:AceValue = 983088

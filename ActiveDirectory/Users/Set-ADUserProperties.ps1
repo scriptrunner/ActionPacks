@@ -265,7 +265,10 @@ try{
             $Script:User = Set-ADUser @cmdArgs -Replace @{'SAMAccountName'=$NewSAMAccountName}            
         }
         Start-Sleep -Seconds 5 # wait
-        $cmdArgs['Instance'] = $Script:User.SAMAccountName
+        $cmdArgs.Remove('Confirm')
+        $cmdArgs.Remove('PassThru')
+        $cmdArgs.Remove('Instance')
+        $cmdArgs.Add('Identity' , $Script:User.SAMAccountName)
         $Script:User = Get-ADUser @cmdArgs -Properties $Script:Properties
         
         $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'

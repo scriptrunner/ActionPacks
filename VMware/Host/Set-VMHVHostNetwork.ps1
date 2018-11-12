@@ -101,38 +101,44 @@ try{
 
     $Script:netInfo = Get-VMHostNetwork -Server $Script:vmServer -VMHost $Script:vmHost -ErrorAction Stop
     $Script:Output = $Script:netInfo | Select-Object *
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Network' = $Script:netInfo
+                            'Confirm' = $false
+                            }                                
+    
     if($PSBoundParameters.ContainsKey('ConsoleGateway') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -ConsoleGateway $ConsoleGateway -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -ConsoleGateway $ConsoleGateway | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('ConsoleGatewayDevice') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -ConsoleGatewayDevice $ConsoleGatewayDevice -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -ConsoleGatewayDevice $ConsoleGatewayDevice | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('ConsoleV6Gateway') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -ConsoleV6Gateway $ConsoleV6Gateway -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -ConsoleV6Gateway $ConsoleV6Gateway | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('ConsoleV6GatewayDevice') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -ConsoleV6GatewayDevice $ConsoleV6GatewayDevice -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -ConsoleV6GatewayDevice $ConsoleV6GatewayDevice | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('DnsAddress') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -DnsAddress $DnsAddress -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -DnsAddress $DnsAddress | Select-Object *
     }    
     if($PSBoundParameters.ContainsKey('IPv6Enabled') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -IPv6Enabled $IPv6Enabled -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -IPv6Enabled $IPv6Enabled | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('VMKernelGateway') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -VMKernelGateway $VMKernelGateway -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -VMKernelGateway $VMKernelGateway | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('VMKernelGatewayDevice') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -VMKernelGatewayDevice $VMKernelGatewayDevice -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -VMKernelGatewayDevice $VMKernelGatewayDevice | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('VMKernelV6Gateway') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -VMKernelV6Gateway $VMKernelV6Gateway -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -VMKernelV6Gateway $VMKernelV6Gateway | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('VMKernelV6GatewayDevice') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -VMKernelV6GatewayDevice $VMKernelV6GatewayDevice -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -VMKernelV6GatewayDevice $VMKernelV6GatewayDevice | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('DomainName') -eq $true){
-        $Script:Output = Set-VMHostNetwork -Network $Script:netInfo -DomainName $DomainName -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-VMHostNetwork @cmdArgs -DomainName $DomainName | Select-Object *
     }
 
     if($SRXEnv) {

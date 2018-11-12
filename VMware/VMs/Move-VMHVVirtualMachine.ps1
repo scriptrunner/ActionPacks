@@ -92,31 +92,35 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'VM' = $Script:machine
+                            'Confirm' = $false
+                            }
+
     if($PSCmdlet.ParameterSetName  -eq "toFolder"){
         $folder = Get-Folder -Server $Script:vmServer -Name $FolderName -Type VM -ErrorAction Stop 
-        $Script:Output = Move-VM -Server $Script:vmServer -VM $Script:machine -InventoryLocation $folder `
-                            -Confirm:$false -ErrorAction Stop | Select-Object $Properties
+        $cmdArgs.Add('InventoryLocation', $folder)
     }
     if($PSCmdlet.ParameterSetName  -eq "toDatacenter"){
         $center = Get-Datacenter -Server $Script:vmServer -Name $DatacenterName -ErrorAction Stop 
-        $Script:Output = Move-VM -Server $Script:vmServer -VM $Script:machine -InventoryLocation $center `
-                            -Confirm:$false -ErrorAction Stop | Select-Object $Properties
+        $cmdArgs.Add('InventoryLocation', $center)
     }
     if($PSCmdlet.ParameterSetName  -eq "toHost"){
         $Script:destination = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+        $cmdArgs.Add('Destination',  $Script:destination)
     }
     if($PSCmdlet.ParameterSetName  -eq "toResourcePool"){
         $Script:destination = Get-ResourcePool -Server $Script:vmServer -Name $ResourcePoolName -ErrorAction Stop
+        $cmdArgs.Add('Destination',  $Script:destination)
     }
     if($PSCmdlet.ParameterSetName  -eq "toDatastore"){
         $store = Get-Datastore -Server $Script:vmServer -Name $DatastoreName -ErrorAction Stop
-        $Script:Output = Move-VM -Server $Script:vmServer -VM $Script:machine -Datastore $store -DiskStorageFormat $DiskStorageFormat `
-                        -Confirm:$false -ErrorAction Stop | Select-Object $Properties
+        $cmdArgs.Add('Datastore', $store)
+        $cmdArgs.Add('DiskStorageFormat', $DiskStorageFormat)
     }
-    if($null -ne $Script:destination){
-        $Script:Output = Move-VM -Server $Script:vmServer -VM $Script:machine -Destination $Script:destination `
-                            -Confirm:$false -ErrorAction Stop | Select-Object $Properties
-    }
+    $Script:Output = Move-VM @cmdArgs | Select-Object $Properties
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 
     }

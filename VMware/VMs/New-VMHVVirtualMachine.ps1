@@ -116,18 +116,27 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
-    if([System.String]::IsNullOrEmpty($Location) -eq $true){
-        $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $vmHost -Notes $Notes -Confirm:$false `
-                       -NumCpu $Cpus -CoresPerSocket $CoresPerSocket -MemoryGB $MemoryGB -DiskGB $DiskGB `
-                       -Floppy:$Floppy -CD:$CD -DiskStorageFormat $DiskStorageFormat -VMSwapfilePolicy $VMSwapfilePolicy -ErrorAction Stop
-    }
-    else {
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Name' = $VMName 
+                            'VMHost' = $vmHost 
+                            'Notes' = $Notes 
+                            'Confirm' = $false
+                            'NumCpu' = $Cpus
+                            'CoresPerSocket' = $CoresPerSocket 
+                            'MemoryGB' = $MemoryGB
+                            'DiskGB' = $DiskGB
+                            'Floppy' = $Floppy 
+                            'CD' = $CD 
+                            'DiskStorageFormat' = $DiskStorageFormat
+                            'VMSwapfilePolicy' = $VMSwapfilePolicy
+                        }
+
+    if([System.String]::IsNullOrEmpty($Location) -eq $false){
         $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
-        $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $vmHost -Notes $Notes -Confirm:$false `
-                       -NumCpu $Cpus -CoresPerSocket $CoresPerSocket -MemoryGB $MemoryGB -DiskGB $DiskGB `
-                       -Floppy:$Floppy -CD:$CD -DiskStorageFormat $DiskStorageFormat `
-                       -Location $Folder -VMSwapfilePolicy $VMSwapfilePolicy -ErrorAction Stop
+        $cmdArgs.Add('Location' ,$Folder)
     }
+    $Script:machine = New-VM @cmdArgs
     if($PSBoundParameters.ContainsKey('GuestId') -eq $true){
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -GuestId $GuestId -Confirm:$False -ErrorAction Stop
     }

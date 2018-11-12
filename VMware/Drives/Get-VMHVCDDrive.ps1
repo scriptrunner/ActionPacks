@@ -70,20 +70,23 @@ try{
         $DriveName = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }                            
     if($PSCmdlet.ParameterSetName  -eq "Snapshot"){
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
-        $snap = Get-Snapshot -Server $Script:vmServer -Name $SnapshotName -VM $vm -ErrorAction Stop
-        $Script:Output = Get-CDDrive -Server $Script:vmServer -Snapshot $snap -Name $DriveName -ErrorAction Stop | Select-Object *
+        $vm = Get-VM @cmdArgs -Name $VMName
+        $snap = Get-Snapshot @cmdArgs -Name $SnapshotName -VM $vm
+        $cmdArgs.Add('Snapshot', $snap)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "Template"){
-        $temp = Get-Template -Server $Script:vmServer -Name $TemplateName -ErrorAction Stop
-        $Script:Output = Get-CDDrive -Server $Script:vmServer -Template $temp -Name $DriveName -ErrorAction Stop | Select-Object *
+        $temp = Get-Template @cmdArgs -Name $TemplateName
+        $cmdArgs.Add('Template', $temp)
     }
     else {
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop        
-        $Script:Output = Get-CDDrive -Server $Script:vmServer -VM $vm -Name $DriveName -ErrorAction Stop | Select-Object *
+        $vm = Get-VM @cmdArgs -Name $VMName
+        $cmdArgs.Add('VM', $vm)
     }
+    $Script:Output = Get-CDDrive @cmdArgs -Name $DriveName | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 

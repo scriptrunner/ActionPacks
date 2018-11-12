@@ -121,72 +121,37 @@ try{
     if([System.String]::IsNullOrWhiteSpace($DiskName) -eq $false){
         $Script:disk = Get-HardDisk -VM $Script:machine -Name $DiskName -Server $Script:vmServer -ErrorAction Stop
     }
-    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Configuration' = $Script:resConfig                            
+                            'Confirm' = $false}
+                            
+    if($null -ne $Script:disk){
+        $cmdArgs.Add('Disk' , $Script:disk)
+    }
     if($PSBoundParameters.ContainsKey('CpuLimitMhz') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -CpuLimitMhz $CpuLimitMhz -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -CpuLimitMhz $CpuLimitMhz -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -CpuLimitMhz $CpuLimitMhz
     }
     if($PSBoundParameters.ContainsKey('CpuReservationMhz') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -CpuReservationMhz $CpuReservationMhz -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -CpuReservationMhz $CpuReservationMhz -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -CpuReservationMhz $CpuReservationMhz
     }
     if($PSBoundParameters.ContainsKey('CpuSharesLevel') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -CpuSharesLevel $CpuSharesLevel -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -CpuSharesLevel $CpuSharesLevel -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -CpuSharesLevel $CpuSharesLevel
     }
     if($PSBoundParameters.ContainsKey('MemLimitGB') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -MemLimitGB $MemLimitGB -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -MemLimitGB $MemLimitGB -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -MemLimitGB $MemLimitGB
     }
     if($PSBoundParameters.ContainsKey('MemReservationGB') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -MemReservationGB $MemReservationGB -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -MemReservationGB $MemReservationGB -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -MemReservationGB $MemReservationGB
     }
     if($PSBoundParameters.ContainsKey('MemSharesLevel') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -MemSharesLevel $MemSharesLevel -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -MemSharesLevel $MemSharesLevel -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -MemSharesLevel $MemSharesLevel
     }
     if($PSBoundParameters.ContainsKey('NumCpuShares') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -NumCpuShares $NumCpuShares -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -NumCpuShares $NumCpuShares -Disk $Script:disk -ErrorAction Stop
-        }
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -NumCpuShares $NumCpuShares
     }
-    if($PSBoundParameters.ContainsKey('NumMemShares') -eq $true){
-        if($null -eq $Script:disk){
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -NumMemShares $NumMemShares -ErrorAction Stop
-        }
-        else {
-            $Script:resConfig = Set-VMResourceConfiguration -Configuration $Script:resConfig -Confirm:$false -NumMemShares $NumMemShares -Disk $Script:disk -ErrorAction Stop
-        }
+    if($PSBoundParameters.ContainsKey('NumMemShares') -eq $true){        
+        $Script:resConfig = Set-VMResourceConfiguration $cmdArgs -NumMemShares $NumMemShares
     }
-
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = ($Script:resConfig | Select-Object *)

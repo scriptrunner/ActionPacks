@@ -70,20 +70,23 @@ try{
     if([System.String]::IsNullOrWhiteSpace($DriveName)){
         $DriveName = "*"
     }
-
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }                            
     if($PSCmdlet.ParameterSetName  -eq "Snapshot"){
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
-        $snap = Get-Snapshot -Server $Script:vmServer -Name $SnapshotName -VM $vm -ErrorAction Stop
-        $Script:drive = Get-CDDrive -Server $Script:vmServer -Snapshot $snap -Name $DriveName -ErrorAction Stop
+        $vm = Get-VM @cmdArgs -Name $VMName
+        $snap = Get-Snapshot @cmdArgs -Name $SnapshotName -VM $vm
+        $cmdArgs.Add('Snapshot', $snap)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "Template"){
-        $temp = Get-Template -Server $Script:vmServer -Name $TemplateName -ErrorAction Stop
-        $Script:drive = Get-CDDrive -Server $Script:vmServer -Template $temp -Name $DriveName -ErrorAction Stop
+        $temp = Get-Template @cmdArgs -Name $TemplateName
+        $cmdArgs.Add('Template', $temp)
     }
     else {
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop        
-        $Script:drive = Get-CDDrive -Server $Script:vmServer -VM $vm -Name $DriveName -ErrorAction Stop
+        $vm = Get-VM @cmdArgs -Name $VMName  
+        $cmdArgs.Add('VM', $vm)
     }
+    $Script:drive = Get-CDDrive @cmdArgs -Name $DriveName
     if($null -eq $Script:drive){
         throw "No CD drive found"
     }

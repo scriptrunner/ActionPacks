@@ -94,38 +94,43 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     $Script:pool = Get-ResourcePool -Server $Script:vmServer -Name $Name -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'ResourcePool' = $Script:pool
+                            'Confirm' = $false
+                            }                            
     if($PSBoundParameters.ContainsKey('CpuExpandableReservation') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -CpuExpandableReservation $CpuExpandableReservation -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -CpuExpandableReservation $CpuExpandableReservation
     }
     if($PSBoundParameters.ContainsKey('CpuLimitMhz') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -CpuLimitMhz $CpuLimitMhz -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -CpuLimitMhz $CpuLimitMhz
     }
     if($PSBoundParameters.ContainsKey('CpuReservationMhz') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -CpuReservationMhz $CpuReservationMhz -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -CpuReservationMhz $CpuReservationMhz
     }
     if($PSBoundParameters.ContainsKey('CpuSharesLevel') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -CpuSharesLevel $CpuSharesLevel -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -CpuSharesLevel $CpuSharesLevel
     }
     if($PSBoundParameters.ContainsKey('MemExpandableReservation') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -MemExpandableReservation $MemExpandableReservation -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -MemExpandableReservation $MemExpandableReservation
     }
     if($PSBoundParameters.ContainsKey('MemLimitGB') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -MemLimitGB $MemLimitGB -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -MemLimitGB $MemLimitGB
     }
     if($PSBoundParameters.ContainsKey('MemReservationGB') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -MemReservationGB $MemReservationGB -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -MemReservationGB $MemReservationGB
     }
     if($PSBoundParameters.ContainsKey('MemSharesLevel') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -MemSharesLevel $MemSharesLevel -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -MemSharesLevel $MemSharesLevel
     }
     if($PSBoundParameters.ContainsKey('NumCpuShares') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -NumCpuShares $NumCpuShares -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -NumCpuShares $NumCpuShares
     }
     if($PSBoundParameters.ContainsKey('NumMemShares') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -NumMemShares $NumMemShares -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -NumMemShares $NumMemShares
     }
     if($PSBoundParameters.ContainsKey('NewName') -eq $true){
-        $Script:pool = Set-ResourcePool -Server $Script:vmServer -ResourcePool $Script:pool -Name $NewName -Confirm:$false -ErrorAction Stop
+        $Script:pool = Set-ResourcePool @cmdArgs -Name $NewName
     }
 
     if($SRXEnv) {

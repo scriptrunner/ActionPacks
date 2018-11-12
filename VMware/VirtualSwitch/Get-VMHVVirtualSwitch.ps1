@@ -74,23 +74,26 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Standard' = $Standard
+                            }                            
+
     if($PSCmdlet.ParameterSetName  -eq "byID"){
-        $Script:Output = Get-VirtualSwitch -Server $Script:vmServer -ID $ID -Standard:$Standard -ErrorAction Stop | Select-Object *
+        $cmdArgs.Add('ID', $ID)        
     }
     elseif($PSCmdlet.ParameterSetName  -eq "byName"){
-        if([System.String]::IsNullOrWhiteSpace($Name) -eq $true){
-            $Script:Output = Get-VirtualSwitch -Server $Script:vmServer -Standard:$Standard -ErrorAction Stop | Select-Object *
-        }
-        else{
-            $Script:Output = Get-VirtualSwitch -Server $Script:vmServer -Name $Name -Standard:$Standard -ErrorAction Stop | Select-Object *
+        if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
+            $cmdArgs.Add('Name', $Name)
         }        
     }
     elseif($PSCmdlet.ParameterSetName  -eq "byDatacenter"){
-        $Script:Output = Get-VirtualSwitch -Server $Script:vmServer -Datacenter $Datacenter -Standard:$Standard -ErrorAction Stop | Select-Object *
+        $cmdArgs.Add('Datacenter', $Datacenter)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "byVM"){
-        $Script:Output = Get-VirtualSwitch -Server $Script:vmServer -VM $VM  -Standard:$Standard -ErrorAction Stop | Select-Object *
+        $cmdArgs.Add('VM', $VM)
     }
+    $Script:Output = Get-VirtualSwitch @cmdArgs | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 

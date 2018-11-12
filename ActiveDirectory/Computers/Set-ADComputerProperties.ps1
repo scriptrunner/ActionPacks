@@ -43,7 +43,7 @@
     .Parameter OSServicePack
         Specifies the name of an operating system service pack
 
-    .Parameter OSServiceVersion
+    .Parameter OSVersion
         Specifies an operating system version
 
     .Parameter TrustedForDelegation

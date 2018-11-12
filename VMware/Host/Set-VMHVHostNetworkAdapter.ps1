@@ -104,44 +104,49 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     $Script:vAdapter = Get-VMHostNetworkAdapter -Server $Script:vmServer -Name $AdapterName -VMHost $HostName -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'VirtualNic' = $Script:vAdapter
+                            'Confirm' = $false
+                            }                                
+
     if($PSBoundParameters.ContainsKey('AutomaticIPv6') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -AutomaticIPv6 $AutomaticIPv6 -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -AutomaticIPv6 $AutomaticIPv6
     }
     if($PSBoundParameters.ContainsKey('Dhcp') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -Dhcp:$Dhcp -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -Dhcp:$Dhcp
     }
     if($PSBoundParameters.ContainsKey('FaultToleranceLoggingEnabled') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -FaultToleranceLoggingEnabled $FaultToleranceLoggingEnabled -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -FaultToleranceLoggingEnabled $FaultToleranceLoggingEnabled
     }
     if($PSBoundParameters.ContainsKey('IPv4') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -IP $IPv4 -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -IP $IPv4
     }
     if($PSBoundParameters.ContainsKey('IPv6') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -IPv6 $IPv6 -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -IPv6 $IPv6
     }
     if($PSBoundParameters.ContainsKey('IPv6Enabled') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -IPv6Enabled $IPv6Enabled -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -IPv6Enabled $IPv6Enabled
     }
     if($PSBoundParameters.ContainsKey('IPv6ThroughDhcp') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -IPv6ThroughDhcp $IPv6ThroughDhcp -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -IPv6ThroughDhcp $IPv6ThroughDhcp
     }
     if($PSBoundParameters.ContainsKey('MACAddress') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -Mac $MACAddress -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -Mac $MACAddress
     }
     if($PSBoundParameters.ContainsKey('ManagementTrafficEnabled') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -ManagementTrafficEnabled $ManagementTrafficEnabled -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -ManagementTrafficEnabled $ManagementTrafficEnabled
     }
     if($PSBoundParameters.ContainsKey('MtuSize') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -Mtu $MtuSize -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -Mtu $MtuSize
     }
     if($PSBoundParameters.ContainsKey('SubnetMask') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -SubnetMask $SubnetMask -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -SubnetMask $SubnetMask
     }
     if($PSBoundParameters.ContainsKey('VMotionEnabled') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -VMotionEnabled $VMotionEnabled -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -VMotionEnabled $VMotionEnabled
     }
     if($PSBoundParameters.ContainsKey('VsanTrafficEnabled') -eq $true){
-        $Script:vAdapter = Set-VMHostNetworkAdapter -VirtualNic $Script:vAdapter -VsanTrafficEnabled $VsanTrafficEnabled -Confirm:$false -ErrorAction Stop
+        $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -VsanTrafficEnabled $VsanTrafficEnabled
     }
     $Script:Output = $Script:vAdapter | Select-Object *
 

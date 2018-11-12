@@ -64,24 +64,21 @@ try{
     if($null -eq $Script:location){
         throw "Location $($LocationName) not found"
     }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Name' = $Name
+                            'Location' = $Script:location
+                            'Force' = $null
+                            'Confirm' = $false
+                            }                            
 
     if($null -ne $HostCredential){
-        if($Port -gt 0){
-            $null = Add-VMHost -Server $Script:vmServer -Name $Name -Location $Script:location -Credential $HostCredential -Port $Port -Force:$true -Confirm:$false -ErrorAction Stop
-        }
-        else {
-            $null = Add-VMHost -Server $Script:vmServer -Name $Name -Location $Script:location -Credential $HostCredential -Force:$true -Confirm:$false -ErrorAction Stop
-        }
+        $cmdArgs.Add('Credential', $HostCredential)
     }
-    else {
-        if($Port -gt 0){
-            $null = Add-VMHost -Server $Script:vmServer -Name $Name -Location $Script:location -Port $Port -Force:$true -Confirm:$false -ErrorAction Stop
-        }
-        else {
-            $null = Add-VMHost -Server $Script:vmServer -Name $Name -Location $Script:location -Force:$true -Confirm:$false -ErrorAction Stop            
-        }
+    if($Port -gt 0){
+        $cmdArgs.Add('Port', $Port)
     }
-
+    $null = Add-VMHost @cmdArgs
     $Script:Output = Get-VMHost -Server $Script:vmServer -Name $Name -NoRecursion:$true -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {

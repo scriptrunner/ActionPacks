@@ -105,29 +105,25 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Name' = $VMName 
+                            'VMHost' = $Script:vmHost 
+                            'Notes' = $Notes 
+                            'Confirm' =$false
+                            'VMFilePath' = $VMFilePath
+                        }
+
     if($PSCmdlet.ParameterSetName  -eq "onCluster"){
         $Script:store = Get-Cluster -Server $Script:vmServer -Name $ClusterName -ErrorAction Stop
-        if([System.String]::IsNullOrEmpty($Location) -eq $true){
-            $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $Script:vmHost -Notes $Notes -Confirm:$false `
-                               -ResourcePool $Script:store -VMFilePath $VMFilePath -ErrorAction Stop
-        }
-        else {
-            $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
-            $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $Script:vmHost -Notes $Notes -Confirm:$false `
-                                -ResourcePool $Script:store -VMFilePath $VMFilePath -Location $folder -ErrorAction Stop
-        }
+        $cmdArgs.Add('ResourcePool', $Script:store)
     }
-    else {
-        if([System.String]::IsNullOrEmpty($Location) -eq $true){
-            $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $Script:vmHost -Notes $Notes -Confirm:$false `
-                        -VMFilePath $VMFilePath -ErrorAction Stop
-        }
-        else {
-            $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
-            $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $Script:vmHost -Notes $Notes -Confirm:$false `
-                        -VMFilePath $VMFilePath -Location $Folder -ErrorAction Stop
-        }
+    if([System.String]::IsNullOrEmpty($Location) -eq $false){
+        $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
+        $cmdArgs.Add('Location' ,$Folder)
     }
+    $Script:machine = New-VM @cmdArgs
+    
     if($PSCmdlet.ParameterSetName  -eq "onCluster"){
         if($PSBoundParameters.ContainsKey('DrsAutomationLevel') -eq $true){
             $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -DrsAutomationLevel $DrsAutomationLevel -Confirm:$False -ErrorAction Stop

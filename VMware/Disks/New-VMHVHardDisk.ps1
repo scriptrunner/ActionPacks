@@ -96,30 +96,24 @@ try{
         $Script:harddisk = New-HardDisk -Server $Script:vmServer -VM $Script:vm -DiskPath $DiskPath -Confirm:$false -ErrorAction Stop
     }
     else {
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }  
+        if([System.String]::IsNullOrWhiteSpace($DatastoreName) -eq $false){
+            $store = Get-Datastore @cmdArgs -Name $DatastoreName 
+            $cmdArgs.Add('Datastore', $store)                                    
+        }        
+        $cmdArgs.Add('VM', $Script:vm)
+        $cmdArgs.Add('StorageFormat', $StorageFormat)
+        $cmdArgs.Add('Confirm', $false)
         if($CapacityGB -gt 0){
             if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
                 $DiskType = "flat"
             }
-            if([System.String]::IsNullOrWhiteSpace($DatastoreName) -eq $false){
-                $store = Get-Datastore -Server $Script:vmServer -Name $DatastoreName -ErrorAction Stop    
-                $Script:harddisk = New-HardDisk -Server $Script:vmServer -VM $Script:vm -Datastore $store -CapacityGB $CapacityGB `
-                                        -StorageFormat $StorageFormat -DiskType $DiskType -Confirm:$false -ErrorAction Stop
-            }
-            else {
-                $Script:harddisk = New-HardDisk -Server $Script:vmServer -VM $Script:vm -CapacityGB $CapacityGB -DiskType $DiskType `
-                                       -StorageFormat $StorageFormat -Confirm:$false -ErrorAction Stop           
-            }            
+            $cmdArgs.Add('CapacityGB', $CapacityGB)
+            $cmdArgs.Add('DiskType', $DiskType)
         }
-        else {
-            if([System.String]::IsNullOrWhiteSpace($DatastoreName) -eq $false){
-                $store = Get-Datastore -Server $Script:vmServer -Name $DatastoreName -ErrorAction Stop    
-                $Script:harddisk = New-HardDisk -Server $Script:vmServer -VM $Script:vm -Datastore $store `
-                                        -StorageFormat $StorageFormat -Confirm:$false -ErrorAction Stop
-            }
-            else{
-                $Script:harddisk = New-HardDisk -Server $Script:vmServer -VM $Script:vm -StorageFormat $StorageFormat -Confirm:$false -ErrorAction Stop
-            }
-        }
+        $Script:harddisk = New-HardDisk @cmdArgs
     }
     if($PSBoundParameters.ContainsKey('SCSIControllerName') -eq $true){
         $controller = Get-ScsiController -Server $Script:vmServer -VM $Script:vm -Name $SCSIControllerName -ErrorAction Stop

@@ -95,89 +95,38 @@ try{
         $DiskName = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }                            
     if($PSCmdlet.ParameterSetName  -eq "Snapshot"){
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
-        $snap = Get-Snapshot -Server $Script:vmServer -Name $SnapshotName -VM $vm -ErrorAction Stop
-        if([System.String]::IsNullOrWhiteSpace($DiskID) -eq $true){
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Snapshot $snap -Name $DiskName -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Snapshot $snap -Name $DiskName -DiskType $DiskType -ErrorAction Stop | Select-Object *
-                
-            }            
-        }
-        else {
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Snapshot $snap -Id $DiskID -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Snapshot $snap -Id $DiskID -DiskType $DiskType -ErrorAction Stop | Select-Object *
-            }
-        }
+        $vm = Get-VM @cmdArgs -Name $VMName
+        $snap = Get-Snapshot @cmdArgs -Name $SnapshotName -VM $vm
+        $cmdArgs.Add('Snapshot', $snap)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "Template"){
-        $temp = Get-Template -Server $Script:vmServer -Name $TemplateName -ErrorAction Stop
-        if([System.String]::IsNullOrWhiteSpace($DiskID) -eq $true){
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Template $temp -Name $DiskName -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Template $temp -Name $DiskName -DiskType $DiskType -ErrorAction Stop | Select-Object *
-                
-            }            
-        }
-        else {
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Template $temp -Id $DiskID -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Template $temp -Id $DiskID -DiskType $DiskType -ErrorAction Stop | Select-Object *
-            }
-        }
+        $temp = Get-Template @cmdArgs -Name $TemplateName
+        $cmdArgs.Add('Template', $temp)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "Datastore"){
-        $store = Get-Datastore -Server $Script:vmServer -Name $DatastoreName -ErrorAction Stop
-        if([System.String]::IsNullOrWhiteSpace($DiskID) -eq $true){
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Datastore $store -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Datastore $store -DiskType $DiskType -ErrorAction Stop | Select-Object *
-                
-            }            
-        }
-        else {
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Datastore $store -Id $DiskID -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -Datastore $store -Id $DiskID -DiskType $DiskType -ErrorAction Stop | Select-Object *
-            }
-        }
+        $store = Get-Datastore @cmdArgs -Name $DatastoreName
+        $cmdArgs.Add('Datastore', $store)
     }
     else {
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop        
-        if([System.String]::IsNullOrWhiteSpace($DiskID) -eq $true){
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -VM $vm -Name $DiskName -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -VM $vm -Name $DiskName -DiskType $DiskType -ErrorAction Stop | Select-Object *
-                
-            }            
-        }
-        else {
-            if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $true){
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -VM $vm -Id $DiskID -ErrorAction Stop | Select-Object *
-            }
-            else {
-                $Script:Output = Get-HardDisk -Server $Script:vmServer -VM $vm -Id $DiskID -DiskType $DiskType -ErrorAction Stop | Select-Object *
-            }
-        }
+        $vm = Get-VM @cmdArgs -Name $VMName
+        $cmdArgs.Add('VM', $vm)
     }
 
+    if([System.String]::IsNullOrWhiteSpace($DiskID) -eq $true){
+        $cmdArgs.Add('Name', $DiskName)
+    }
+    else {
+        $cmdArgs.Add('Id', $DiskID)
+    }
+    if([System.String]::IsNullOrWhiteSpace($DiskType) -eq $false){
+        $cmdArgs.Add('DiskType', $DiskType)
+    }
+    $Script:Output = Get-HardDisk @cmdArgs
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 
     }

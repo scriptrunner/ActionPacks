@@ -57,32 +57,27 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }                            
     
     if([System.String]::IsNullOrWhiteSpace($FolderName) -eq $true){
         $FolderName = "*"
     }
-
-    if([System.String]::IsNullOrWhiteSpace($LocationName) -eq $true){
-        if($LocationType -eq "All"){
-            $Script:Output = Get-Folder -Server $Script:vmServer -Name $FolderName -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object *
-        }
-        else {
-            $Script:Output = Get-Folder -Server $Script:vmServer -Name $FolderName -Type $LocationType -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object *
-        }
-    }
-    else {
-        $Script:location = Get-Folder -Server $Script:vmServer -Name $LocationName -ErrorAction Stop
+    if([System.String]::IsNullOrWhiteSpace($LocationName) -eq $false){
+        $Script:location = Get-Folder @cmdArgs -Name $LocationName
         if($null -eq $Script:location){
             throw "Location $($LocationName) not found"
         }
-        if($LocationType -eq "All"){
-            $Script:Output = Get-Folder -Server $Script:vmServer -Name $FolderName -Location $Script:location -NoRecursion:$NoRecursion | Select-Object *
-        }
-        else {
-            $Script:Output = Get-Folder -Server $Script:vmServer -Name $FolderName -Location $Script:location -Type $LocationType -NoRecursion:$NoRecursion | Select-Object *
-        }
+        $cmdArgs.Add('Location',$Script:location)        
     }
-
+    $cmdArgs.Add('Name',$FolderName)
+    $cmdArgs.Add('NoRecursion', $NoRecursion)
+    if($LocationType -ne "All"){
+        $cmdArgs.Add('Type', $LocationType)
+    }
+    $Script:Output = Get-Folder @cmdArgs | Select-Object *
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 
     }

@@ -78,25 +78,29 @@ Import-Module VMware.PowerCLI
 try{
     [string[]]$Properties = @("Name","Id","PowerState","ConnectionState","IsStandalone","LicenseKey")
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }                                
     if($PSCmdlet.ParameterSetName  -eq "byID"){
-        $Script:vmHost = Get-VMHost -Server $Script:vmServer -ID $ID -ErrorAction Stop
+        $Script:vmHost = Get-VMHost @cmdArgs -ID $ID
     }
     else{
-        $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $Name -ErrorAction Stop
+        $Script:vmHost = Get-VMHost cmdArgs -Name $Name
     }
+    $cmdArgs.Add('VMHost', $Script:vmHost)
+    $cmdArgs.Add('Confirm', $false)
     if($PSBoundParameters.ContainsKey('State') -eq $true){
-        $null = Set-VMHost -Server $Script:vmServer -VMHost $Script:vmHost -State $State -ErrorAction Stop
+        $null = Set-VMHost @cmdArgs -State $State
     }
     if($PSBoundParameters.ContainsKey('LicenseKey') -eq $true){
-        $null = Set-VMHost -Server $Script:vmServer -VMHost $Script:vmHost -LicenseKey $LicenseKey -ErrorAction Stop
+        $null = Set-VMHost  @cmdArgs -LicenseKey $LicenseKey
     }
     if($PSBoundParameters.ContainsKey('TimeZoneName') -eq $true){
         $timezone = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name $TimeZoneName -ErrorAction Stop
-        $null = Set-VMHost -Server $Script:vmServer -VMHost $Script:vmHost -TimeZone $timezone -Confirm:$false -ErrorAction Stop
+        $null = Set-VMHost @cmdArgs -TimeZone $timezone
     }
     if($PSBoundParameters.ContainsKey('Evacuate') -eq $true){
-        $null = Set-VMHost -Server $Script:vmServer -VMHost $Script:vmHost -Evacuate:$Evacuate -Confirm:$false -ErrorAction Stop
+        $null = Set-VMHost @cmdArgs $Script:vmHost -Evacuate:$Evacuate
     }
     
     $Script:Output = Get-VMHost -Server $Script:vmServer -Name $Name -NoRecursion:$true -ErrorAction Stop | Select-Object $Properties

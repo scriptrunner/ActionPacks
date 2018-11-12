@@ -113,37 +113,46 @@ try{
         $AdapterName = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            }                            
     if($PSCmdlet.ParameterSetName  -eq "Snapshot"){
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
-        $snap = Get-Snapshot -Server $Script:vmServer -Name $SnapshotName -VM $vm -ErrorAction Stop
-        $Script:adapter = Get-NetworkAdapter -Server $Script:vmServer -Snapshot $snap -Name $AdapterName -ErrorAction Stop
+        $vm = Get-VM @cmdArgs -Name $VMName
+        $snap = Get-Snapshot @cmdArgs -Name $SnapshotName -VM $vm
+        $cmdArgs.Add('Snapshot', $snap)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "Template"){
-        $temp = Get-Template -Server $Script:vmServer -Name $TemplateName -ErrorAction Stop
-        $Script:adapter = Get-NetworkAdapter -Server $Script:vmServer -Template $temp -Name $AdapterName -ErrorAction Stop
+        $temp = Get-Template @cmdArgs -Name $TemplateName
+        $cmdArgs.Add('Template', $temp)
     }
     else {
-        $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop        
-        $Script:adapter = Get-NetworkAdapter -Server $Script:vmServer -VM $vm -Name $AdapterName -ErrorAction Stop
+        $vm = Get-VM @cmdArgs -Name $VMName  
+        $cmdArgs.Add('VM', $vm)
     }
+    $Script:adapter = Get-NetworkAdapter @cmdArgs -Name $AdapterName
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Script:vmServer
+                'NetworkAdapter' = $Script:adapter
+                'Confirm' = $false
+                }               
     if($PSBoundParameters.ContainsKey('Network') -eq $true){
-        $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -NetworkName $Network -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-NetworkAdapter @cmdArgs -NetworkName $Network | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('AdapterType') -eq $true){
-        $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -Type $AdapterType -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-NetworkAdapter @cmdArgs -Type $AdapterType | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('MacAddress') -eq $true){
-        $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -MacAddress $MacAddress -Confirm:$false -ErrorAction Stop | Select-Object *    
+        $Script:Output = Set-NetworkAdapter @cmdArgs -MacAddress $MacAddress | Select-Object *    
     }
     if($PSBoundParameters.ContainsKey('Connected') -eq $true){
-        $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -Connected $Connected -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-NetworkAdapter @cmdArgs -Connected $Connected | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('StartConnected') -eq $true){
-        $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -StartConnected $StartConnected -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-NetworkAdapter @cmdArgs -StartConnected $StartConnected | Select-Object *
     }
     if($PSBoundParameters.ContainsKey('WakeOnLan') -eq $true){
-        $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -WakeOnLan $WakeOnLan -Confirm:$false -ErrorAction Stop | Select-Object *
+        $Script:Output = Set-NetworkAdapter @cmdArgs -WakeOnLan $WakeOnLan | Select-Object *
     }
 
     if($SRXEnv) {

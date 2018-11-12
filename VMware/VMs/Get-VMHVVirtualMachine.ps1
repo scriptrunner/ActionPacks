@@ -76,21 +76,20 @@ try{
         $Properties = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'NoRecursion' = $NoRecursion}
 
     if($PSCmdlet.ParameterSetName  -eq "byID"){
-        $Script:Output = Get-VM -Server $Script:vmServer -Id $VMId -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $cmdArgs.Add('Id',$VMId)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "byName"){
-        if([System.String]::IsNullOrWhiteSpace($VMName) -eq $true){
-            $Script:Output = Get-VM -Server $Script:vmServer -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
-        }
-        else{
-            $Script:Output = Get-VM -Server $Script:vmServer -Name $VMName -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
-        }        
+        $cmdArgs.Add('Name',$VMName)
     }
     elseif($PSCmdlet.ParameterSetName  -eq "byDatastore"){
-        $Script:Output = Get-VM -Server $Script:vmServer -Datastore $Datastore -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $cmdArgs.Add('Datastore',$Datastore)
     }
+    $Script:Output = Get-VM @cmdArgs | Select-Object $Properties.Split(",")
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 

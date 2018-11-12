@@ -59,12 +59,17 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     $Script:uAccount = Get-VMHostAccount -Server $Script:vmServer -Id $Id -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'UserAccount' = $Script:uAccount
+                            'Confirm' = $false
+                            }                                
+
     if($PSBoundParameters.ContainsKey('Password') -eq $true){
-        $Script:uAccount = Set-VMHostAccount -UserAccount $Script:uAccount -Password $Password -Confirm:$false -ErrorAction Stop
+        $Script:uAccount = Set-VMHostAccount @cmdArgs -Password $Password
     }if($PSBoundParameters.ContainsKey('Description') -eq $true){
-        $Script:uAccount = Set-VMHostAccount -UserAccount $Script:uAccount -Description $Description -Confirm:$false -ErrorAction Stop
+        $Script:uAccount = Set-VMHostAccount @cmdArgs -Description $Description
     }if($PSBoundParameters.ContainsKey('GrantShellAccess') -eq $true){
-        $Script:uAccount = Set-VMHostAccount -UserAccount $Script:uAccount -GrantShellAccess $GrantShellAccess -Confirm:$false -ErrorAction Stop
+        $Script:uAccount = Set-VMHostAccount @cmdArgs -GrantShellAccess $GrantShellAccess
     }
     $Script:Output = $Script:uAccount | Select-Object *
 

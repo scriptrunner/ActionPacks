@@ -93,18 +93,23 @@ try{
     }
 
     $Script:poli = Get-VMHostStartPolicy -Server $Script:vmServer -VMHost $Script:vmhost -ErrorAction Stop
-    Set-VMHostStartPolicy -VMHostStartPolicy $Script:poli -Enabled $Enabled -Confirm:$false -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'VMHostStartPolicy' = $Script:poli
+                            'Confirm' = $false
+                            }                            
+
+    Set-VMHostStartPolicy @cmdArgs -Enabled $Enabled
     if($StartDelay -gt 0){
-        Set-VMHostStartPolicy -VMHostStartPolicy $Script:poli -StartDelay $StartDelay -Confirm:$false -ErrorAction Stop
+        Set-VMHostStartPolicy @cmdArgs -StartDelay $StartDelay
     }
     if($StopDelay -gt 0){
-        Set-VMHostStartPolicy -VMHostStartPolicy $Script:poli -StopDelay $StopDelay -Confirm:$false -ErrorAction Stop
+        Set-VMHostStartPolicy @cmdArgs -StopDelay $StopDelay
     }    
     if($PSBoundParameters.ContainsKey('StopAction') -eq $true){
-        Set-VMHostStartPolicy -VMHostStartPolicy $Script:poli -StopAction $StopAction -Confirm:$false -ErrorAction Stop
+        Set-VMHostStartPolicy @cmdArgs -StopAction $StopAction
     }
     if($PSBoundParameters.ContainsKey('WaitForHeartBeat') -eq $true){
-        Set-VMHostStartPolicy -VMHostStartPolicy $Script:poli -WaitForHeartBeat $WaitForHeartBeat -Confirm:$false -ErrorAction Stop
+        Set-VMHostStartPolicy @cmdArgs -WaitForHeartBeat $WaitForHeartBeat
     }
 
     $Script:Output = Get-VMHostStartPolicy -Server $Script:vmServer -VMHost $Script:vmhost -ErrorAction Stop | Select-Object *

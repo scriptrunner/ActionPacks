@@ -134,18 +134,22 @@ try{
     $Script:source = Get-VM -Server $Script:vmServer -Name $SourceVMName -ErrorAction Stop
     $Script:snapshot = Get-Snapshot -Server $Script:vmServer -Name $SnapshotName -ErrorAction Stop
     $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Name' = $VMName
+                            'LinkedClone' = $null
+                            'ReferenceSnapshot' = $Script:snapshot
+                            'VM' = $Script:source 
+                            'Datastore' = $Script:store 
+                            'DiskStorageFormat' = $DiskStorageFormat
+                            'VMHost' = $Script:vmHost 
+                            'Notes' = $Notes
+                            }    
 
-    if([System.String]::IsNullOrEmpty($Location) -eq $true){
-        $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -LinkedClone -ReferenceSnapshot $Script:snapshot `
-                        -VM $Script:source -Datastore $Script:store -DiskStorageFormat $DiskStorageFormat `
-                        -VMHost $Script:vmHost -Notes $Notes -ErrorAction Stop | Select-Object $Properties
+    if([System.String]::IsNullOrEmpty($Location) -eq $false){
+        $cmdArgs.Add('Location', $folder)
     }
-    else {
-        $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
-        $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -LinkedClone -ReferenceSnapshot $Script:snapshot `
-                        -VM $Script:source -Datastore $Script:store -DiskStorageFormat $DiskStorageFormat -Location $folder `
-                        -VMHost $Script:vmHost -Notes $Notes -ErrorAction Stop | Select-Object $Properties
-    }
+    $Script:machine = New-VM @cmdArgs | Select-Object $Properties
     if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -OSCustomizationSpec $OSCustomizationSpec -Confirm:$False -ErrorAction Stop
     }

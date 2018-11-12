@@ -127,15 +127,21 @@ try{
     }
     $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
     $Script:template = Get-Template -Server $Script:vmServer -Name $TemplateName -ErrorAction Stop
-    if([System.String]::IsNullOrEmpty($Location) -eq $true){
-        $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $vmHost -Notes $Notes -Confirm:$false `
-                       -Template $Script:template -DiskStorageFormat $DiskStorageFormat -Datastore $Script:store -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Name' = $VMName 
+                            'VMHost' = $vmHost 
+                            'Notes' = $Notes 
+                            'Confirm' = $false
+                            'Template' = $Script:template 
+                            'DiskStorageFormat' = $DiskStorageFormat 
+                            'Datastore'= $Script:store
+                            }
+    if([System.String]::IsNullOrEmpty($Location) -eq $false){
+         $cmdArgs.Add('Location', $folder)
     }
-    else {
-        $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
-        $Script:machine = New-VM -Server $Script:vmServer -Name $VMName -VMHost $vmHost -Notes $Notes -Confirm:$false `
-            -Template $Script:template -DiskStorageFormat $DiskStorageFormat -Location $folder -Datastore $Script:store -ErrorAction Stop
-    }
+    $Script:machine = New-VM @cmdArgs
+    
     if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -OSCustomizationSpec $OSCustomizationSpec -Confirm:$False -ErrorAction Stop
     }

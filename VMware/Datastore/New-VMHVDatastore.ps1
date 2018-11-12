@@ -90,22 +90,27 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'VMHost' = $Script:vmHost
+                            'Name' = $StoreName
+                            'Path' = $Path
+                            }
+
+    if([System.String]::IsNullOrWhiteSpace($FileSystemVersion) -eq $false){
+        $cmdArgs.Add('FileSystemVersion', $FileSystemVersion)
+    }                            
     if($PSCmdlet.ParameterSetName  -eq "Vmfs"){
-        if([System.String]::IsNullOrWhiteSpace($FileSystemVersion) -eq $false){
-            New-Datastore -Server $Script:vmServer -VMHost $Script:vmHost -Name $StoreName -Vmfs -BlockSizeMB $BlockSizeMB -FileSystemVersion $FileSystemVersion -Path $Path -ErrorAction Stop
-        }
-        else {
-            New-Datastore -Server $Script:vmServer -VMHost $Script:vmHost -Name $StoreName -Vmfs -BlockSizeMB $BlockSizeMB -Path $Path -ErrorAction Stop
-        }
+        $cmdArgs.Add('BlockSizeMB', $BlockSizeMB)
+        $cmdArgs.Add('Vmfs', $null)
     }
     else {
-        if([System.String]::IsNullOrWhiteSpace($FileSystemVersion) -eq $false){
-            New-Datastore -Server $Script:vmServer -VMHost $Script:vmHost -Name $StoreName -Nfs -NfsHost $NfsHost -FileSystemVersion $FileSystemVersion -Path $Path -Kerberos:$Kerberos -ReadOnly:$ReadOnly -ErrorAction Stop
-        }
-        else {
-            New-Datastore -Server $Script:vmServer -VMHost $Script:vmHost -Name $StoreName -Nfs -NfsHost $NfsHost -Path $Path -Kerberos:$Kerberos -ReadOnly:$ReadOnly -ErrorAction Stop
-        }
+        $cmdArgs.Add('Nfs', $null)
+        $cmdArgs.Add('NfsHost', $NfsHost)
+        $cmdArgs.Add('Kerberos', $Kerberos)
+        $cmdArgs.Add('ReadOnly',$ReadOnly)
     }
+    New-Datastore @cmdArgs
     [string[]]$Properties = @("Name","State","CapacityGB","FreeSpaceGB","Datacenter")
     $Script:Output = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -Name $StoreName -ErrorAction Stop | Select-Object $Properties
 

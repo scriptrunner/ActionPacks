@@ -123,7 +123,7 @@ try{
             $cmdArgs.Add("Credential", $DomainAccount)
         }
         
-        Set-ADAccountPassword @cmdArgs -NewPassword $Password -Reset        
+        Set-ADAccountPassword @cmdArgs -NewPassword $NewPassword -Reset        
         $Out += "New password of user $($Username) is set"
 
 

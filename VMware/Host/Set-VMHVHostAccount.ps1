@@ -48,6 +48,7 @@ Param(
     [pscredential]$VICredential,
     [Parameter(Mandatory = $true)]
     [string]$Id,
+    [Parameter(HelpMessage="asrdisplay(password)")]
     [string]$Password,
     [string]$Description,
     [bool]$GrantShellAccess

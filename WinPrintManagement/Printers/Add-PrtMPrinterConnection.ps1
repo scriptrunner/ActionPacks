@@ -22,8 +22,7 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter ConnectionName
-    Specifies the name of a shared printer to which to connect
-    
+    Specifies the name of a shared printer to which to connect    
 #>
 
    

@@ -51,7 +51,7 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $cinst = Get-CimInstance -CimSession $Script:Cim -Query "Select * from WIN32_Printer where Name ='$($PrinterName)'"
+    $cinst = Get-CimInstance -CimSession $Script:Cim -Query "SELECT * FROM WIN32_Printer WHERE Name ='$($PrinterName)'"
     $Script:Output=@()
     if($null -ne $cinst){
         $res=$Script:Cim.InvokeMethod($cinst,"PrintTestPage",$null)

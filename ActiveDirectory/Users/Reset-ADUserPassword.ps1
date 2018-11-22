@@ -128,7 +128,7 @@ try{
 
 
         if($UserMustChangePasswordAtLogon -eq $true){
-            Set-ADUser @cmdArgs -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false
+            Set-ADUser @cmdArgs -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Confirm:$false
             $Out +=  "User $($Username) must change the password on next logon"
         }
         Start-Sleep -Seconds 5 # wait

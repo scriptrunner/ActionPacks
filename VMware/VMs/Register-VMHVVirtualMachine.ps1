@@ -116,6 +116,7 @@ try{
 
     if($PSCmdlet.ParameterSetName  -eq "onCluster"){
         $Script:store = Get-Cluster -Server $Script:vmServer -Name $ClusterName -ErrorAction Stop
+        $cmdArgs['Name'] = $NameOfVM
         $cmdArgs.Add('ResourcePool', $Script:store)
     }
     if([System.String]::IsNullOrEmpty($Location) -eq $false){

@@ -117,6 +117,9 @@ try{
                     'AuthType' = $AuthType
                     'Identity' = $Script:User
                     }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
+        }
         if($UnLock -eq $true){
             if($Script:User.LockedOut -eq $true){
                 Unlock-ADAccount @cmdArgs                

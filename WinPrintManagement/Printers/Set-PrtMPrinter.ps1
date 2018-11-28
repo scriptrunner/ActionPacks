@@ -92,7 +92,7 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $prn=Get-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -ErrorAction SilentlyContinue 
+    $prn = Get-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -ErrorAction SilentlyContinue 
     if($null -eq $prn){
         $Script:Output += "Printer $($PrinterName) not found"
     }
@@ -109,7 +109,7 @@ try{
             Set-Printer @cmdArgs -Shared -ShareName $ShareName
         }
         if($PSBoundParameters.ContainsKey('PrintProcessor') -eq $true){
-            Set-Printer  -PrintProcessor $PrintProcessor
+            Set-Printer -PrintProcessor $PrintProcessor
         }
         if($PSBoundParameters.ContainsKey('Comment') -eq $true){
             Set-Printer @cmdArgs -Comment $Comment

@@ -84,7 +84,7 @@ try{
     function Get-NestedGroupMember($group) { 
         $Script:resultMessage += "Group: $($group.DistinguishedName);$($group.SamAccountName)"
         [hashtable]$searchArgs = @{'ErrorAction' = 'Stop'
-                                    'Server' = $Script:Domain.PDCEmulator
+                                    'Server' = $Domain.PDCEmulator
                                     'AuthType' = $AuthType
                                     'Identity' = $group
                                     }

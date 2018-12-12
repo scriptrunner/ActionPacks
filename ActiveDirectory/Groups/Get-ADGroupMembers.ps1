@@ -125,10 +125,10 @@ try{
     else {
         $cmdArgs.Add("Identity", $DomainName)
     }
-    $Domain = Get-ADDomain @cmdArgs
+    $Script:Domain = Get-ADDomain @cmdArgs
 
     $cmdArgs = @{'ErrorAction' = 'Stop'
-                'Server' = $Domain.PDCEmulator
+                'Server' = $Script:Domain.PDCEmulator
                 'AuthType' = $AuthType
                 'Filter' =  {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} 
                 'SearchBase' = $OUPath 

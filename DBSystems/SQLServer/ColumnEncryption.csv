@@ -1,0 +1,4 @@
+ColumnName;EncryptionType;EncryptionKey 
+dbo.Student.Id;Deterministic;MyCek
+dbo.Student.LastName;Randomized;MyCek
+dbo.Student.FirstName;Plaintext;

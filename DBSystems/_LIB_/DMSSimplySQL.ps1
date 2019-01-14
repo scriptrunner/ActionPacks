@@ -20,7 +20,7 @@ function OpenSQlConnection(){
             Requires Module SimplySQL
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/blob/master/DatabaseManagementSystem/_LIB_
+            https://github.com/scriptrunner/ActionPacks/blob/master/DBSystems/_LIB_
 
         .Parameter ServerName
             The datasource for the connection
@@ -87,7 +87,7 @@ function CloseConnection(){
             Requires Module SimplySQL
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/_LIB_
+            https://github.com/scriptrunner/ActionPacks/blob/master/DBSystems/_LIB_
 
         .Parameter ConnectionName
             User defined name for the connection, default is SRConnection
@@ -203,7 +203,7 @@ function InvokeScalarQuery(){
             Requires Module SimplySQL
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/_LIB_
+            https://github.com/scriptrunner/ActionPacks/blob/master/DBSystems/_LIB_
  
         .Parameter ScalarQuery
             SQL statement to run
@@ -280,7 +280,7 @@ function InvokeUpdateQuery(){
           Requires Module SimplySQL
 
       .LINK
-          https://github.com/scriptrunner/ActionPacks/tree/master/DatabaseSystemManagement/_LIB_
+          https://github.com/scriptrunner/ActionPacks/blob/master/DBSystems/_LIB_
 
       .Parameter UpdateQuery
           SQL statement to run

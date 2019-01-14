@@ -7,3 +7,9 @@
 
 + Open/close Connection
 + Invoke SQL, scalar, update queries
+
+
+## [DMSSqlServer](./DMSSqlServer.ps1)
+
++ Get SQL instance
++ Get SQL database

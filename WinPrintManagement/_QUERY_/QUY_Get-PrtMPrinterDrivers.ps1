@@ -3,10 +3,10 @@
 
 <#
 .SYNOPSIS
-    Get names of local printers from the specified computer
+    Gets all printer driver names from the computer
 
 .DESCRIPTION
-    
+
 .NOTES
     This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
     The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
@@ -19,24 +19,20 @@
     Requires Module PrintManagement
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/_QUERY_
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Drivers
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the printer information
+    Specifies the name of the computer from which to retrieve the printer drivers
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.Parameter PrinterFilter
-    Specifies the filter for the printer names
 #>
 
 [CmdLetBinding()]
 Param(
     [string]$ComputerName,
-    [PSCredential]$AccessAccount,
-    [string]$PrinterFilter
-)
+    [PSCredential]$AccessAccount
+    )
 
 Import-Module PrintManagement
 
@@ -46,35 +42,29 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    [string]$filter ="*"
-    if(-not [System.String]::IsNullOrWhiteSpace($PrinterFilter)){
-        $filter = "*$($PrinterFilter)*"
-    }
-    
+
     if($SRXEnv) {
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:Printers = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName | Where-Object {$_.Type -eq 'Local'} `
-        | Select-Object Name,DriverName,PortName,Shared,Sharename,Comment,Location,Datatype,PrintProcessor,RenderingMode `
-        | Where-Object {$_.Name -like $filter} `
-        | Sort-Object Name
-
-    foreach($item in $Script:Printers)
+    $Script:Drivers =Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName  `
+        | Select-Object Name,PrinterEnvironment | Sort-Object Name
+    
+    foreach($item in $Script:Drivers)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += $item.Name
+            $SRXEnv.ResultList += $item.Name # key
+            $SRXEnv.ResultList2 += "$($item.Name) ($($item.PrinterEnvironment))" # display value
         }
         else{
-            Write-Output $item.name
+            Write-Output "$($item.Name) ($($item.PrinterEnvironment))" 
         }
-    }    
+    }   
 }
 catch{
     throw

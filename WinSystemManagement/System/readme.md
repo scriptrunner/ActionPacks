@@ -1,6 +1,10 @@
 # System
 Use cases for managing Windows 10 clients / Windows Server 2016 or later
 
++ [Clear-SysMWindowsUpdate.ps1](./Clear-SysMWindowsUpdate.ps1)
+
+  Clear Windows Update. Removes the system folder SoftwareDistribution 
+
 + [Get-SysMComputerInfos.ps1](./Get-SysMComputerInfos.ps1)
 
   Gets a consolidated object of system and operating system properties

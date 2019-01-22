@@ -100,6 +100,7 @@ Use cases for managing systems settings in Windows server and Windows 10 client.
 ## [System](./System)
 
 + Ping computers
++ Get user profiles
 + Remove user profile
 + Restart/shut down computers
 + Get/set computer time zone
@@ -112,6 +113,9 @@ Use cases for managing systems settings in Windows server and Windows 10 client.
 + Get hot fixes
 + Get installed programs
 + Get PowerShell version
++ Clear Windows Update
++ Clear computer profiles
++ Clear recyle bin
 
 ## [Windows Server Backup](./Server/Backup)
 
@@ -134,3 +138,9 @@ Use cases for managing systems settings in Windows server and Windows 10 client.
 + Search processes on a client computer
 + Search time zones on a client computer
 + Search BitLocker key protectors
++ Search user profiles
+
+## [Library](./_LIB_)
+
++ Remove computer or server profile
++ Remove old profiles

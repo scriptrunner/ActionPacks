@@ -1,6 +1,18 @@
 # System
 Use cases for managing Windows 10 clients / Windows Server 2016 or later
 
++ [Clear-SysMComputer.ps1](./Clear-SysMComputer.ps1)
+
+  Remove profiles, clears recycle bin on computer
+
++ [Clear-SysMOldProfiles.ps1](./Clear-SysMOldProfiles.ps1)
+
+  Remove old profiles on computer 
+
++ [Clear-SysMProfile.ps1](./Clear-SysMProfile.ps1)
+
+  Remove profile on computer
+
 + [Clear-SysMWindowsUpdate.ps1](./Clear-SysMWindowsUpdate.ps1)
 
   Clear Windows Update. Removes the system folder SoftwareDistribution 
@@ -28,6 +40,10 @@ Use cases for managing Windows 10 clients / Windows Server 2016 or later
 + [Get-SysMUpdateLog.ps1](./Get-SysMUpdateLog.ps1)
 
   Merges Windows Update .etl files into a single log file
+
++ [Get-SysMUserProfiles.ps1](./Get-SysMUserProfiles.ps1)
+
+  Gets the Active Directory user profiles on the computer
 
 + [Remove-SysMUserProfile.ps1](./Remove-SysMUserProfile.ps1)
 

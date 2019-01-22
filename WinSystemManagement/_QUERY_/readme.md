@@ -63,6 +63,10 @@
 
   Gets the list of available time zones
 
++ [QUY_Get-SysMUserProfiles.ps1](./QUY_Get-SysMUserProfiles.ps1)
+
+  Lists the Active Directory user profiles on the computer
+
 + [QUY_Get-SysMWBBackupSets.ps1](./QUY_Get-SysMWBBackupSets.ps1)
 
   Gets backups for a server from a location that you specify

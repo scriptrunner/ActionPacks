@@ -25,6 +25,7 @@ ScriptRunner Version 4.x or higher
 + Enable/Disable the mailbox Archive setting
 + Get mailbox statistics
 + Set mailbox forward
++ Set mailbox quotas
 + Export mailbox
 + List of all mailboxes
 

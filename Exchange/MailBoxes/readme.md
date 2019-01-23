@@ -47,6 +47,10 @@ Requirements: ScriptRunner Version 4.x or higher
 
     Connect to Microsoft Exchange Server and and sets the mailbox properties
 
++ [Set-ExMailboxQuotas.ps1](./Set-ExMailboxQuotas.ps1)
+
+     Connect to Microsoft Exchange Server and and sets the mailbox quotas
+
 + [Set-ExOutOfOffice.ps1](./Set-ExOutOfOffice.ps1)
 
     Connect to Microsoft Exchange Server and enable or disable Automatic Replies for a specified mailbox

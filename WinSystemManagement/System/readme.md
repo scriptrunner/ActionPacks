@@ -1,10 +1,6 @@
 # System
 Use cases for managing Windows 10 clients / Windows Server 2016 or later
 
-+ [Clear-SysMComputer.ps1](./Clear-SysMComputer.ps1)
-
-  Remove profiles, clears recycle bin on computer
-
 + [Clear-SysMOldProfiles.ps1](./Clear-SysMOldProfiles.ps1)
 
   Remove old profiles on computer 
@@ -12,6 +8,10 @@ Use cases for managing Windows 10 clients / Windows Server 2016 or later
 + [Clear-SysMProfile.ps1](./Clear-SysMProfile.ps1)
 
   Remove profile on computer
+
++ [Clear-SysMRecycleBin.ps1](./Clear-SysMRecycleBin.ps1)
+
+  Clears recycle bin on computer
 
 + [Clear-SysMWindowsUpdate.ps1](./Clear-SysMWindowsUpdate.ps1)
 

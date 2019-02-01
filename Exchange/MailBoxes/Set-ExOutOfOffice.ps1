@@ -32,35 +32,11 @@
     .Parameter ExternalText 
         Specifies the Automatic Replies message that's sent to external senders or senders outside the organization
 
-    .Parameter StartDay
-        Specifies the start day that Automatic Replies are sent for the specified mailbox. (1-31)
+    .Parameter StartDate
+        Specifies the start date that Automatic Replies are sent for the specified mailbox
 
-    .Parameter StartMonth
-        Specifies the start month that Automatic Replies are sent for the specified mailbox. (1-12)
-
-    .Parameter StartYear
-        Specifies the start year that Automatic Replies are sent for the specified mailbox. (2017-2020)
-
-    .Parameter StartHour
-        Specifies the start hour that Automatic Replies are sent for the specified mailbox. (0-23)
-
-    .Parameter StartMinute
-        Specifies the start minute that Automatic Replies are sent for the specified mailbox. (0-59)
-
-    .Parameter EndDay
-        Specifies the end day that Automatic Replies are sent for the specified mailbox. (1-31)
-
-    .Parameter EndMonth
-        Specifies the end month that Automatic Replies are sent for the specified mailbox. (1-12)
-
-    .Parameter EndYear
-        Specifies the end year that Automatic Replies are sent for the specified mailbox. (2017-2020)
-
-    .Parameter EndHour
-        Specifies the end hour that Automatic Replies are sent for the specified mailbox. (0-23)
-
-    .Parameter EndMinute
-        Specifies the end minute that Automatic Replies are sent for the specified mailbox. (0-59)
+    .Parameter EndDate
+        Specifies the end date that Automatic Replies are sent for the specified mailbox
 #>
 
 param(
@@ -79,38 +55,11 @@ param(
     [Parameter(ParameterSetName="Schedule Auto Reply")]
     [string]$ExternalText ,
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,31)]
-    [int]$StartDay=1,
+    [datetime]$StartDate,
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,12)]
-    [int]$StartMonth=1,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(2017,2030)]
-    [int]$StartYear=2017,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,23)]
-    [int]$StartHour=0,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,59)]
-    [int]$StartMinute=0,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,31)]
-    [int]$EndDay=1,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,12)]
-    [int]$EndMonth=1,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(2017,2030)]
-    [int]$EndYear=2017,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,23)]
-    [int]$EndHour=0,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,59)]
-    [int]$EndMinute=0
+    [datetime]$EndDate
 )
 
-#Clear
     try{
         $box = Get-Mailbox -Identity $MailboxId
         if($null -ne $box){
@@ -128,25 +77,28 @@ param(
                 if($AutoReplyType -eq 'Internal only'){
                     $type = 'None'
                 }
+                if([System.String]::IsNullOrWhiteSpace($InternalText) -eq $false){
+                    $InternalText = $InternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
+                }
                 if(($type -eq 'All') -or ($type -eq 'Known')){
-                    if([System.String]::IsNullOrWhiteSpace($ExternalText)){
+                    if([System.String]::IsNullOrWhiteSpace($ExternalText) -eq $true){
                         $ExternalText = $InternalText
+                    }
+                    else {
+                        $ExternalText = $ExternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
                     }
                 }
                 if($PSCmdlet.ParameterSetName  -eq "Schedule Auto Reply"){
-                    [datetime]$start = New-Object DateTime $StartYear, $StartMonth, $StartDay, $StartHour, $StartMinute, 0
-                    if($start.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                        $start =[DateTime]::Now
+                    if($StartDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+                        $StartDate =[DateTime]::Now
                     }
-                    [datetime]$end = $start
-                    if($EndYear -gt 0){
-                        $end = New-Object DateTime $EndYear, $EndMonth, $EndDay, $EndHour, $EndMinute, 0
-                    }
-                    if($end.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                        $end =$start.AddDays(1)
+                    if(($null -eq $EndDate) -or ($EndDate.Year -lt 2000)){
+                        $EndDate = $StartDate                    }
+                    if($EndDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+                        $EndDate =$StartDate.AddDays(1)
                     }
                     Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Scheduled' -Confirm:$false -ExternalAudience $type `
-                        -InternalMessage $InternalText -ExternalMessage $ExternalText -EndTime $end -StartTime $start
+                        -InternalMessage $InternalText -ExternalMessage $ExternalText -EndTime $EndDate -StartTime $StartDate
                     $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
                     $resultMessage += "Mailbox $($box.UserPrincipalName) scheduled"
                 }

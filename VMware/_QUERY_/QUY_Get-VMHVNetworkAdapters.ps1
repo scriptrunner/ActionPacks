@@ -46,16 +46,16 @@ try{
     }
     
     $Script:adapters = Get-NetworkAdapter -Server $Script:vmServer -VM * -ErrorAction Stop `
-                        | Select-Object NetworkName,Type -Unique | Sort-Object NetworkName
+                        | Select-Object NetworkName -Unique | Sort-Object NetworkName
 
     foreach($item in $Script:adapters)
     {
         if($SRXEnv) {
             $SRXEnv.ResultList += $item.NetworkName
-            $SRXEnv.ResultList2 += "$($item.NetworkName) - $($item.Type)" # Display
+            $SRXEnv.ResultList2 += $item.NetworkName # Display
         }
         else{
-            Write-Output "$($item.NetworkName) - $($item.Type)"
+            Write-Output $item.NetworkName
         }
     }
 }

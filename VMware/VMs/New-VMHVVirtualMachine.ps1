@@ -64,7 +64,8 @@
     Specifies the guest operating system of the new virtual machine
 
 .Parameter OSCustomizationSpec
-    Specifies a customization specification that is to be applied to the new virtual machine
+    Specifies a customization specification that is to be applied to the new virtual machine. 
+    This works only in 32-bit mode
 
 .Parameter HardwareVersion
     Specifies the version of the new virtual machine. 
@@ -72,6 +73,9 @@
 
 .Parameter Location
     Specifies the folder where you want to place the new virtual machine
+
+.Parameter Datastore
+    Specifies the datastore where you want to place the new virtual machine    
 
 .Parameter VMSwapfilePolicy
     Specifies the swapfile placement policy
@@ -97,11 +101,14 @@ Param(
     [switch]$Floppy,
     [switch]$CD,
     [string]$Network,
+    [ValidateSet("e1000","Flexible","Vmxnet","EnhancedVmxnet","Vmxnet3")]
+    [string]$NetworkAdapterType = "e1000",
     [string]$GuestId,
     [ValidateSet("NonPersistent","Persistent")]
     [string]$OSCustomizationSpec,
     [string]$HardwareVersion,
     [string]$Location,
+    [string]$Datastore,
     [ValidateSet("WithVM","Inherit","InHostDatastore")]
     [string]$VMSwapfilePolicy = "Inherit"
 )
@@ -132,6 +139,10 @@ try{
                             'VMSwapfilePolicy' = $VMSwapfilePolicy
                         }
 
+    if([System.String]::IsNullOrEmpty($Datastore) -eq $false){
+        $store = Get-Datastore -Server $Script:vmServer -Name $Datastore -ErrorAction Stop
+        $cmdArgs.Add('Datastore' ,$store)
+    }
     if([System.String]::IsNullOrEmpty($Location) -eq $false){
         $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
         $cmdArgs.Add('Location' ,$Folder)
@@ -148,7 +159,7 @@ try{
     }
     if($PSBoundParameters.ContainsKey('Network') -eq $true){
         $adapter = Get-NetworkAdapter -Server $Script:vmServer -VM $Script:machine
-        $null = Set-NetworkAdapter -NetworkName $Network -NetworkAdapter $adapter -Confirm:$false -ErrorAction Stop
+        $null = Set-NetworkAdapter -NetworkName $Network -NetworkAdapter $adapter -Type $NetworkAdapterType -Confirm:$false -ErrorAction Stop
     }
 
     $Script:output = Get-VM -Server $Script:vmServer -Name $VMName | Select-Object $Properties

@@ -109,7 +109,7 @@ try{
     $Script:harddisk = Get-HardDisk -Server $Script:vmServer -VM $vm -Name $DiskName -ErrorAction Stop
 
     if($CapacityGB -gt 0){
-        if($PSCmdlet.ParameterSetName  -eq "UseExisting"){
+        if($PSCmdlet.ParameterSetName  -eq "Update"){
             $Script:harddisk = Set-HardDisk -HardDisk $Script:harddisk -CapacityGB $CapacityGB -Confirm:$false -ErrorAction Stop
         }
         else {
@@ -123,7 +123,7 @@ try{
     }
     if($PSBoundParameters.ContainsKey('SCSIControllerName') -eq $true){
         $controller = Get-ScsiController -Server $Script:vmServer -VM $Script:vm -Name $SCSIControllerName -ErrorAction Stop
-        if($PSCmdlet.ParameterSetName  -eq "UseExisting"){
+        if($PSCmdlet.ParameterSetName  -eq "Update"){
             $Script:harddisk = Set-HardDisk -HardDisk $Script:harddisk -Controller $controller -Confirm:$false -ErrorAction Stop
         }
         else {
@@ -131,7 +131,7 @@ try{
         }
     }
     if($PSBoundParameters.ContainsKey('Persistence') -eq $true){
-        if($PSCmdlet.ParameterSetName  -eq "UseExisting"){
+        if($PSCmdlet.ParameterSetName  -eq "Update"){
             $Script:harddisk = Set-HardDisk -HardDisk $Script:harddisk -Persistence $Persistence -Confirm:$false -ErrorAction Stop
         }
         else {

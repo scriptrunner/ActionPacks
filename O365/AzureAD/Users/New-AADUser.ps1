@@ -59,7 +59,7 @@
         Specifies the department of the user
 
     .Parameter ForceChangePasswordNextLogin
-        Forces a user to change their password during their next log iny
+        Forces a user to change their password during their next logon
 
     .Parameter ShowInAddressList 
         Specifies show this user in the address list

@@ -2,7 +2,10 @@
 Public PowerShell script gallery for ScriptRunner.  
 
 ## [Active Directory](./ActiveDirectory)
-Use cases for managing users, groups and computers in on prem AD
+Use cases for managing users, groups and computers in on prem AD 
+
+## [Azure](./Azure)
+Use cases for managing Microsoft Azure
 
 ## [Database Management Systems](./DBSystems)
 Use cases for managing Database systems

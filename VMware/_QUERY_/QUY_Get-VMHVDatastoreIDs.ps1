@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:stores = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -ErrorAction Stop | Select-Object Id,Name
+    $Script:stores = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -ErrorAction Stop | Select-Object Id,Name | Sort-Object Name
     
     foreach($item in $Script:stores)
     {

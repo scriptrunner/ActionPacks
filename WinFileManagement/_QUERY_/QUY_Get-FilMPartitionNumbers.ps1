@@ -52,7 +52,7 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
-    $result = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber | Select-Object @("DiskNumber","PartitionNumber","DriveLetter")
+    $result = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber | Select-Object @("DiskNumber","PartitionNumber","DriveLetter") | Sort-Object PartitionNumber
     if($SRXEnv) {
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()

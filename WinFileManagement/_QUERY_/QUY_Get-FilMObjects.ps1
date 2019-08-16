@@ -51,13 +51,13 @@ try{
         $filter ="*$($ObjectName)*"
     }
     if($ObjectType  -eq "All"){
-        $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -Filter $filter -ErrorAction SilentlyContinue
+        $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -Filter $filter -ErrorAction SilentlyContinue | Sort-Object FullName
     }
     elseif($ObjectType  -eq "Folders"){
-        $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -Directory -Filter $filter -ErrorAction SilentlyContinue
+        $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -Directory -Filter $filter -ErrorAction SilentlyContinue | Sort-Object FullName
     }
     elseif($ObjectType  -eq "Files"){
-        $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -File -Filter $filter -ErrorAction SilentlyContinue
+        $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -File -Filter $filter -ErrorAction SilentlyContinue | Sort-Object FullName
     } 
     if($SRXEnv) {
         $SRXEnv.ResultList =@()

@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:zones = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name "*" | Select-Object *
+    $Script:zones = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name "*" | Select-Object * | Sort-Object Name
 
     foreach($item in $Script:zones)
     {

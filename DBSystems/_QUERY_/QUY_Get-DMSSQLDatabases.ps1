@@ -57,7 +57,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $bases = Get-SqlDatabase -InputObject $instance -ErrorAction Stop -Confirm:$false | Select-Object Name
+    $bases = Get-SqlDatabase -InputObject $instance -ErrorAction Stop -Confirm:$false | Select-Object Name | Sort-Object Name
 
     foreach($itm in  $bases){
         if($SRXEnv) {            

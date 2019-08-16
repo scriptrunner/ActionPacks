@@ -52,7 +52,7 @@ try{
 
     $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     $Script:shots = Get-Snapshot -Server $Script:vmServer -VM $Script:machine `
-                        -ErrorAction Stop | Select-Object Name,Id
+                        -ErrorAction Stop | Select-Object Name,Id | Sort-Object Name
                         
     foreach($item in $Script:shots)
     {

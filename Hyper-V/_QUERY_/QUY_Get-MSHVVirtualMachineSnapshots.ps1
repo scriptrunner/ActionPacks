@@ -61,10 +61,10 @@ try {
     if($null -ne $Script:VM){
         $Properties = "Name,Id,SnapshotType,Path,ParentCheckpointName,SizeOfSystemFiles,CreationTime"
         if($SnapshotType -eq 'All'){
-            $Script:result = Get-VMSnapshot -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",") 
+            $Script:result = Get-VMSnapshot -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",")  | Sort-Object Name
         }
         else {
-            $Script:result = Get-VMSnapshot -VM $Script:VM -SnapshotType $SnapshotType -ErrorAction Stop | Select-Object $Properties.Split(",") 
+            $Script:result = Get-VMSnapshot -VM $Script:VM -SnapshotType $SnapshotType -ErrorAction Stop | Select-Object $Properties.Split(",")  | Sort-Object Name
         }
         
         if($SRXEnv) {

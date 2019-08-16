@@ -58,7 +58,7 @@ try{
         $SRXEnv.ResultList2 =@()
     }
     $result = Get-SqlAgent -InputObject $instance -ErrorAction Stop | `
-                            Get-SqlAgentJob | Get-SqlAgentJobSchedule | Select-Object Name,Parent
+                            Get-SqlAgentJob | Get-SqlAgentJobSchedule | Select-Object Name,Parent | Sort-Object Name
     
     foreach($itm in  $result){
         if($SRXEnv) {            

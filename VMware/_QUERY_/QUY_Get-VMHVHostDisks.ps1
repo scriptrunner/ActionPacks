@@ -52,7 +52,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:disks = Get-VMHostDisk -Server $Script:vmServer -VMHost $HostName -ErrorAction Stop | Select-Object *        
+    $Script:disks = Get-VMHostDisk -Server $Script:vmServer -VMHost $HostName -ErrorAction Stop | Select-Object * | Sort-Object DeviceName      
         
     foreach($item in $Script:disks)
     {

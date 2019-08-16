@@ -44,12 +44,12 @@ try{
     else {
         if($null -eq $AccessAccount){
             $Script:result = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                Get-ComputerRestorePoint -ErrorAction Stop | Select-Object @("Description","SequenceNumber")
+                Get-ComputerRestorePoint -ErrorAction Stop | Select-Object @("Description","SequenceNumber")  | Sort-Object Description
             } -ErrorAction Stop
         }
         else {
             $Script:result = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                Get-ComputerRestorePoint -ErrorAction Stop | Select-Object @("Description","SequenceNumber")
+                Get-ComputerRestorePoint -ErrorAction Stop | Select-Object @("Description","SequenceNumber")  | Sort-Object Description
             } -ErrorAction Stop
         }
     }      

@@ -34,7 +34,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $cons = Show-SqlConnection -All -ErrorAction Stop
+    $cons = Show-SqlConnection -All -ErrorAction Stop | Sort-Object ConnectionName
 
     foreach($itm in  $cons){
         if($SRXEnv) {            

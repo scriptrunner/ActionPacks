@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:machines = Get-VM -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,Notes
+    $Script:machines = Get-VM -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,Notes | Sort-Object Name
 
     foreach($item in $Script:machines)
     {

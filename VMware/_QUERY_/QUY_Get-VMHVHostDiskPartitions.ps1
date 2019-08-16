@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:disks = Get-VMHostDiskPartition -Server $Script:vmServer -Id "*" -ErrorAction Stop | Select-Object *
+    $Script:disks = Get-VMHostDiskPartition -Server $Script:vmServer -Id "*" -ErrorAction Stop | Select-Object * | Sort-Object PartitionNumber
         
     foreach($item in $Script:disks)
     {

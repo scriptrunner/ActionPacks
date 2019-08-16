@@ -46,12 +46,12 @@ try{
     else {
         if($null -eq $AccessAccount){
             $Script:result = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector
+                Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector | Sort-Object MountPoint
             } -ErrorAction Stop
         }
         else {
             $Script:result = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector
+                Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object MountPoint,KeyProtector | Sort-Object MountPoint
             } -ErrorAction Stop 
         }
     }

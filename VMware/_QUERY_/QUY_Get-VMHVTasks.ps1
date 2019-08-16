@@ -53,19 +53,19 @@ try{
             $name = ""
             switch ($item.objectid.split("-")[0].toLower()){
                 "datacenter" {
-                    $name = Get-Datacenter -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name
+                    $name = Get-Datacenter -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name | Sort-Object Name
                 }
                 "datastore" {
-                    $name = Get-Datastore -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name
+                    $name = Get-Datastore -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name | Sort-Object Name
                 }
                 "hostsystem" {
-                    $name = Get-VMHost -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name
+                    $name = Get-VMHost -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name | Sort-Object Name
                 }
                 "resourcepool" {
-                    $name = Get-ResourcePool -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name
+                    $name = Get-ResourcePool -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name | Sort-Object Name
                 }
                 "virtualmachine" {
-                    $name = Get-VM -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name
+                    $name = Get-VM -Server $Script:vmServer -Id $item.objectid -ErrorAction Ignore | Select-Object -ExpandProperty Name | Sort-Object Name
                 }
             }
             if([System.String]::IsNullOrWhiteSpace($name) -eq $true){

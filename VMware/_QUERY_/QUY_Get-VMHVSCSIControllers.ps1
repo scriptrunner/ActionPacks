@@ -52,7 +52,7 @@ try{
 
     $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop        
     $Script:harddisks = Get-HardDisk -Server $Script:vmServer -VM $vm -ErrorAction Stop
-    $script:disks = Get-ScsiController -Server $Script:vmServer -HardDisk $Script:harddisks -ErrorAction Stop | Select-Object *
+    $script:disks = Get-ScsiController -Server $Script:vmServer -HardDisk $Script:harddisks -ErrorAction Stop | Select-Object * | Sort-Object Name
 
     foreach($item in $Script:disks)
     {

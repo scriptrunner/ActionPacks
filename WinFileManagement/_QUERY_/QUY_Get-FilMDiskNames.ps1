@@ -44,7 +44,7 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
-    $result = Get-Disk -CimSession $Script:Cim | Select-Object @("Number","FriendlyName")
+    $result = Get-Disk -CimSession $Script:Cim | Select-Object @("Number","FriendlyName") | Sort-Object FriendlyName
     if($SRXEnv) {
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()

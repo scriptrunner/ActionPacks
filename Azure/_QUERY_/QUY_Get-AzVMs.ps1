@@ -48,7 +48,7 @@ try{
 #>
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
-    $vms = Get-AzVM @cmdArgs
+    $vms = Get-AzVM @cmdArgs | Sort-Object Name
 
     foreach($vm in $vms){
         if($SRXEnv) {

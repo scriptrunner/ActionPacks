@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:hosts = Get-VMHost -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,ConnectionState,PowerState
+    $Script:hosts = Get-VMHost -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,ConnectionState,PowerState | Sort-Object Name
 
     foreach($item in $Script:hosts)
     {

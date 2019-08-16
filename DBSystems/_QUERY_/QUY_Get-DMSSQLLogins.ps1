@@ -82,7 +82,7 @@ try{
                 'HasAccess' = $OnlyHasAccess.ToBool()
                 }
 
-    $result = Get-SqlLogin @cmdArgs | Select-Object Name
+    $result = Get-SqlLogin @cmdArgs | Select-Object Name | Sort-Object Name
     foreach($itm in  $result){
         if($SRXEnv) {            
             $SRXEnv.ResultList += $itm.Name # Value

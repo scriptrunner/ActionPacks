@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:groups = Get-VDPortgroup -Server $Script:vmServer -ErrorAction Stop | Select-Object *
+    $Script:groups = Get-VDPortgroup -Server $Script:vmServer -ErrorAction Stop | Select-Object * | Sort-Object Name
 
     foreach($item in $Script:groups)
     {

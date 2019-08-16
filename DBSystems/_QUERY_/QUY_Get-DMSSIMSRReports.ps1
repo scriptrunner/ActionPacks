@@ -59,7 +59,7 @@ try{
     $query = "SELECT Id,DisplayName,Created FROM [dbo].[BaseEntities_JobControlSet]  
         WHERE Created >= DATETIMEFROMPARTS ($($StartDate.Year), $($StartDate.Month), $($StartDate.Day), $($StartDate.Hour), $($StartDate.Minute), $($StartDate.Second),0) 
         AND Created <  DATETIMEFROMPARTS ($($EndDate.Year), $($EndDate.Month), $($EndDate.Day), $($EndDate.Hour), $($EndDate.Minute), $($EndDate.Second),0)
-        ORDER BY Id DESC"
+        ORDER BY DisplayName DESC"
 
     if($SRXEnv) {
         $SRXEnv.ResultList =@()

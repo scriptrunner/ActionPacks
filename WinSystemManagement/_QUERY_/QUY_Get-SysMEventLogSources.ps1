@@ -41,7 +41,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:Sources = Get-EventLog -ComputerName $ComputerName -LogName $LogName  -ErrorAction Stop | Select-Object Source -Unique
+    $Script:Sources = Get-EventLog -ComputerName $ComputerName -LogName $LogName  -ErrorAction Stop | Select-Object Source -Unique  | Sort-Object Source
     foreach($item in $Script:Sources)
     {
         if($SRXEnv) {

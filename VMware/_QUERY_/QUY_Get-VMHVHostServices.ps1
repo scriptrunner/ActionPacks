@@ -54,7 +54,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:services = Get-VMHostService -Server $Script:vmServer -VMHost $HostName -Refresh -ErrorAction Stop | Select-Object Key,Label
+    $Script:services = Get-VMHostService -Server $Script:vmServer -VMHost $HostName -Refresh -ErrorAction Stop | Select-Object Key,Label | Sort-Object Label
     
     foreach($item in $Script:services)
     {

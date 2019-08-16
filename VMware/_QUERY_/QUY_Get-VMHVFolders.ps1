@@ -51,10 +51,10 @@ try{
         $SRXEnv.ResultList2 =@()
     }
     if([System.String]::IsNullOrWhiteSpace($FolderType) -eq $false){
-        $Script:folders = Get-Folder -Server $Script:vmServer -Type $FolderType -ErrorAction Stop | Select-Object Name
+        $Script:folders = Get-Folder -Server $Script:vmServer -Type $FolderType -ErrorAction Stop | Select-Object Name | Sort-Object Name
     }
     else{
-        $Script:folders = Get-Folder -Server $Script:vmServer -ErrorAction Stop | Select-Object Name
+        $Script:folders = Get-Folder -Server $Script:vmServer -ErrorAction Stop | Select-Object Name | Sort-Object Name
     }
     
     foreach($item in $Script:folders)

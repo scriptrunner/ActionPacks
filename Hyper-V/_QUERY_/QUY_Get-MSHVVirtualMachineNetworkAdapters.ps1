@@ -55,7 +55,7 @@ try {
     }             
     if($null -ne $Script:VM){
         $Properties = @('Name','VMName','MacAddress','DynamicMacAddressEnabled','IPAddresses','Connected','SwitchName','AdapterId','Status','StatusDescription','IsManagementOs','IsExternalAdapter')
-        $Script:result = Get-VMNetworkAdapter -VM $Script:VM | Select-Object $Properties | Where-Object {$_.Connected -eq $true}
+        $Script:result = Get-VMNetworkAdapter -VM $Script:VM | Select-Object $Properties | Where-Object {$_.Connected -eq $true} | Sort-Object Name
         
         if($SRXEnv) {
             $SRXEnv.ResultList =@()

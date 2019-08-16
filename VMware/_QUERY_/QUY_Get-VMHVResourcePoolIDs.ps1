@@ -45,7 +45,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:pools = Get-ResourcePool -Server $Script:vmServer -ErrorAction Stop
+    $Script:pools = Get-ResourcePool -Server $Script:vmServer -ErrorAction Stop | Sort-Object Name
     foreach($item in $Script:pools)
     {
         if($SRXEnv) {

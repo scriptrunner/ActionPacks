@@ -46,7 +46,7 @@ try{
 
     foreach($itm in $profiles){
         $sid = $itm.SID
-        $usr = Get-ADUser -Filter{SID -eq $sid} -Properties Name
+        $usr = Get-ADUser -Filter{SID -eq $sid} -Properties Name | Sort-Object Name
         if([System.String]::IsNullOrWhiteSpace($usr.Name) -eq $false){
             if($SRXEnv) {            
                 $SRXEnv.ResultList += $sid # Value

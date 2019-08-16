@@ -46,7 +46,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:disks = Get-Datastore -Server $Script:vmServer -Name $DatastoreName -ErrorAction Stop | Get-VM | Get-HardDisk | Select-Object *
+    $Script:disks = Get-Datastore -Server $Script:vmServer -Name $DatastoreName -ErrorAction Stop | Get-VM | Get-HardDisk | Select-Object * | Sort-Object Name
 
     foreach($item in $Script:disks)
     {

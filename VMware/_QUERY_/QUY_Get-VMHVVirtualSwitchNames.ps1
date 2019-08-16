@@ -46,7 +46,7 @@ try{
         $SRXEnv.ResultList2 =@()
     }
     
-    $Script:items = Get-VirtualSwitch -Server $Script:vmServer -ErrorAction Stop | Select-Object *
+    $Script:items = Get-VirtualSwitch -Server $Script:vmServer -ErrorAction Stop | Select-Object * | Sort-Object Name
     foreach($item in $Script:items)
     {
         if($SRXEnv) {

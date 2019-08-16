@@ -36,7 +36,7 @@ try{
         $SRXEnv.ResultList =@()
         $SRXEnv.ResultList2 =@()
     }
-    $Script:logs = Get-EventLog -ComputerName $ComputerName -List -ErrorAction Stop | Select-Object *
+    $Script:logs = Get-EventLog -ComputerName $ComputerName -List -ErrorAction Stop | Select-Object *  | Sort-Object LogDisplayName
     foreach($item in $Script:logs)
     {
         if($SRXEnv) {

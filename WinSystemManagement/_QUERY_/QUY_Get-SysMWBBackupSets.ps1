@@ -41,17 +41,17 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:result = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                Get-WBBackupSet | Select-Object @("BackupTime","BackupSetID")
+                Get-WBBackupSet | Select-Object @("BackupTime","BackupSetID") | Sort-Object BackupTime
             } -ErrorAction Stop
         }
         else {
             $Script:result = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock {
-                Get-WBBackupSet | Select-Object $Using:props
+                Get-WBBackupSet | Select-Object @("BackupTime","BackupSetID") | Sort-Object BackupTime
             } -ErrorAction Stop
         }
     }
     else {
-        $Script:result = Get-WBBackupSet | Select-Object $Script:props
+        $Script:result = Get-WBBackupSet | Select-Object @("BackupTime","BackupSetID") | Sort-Object BackupTime
     }
     
     foreach($item in $Script:result)

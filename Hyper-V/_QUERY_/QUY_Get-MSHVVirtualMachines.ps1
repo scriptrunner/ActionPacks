@@ -62,7 +62,7 @@ try{
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        $Script:VMs = Get-VM -CimSession $Script:Cim  -Name $NamePattern -ErrorAction Stop
+        $Script:VMs = Get-VM -CimSession $Script:Cim  -Name $NamePattern -ErrorAction Stop | Sort-Object VMName
     } 
 	Write-Output ('' + $Script:VMs.Count + ' examined VMs...')
 	foreach ($vm in $Script:VMs) {

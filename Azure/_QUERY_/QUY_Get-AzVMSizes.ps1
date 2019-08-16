@@ -57,7 +57,7 @@ try{
         $null = Connect-AzAccount -Credential $AzureCredential -Tenant $Tenant -Force -Confirm:$false -ErrorAction Stop
     }    
 #>
-    $result = Get-AzVMSize -ResourceGroupName $ResourceGroupName -VMName $VMName -ErrorAction Stop
+    $result = Get-AzVMSize -ResourceGroupName $ResourceGroupName -VMName $VMName -ErrorAction Stop | Sort-Object Name
 
     foreach($item in $result){
         if($SRXEnv) {

@@ -46,7 +46,7 @@ try{
     }
     
     $Script:groups = Get-VirtualPortgroup -Server $Script:vmServer -ErrorAction Stop `
-                        | Select-Object Name,VirtualSwitch,VLanId 
+                        | Select-Object Name,VirtualSwitch,VLanId  | Sort-Object Name
 
     foreach($item in $Script:groups)
     {

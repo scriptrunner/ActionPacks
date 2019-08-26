@@ -1,0 +1,58 @@
+﻿#Requires -Version 4.0
+#Requires -Modules SkypeOnlineConnector
+
+<#
+    .SYNOPSIS
+        View the list of languages that are supported when an organization uses Microsoft as the dial-in audio conferencing provider
+    
+    .DESCRIPTION  
+
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, AppSphere AG assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of AppSphere AG.
+        © AppSphere AG
+
+    .COMPONENT
+        Requires Module SkypeOnlineConnector
+        Requires Library script SFBLibrary.ps1
+        ScriptRunner Version 4.2.x or higher
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
+
+    .Parameter SFBCredential
+        Credential object containing the Skype for Business user/password
+#>
+
+param(    
+    [Parameter(Mandatory = $true)]
+    [PSCredential]$SFBCredential
+)
+
+Import-Module SkypeOnlineConnector
+
+try{
+    ConnectS4B -S4BCredential $SFBCredential
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Force' = $true
+                            }    
+
+    $result = Get-CsOnlineDialInConferencingLanguagesSupported @cmdArgs | Select-Object *
+
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $result
+    }
+    else {
+        Write-Output $result 
+    }    
+}
+catch{
+    throw
+}
+finally{
+    DisconnectS4B
+}

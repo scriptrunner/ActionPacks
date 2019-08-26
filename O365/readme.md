@@ -7,6 +7,9 @@ Use cases to manage groups, users and roles with Azure Active Directory Powershe
 ## [Exchange Online](./ExchangeOnline)
 Use cases to manage distribution groups, mailboxes, resources and services
 
+## [Microsoft Teams](./MS-Teams)
+Use cases for managing Microsoft Teams
+
 ## [MS Online](./MSOnline)
 Use cases to manage groups and users with Azure Active Directory Powershell Module v1
 
@@ -14,4 +17,4 @@ Use cases to manage groups and users with Azure Active Directory Powershell Modu
 Coming soon
 
 ## [Skype for Business](./Skype4Business)
-Coming soon
+Use cases for managing Skype for Business

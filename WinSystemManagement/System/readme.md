@@ -60,6 +60,10 @@ Use cases for managing Windows 10 clients / Windows Server 2016 or later
 + [Set-SysMAutoUpdate.ps1](./Set-SysMAutoUpdate.ps1)
 
   Enable or disable Automatic Updates for Windows Update 
+  
++ [Set-SysMCredSSP.ps1](./Set-SysMCredSSP.ps1)
+
+  Enable or disable Credential Security Support Provider (CredSSP) authentication on a computer
 
 + [Set-SysMExplorerSettings .ps1](./Set-SysMExplorerSettings.ps1)
 

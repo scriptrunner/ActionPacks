@@ -68,15 +68,15 @@ param(
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
     [string]$MailboxId ,
-    [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply")]
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
+    [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
+    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [string]$InternalText,
     [Parameter(ParameterSetName="Enable Auto Reply")]
     [Parameter(ParameterSetName="Schedule Auto Reply")]
     [ValidateSet("All","Only contact list members","Internal only")]
     [string]$AutoReplyType="All",
-    [Parameter(ParameterSetName="Enable Auto Reply")]
-    [Parameter(ParameterSetName="Schedule Auto Reply")]
+    [Parameter(ParameterSetName="Enable Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
+    [Parameter(ParameterSetName="Schedule Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [string]$ExternalText ,
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
     [ValidateRange(1,31)]

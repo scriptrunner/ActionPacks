@@ -1,5 +1,6 @@
 # Action Pack for O365
-Use cases to manage users, groups, and services in O365. Solutions with Azure AD, Exchange Online and MSOnline
+Use cases to manage users, groups, and services in O365.<br> 
+Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online, Skype4Business and MSOnline
 
 ## [Azure AD](./AzureAD)
 Use cases to manage groups, users and roles with Azure Active Directory Powershell Module v2
@@ -10,11 +11,14 @@ Use cases to manage distribution groups, mailboxes, resources and services
 ## [Microsoft Teams](./MS-Teams)
 Use cases for managing Microsoft Teams
 
+## [PowerApps/Flow](./PowerApps)
+Comming soon
+
 ## [MS Online](./MSOnline)
 Use cases to manage groups and users with Azure Active Directory Powershell Module v1
 
 ## [Sharepoint Online](./SharePointOnline)
-Coming soon
+Use cases for SharePoint Online 
 
 ## [Skype for Business](./Skype4Business)
 Use cases for managing Skype for Business

@@ -21,3 +21,7 @@
 + [Set-MSTTeam.ps1](./Set-MSTTeam.ps1)
 
   Updates properties of a team
+
++ [Set-MSTTeamArchivedState.ps1](./Set-MSTTeamArchivedState.ps1)
+
+  Set the archived state of a team

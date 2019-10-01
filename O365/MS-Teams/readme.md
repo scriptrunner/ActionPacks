@@ -17,10 +17,13 @@ Use cases for managing Microsoft Teams
 
 ## [Policies](./Policies)
 
++ Get policy package, user policy recommendation
++ Grant/get user policy package
 
 ## [Teams](./Teams)
 
 + Create/set/get/remove Team
++ Set team archived state
 
 ## [Queries](./_QUERY_)
 

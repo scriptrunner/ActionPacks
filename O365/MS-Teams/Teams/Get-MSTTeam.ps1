@@ -17,6 +17,7 @@
 
 .COMPONENT
     Requires Module microsoftteams
+    Requires Library script MSTLibrary.ps1
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams

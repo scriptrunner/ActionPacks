@@ -14,7 +14,8 @@ Use cases for managing Database systems
 Use cases for managing mailboxes, distribution lists, resources, and services in on prem Exchange Server environments.
 
 ## [Office 365](./O365)
-Use cases to manage users, groups, and services in O365. Solutions with Azure AD, Exchange Online and MSOnline
+Use cases to manage users, groups, and services in O365.<br>
+Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online, Skype4Business and MSOnline
 
 ## [Hyper-V](./Hyper-V)
 Use cases for managing the Hyper-V virtualization platform

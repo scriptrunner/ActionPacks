@@ -12,7 +12,7 @@ Use cases to manage distribution groups, mailboxes, resources and services
 Use cases for managing Microsoft Teams
 
 ## [PowerApps/Flow](./PowerApps)
-Coming soon
+Use cases for managing PowerApps/Flow
 
 ## [MS Online](./MSOnline)
 Use cases to manage groups and users with Azure Active Directory Powershell Module v1

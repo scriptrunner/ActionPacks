@@ -6,6 +6,10 @@
 
   Retrieving teams with particular properties/information
 
++ [Measure-MSTTeamOwners.ps1](./Measure-MSTTeamOwners.ps1)
+
+  Check the owner's number of the team
+
 + [New-MSTTeam.ps1](./New-MSTTeam.ps1)
 
   Creates a new Team for use in Microsoft Teams and will create an O365 Unified Group to back the team

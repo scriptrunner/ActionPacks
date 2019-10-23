@@ -145,6 +145,43 @@ function FillParameters(){
     }
 }
 
+function CreateFacts(){
+    <#
+        .SYNOPSIS
+            Sends a message to a Team Channel
+
+        .DESCRIPTION
+
+        .NOTES
+            This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+            The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+            The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+            the use and the consequences of the use of this freely available script.
+            PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+            Â© ScriptRunner Software GmbH
+
+        .COMPONENT
+            Requires Module microsoftteams
+
+        .LINK
+            https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/_LIB_
+    
+        .Parameter ActivityFacts
+            Array with hashtable Hashtable with an entry.
+            Each hashtable is one line 
+    #>
+    param(
+        [hashtable[]]$ActivityFacts
+    )
+
+    [hashtable[]]$Facts = @()
+    foreach($item in $Activityfacts){
+        [hashtable]$out = @{'name' = ($item.Keys | Select-Object -First 1);'value'=($item.Values | Select-Object -First 1)}
+        $Facts += $out
+    }
+    return $Facts
+}
+
 function SendMessage2Channel{
     <#
         .SYNOPSIS
@@ -158,7 +195,7 @@ function SendMessage2Channel{
             The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
             the use and the consequences of the use of this freely available script.
             PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-            © ScriptRunner Software GmbH
+            Â© ScriptRunner Software GmbH
 
         .COMPONENT
             Requires Module microsoftteams
@@ -183,6 +220,10 @@ function SendMessage2Channel{
 
         .Parameter ActivitySubtitle
             The Activity subtitle of the message to publish on Teams
+
+        .Parameter ActivityFacts
+            Array with hashtable Hashtable with an entry.
+            Each hashtable is one line 
     #>
 
     [CmdLetBinding()]
@@ -196,10 +237,11 @@ function SendMessage2Channel{
         [ValidateSet('Orange','Green','Red')]
         [string]$MessageColor,
         [string]$ActivityTitle,
-        [string]$ActivitySubtitle
+        [string]$ActivitySubtitle,
+        [hashtable[]]$ActivityFacts
     )
 
-    try{
+    try{        
         [hashtable]$cmdArgs = @{} 
         [hashtable]$section =@{}
         if([System.String]::IsNullOrWhiteSpace($Title) -eq $false){
@@ -212,6 +254,10 @@ function SendMessage2Channel{
             $section.Add('activitySubtitle',$ActivitySubtitle)
         }  
         $cmdArgs.Add('Text',$Message)
+        if(($null -ne $ActivityFacts) -and ($ActivityFacts.Count -gt 0)){
+            [hashtable[]]$sectionFacts = CreateFacts -ActivityFacts $ActivityFacts
+            $section.Add('facts',@($sectionFacts))
+        }
         $cmdArgs.Add('sections',@($section))
 
         switch ($MessageColor){
@@ -229,7 +275,7 @@ function SendMessage2Channel{
         # Build the request 
         $Params = @{ 
             Headers = @{'accept'='application/json'} 
-            Body = $cmdArgs | ConvertTo-Json 
+            Body = $cmdArgs | ConvertTo-Json -Depth 5
             Method = 'Post' 
             URI = $WebhookURL  
         } 

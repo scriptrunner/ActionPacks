@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Returns users of a team
+    Check the owner's number of the team
 
 .DESCRIPTION
 
@@ -20,16 +20,16 @@
     Requires Library script MSTLibrary.ps1
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Members
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials 
+    Provides the user ID and password for organizational ID credentials
 
-.Parameter GroupId
-    GroupId of the team
+.Parameter ThresholdValue
+    Minimum number of owners
 
-.Parameter Role
-    Filter the results to only users with the given role
+.Parameter Archived
+    Filters to return teams that have been archived or not
 
 .Parameter TenantID
     Specifies the ID of a tenant
@@ -39,10 +39,9 @@
 Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
-    [string]$GroupId,
-    [ValidateSet('Member','Owner','Guest')]
-    [string]$Role,
+    [ValidateRange(1,10)]
+    [int]$ThresholdValue = 1,
+    [bool]$Archived,
     [string]$TenantID
 )
 
@@ -51,18 +50,24 @@ Import-Module microsoftteams
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'GroupId' = $GroupId
-                            }  
-
-    $team = Get-Team @cmdArgs | Select-Object -ExpandProperty DisplayName
-
-    if([System.String]::IsNullOrWhiteSpace($Role) -eq $false){
-        $cmdArgs.Add('Role',$Role)
-    }                              
+    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
+                            'Archived' = $Archived
+                            }                              
     
-    $result = @("Users of the team $($team)", '')
-    $result += Get-TeamUser @cmdArgs | Select-Object *
+    $teams = Get-Team @getArgs 
+    $result = @()
+    foreach($item in $teams){
+        try{
+            $users = Get-TeamUser -GroupId  $item.GroupId -ErrorAction Stop | `
+                        Where-Object {$_.Role -like "owner"}
+            if(($null -eq $users) -or ($users.Count -lt $ThresholdValue)){
+                $result += "$($users.Count) owners of the team $($item.DisplayName)"
+            }
+        }
+        catch{
+            $result += "Error read team users from team $($item.DisplayName)"
+        }
+    }
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

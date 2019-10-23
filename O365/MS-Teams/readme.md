@@ -24,6 +24,7 @@ Use cases for managing Microsoft Teams
 
 + Create/set/get/remove Team
 + Set team archived state
++ Check the owner's number
 
 ## [Queries](./_QUERY_)
 

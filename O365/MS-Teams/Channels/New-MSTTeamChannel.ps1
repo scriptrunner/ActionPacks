@@ -25,17 +25,17 @@
 .Parameter MSTCredential
     Provides the user ID and password for organizational ID credentials 
 
-.Parameter WebhookURL
-    The URL of your Webhook, it must be match with "https://outlook.office.com/webhook/"
+.Parameter GroupId
+    GroupId of the team
     
-.Parameter Message
-    The body of the message to publish on Teams
+.Parameter DisplayName
+    Channel display name
+    
+.Parameter ChannelNames
+    One or more channel display names, comma separated
 
-.Parameter Title
-    The Title of the message to publish on Teams
-
-.Parameter MessageColor
-    The color theme for the message
+.Parameter Description
+    Channel Description
 
 .Parameter TenantID
     Specifies the ID of a tenant
@@ -43,16 +43,22 @@
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
     [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
-    [string]$WebhookURL,
-    [Parameter(Mandatory = $true)]   
-    [ValidatePattern("^https://outlook.office.com/webhook/*")]
-    [string]$Message,
-    [string]$Title,
-    [ValidateSet('Orange','Green','Red')]
-    [string]$MessageColor,
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
+    [string]$GroupId,
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
+    [string]$ChannelNames,
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [ValidateLength(5,50)]
+    [string]$DisplayName,
+    [Parameter(ParameterSetName = "Single")]   
+    [ValidateLength(0,1024)]
+    [string]$Description,
+    [Parameter(ParameterSetName = "Single")]   
+    [Parameter(ParameterSetName = "Multi")]
     [string]$TenantID
 )
 
@@ -62,13 +68,30 @@ try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'DisplayName' = $DisplayName
                             'GroupId' = $GroupId
                             }      
-    if([System.String]::IsNullOrWhiteSpace($Description) -eq $false){
-        $cmdArgs.Add('Description',$Description)
+
+    if($PSCmdlet.ParameterSetName -eq 'Multi'){
+        $team = Get-Team -GroupId $GroupId -ErrorAction Stop | Select-Object -ExpandProperty DisplayName
+        $result = @()
+        $names = $ChannelNames.Split(',')
+        foreach($cnl in $names){
+            try{
+                $null = New-TeamChannel @cmdArgs -DisplayName $cnl
+                $result += "Channel $($cnl) added to team $($team)"
+            }
+            catch{
+                $result += "Error. Add channel $($cnl) to team $($team)"
+            }
+        }  
+    }
+    else{
+        $cmdArgs.Add('DisplayName' , $DisplayName)
+        if([System.String]::IsNullOrWhiteSpace($Description) -eq $false){
+            $cmdArgs.Add('Description',$Description)
+        }    
+        $result = New-TeamChannel @cmdArgs | Select-Object *
     }    
-    $result = New-TeamChannel @cmdArgs | Select-Object *
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

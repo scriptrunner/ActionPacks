@@ -29,6 +29,9 @@
 .Parameter GroupId
     GroupId of the team
     
+.Parameter Users
+    One or more User UPN's (user principal name)
+    
 .Parameter User
     User's UPN (user principal name)
 
@@ -41,13 +44,20 @@
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
     [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
     [string]$GroupId,
-    [Parameter(Mandatory = $true)]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
+    [string[]]$Users,
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
     [string]$User,    
+    [Parameter(ParameterSetName = "Single")]
     [switch]$UserIsOwner,
+    [Parameter(ParameterSetName = "Single")]
+    [Parameter(ParameterSetName = "Multi")]
     [string]$TenantID
 )
 
@@ -56,21 +66,36 @@ Import-Module microsoftteams
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
+    $team = Get-Team -GroupId $GroupId -ErrorAction Stop | Select-Object -ExpandProperty DisplayName
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'User' = $User
                             'GroupId' = $GroupId
                             }      
        
-    if($UserIsOwner -eq $true){
-        $cmdArgs.Add('Role','Owner')
-    }                              
-    $null = Remove-TeamUser @cmdArgs
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Team user $($User) successfully removed"
+    if($PSCmdlet.ParameterSetName -eq 'Single'){
+        $Users = @($User)
     }
     else{
-        Write-Output "Team user $($User) successfully removed"
+        if($UserIsOwner -eq $true){
+            $cmdArgs.Add('Role','Owner')
+        }     
+    }
+
+    $result = @()
+    foreach($usr in $Users){
+        try{
+            $null = Remove-TeamUser @cmdArgs -User $usr
+            $result += "User $($usr) removed from team $($team)"
+        }
+        catch{
+            $result += "Error. Remove user $($usr) from team $($team)"
+        }
+    } 
+    
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $result
+    }
+    else{
+        Write-Output $result
     }
 }
 catch{

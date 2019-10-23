@@ -89,6 +89,12 @@
 
 .Parameter Owner
     An admin who is allowed to create on behalf of another user should use this flag to specify the desired owner of the group
+   
+.Parameter Users
+    One or more User UPN's (user principal name) to be added to the team as a member
+
+.Parameter Channels
+    One or more channel display names, comma separated
 
 .Parameter ShowInTeamsSearchAndSuggestions
     Determines whether or not private teams should be searchable from Teams clients for users who do not belong to that team
@@ -126,6 +132,8 @@ Param(
     [bool]$AllowUserEditMessages,
     [bool]$ShowInTeamsSearchAndSuggestions,
     [string]$Owner,    
+    [string[]]$Users,    
+    [string]$Channels,    
     [ValidateSet('Strict','Moderate')]
     [string]$GiphyContentRating,
     [string]$TenantID
@@ -162,8 +170,37 @@ try{
     }   
     
     FillParameters -BoundParameters $PSBoundParameters
-    $result = New-Team @Global:cmdArgs | Select-Object $Global:Properties
-    
+    $result = @()
+    $team = New-Team @Global:cmdArgs | Select-Object $Global:Properties
+    $result += $team
+    $result += ' '
+
+    # add users to team
+    if(($null -ne $Users) -and ($users.Length -gt 0)){
+        foreach($usr in $Users){
+            try{
+                $null = Add-TeamUser -User $usr -GroupId $team.GroupId -Role Member -ErrorAction Stop
+                $result += "User $($usr) added to team $($team.Displayname)"
+            }
+            catch{
+                $result += "Error. Add user $($usr) to team $($team.Displayname)"
+            }
+        } 
+    }
+    # add channels to team
+    if(($null -ne $Channels) -and ($Channels.Length -gt 0)){
+        $names = $Channels.Split(',')
+        foreach($cnl in $names){
+            try{
+                $null = New-TeamChannel -GroupId $team.GroupId -DisplayName $cnl -ErrorAction Stop
+                $result += "Channel $($cnl) added to team $($team.Displayname)"
+            }
+            catch{
+                $result += "Error. Add channel $($cnl) to team $($team.Displayname)"
+            }
+        }  
+    }
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

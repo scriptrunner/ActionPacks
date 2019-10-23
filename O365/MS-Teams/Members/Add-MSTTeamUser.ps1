@@ -30,6 +30,9 @@
     
 .Parameter User
     User's UPN (user principal name)
+    
+.Parameter Users
+    One or more User UPN's (user principal name)
 
 .Parameter Role
     User role
@@ -40,14 +43,22 @@
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
     [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
     [string]$GroupId,
-    [Parameter(Mandatory = $true)]   
-    [string]$User,    
+    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
+    [string]$User,        
+    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
+    [string[]]$Users,    
+    [Parameter(ParameterSetName = "Single")]
+    [Parameter(ParameterSetName = "Multi")]
     [ValidateSet('Member','Owner')]
     [string]$Role,
+    [Parameter(ParameterSetName = "Single")]
+    [Parameter(ParameterSetName = "Multi")]
     [string]$TenantID
 )
 
@@ -56,16 +67,27 @@ Import-Module microsoftteams
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
+    $team = Get-Team -GroupId $GroupId -ErrorAction Stop | Select-Object -ExpandProperty DisplayName
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'User' = $User
                             'GroupId' = $GroupId
                             }      
     if([System.String]::IsNullOrWhiteSpace($Role) -eq $false){
         $cmdArgs.Add('Role',$Role)
     }    
-    $result = Add-TeamUser @cmdArgs
+    if($PSCmdlet.ParameterSetName -eq 'Single'){
+        $Users = @($User)
+    }
 
-    $result = Get-TeamUser -GroupId $GroupId -ErrorAction Stop
+    $result = @()
+    foreach($usr in $Users){
+        try{
+            $null = Add-TeamUser @cmdArgs -User $usr
+            $result += "User $($usr) added to team $($team)"
+        }
+        catch{
+            $result += "Error. Add user $($usr) to team $($team)"
+        }
+    }    
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

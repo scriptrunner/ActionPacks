@@ -3,6 +3,10 @@ Use cases for managing Microsoft Teams
 
 > Note: The use of the scripts requires the PowerShell Module microsoftteams
 
+## [Apps](./Apps)
+
++ Create/set/get/remove Team app
+
 ## [Channels](./Channels)
 
 + Create/set/get/remove Team channel

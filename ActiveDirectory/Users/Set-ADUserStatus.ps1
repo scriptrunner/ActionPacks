@@ -80,7 +80,7 @@ Import-Module ActiveDirectory
 try{
     $Script:Domain 
     $Script:User 
-    $Script:Properties =@('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
+    $Script:Properties = @('GivenName','Surname','SAMAccountName','UserPrincipalname','Name','DisplayName','Description','EmailAddress', 'CannotChangePassword','PasswordNeverExpires' `
                             ,'Department','Company','PostalCode','City','StreetAddress','Enabled','DistinguishedName')
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

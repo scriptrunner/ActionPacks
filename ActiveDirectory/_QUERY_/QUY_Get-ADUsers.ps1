@@ -83,17 +83,13 @@ try{
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
-    $Script:users = Get-ADUser @cmdArgs | Sort-Object -Property DisplayName
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    $Script:users = Get-ADUser @cmdArgs | Sort-Object -Property DisplayName    
+   
     if($null -ne $Script:users){
         foreach($itm in  $users){
             if($SRXEnv) {            
-                $SRXEnv.ResultList += $itm.DistinguishedName # Value
-                $SRXEnv.ResultList2 += "$($itm.DisplayName) ($($itm.SamAccountName))" # DisplayValue            
+                $SRXEnv.ResultList.Add($itm.DistinguishedName) # Value
+                $SRXEnv.ResultList2.Add("$($itm.DisplayName) ($($itm.SamAccountName))") # DisplayValue            
             }
             else{
                 Write-Output "$($itm.DisplayName) ($($itm.SamAccountName))"

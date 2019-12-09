@@ -108,15 +108,12 @@ try{
         $Script:users += Search-ADAccount @cmdArgs -AccountExpired `
                                 | Select-Object DistinguishedName, SamAccountName | Sort-Object -Property SamAccountName
     } 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     if($null -ne $Script:users){
         foreach($itm in  $users){
             if($SRXEnv) {            
-                $SRXEnv.ResultList += $itm.DistinguishedName # Value
-                $SRXEnv.ResultList2 += $itm.SamAccountName # DisplayValue            
+                $SRXEnv.ResultList.Add($itm.DistinguishedName) # Value
+                $SRXEnv.ResultList2.Add($itm.SamAccountName) # DisplayValue            
             }
             else{
                 Write-Output $itm.SamAccountName

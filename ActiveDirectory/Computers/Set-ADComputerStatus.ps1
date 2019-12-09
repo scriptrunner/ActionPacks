@@ -71,9 +71,6 @@ param(
 
 Import-Module ActiveDirectory
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:Domain
     $Script:Cmp 

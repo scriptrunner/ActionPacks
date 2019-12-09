@@ -54,7 +54,8 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string[]]$Properties="Name,Description,DistinguishedName,HomePage,SAMAccountName,SID",   
+    [ValidateSet('*','Name','Description','DistinguishedName','HomePage','SAMAccountName','SID','CN','GroupCategory','CanonicalName','GroupScope','Members','MemberOf')]
+    [string[]]$Properties = @('Name','Description','DistinguishedName','HomePage','SAMAccountName','SID'),   
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,

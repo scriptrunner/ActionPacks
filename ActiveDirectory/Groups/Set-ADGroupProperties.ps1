@@ -104,7 +104,7 @@ try{
     $cmdArgs = @{'ErrorAction' = 'Stop'
                 'Server' = $Domain.PDCEmulator
                 'AuthType' = $AuthType
-                'Filter' = {(SamAccountName -eq $GroupName) -or (DistinguishedName -eq $GroupName)} 
+                'Identity' = $GroupName
                 'SearchBase' = $OUPath 
                 'SearchScope' = $SearchScope
                 }

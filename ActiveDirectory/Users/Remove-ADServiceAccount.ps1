@@ -65,7 +65,7 @@ try{
     $Script:Srv 
     $Script:Domain
 
-    [string]$Script:sam=$AccountName
+    [string]$Script:sam = $AccountName
     if(-not $Script:sam.EndsWith('$')){
     #  $Script:sam += '$'
     }

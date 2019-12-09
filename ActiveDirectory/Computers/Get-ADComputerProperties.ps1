@@ -54,7 +54,8 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [string[]]$Properties="Name,DistinguishedName,DNSHostName,Enabled,Description,IPv4Address,IPv6Address,LastBadPasswordAttempt,Location,OperatingSystem,SAMAccountName",   
+    [ValidateSet('*','Name','DistinguishedName','DNSHostName','Enabled','Description','IPv4Address','IPv6Address','LastLogonDate','LastBadPasswordAttempt','SID','Location','SAMAccountName','OperatingSystem','OperatingSystemServicePack','CanonicalName','AccountExpires')]
+    [string[]]$Properties = @('Name','DistinguishedName','DNSHostName','Enabled','Description','IPv4Address','IPv6Address','LastBadPasswordAttempt','Location','OperatingSystem','SAMAccountName'),   
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
@@ -71,7 +72,7 @@ param(
 Import-Module ActiveDirectory
 
 try{    
-    [string]$Script:sam=$Computername
+    [string]$Script:sam = $Computername
     if(-not $Script:sam.EndsWith('$')){
         $Script:sam += '$'
     }

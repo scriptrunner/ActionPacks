@@ -44,7 +44,8 @@ param(
     [pscredential]$AzureCredential,
     [string]$Name,
     [string]$ResourceGroupName,
-    [string]$Properties = "Name,Location,ResourceGroupName,Id,Tags,Etag,ProvisioningState,Subnets,ResourceGuid",
+    [ValidateSet('*','Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid')]
+    [string[]]$Properties = @('Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid'),
     [string]$Tenant
 )
 
@@ -52,10 +53,6 @@ Import-Module Az
 
 try{
   #  ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
@@ -66,7 +63,7 @@ try{
         $cmdArgs.Add('ResourceGroupName',$ResourceGroupName)
     }
 
-    $ret = Get-AzNetworkSecurityGroup @cmdArgs | Select-Object $Properties.Split(',')
+    $ret = Get-AzNetworkSecurityGroup @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret 

@@ -55,9 +55,6 @@ Import-Module Az
 try{
 #    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Force' = $null
                             'Confirm' = $false

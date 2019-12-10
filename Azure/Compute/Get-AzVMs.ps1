@@ -47,7 +47,8 @@ param(
     [string]$Name,
     [string]$ResourceGroupName,
     [string]$Location,
-    [string]$Properties = "Name, Location, ResourceGroupName, Tags, VmId, StatusCode, ID",
+    [ValidateSet('*','Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')]
+    [string[]]$Properties = @('Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID'),
     [string]$Tenant
 )
 
@@ -56,9 +57,6 @@ Import-Module Az
 try{
 #    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
     if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
@@ -69,7 +67,7 @@ try{
         $cmdArgs.Add('Location',$Location)
     }
 
-    $ret = Get-AzVM @cmdArgs | Select-Object $Properties.Split(',')
+    $ret = Get-AzVM @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret 

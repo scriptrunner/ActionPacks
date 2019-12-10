@@ -49,7 +49,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ServerName,
     [string]$PoolName,
-    [string]$Properties = "ElasticPoolName,ResourceGroupName,ServerName,ResourceID,Location,State,Edition,Dtu,DatabaseDtuMax,DatabaseDtuMin,StorageMB,CreationDate,Tags",
+    [ValidateSet('*','ElasticPoolName','ResourceGroupName','ServerName','ResourceID','Location','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags')]
+    [string[]]$Properties = @('ElasticPoolName','ResourceGroupName','ServerName','ResourceID','Location','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags'),
     [string]$Tenant
 )
 
@@ -58,10 +59,6 @@ Import-Module Az
 try{
   #  ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'ServerName' = $ServerName
                             'ResourceGroupName' = $ResourceGroupName}
@@ -70,7 +67,7 @@ try{
         $cmdArgs.Add('ElasticPoolName',$PoolName)
     }
 
-    $ret = Get-AzSqlElasticPool @cmdArgs | Select-Object $Properties.Split(',')
+    $ret = Get-AzSqlElasticPool @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret 

@@ -85,7 +85,7 @@ function DisconnectAzure(){
 
         try{
             [string]$conName = 'SRAzureAccess'
-            if([System.String]::IsNullOrWhiteSpace($Tenant) -eq $true){
+            if([System.String]::IsNullOrWhiteSpace($Tenant) -eq $false){
                 $conName = 'SR' + $Tenant
             }
             Disconnect-AzAccount -Confirm:$false -ErrorAction Stop

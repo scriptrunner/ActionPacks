@@ -30,33 +30,33 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$ListName,
+    [ValidateSet('*','Name','DisplayName','IncludedRecipients','Path','IsValid','DistinguishedName','Guid')]
     [string[]]$Properties =@('Name','DisplayName','IncludedRecipients','Path','IsValid','DistinguishedName','Guid')
 )
 
-#Clear
-    try{
-        if([System.String]::IsNullOrWhiteSpace($Properties)){
-            $Properties='*'
-        }
-        $res = Get-AddressList -Identity $ListName  | Select-Object $Properties
-        
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
+try{
+    $res = Get-AddressList -Identity $ListName  | Select-Object $Properties
+    
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Address list not found"
-            } 
-            else{
-                Write-Output  "Address list not found"
-            }
+            Write-Output $res
         }
     }
-    Finally{
-       
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Address list not found"
+        } 
+        else{
+            Write-Output  "Address list not found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+    
+}

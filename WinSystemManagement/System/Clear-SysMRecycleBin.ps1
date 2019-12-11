@@ -20,7 +20,7 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
                 
     .Parameter ComputerName
-        Specifies the computer from which the profile are removed
+        Specifies the computer on which deletes the content of the recycle bin
                 
     .Parameter AccessAccount
         Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
@@ -48,17 +48,17 @@ try{
     if([System.String]::IsNullOrWhiteSpace($RecycleBinDrives) -eq $false){
         $cmdArgs.Add('DriveLetter',$RecycleBinDrives.Split(','))
     }
-    if($null -eq $AccessAccount){
-        Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-            $CopyParams = $using:cmdArgs
-            Clear-RecycleBin @CopyParams
-        } -ErrorAction Stop
+
+    [hashtable]$invArgs = @{'ErrorAction' = 'Stop'
+                            'ComputerName' =$ComputerName
+                            }
+
+    if($null -ne $AccessAccount){
+        $invArgs.Add('Credential', $AccessAccount)
     }
-    else{
-        Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-            $CopyParams = $using:cmdArgs
-            Clear-RecycleBin @CopyParams
-        } -ErrorAction Stop
+    Invoke-Command @invArgs -ScriptBlock{
+        $CopyParams = $using:cmdArgs
+        Clear-RecycleBin @CopyParams
     }
 
     if($SRXEnv) {

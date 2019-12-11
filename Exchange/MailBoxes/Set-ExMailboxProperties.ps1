@@ -62,58 +62,60 @@ param(
     [switch]$ResetPasswordOnNextLogon
 )
 
-#Clear
-    try{
-        $box = Get-Mailbox -Identity $MailboxId 
-        if($null -ne $box){
-            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                                    'Identity' = $box.UserPrincipalName
-                                    'Confirm' = $false
-                                    }
-            if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
-                Set-Mailbox @cmdArgs -Alias $Alias
-            }
-            if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-                Set-Mailbox @cmdArgs -DisplayName $DisplayName
-            }
-            if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
-                Set-User @cmdArgs -FirstName $FirstName
-            }
-            if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
-                Set-User @cmdArgs -LastName $LastName
-            }
-            if($PSBoundParameters.ContainsKey('Office') -eq $true ){
-                Set-User @cmdArgs -Office $Office
-            }
-            if($PSBoundParameters.ContainsKey('Phone') -eq $true ){
-                Set-User @cmdArgs -Phone $Phone
-            }
-            if($PSBoundParameters.ContainsKey('WindowsEmailAddress') -eq $true ){
-                Set-Mailbox @cmdArgs -WindowsEmailAddress $WindowsEmailAddress
-            }
-            if($PSBoundParameters.ContainsKey('ResetPasswordOnNextLogon') -eq $true ){
-                Set-User @cmdArgs -ResetPasswordOnNextLogon  $ResetPasswordOnNextLogon.ToBool()
-            }
-            $resultMessage = @()
-            $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `
-                    Select-Object AccountDisabled,Alias,DisplayName,Name,WindowsEmailAddress, `
-                                    ResetPasswordOnNextLogon         
-            $resultMessage += Get-User -Identity $box.UserPrincipalName | `
-                    Select-Object FirstName,LastName,Office,Phone       
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage  
-            }
-            else{
-                Write-Output $resultMessage
-            }
+try{
+    $box = Get-Mailbox -Identity $MailboxId 
+    if($null -ne $box){
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'Identity' = $box.UserPrincipalName
+                                'Confirm' = $false
+                                }
+        if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
+            Set-Mailbox @cmdArgs -Alias $Alias
+        }
+        if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
+            Set-Mailbox @cmdArgs -DisplayName $DisplayName
+        }
+        if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
+            Set-User @cmdArgs -FirstName $FirstName
+        }
+        if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
+            Set-User @cmdArgs -LastName $LastName
+        }
+        if($PSBoundParameters.ContainsKey('Office') -eq $true ){
+            Set-User @cmdArgs -Office $Office
+        }
+        if($PSBoundParameters.ContainsKey('Phone') -eq $true ){
+            Set-User @cmdArgs -Phone $Phone
+        }
+        if($PSBoundParameters.ContainsKey('WindowsEmailAddress') -eq $true ){
+            Set-Mailbox @cmdArgs -WindowsEmailAddress $WindowsEmailAddress
+        }
+        if($PSBoundParameters.ContainsKey('ResetPasswordOnNextLogon') -eq $true ){
+            Set-User @cmdArgs -ResetPasswordOnNextLogon  $ResetPasswordOnNextLogon.ToBool()
+        }
+        $resultMessage = @()
+        $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `
+                Select-Object AccountDisabled,Alias,DisplayName,Name,WindowsEmailAddress, `
+                                ResetPasswordOnNextLogon         
+        $resultMessage += Get-User -Identity $box.UserPrincipalName | `
+                Select-Object FirstName,LastName,Office,Phone       
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
-            } 
-            Throw  "Mailbox $($MailboxId) not found"
+            Write-Output $resultMessage
         }
     }
-    finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
+        } 
+        Throw  "Mailbox $($MailboxId) not found"
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

@@ -33,26 +33,28 @@ param(
     [switch]$Permanent 
 )
 
-#Clear
-    try{
-        $box = Get-Mailbox -Identity $MailboxId | Select-Object UserPrincipalName,DisplayName
-        if($null -ne $box){
-            Remove-Mailbox -Identity $box.UserPrincipalName -Permanent $Permanent.ToBool() -Confirm:$false -Force
+try{
+    $box = Get-Mailbox -Identity $MailboxId | Select-Object UserPrincipalName,DisplayName
+    if($null -ne $box){
+        Remove-Mailbox -Identity $box.UserPrincipalName -Permanent $Permanent.ToBool() -Confirm:$false -Force
 
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($box.DisplayName) removed"
-            } 
-            else{
-                Write-Output "Mailbox $($box.DisplayName) removed"
-            }
-        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($box.DisplayName) removed"
+        } 
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox not found"
-            } 
-            Throw  "Mailbox not found"
+            Write-Output "Mailbox $($box.DisplayName) removed"
         }
     }
-    finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox not found"
+        } 
+        Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

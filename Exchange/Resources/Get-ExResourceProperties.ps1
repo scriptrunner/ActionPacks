@@ -30,39 +30,38 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$MailboxId,
+    [Validateset('*','DisplayName','WindowsEmailAddress','ResourceCapacity','AccountDisabled','IsMailboxEnabled','DistinguishedName','Alias','Guid','SamAccountName')]
     [string[]]$Properties=@("DisplayName","WindowsEmailAddress","ResourceCapacity","AccountDisabled","IsMailboxEnabled","DistinguishedName","Alias","Guid","SamAccountName")
 )
 
-#Clear
-    try{
+try{
+    $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
 
-        if([System.String]::IsNullOrWhiteSpace($Properties)){
-            $Properties='*'
+    if($null -ne $res){
+        $resultMessage = @()
+        $resultMessage += $res
+        $res = Get-CalendarProcessing -Identity $MailboxId | `
+            Select-Object AllBookInPolicy,AllowRecurringMeetings,BookingWindowInDays,EnforceSchedulingHorizon,MaximumDurationInMinutes,ScheduleOnlyDuringWorkHours
+        if($null -ne $res){        
+            $resultMessage +=$res
         }
-        $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
-
-        if($null -ne $res){
-            $resultMessage = @()
-            $resultMessage += $res
-            $res = Get-CalendarProcessing -Identity $MailboxId | `
-                Select-Object AllBookInPolicy,AllowRecurringMeetings,BookingWindowInDays,EnforceSchedulingHorizon,MaximumDurationInMinutes,ScheduleOnlyDuringWorkHours
-            if($null -ne $res){        
-                $resultMessage +=$res
-            }
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage  
-            }
-            else{
-                Write-Output $resultMessage
-            }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Resource $($MailboxId) not found"
-            } 
-            Throw  "Resource $($MailboxId) not found"
+            Write-Output $resultMessage
         }
     }
-    Finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Resource $($MailboxId) not found"
+        } 
+        Throw  "Resource $($MailboxId) not found"
     }
+}
+catch{
+    throw
+}
+Finally{
+    
+}

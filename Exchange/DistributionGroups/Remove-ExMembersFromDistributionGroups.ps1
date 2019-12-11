@@ -37,87 +37,89 @@ param(
     [string[]]$UserIds
 )
 
-#Clear
-    try{
-        $Script:result = @()
-        $Script:err =$false
-        $Script:addGrp
-        $Script:usr
-        forEach($gid in $GroupObjectIds){
-            try{
-                $grp = Get-DistributionGroup -Identity $gid 
-            }
-            catch{
-                $Script:result += "Error: GroupObjectID $($gid) $($_.Exception.Message)"
-                $Script:err =$true
-                continue
-            }
-            if($null -ne $grp){
-                if($null -ne $GroupIds){
-                    forEach($itm in $GroupIds){
+try{
+    $Script:result = @()
+    $Script:err =$false
+    $Script:addGrp
+    $Script:usr
+    forEach($gid in $GroupObjectIds){
+        try{
+            $grp = Get-DistributionGroup -Identity $gid 
+        }
+        catch{
+            $Script:result += "Error: GroupObjectID $($gid) $($_.Exception.Message)"
+            $Script:err =$true
+            continue
+        }
+        if($null -ne $grp){
+            if($null -ne $GroupIds){
+                forEach($itm in $GroupIds){
+                    try{
+                        $Script:addGrp=Get-DistributionGroup -Identity $itm
+                    }
+                    catch{
+                        $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
+                        $Script:err =$true
+                        continue
+                    }
+                    if($null -ne $Script:addGrp){
                         try{
-                            $Script:addGrp=Get-DistributionGroup -Identity $itm
+                            Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false -ErrorAction Stop
+                            $Script:result += "Group: $($Script:addGrp.DisplayName) removed from Distribution group $($grp.DisplayName)"
                         }
                         catch{
                             $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
                             $Script:err =$true
                             continue
                         }
-                        if($null -ne $Script:addGrp){
-                            try{
-                                Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false -ErrorAction Stop
-                                $Script:result += "Group: $($Script:addGrp.DisplayName) removed from Distribution group $($grp.DisplayName)"
-                            }
-                            catch{
-                                $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
-                                $Script:err =$true
-                                continue
-                            }
-                        }                
-                    }
+                    }                
                 }
-                if($null -ne $UserIds){
-                    forEach($itm in $UserIds){
+            }
+            if($null -ne $UserIds){
+                forEach($itm in $UserIds){
+                    try{
+                        $Script:usr = Get-Mailbox -Identity $itm 
+                        if($null -eq $Script:usr){
+                            $Script:usr=Get-MailUser -Identity $itm -ErrorAction Stop
+                        }
+                    }
+                    catch{
+                        $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
+                        $Script:err =$true
+                        continue
+                    }
+                    if($null -ne $Script:usr){
                         try{
-                            $Script:usr = Get-Mailbox -Identity $itm 
-                            if($null -eq $Script:usr){
-                                $Script:usr=Get-MailUser -Identity $itm -ErrorAction Stop
-                            }
+                            Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false -ErrorAction Stop
+                            $Script:result += "User: $($Script:usr.DisplayName) removed from Distribution group $($grp.DisplayName)"
                         }
                         catch{
                             $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
                             $Script:err =$true
                             continue
                         }
-                        if($null -ne $Script:usr){
-                            try{
-                                Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false -ErrorAction Stop
-                                $Script:result += "User: $($Script:usr.DisplayName) removed from Distribution group $($grp.DisplayName)"
-                            }
-                            catch{
-                                $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
-                                $Script:err =$true
-                                continue
-                            }
-                        }
                     }
                 }
             }
-            else {
-                $Script:result += "Universal distribution group $($gid) not found"
-                $Script:err =$true
-            }
         }
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:result
-            if($Script:err -eq $true){
-                Throw $($Script:result -join ' ')
-            }
-        } 
-        else{    
-            Write-Output $Script:result 
+        else {
+            $Script:result += "Universal distribution group $($gid) not found"
+            $Script:err =$true
         }
     }
-    Finally{
-     
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $Script:result
+        if($Script:err -eq $true){
+            Throw $($Script:result -join ' ')
+        }
+    } 
+    else{    
+        Write-Output $Script:result 
     }
+}
+catch{
+    throw
+}
+Finally{
+    
+}

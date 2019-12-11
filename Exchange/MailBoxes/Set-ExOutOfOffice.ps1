@@ -60,69 +60,72 @@ param(
     [datetime]$EndDate
 )
 
-    try{
-        $box = Get-Mailbox -Identity $MailboxId
-        if($null -ne $box){
-            $resultMessage = @()
-            if($PSCmdlet.ParameterSetName  -eq "Disable Auto Reply"){
-                Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState Disabled -Confirm:$false
-                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-Object * | Format-List
-                $resultMessage += "Mailbox $($box.UserPrincipalName) disabled"
+try{
+    $box = Get-Mailbox -Identity $MailboxId
+    if($null -ne $box){
+        $resultMessage = @()
+        if($PSCmdlet.ParameterSetName  -eq "Disable Auto Reply"){
+            Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState Disabled -Confirm:$false
+            $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-Object * | Format-List
+            $resultMessage += "Mailbox $($box.UserPrincipalName) disabled"
+        }
+        else {
+            $type = 'All'
+            if($AutoReplyType -eq 'Only contact list members'){
+                $type = 'Known'
             }
-            else {
-                $type = 'All'
-                if($AutoReplyType -eq 'Only contact list members'){
-                    $type = 'Known'
-                }
-                if($AutoReplyType -eq 'Internal only'){
-                    $type = 'None'
-                }
-                if([System.String]::IsNullOrWhiteSpace($InternalText) -eq $false){
-                    $InternalText = $InternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
-                }
-                if(($type -eq 'All') -or ($type -eq 'Known')){
-                    if([System.String]::IsNullOrWhiteSpace($ExternalText) -eq $true){
-                        $ExternalText = $InternalText
-                    }
-                    else {
-                        $ExternalText = $ExternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
-                    }
-                }
-                if($PSCmdlet.ParameterSetName  -eq "Schedule Auto Reply"){
-                    if($StartDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                        $StartDate =[DateTime]::Now
-                    }
-                    if(($null -eq $EndDate) -or ($EndDate.Year -lt 2000)){
-                        $EndDate = $StartDate                    }
-                    if($EndDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                        $EndDate =$StartDate.AddDays(1)
-                    }
-                    Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Scheduled' -Confirm:$false -ExternalAudience $type `
-                        -InternalMessage $InternalText -ExternalMessage $ExternalText -EndTime $EndDate -StartTime $StartDate
-                    $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
-                    $resultMessage += "Mailbox $($box.UserPrincipalName) scheduled"
+            if($AutoReplyType -eq 'Internal only'){
+                $type = 'None'
+            }
+            if([System.String]::IsNullOrWhiteSpace($InternalText) -eq $false){
+                $InternalText = $InternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
+            }
+            if(($type -eq 'All') -or ($type -eq 'Known')){
+                if([System.String]::IsNullOrWhiteSpace($ExternalText) -eq $true){
+                    $ExternalText = $InternalText
                 }
                 else {
-                    Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Enabled' -Confirm:$false -ExternalAudience $type `
-                        -InternalMessage $InternalText -ExternalMessage $ExternalText 
-                    $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
-                    $resultMessage += "Mailbox $($box.UserPrincipalName) enabled"
-                }          
+                    $ExternalText = $ExternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
+                }
             }
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage 
-            } 
-            else{
-                Write-Output $resultMessage 
+            if($PSCmdlet.ParameterSetName  -eq "Schedule Auto Reply"){
+                if($StartDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+                    $StartDate =[DateTime]::Now
+                }
+                if(($null -eq $EndDate) -or ($EndDate.Year -lt 2000)){
+                    $EndDate = $StartDate                    }
+                if($EndDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+                    $EndDate =$StartDate.AddDays(1)
+                }
+                Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Scheduled' -Confirm:$false -ExternalAudience $type `
+                    -InternalMessage $InternalText -ExternalMessage $ExternalText -EndTime $EndDate -StartTime $StartDate
+                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
+                $resultMessage += "Mailbox $($box.UserPrincipalName) scheduled"
             }
+            else {
+                Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Enabled' -Confirm:$false -ExternalAudience $type `
+                    -InternalMessage $InternalText -ExternalMessage $ExternalText 
+                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
+                $resultMessage += "Mailbox $($box.UserPrincipalName) enabled"
+            }          
         }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage 
+        } 
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
-            } 
-            Throw "Mailbox $($MailboxId) not found"
+            Write-Output $resultMessage 
         }
     }
-    finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
+        } 
+        Throw "Mailbox $($MailboxId) not found"
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

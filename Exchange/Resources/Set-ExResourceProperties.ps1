@@ -69,61 +69,63 @@ param(
     [bool]$ScheduleOnlyDuringWorkHours
 )
 
-#Clear
-    try{
-        $box = Get-Mailbox -Identity $MailboxId | Select-Object Name,AccountDisabled
-        if($null -ne $box){
-            if($PSBoundParameters.ContainsKey('Alias')){
-                Set-Mailbox -Identity $box.Name -Alias $Alias
-            }
-            if($PSBoundParameters.ContainsKey('DisplayName')){
-                Set-Mailbox -Identity $box.Name -DisplayName $DisplayName
-            }
-            if($PSBoundParameters.ContainsKey('ResourceCapacity') -eq $true ){
-                Set-Mailbox -Identity $box.Name -ResourceCapacity $ResourceCapacity
-            }
-            if($PSBoundParameters.ContainsKey('AllBookInPolicy') -eq $true ){
-                Set-CalendarProcessing -Identity $box.Name -AllBookInPolicy $AllBookInPolicy
-            }
-            if($PSBoundParameters.ContainsKey('AllowRecurringMeetings') -eq $true ){
-                Set-CalendarProcessing -Identity $box.Name -AllowRecurringMeetings $AllowRecurringMeetings
-            }
-            if($PSBoundParameters.ContainsKey('BookingWindowInDays') -eq $true ){
-                Set-CalendarProcessing -Identity $box.Name -BookingWindowInDays $BookingWindowInDays
-            }      
-            if($PSBoundParameters.ContainsKey('EnforceSchedulingHorizon') -eq $true ){
-                Set-CalendarProcessing -Identity $box.Name -EnforceSchedulingHorizon $EnforceSchedulingHorizon
-            }
-            if($PSBoundParameters.ContainsKey('MaximumDurationInMinutes') -eq $true ){
-                Set-CalendarProcessing -Identity $box.Name -MaximumDurationInMinutes $MaximumDurationInMinutes
-            }
-            if($PSBoundParameters.ContainsKey('ScheduleOnlyDuringWorkHours') -eq $true ){
-                Set-CalendarProcessing -Identity $box.Name -ScheduleOnlyDuringWorkHours $ScheduleOnlyDuringWorkHours
-            }
-            if($PSBoundParameters.ContainsKey('AccountDisabled') -ne $true){
-                $AccountDisabled = $box.AccountDisabled
-            }
-            Set-Mailbox -Identity $box.Name -AccountDisabled:$AccountDisabled -Confirm:$false
-
-            $resultMessage = @()
-            $resultMessage += Get-Mailbox -Identity $box.Name | `
-                    Select-Object AccountDisabled,Alias,DisplayName,ResourceCapacity,WindowsEmailAddress
-            $resultMessage += Get-CalendarProcessing -Identity $box.Name | `
-                    Select-Object AllBookInPolicy,AllowRecurringMeetings,BookingWindowInDays,EnforceSchedulingHorizon,MaximumDurationInMinutes,ScheduleOnlyDuringWorkHours
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage  
-            }
-            else{
-                Write-Output $resultMessage
-            }
-        }    
-        else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Resource $($MailboxId) not found"
-            } 
-            Throw  "Resource $($MailboxId) not found"
+try{
+    $box = Get-Mailbox -Identity $MailboxId | Select-Object Name,AccountDisabled
+    if($null -ne $box){
+        if($PSBoundParameters.ContainsKey('Alias')){
+            Set-Mailbox -Identity $box.Name -Alias $Alias
         }
+        if($PSBoundParameters.ContainsKey('DisplayName')){
+            Set-Mailbox -Identity $box.Name -DisplayName $DisplayName
+        }
+        if($PSBoundParameters.ContainsKey('ResourceCapacity') -eq $true ){
+            Set-Mailbox -Identity $box.Name -ResourceCapacity $ResourceCapacity
+        }
+        if($PSBoundParameters.ContainsKey('AllBookInPolicy') -eq $true ){
+            Set-CalendarProcessing -Identity $box.Name -AllBookInPolicy $AllBookInPolicy
+        }
+        if($PSBoundParameters.ContainsKey('AllowRecurringMeetings') -eq $true ){
+            Set-CalendarProcessing -Identity $box.Name -AllowRecurringMeetings $AllowRecurringMeetings
+        }
+        if($PSBoundParameters.ContainsKey('BookingWindowInDays') -eq $true ){
+            Set-CalendarProcessing -Identity $box.Name -BookingWindowInDays $BookingWindowInDays
+        }      
+        if($PSBoundParameters.ContainsKey('EnforceSchedulingHorizon') -eq $true ){
+            Set-CalendarProcessing -Identity $box.Name -EnforceSchedulingHorizon $EnforceSchedulingHorizon
+        }
+        if($PSBoundParameters.ContainsKey('MaximumDurationInMinutes') -eq $true ){
+            Set-CalendarProcessing -Identity $box.Name -MaximumDurationInMinutes $MaximumDurationInMinutes
+        }
+        if($PSBoundParameters.ContainsKey('ScheduleOnlyDuringWorkHours') -eq $true ){
+            Set-CalendarProcessing -Identity $box.Name -ScheduleOnlyDuringWorkHours $ScheduleOnlyDuringWorkHours
+        }
+        if($PSBoundParameters.ContainsKey('AccountDisabled') -ne $true){
+            $AccountDisabled = $box.AccountDisabled
+        }
+        Set-Mailbox -Identity $box.Name -AccountDisabled:$AccountDisabled -Confirm:$false
+
+        $resultMessage = @()
+        $resultMessage += Get-Mailbox -Identity $box.Name | `
+                Select-Object AccountDisabled,Alias,DisplayName,ResourceCapacity,WindowsEmailAddress
+        $resultMessage += Get-CalendarProcessing -Identity $box.Name | `
+                Select-Object AllBookInPolicy,AllowRecurringMeetings,BookingWindowInDays,EnforceSchedulingHorizon,MaximumDurationInMinutes,ScheduleOnlyDuringWorkHours
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  
+        }
+        else{
+            Write-Output $resultMessage
+        }
+    }    
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Resource $($MailboxId) not found"
+        } 
+        Throw  "Resource $($MailboxId) not found"
     }
-    finally{
-     
-    }
+}
+catch{
+    throw
+}
+finally{
+    
+}

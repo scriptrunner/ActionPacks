@@ -43,12 +43,17 @@ Param(
 )
 
 try{
-    if($null -eq $AccessAccount){
-        Restart-Computer -ComputerName $ComputerNames.Split(',') -DcomAuthentication $DcomAuthentication -Force -Confirm:$false -ErrorAction Stop
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'DcomAuthentication' = $DcomAuthentication
+                            'Confirm' = $false
+                            'Force' = $true
+                            }
+
+    if($null -ne $AccessAccount){
+        $cmdArgs.Add('Credential', $AccessAccount)
     }
-    else {
-        Restart-Computer -Credential $AccessAccount -ComputerName $ComputerNames.Split(',') -DcomAuthentication $DcomAuthentication -Force -Confirm:$false -ErrorAction Stop
-    }
+    Restart-Computer @cmdArgs -ComputerName $ComputerNames.Split(',') 
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Computers restarted"
     }

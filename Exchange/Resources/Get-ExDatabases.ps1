@@ -49,6 +49,9 @@ try{
         }
     }
 }
+catch{
+    throw
+}
 finally{
  
 }

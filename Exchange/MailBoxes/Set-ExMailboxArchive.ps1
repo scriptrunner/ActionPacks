@@ -37,34 +37,36 @@ param(
     [string]$ArchiveDatabase
 )
 
-#Clear
-    try{
-        $box = Get-Mailbox -Identity $MailboxId | Select-Object Database
-        if($null -ne $box){
-            if($Enable){
-                if([System.String]::IsNullOrWhiteSpace($ArchiveDatabase)){
-                    $ArchiveDatabase=$box.Database
-                }
-                Enable-Mailbox -Identity $MailboxId -Archive -ArchiveDatabase $ArchiveDatabase -Confirm:$false | Out-Null
+try{
+    $box = Get-Mailbox -Identity $MailboxId | Select-Object Database
+    if($null -ne $box){
+        if($Enable){
+            if([System.String]::IsNullOrWhiteSpace($ArchiveDatabase)){
+                $ArchiveDatabase=$box.Database
             }
-            else{
-                Disable-Mailbox -Identity $MailboxId -Archive -Confirm:$false
-            }
-            $res =  Get-Mailbox -Identity $MailboxId | Select-Object ArchiveState,UserPrincipalName,DisplayName,WindowsEmailAddress
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res | Format-List
-            } 
-            else{
-                Write-Output $res | Format-List 
-            }
+            Enable-Mailbox -Identity $MailboxId -Archive -ArchiveDatabase $ArchiveDatabase -Confirm:$false | Out-Null
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox not found"
-            } 
-            Throw  "Mailbox not found"
+            Disable-Mailbox -Identity $MailboxId -Archive -Confirm:$false
+        }
+        $res =  Get-Mailbox -Identity $MailboxId | Select-Object ArchiveState,UserPrincipalName,DisplayName,WindowsEmailAddress
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res | Format-List
+        } 
+        else{
+            Write-Output $res | Format-List 
         }
     }
-    finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox not found"
+        } 
+        Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

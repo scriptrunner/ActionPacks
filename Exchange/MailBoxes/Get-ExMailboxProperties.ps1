@@ -30,31 +30,30 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$MailboxId,
+    [Validateset('*','DisplayName','FirstName','LastName','Office', 'Phone','WindowsEmailAddress','IsMailboxEnabled','DistinguishedName','Alias','Guid','ResetPasswordOnNextLogon','UserPrincipalName')]
     [string[]]$Properties=@("DisplayName","FirstName","LastName","Office", "Phone","WindowsEmailAddress","IsMailboxEnabled","DistinguishedName","Alias","Guid","ResetPasswordOnNextLogon","UserPrincipalName")
 )
 
-#Clear
-    try{
-        if([System.String]::IsNullOrWhiteSpace($Properties)){
-            $Properties='*'
-        }
-        $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
-    #    Clear
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res
-            }
-            else{
-                Write-Output $res
-            }
+try{
+    $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
-            } 
-            Throw  "Mailbox $($MailboxId) not found"
+            Write-Output $res
         }
     }
-    Finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
+        } 
+        Throw  "Mailbox $($MailboxId) not found"
     }
+}
+catch{
+    throw
+}
+Finally{
+    
+}

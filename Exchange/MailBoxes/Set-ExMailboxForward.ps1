@@ -39,28 +39,30 @@ param(
     [string]$RuleName
 )
 
-#Clear
-    try{
-        $res = Get-Mailbox -Identity $MailboxId | Select-Object Name
-        $forto = Get-Mailbox -Identity $ForwardTo | Select-Object Name
-        if($null -ne $res -and $null -ne $forto){
-            if([System.String]::IsNullOrWhiteSpace($RuleName)){
-                $RuleName = "$($res.Name)to$($forto.Name)"
-            }
-            New-InboxRule -Name $RuleName -Mailbox $res.Name -ForwardTo $forto.Name -Force -ErrorAction Stop
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) forward to $($ForwardTo)"
-            }
-            else{
-                Write-Output "Mailbox $($MailboxId) forward to $($ForwardTo)"
-            }
+try{
+    $res = Get-Mailbox -Identity $MailboxId | Select-Object Name
+    $forto = Get-Mailbox -Identity $ForwardTo | Select-Object Name
+    if($null -ne $res -and $null -ne $forto){
+        if([System.String]::IsNullOrWhiteSpace($RuleName)){
+            $RuleName = "$($res.Name)to$($forto.Name)"
+        }
+        New-InboxRule -Name $RuleName -Mailbox $res.Name -ForwardTo $forto.Name -Force -ErrorAction Stop
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) forward to $($ForwardTo)"
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) or $($ForwardTo) not found"
-            } 
-            Throw  "Mailbox $($MailboxId) or $($ForwardTo) not found"
+            Write-Output "Mailbox $($MailboxId) forward to $($ForwardTo)"
         }
     }
-    Finally{
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) or $($ForwardTo) not found"
+        } 
+        Throw  "Mailbox $($MailboxId) or $($ForwardTo) not found"
     }
+}
+catch{
+    throw
+}
+Finally{
+}

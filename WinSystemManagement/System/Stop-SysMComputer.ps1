@@ -41,22 +41,22 @@ Param(
 
 try{
     $test = Get-Host | Select-Object -ExpandProperty Version
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Confirm' = $false
+                            'Force' = $true
+                            }
+
+    if($null -ne $AccessAccount){
+        $cmdArgs.Add('Credential',$AccessAccount)
+    }
     if($test.Major -lt 5  ){
-        if($null -eq $AccessAccount){
-            Stop-Computer -ComputerName $ComputerNames.Split(',') -Confirm:$false -Force -Authentication $DcomAuthentication
-        }
-        else {
-            Stop-Computer -ComputerName $ComputerNames.Split(',') -Credential $AccessAccount -Confirm:$false -Force -Authentication $DcomAuthentication
-        }
+        $cmdArgs.Add('Authentication', $DcomAuthentication)
     }
     else {
-        if($null -eq $AccessAccount){
-            Stop-Computer -ComputerName $ComputerNames.Split(',') -Confirm:$false -Force -DcomAuthentication $DcomAuthentication    
-        }
-        else {
-            Stop-Computer -ComputerName $ComputerNames.Split(',') -Credential $AccessAccount -Confirm:$false -Force -DcomAuthentication $DcomAuthentication 
-        }    
+        $cmdArgs.Add('DcomAuthentication', $DcomAuthentication)
     }
+    Stop-Computer @cmdArgs -ComputerName $ComputerNames.Split(',')
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Computers stopped"
     }

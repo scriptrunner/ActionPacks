@@ -25,21 +25,26 @@
 
     .Parameter ExcludeResources
         Specifies whether to exclude resource mailboxes in the results
+
+    .Parameter Properties
+        List of properties to expand. Use * for all properties
 #>
 
 param(
     [switch]$EnabledMailboxOnly,
-    [switch]$ExcludeResources
+    [switch]$ExcludeResources,
+    [Validateset('*','ArchiveStatus','UserPrincipalName','DisplayName','WindowsEmailAddress','IsMailboxEnabled','IsResource')]
+    [string[]]$Properties = @('ArchiveStatus','UserPrincipalName','DisplayName','WindowsEmailAddress','IsMailboxEnabled','IsResource')
 )
 
 try{
-        if($EnabledMailboxOnly -eq $true){
-            $boxes = Get-Mailbox -SortBy DisplayName | Where-Object -Property IsMailboxEnabled -eq $true | `
-                    Select-Object ArchiveStatus,UserPrincipalName,DisplayName,WindowsEmailAddress,IsMailboxEnabled,IsResource
-        }
-        else{
-            $boxes = Get-Mailbox -SortBy DisplayName | Select-Object ArchiveStatus,UserPrincipalName,DisplayName,WindowsEmailAddress,IsMailboxEnabled,IsResource
-        }
+    if($EnabledMailboxOnly -eq $true){
+        $boxes = Get-Mailbox -SortBy DisplayName | Where-Object -Property IsMailboxEnabled -eq $true | `
+                Select-Object $Properties
+    }
+    else{
+        $boxes = Get-Mailbox -SortBy DisplayName | Select-Object $Properties
+    }
     if($null -ne $boxes){
         if($ExcludeResources){
             $boxes = $boxes | Where-Object -Property IsResource -EQ $false
@@ -59,6 +64,9 @@ try{
             Write-Output  "No Mailboxes found"
         }
     }
+}
+catch{
+    throw
 }
 finally{
 

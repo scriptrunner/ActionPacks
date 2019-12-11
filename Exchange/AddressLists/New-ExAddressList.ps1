@@ -46,7 +46,7 @@
 #>
 
 param(
-     [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true)]
     [string]$ServerName,
     [Parameter(Mandatory = $true)]
     [PSCredential]$AdminAccount,
@@ -69,59 +69,55 @@ param(
     [bool]$Resources
 )
 
-#Clear
-$uri = 'http://' + $ServerName + '/powershell/'
-$session =New-PSSession  -ConfigurationName Microsoft.Exchange -Connectionuri $uri -credential $AdminAccount  
-if($null -ne $session){
-    Import-PSSession $session -AllowClobber
-    try{
-        if([System.String]::IsNullOrWhiteSpace($DisplayName)){
-            $DisplayName=$ListName
+try{
+    if([System.String]::IsNullOrWhiteSpace($DisplayName)){
+        $DisplayName=$ListName
+    }
+    if($PSCmdlet.ParameterSetName  -eq "Selected Recipients"){
+        $resi=@()
+        if($MailContacts -eq $true){
+            $resi+='MailContacts'
         }
-        if($PSCmdlet.ParameterSetName  -eq "Selected Recipients"){
-            $resi=@()
-            if($MailContacts -eq $true){
-                $resi+='MailContacts'
-            }
-            if($MailboxUsers -eq $true){
-                $resi+='MailboxUsers'
-            }
-            if($MailGroups -eq $true){
-                $resi+='MailGroups'
-            }
-            if($MailUsers -eq $true){
-                $resi+='MailUsers'
-            }
-            if($Resources -eq $true){
-                $resi+='Resources'
-            }
-            if([System.String]::IsNullOrWhiteSpace($resi)){
-                $resi+='AllRecipients'
-            }
-            $res = New-AddressList  -Name $NameOfList -DisplayName $DisplayName -IncludedRecipients ($resi -join ',') -Confirm:$false
+        if($MailboxUsers -eq $true){
+            $resi+='MailboxUsers'
+        }
+        if($MailGroups -eq $true){
+            $resi+='MailGroups'
+        }
+        if($MailUsers -eq $true){
+            $resi+='MailUsers'
+        }
+        if($Resources -eq $true){
+            $resi+='Resources'
+        }
+        if([System.String]::IsNullOrWhiteSpace($resi)){
+            $resi+='AllRecipients'
+        }
+        $res = New-AddressList  -Name $NameOfList -DisplayName $DisplayName -IncludedRecipients ($resi -join ',') -Confirm:$false
+    }
+    else{
+        $res = New-AddressList  -Name $ListName -DisplayName $DisplayName -IncludedRecipients 'AllRecipients' -Confirm:$false
+    }
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            $res = New-AddressList  -Name $ListName -DisplayName $DisplayName -IncludedRecipients 'AllRecipients' -Confirm:$false
+            Write-Output $res
         }
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
-        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Address list not created"
+        } 
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Address list not created"
-            } 
-            else{
-                Write-Output  "Address list not created"
-            }
+            Write-Output  "Address list not created"
         }
     }
-    Finally{
- Remove-PSSession $session
-
-    }
+}
+catch{
+    throw
+}
+Finally{
+    
 }

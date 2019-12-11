@@ -33,29 +33,31 @@ param(
     [switch]$Enable
 )
 
-#Clear
-    try{     
-        $Script:res=@()
-        if($Enable){
-            Enable-Mailbox -Identity $MailboxId | Out-Null
-            $box =Get-Mailbox -Identity $MailboxId | Select-Object ArchiveState,UserPrincipalName,DisplayName,WindowsEmailAddress
-            $Script:res =  $box | Format-List
-            $Script:res += "Mailbox $($box.DisplayName) enabled"
-        }
-        else{
-            $box = Get-Mailbox -Identity $MailboxId | Select-Object Database,DisplayName
-            if($null -ne $box){
-                Disable-Mailbox -Identity $MailboxId -Confirm:$false
-            }   
-            $Script:res += "Mailbox $($box.DisplayName) disabled"
-        }         
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = $res
-        } 
-        else{
-            Write-Output $res 
-        }
+try{     
+    $Script:res=@()
+    if($Enable){
+        Enable-Mailbox -Identity $MailboxId | Out-Null
+        $box = Get-Mailbox -Identity $MailboxId | Select-Object ArchiveState,UserPrincipalName,DisplayName,WindowsEmailAddress
+        $Script:res =  $box | Format-List
+        $Script:res += "Mailbox $($box.DisplayName) enabled"
     }
-    finally{
-     
+    else{
+        $box = Get-Mailbox -Identity $MailboxId | Select-Object Database,DisplayName
+        if($null -ne $box){
+            Disable-Mailbox -Identity $MailboxId -Confirm:$false
+        }   
+        $Script:res += "Mailbox $($box.DisplayName) disabled"
+    }         
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $Script:res
+    } 
+    else{
+        Write-Output $Script:res 
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

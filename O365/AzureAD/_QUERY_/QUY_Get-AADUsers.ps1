@@ -20,7 +20,7 @@
         ScriptRunner Version 4.x or higher
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Query
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/_QUERY_
 #>
 
 param(    

@@ -29,18 +29,20 @@ param(
     [string]$ListName
 )
 
-#Clear
-    try{
-        Remove-AddressList -Identity $ListName -Recursive -Confirm:$false
-        
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "Address list $($ListName) removed"
-        } 
-        else{
-            Write-Output   "Address list $($ListName) removed"
-        }
-        
+try{
+    Remove-AddressList -Identity $ListName -Recursive -Confirm:$false
+    
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = "Address list $($ListName) removed"
+    } 
+    else{
+        Write-Output   "Address list $($ListName) removed"
     }
-    Finally{
-        
-    }
+    
+}
+catch{
+    throw
+}
+Finally{
+    
+}

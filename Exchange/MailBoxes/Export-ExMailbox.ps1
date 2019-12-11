@@ -39,24 +39,26 @@ param(
     [switch]$IsArchiveBox
 )
 
-#Clear
-    try{
-        $res = Get-Mailbox -Identity $MailboxId 
-        if($null -ne $res){        
-            New-MailboxExportRequest -Mailbox $MailboxId -FilePath $FilePath -IsArchive:$IsArchiveBox -ErrorAction Stop
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) exported"
-            }
-            else{
-                Write-Output "Mailbox $($MailboxId) exported"
-            }
+try{
+    $res = Get-Mailbox -Identity $MailboxId 
+    if($null -ne $res){        
+        New-MailboxExportRequest -Mailbox $MailboxId -FilePath $FilePath -IsArchive:$IsArchiveBox -ErrorAction Stop
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) exported"
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
-            } 
-            Throw  "Mailbox $($MailboxId) not found"
+            Write-Output "Mailbox $($MailboxId) exported"
         }
     }
-    Finally{
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
+        } 
+        Throw  "Mailbox $($MailboxId) not found"
     }
+}
+catch{
+    throw
+}
+Finally{
+}

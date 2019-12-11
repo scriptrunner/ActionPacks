@@ -33,26 +33,28 @@ param(
     [bool]$Activate
 )
 
-#Clear
-    try{
-        $box = Get-CASMailbox -Identity $MailboxId
-        if($null -ne $box){
-            Set-CASMailbox -Identity $MailboxId -ActiveSyncEnabled $Activate 
-            $resultMessage =  Get-CASMailbox -Identity $MailboxId | Select-Object ActiveSyncEnabled,PrimarySmtpAddress,DisplayName
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage | Format-List
-            } 
-            else{
-                Write-Output $resultMessage | Format-List
-            }
-        }
+try{
+    $box = Get-CASMailbox -Identity $MailboxId
+    if($null -ne $box){
+        Set-CASMailbox -Identity $MailboxId -ActiveSyncEnabled $Activate 
+        $resultMessage =  Get-CASMailbox -Identity $MailboxId | Select-Object ActiveSyncEnabled,PrimarySmtpAddress,DisplayName
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage | Format-List
+        } 
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox not found"
-            } 
-            Throw  "Mailbox not found"
+            Write-Output $resultMessage | Format-List
         }
     }
-    finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox not found"
+        } 
+        Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

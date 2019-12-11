@@ -24,27 +24,29 @@
 param(
 )
 
-#Clear
-    try{
-        $res = Get-AddressList  | Select-Object *
-        
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
+try{
+    $res = Get-AddressList  | Select-Object *
+    
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "No distribution lists found"
-            } 
-            else{
-                Write-Output  "No distribution lists found"
-            }
+            Write-Output $res
         }
     }
-    Finally{
-         
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No distribution lists found"
+        } 
+        else{
+            Write-Output  "No distribution lists found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+        
+}

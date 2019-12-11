@@ -29,16 +29,18 @@ param(
     [string]$GroupName
 )
 
-#Clear
-    try{
-        Remove-DistributionGroup -Identity $GroupName -Confirm:$false -ErrorAction Stop       
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "Universal distribution group $($GroupName) removed"
-        } 
-        else{    
-            Write-Output = "Universal distribution group $($GroupName) removed"
-        }
+try{
+    Remove-DistributionGroup -Identity $GroupName -Confirm:$false -ErrorAction Stop       
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = "Universal distribution group $($GroupName) removed"
+    } 
+    else{    
+        Write-Output = "Universal distribution group $($GroupName) removed"
     }
-    Finally{
+}
+catch{
+    throw
+}
+Finally{
 
-    }
+}

@@ -38,57 +38,59 @@ param(
     [string]$MemberObjectTypes='All'
 )
 
-#Clear
-    try{
-        $Script:Members=@()
-        function Get-NestedGroupMember($group) { 
-            $Script:Members += "Group: $($group.DisplayName), $($group.PrimarySmtpAddress)" 
-            if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Users')){
-                Get-DistributionGroupMember -Identity $group.Name  | Where-Object {$_.RecipientType -EQ 'MailUser' -or $_.RecipientType -EQ 'UserMailbox'} | `
-                    Sort-Object -Property DisplayName | ForEach-Object{
-                        $Script:Members += "Mailbox: $($_.DisplayName), $($_.PrimarySmtpAddress)"
+try{
+    $Script:Members=@()
+    function Get-NestedGroupMember($group) { 
+        $Script:Members += "Group: $($group.DisplayName), $($group.PrimarySmtpAddress)" 
+        if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Users')){
+            Get-DistributionGroupMember -Identity $group.Name  | Where-Object {$_.RecipientType -EQ 'MailUser' -or $_.RecipientType -EQ 'UserMailbox'} | `
+                Sort-Object -Property DisplayName | ForEach-Object{
+                    $Script:Members += "Mailbox: $($_.DisplayName), $($_.PrimarySmtpAddress)"
+                }
+        }
+        if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Groups')){
+            Get-DistributionGroupMember -Identity $group.Name  | Where-Object {$_.RecipientType -EQ 'MailUniversalDistributionGroup'} | `
+                Sort-Object -Property DisplayName | ForEach-Object{
+                    if($Nested -eq $true){
+                        Get-NestedGroupMember $_
                     }
-            }
-            if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Groups')){
-                Get-DistributionGroupMember -Identity $group.Name  | Where-Object {$_.RecipientType -EQ 'MailUniversalDistributionGroup'} | `
-                    Sort-Object -Property DisplayName | ForEach-Object{
-                        if($Nested -eq $true){
-                            Get-NestedGroupMember $_
-                        }
-                        else {
-                            $Script:Members += "Group: $($_.DisplayName), $($_.PrimarySmtpAddress)"
-                        }                
-                    }
-            }
+                    else {
+                        $Script:Members += "Group: $($_.DisplayName), $($_.PrimarySmtpAddress)"
+                    }                
+                }
         }
-        $Grp = Get-DistributionGroup -Identity $GroupName
-        if($null -ne $Grp){
-            Get-NestedGroupMember $Grp
-        }
-        else {
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Universal distribution group not found"
-            } 
-            Throw "Universal distribution group not found"
-        }
+    }
+    $Grp = Get-DistributionGroup -Identity $GroupName
+    if($null -ne $Grp){
+        Get-NestedGroupMember $Grp
+    }
+    else {
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Universal distribution group not found"
+        } 
+        Throw "Universal distribution group not found"
+    }
 
-        if($null -ne $Script:Members){
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $Script:Members
-            } 
-            else{
-                Write-Output $Script:Members 
-            }
-        }
-        else {
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "No Universal distribution group members found"
-            } 
-            else{
-                Write-Output "No Universal distribution group members found"
-            }
+    if($null -ne $Script:Members){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:Members
+        } 
+        else{
+            Write-Output $Script:Members 
         }
     }
-    Finally{
-    
+    else {
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No Universal distribution group members found"
+        } 
+        else{
+            Write-Output "No Universal distribution group members found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+
+}

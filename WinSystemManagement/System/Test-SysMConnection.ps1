@@ -44,25 +44,32 @@ Param(
 
 try{
     $test = Get-Host | Select-Object -ExpandProperty Version
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Count' = $Count
+                            'Delay' = $Delay
+                            }    
+                            
     if($test.major -lt 5  ){
-        $output = Test-Connection -ComputerName $ComputerNames.Split(',') -Count $Count -Delay $Delay -Authentication $DcomAuthentication
+        $cmdArgs.Add('Authentication', $DcomAuthentication)
     }
     elseif($test.major -eq 5  ){
         if($test.Minor -lt 1){
-            $output = Test-Connection -ComputerName $ComputerNames.Split(',') -Count $Count -Delay $Delay -Authentication $DcomAuthentication
+            $cmdArgs.Add('Authentication' , $DcomAuthentication)
         }
         else {
-            $output = Test-Connection -ComputerName $ComputerNames.Split(',') -Count $Count -Delay $Delay -DcomAuthentication $DcomAuthentication        
+            $cmdArgs.Add('DcomAuthentication', $DcomAuthentication)
         }
     }
     else {
-        $output = Test-Connection -ComputerName $ComputerNames.Split(',') -Count $Count -Delay $Delay -DcomAuthentication $DcomAuthentication        
+        $cmdArgs.Add('DcomAuthentication', $DcomAuthentication)
     }
+    $output = Test-Connection @cmdArgs -ComputerName $ComputerNames.Split(',')
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $output
     }
     else{
-        Write-Output $output
+        Write-Output $output 
     }
 }
 catch{

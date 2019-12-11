@@ -30,33 +30,33 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$GroupName,
+    [ValidateSet('*','Name','Alias','DisplayName','PrimarySmtpAddress', 'Note','ManagedBy','IsValid','GroupType','DistinguishedName','Guid')]
     [string[]]$Properties =@('Name','Alias','DisplayName','PrimarySmtpAddress', 'Note','ManagedBy','IsValid','GroupType','DistinguishedName','Guid')
 )
 
-#Clear
-    try{
-        if([System.String]::IsNullOrWhiteSpace($Properties)){
-            $Properties='*'
-        }
-        $res = Get-DistributionGroup -Identity $GroupName  | Select-Object $Properties
-        
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
+try{
+    $res = Get-DistributionGroup -Identity $GroupName  | Select-Object $Properties
+    
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Universal distribution group $($GroupName) not found"
-            } 
-            else{
-                Write-Output  "Universal distribution group $($GroupName) not found"
-            }
+            Write-Output $res
         }
     }
-    Finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Universal distribution group $($GroupName) not found"
+        } 
+        else{
+            Write-Output  "Universal distribution group $($GroupName) not found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+    
+}

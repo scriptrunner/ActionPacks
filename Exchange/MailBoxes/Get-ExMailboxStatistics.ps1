@@ -33,25 +33,27 @@ param(
     [switch]$Archive
 )
 
-#Clear
-    try{
-        $box = Get-Mailbox  -Identity $MailboxId
-        if($null -ne $box){
-            $res = Get-MailboxStatistics -Identity $MailboxId -Archive:$Archive 
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res | Format-List
-            } 
-            else{
-                Write-Output $res | Format-List
-            }
-        }
+try{
+    $box = Get-Mailbox  -Identity $MailboxId
+    if($null -ne $box){
+        $res = Get-MailboxStatistics -Identity $MailboxId -Archive:$Archive 
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res | Format-List
+        } 
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Mailbox not found"
-            } 
-            Throw  "Mailbox not found"
+            Write-Output $res | Format-List
         }
     }
-    finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Mailbox not found"
+        } 
+        Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
+}
+finally{
+    
+}

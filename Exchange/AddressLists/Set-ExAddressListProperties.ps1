@@ -65,55 +65,57 @@ param(
     [bool]$Resources
 )
 
-#Clear
-    try{
-        $Script:resi=@()
-        $Script:list=$ListName
-        if($PSCmdlet.ParameterSetName  -eq "Selected Recipients"){
-            if($MailContacts -eq $true){
-                $Script:resi+='MailContacts'
-            }
-            if($MailboxUsers -eq $true){
-                $Script:resi+='MailboxUsers'
-            }
-            if($MailGroups -eq $true){
-                $Script:resi+='MailGroups'
-            }
-            if($MailUsers -eq $true){
-                $Script:resi+='MailUsers'
-            }
-            if($Resources -eq $true){
-                $Script:resi+='Resources'
-            }
-            $Script:list= $NameOfList 
+try{
+    $Script:resi=@()
+    $Script:list=$ListName
+    if($PSCmdlet.ParameterSetName  -eq "Selected Recipients"){
+        if($MailContacts -eq $true){
+            $Script:resi+='MailContacts'
         }
-        if([System.String]::IsNullOrWhiteSpace($resi)){
-            $Script:resi+='AllRecipients'
+        if($MailboxUsers -eq $true){
+            $Script:resi+='MailboxUsers'
         }
-        $res= Get-AddressList -Identity $Script:list | Select-Object Name,DisplayName
-        if([System.String]::IsNullOrWhiteSpace($DisplayName)){
-            $DisplayName=$res.DisplayName
+        if($MailGroups -eq $true){
+            $Script:resi+='MailGroups'
         }
-        Set-AddressList -Identity $res.Name -DisplayName $DisplayName -IncludedRecipients ($resi -join ',') -ForceUpgrade -Confirm:$false
-        $res= Get-AddressList -Identity $res.Name | Select-Object *
-       
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
+        if($MailUsers -eq $true){
+            $Script:resi+='MailUsers'
+        }
+        if($Resources -eq $true){
+            $Script:resi+='Resources'
+        }
+        $Script:list= $NameOfList 
+    }
+    if([System.String]::IsNullOrWhiteSpace($resi)){
+        $Script:resi+='AllRecipients'
+    }
+    $res= Get-AddressList -Identity $Script:list | Select-Object Name,DisplayName
+    if([System.String]::IsNullOrWhiteSpace($DisplayName)){
+        $DisplayName=$res.DisplayName
+    }
+    Set-AddressList -Identity $res.Name -DisplayName $DisplayName -IncludedRecipients ($resi -join ',') -ForceUpgrade -Confirm:$false
+    $res= Get-AddressList -Identity $res.Name | Select-Object *
+    
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Address list not found"
-            } 
-            else{
-                Write-Output  "Address list not found"
-            }
+            Write-Output $res
         }
     }
-    Finally{
-         
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Address list not found"
+        } 
+        else{
+            Write-Output  "Address list not found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+        
+}

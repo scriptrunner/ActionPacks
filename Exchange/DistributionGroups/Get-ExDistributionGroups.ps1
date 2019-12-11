@@ -24,27 +24,29 @@
 param(
 )
 
-#Clear
-    try{
-        $res = Get-DistributionGroup  | Select-Object *
-        
-        if($null -ne $res){        
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
+try{
+    $res = Get-DistributionGroup  | Select-Object *
+    
+    if($null -ne $res){        
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "No Universal distribution groups found"
-            } 
-            else{
-                Write-Output  "No Universal distribution groups found"
-            }
+            Write-Output $res
         }
     }
-    Finally{
-    
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No Universal distribution groups found"
+        } 
+        else{
+            Write-Output  "No Universal distribution groups found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+
+}

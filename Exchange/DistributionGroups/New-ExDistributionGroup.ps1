@@ -72,57 +72,59 @@ param(
     [string]$GroupType='Distribution'
 )
 
-#Clear
-    $Script:result = @()
+$Script:result = @()
+try{
+    $Script:err =$false
+    $Script:grp
+    $Script:usr
     try{
-        $Script:err =$false
-        $Script:grp
-        $Script:usr
-        try{
-            $Script:grp = New-DistributionGroup -Name $GroupName -Alias $Alias -DisplayName $DisplayName -Note $Note -ManagedBy $ManagedBy -Type $GroupType `
-                            -PrimarySmtpAddress $PrimarySmtpAddress -MemberDepartRestriction $MemberDepartRestriction -MemberJoinRestriction $MemberJoinRestriction `
-                            -Confirm:$false -ErrorAction Stop
-            $Script:result += "Group: $($Script:grp.DisplayName) created"
-            if($null -ne $Script:grp -and $null -ne $Members){
-                forEach($itm in $Members){
+        $Script:grp = New-DistributionGroup -Name $GroupName -Alias $Alias -DisplayName $DisplayName -Note $Note -ManagedBy $ManagedBy -Type $GroupType `
+                        -PrimarySmtpAddress $PrimarySmtpAddress -MemberDepartRestriction $MemberDepartRestriction -MemberJoinRestriction $MemberJoinRestriction `
+                        -Confirm:$false -ErrorAction Stop
+        $Script:result += "Group: $($Script:grp.DisplayName) created"
+        if($null -ne $Script:grp -and $null -ne $Members){
+            forEach($itm in $Members){
+                try{
+                    $Script:usr = Get-Mailbox -Identity $itm -ErrorAction Stop
+                }
+                catch{
+                    $Script:result += "Error: Member $($itm) $($_.Exception.Message)"
+                    $Script:err =$true
+                    continue
+                }
+                if($null -ne $Script:usr){
                     try{
-                        $Script:usr = Get-Mailbox -Identity $itm -ErrorAction Stop
+                        Add-DistributionGroupMember -Identity $Script:grp.DistinguishedName -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false -ErrorAction Stop
+                        $Script:result += "Member $($Script:usr.DisplayName) added to Distribution group $($grp.DisplayName)"
                     }
                     catch{
-                        $Script:result += "Error: Member $($itm) $($_.Exception.Message)"
+                        $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
                         $Script:err =$true
                         continue
                     }
-                    if($null -ne $Script:usr){
-                        try{
-                            Add-DistributionGroupMember -Identity $Script:grp.DistinguishedName -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false -ErrorAction Stop
-                            $Script:result += "Member $($Script:usr.DisplayName) added to Distribution group $($grp.DisplayName)"
-                        }
-                        catch{
-                            $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
-                            $Script:err =$true
-                            continue
-                        }
-                   }
                 }
             }
-            $Script:result += $Script:grp
         }
-        catch{
-            $Script:result += "Error: $($_.Exception.Message)"
-            $Script:err =$true
-            continue
-        }
+        $Script:result += $Script:grp
     }
-    Finally{
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:result
-            if($Script:err -eq $true){
-                Throw $($Script:result -join ' ')
-            }
-        } 
-        else{    
-            Write-Output $Script:result 
-        }
-     
+    catch{
+        $Script:result += "Error: $($_.Exception.Message)"
+        $Script:err =$true
+        continue
     }
+}
+catch{
+    throw
+}
+Finally{
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $Script:result
+        if($Script:err -eq $true){
+            Throw $($Script:result -join ' ')
+        }
+    } 
+    else{    
+        Write-Output $Script:result 
+    }
+    
+}

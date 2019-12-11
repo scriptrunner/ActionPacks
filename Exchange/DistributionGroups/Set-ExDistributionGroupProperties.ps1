@@ -55,52 +55,54 @@ param(
     [string]$MemberJoinRestriction='Closed'
 )
 
-#Clear
-    try{
-        $Script:grp = Get-DistributionGroup -Identity $GroupName
-       
-        if($null -ne $Script:grp){    
-            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'Identity' = $Script:grp.Name
-                            'ForceUpgrade' = $null
-                            'Confirm' = $false
-                            }
-            if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
-                Set-DistributionGroup @cmdArgs -Alias $Alias
-            }
-            if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-                Set-DistributionGroup  @cmdArgs -DisplayName $DisplayName
-            }
-            if($PSBoundParameters.ContainsKey('ManagedBy') -eq $true ){
-                Set-DistributionGroup  @cmdArgs -ManagedBy $ManagedBy
-            }
-            if($PSBoundParameters.ContainsKey('PrimarySmtpAddress') -eq $true ){
-                Set-DistributionGroup  @cmdArgs -PrimarySmtpAddress $PrimarySmtpAddress
-            }
-            if($PSBoundParameters.ContainsKey('MemberDepartRestriction') -eq $true ){
-                Set-DistributionGroup  @cmdArgs -MemberDepartRestriction $MemberDepartRestriction
-            }            
-            if($PSBoundParameters.ContainsKey('MemberJoinRestriction') -eq $true ){
-                Set-DistributionGroup  @cmdArgs -MemberJoinRestriction $MemberJoinRestriction
-            }
-            $res=@("Universal distribution group $($GroupName) modified")
-            $res += Get-DistributionGroup -Identity $Script:grp.Name | Select-Object *
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $res  
-            }
-            else{
-                Write-Output $res
-            }
+try{
+    $Script:grp = Get-DistributionGroup -Identity $GroupName
+    
+    if($null -ne $Script:grp){    
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                        'Identity' = $Script:grp.Name
+                        'ForceUpgrade' = $null
+                        'Confirm' = $false
+                        }
+        if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
+            Set-DistributionGroup @cmdArgs -Alias $Alias
+        }
+        if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
+            Set-DistributionGroup  @cmdArgs -DisplayName $DisplayName
+        }
+        if($PSBoundParameters.ContainsKey('ManagedBy') -eq $true ){
+            Set-DistributionGroup  @cmdArgs -ManagedBy $ManagedBy
+        }
+        if($PSBoundParameters.ContainsKey('PrimarySmtpAddress') -eq $true ){
+            Set-DistributionGroup  @cmdArgs -PrimarySmtpAddress $PrimarySmtpAddress
+        }
+        if($PSBoundParameters.ContainsKey('MemberDepartRestriction') -eq $true ){
+            Set-DistributionGroup  @cmdArgs -MemberDepartRestriction $MemberDepartRestriction
+        }            
+        if($PSBoundParameters.ContainsKey('MemberJoinRestriction') -eq $true ){
+            Set-DistributionGroup  @cmdArgs -MemberJoinRestriction $MemberJoinRestriction
+        }
+        $res=@("Universal distribution group $($GroupName) modified")
+        $res += Get-DistributionGroup -Identity $Script:grp.Name | Select-Object *
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res  
         }
         else{
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = "Universal distribution group $($GroupName) not found"
-            } 
-            else{
-                Write-Output  "Universal distribution group $($GroupName) not found"
-            }
+            Write-Output $res
         }
     }
-    Finally{
-     
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Universal distribution group $($GroupName) not found"
+        } 
+        else{
+            Write-Output  "Universal distribution group $($GroupName) not found"
+        }
     }
+}
+catch{
+    throw
+}
+Finally{
+    
+}

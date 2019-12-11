@@ -53,17 +53,13 @@ try{
     }
     $instance = Get-SqlInstance @cmdArgs
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
     $result = Get-SqlAgent -InputObject $instance -ErrorAction Stop | `
                             Get-SqlAgentJob | Get-SqlAgentJobSchedule | Select-Object Name,Parent | Sort-Object Name
     
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $itm.Name # Value
-            $SRXEnv.ResultList2 += "Schedule: $($itm.Name) - Job: $($itm.Parent)"
+            $SRXEnv.ResultList.Add($itm.Name) # Value
+            $SRXEnv.ResultList2.Add("Schedule: $($itm.Name) - Job: $($itm.Parent)")
         }
         else{
             Write-Output "Schedule: $($itm.Name) - Job: $($itm.Parent)"

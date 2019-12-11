@@ -69,13 +69,13 @@ try{
                             'Confirm' = $false
                             }    
        
-    $Script:result = New-SqlCredential @cmdArgs | Select-Object *
+    $result = New-SqlCredential @cmdArgs | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

@@ -120,13 +120,13 @@ try{
         $cmdArgs.Add("CredentialName",$CredentialName)
     }
        
-    $Script:result = Add-SqlLogin @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Add-SqlLogin @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

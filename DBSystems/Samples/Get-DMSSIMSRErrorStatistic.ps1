@@ -53,7 +53,6 @@ Param(
     [datetime]$EndDate,
     [PSCredential]$SQLCredential,
     [string]$ActionName
-
 )
 
 Import-Module SimplySQL
@@ -61,7 +60,7 @@ Import-Module SimplySQL
 try{
     OpenSQlConnection -ServerName $ServerName -DatabaseName $DatabaseName -SQLCredential $SQLCredential -ErrorAction Stop
         
-    if([System.String]::IsNullOrWhiteSpace($ActionName)){
+    if([System.String]::IsNullOrWhiteSpace($ActionName) -eq $true){
         $ActionName = ''
     }
 

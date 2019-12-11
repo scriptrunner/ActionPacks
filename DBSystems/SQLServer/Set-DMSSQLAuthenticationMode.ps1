@@ -70,9 +70,6 @@ Param(
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
@@ -91,13 +88,13 @@ try{
         $cmdArgs.Add("RetryTimeout",$RetryTimeout)
     }
     
-    $Script:result = Set-SqlAuthenticationMode @cmdArgs
+    $result = Set-SqlAuthenticationMode @cmdArgs
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

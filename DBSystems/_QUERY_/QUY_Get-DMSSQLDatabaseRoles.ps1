@@ -58,16 +58,12 @@ try{
     }
     $instance = Get-SqlInstance @cmdArgs
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList = @()
-        $SRXEnv.ResultList2 = @()
-    }
     $roles = Get-SqlDatabase -InputObject $instance -Name $DatabaseName -ErrorAction Stop -Confirm:$false | Select-Object -ExpandProperty roles
 
     foreach($itm in $roles){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $itm # Value
-            $SRXEnv.ResultList2 += $itm
+            $SRXEnv.ResultList.Add($itm) # Value
+            $SRXEnv.ResultList2.Add($itm)
         }
         else{
             Write-Output $itm

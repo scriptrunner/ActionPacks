@@ -73,16 +73,12 @@ try{
     }
     $query = "SELECT $($IDColumn),$($DisplayColumn) FROM $($Table) $($WhereSection)" 
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
     $result = InvokeQuery -QuerySQL $query -ReturnResult
 
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $itm.Item($IDColumn) # Value
-            $SRXEnv.ResultList2 += $itm.Item($DisplayColumn) # DisplayValue            
+            $SRXEnv.ResultList.Add($itm.Item($IDColumn)) # Value
+            $SRXEnv.ResultList2.Add($itm.Item($DisplayColumn)) # DisplayValue            
         }
         else{
             Write-Output $itm.Item($DisplayColumn)

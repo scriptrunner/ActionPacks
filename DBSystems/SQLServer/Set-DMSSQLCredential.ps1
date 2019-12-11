@@ -74,13 +74,13 @@ try{
                             }                                
     $credObject = Get-SqlCredential @getArgs 
     $setArgs['InputObject'] = $credObject
-    $Script:result = Set-SqlCredential @setArgs | Select-Object *
+    $result = Set-SqlCredential @setArgs | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

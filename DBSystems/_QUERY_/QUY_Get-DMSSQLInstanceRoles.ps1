@@ -53,16 +53,12 @@ try{
     }
     $instance = Get-SqlInstance @cmdArgs
     
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }    
     $roles = $instance | Select-Object -ExpandProperty Roles
 
     foreach($item in $roles){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $item.Name # Value
-            $SRXEnv.ResultList2 += $item.Name
+            $SRXEnv.ResultList.Add($item.Name) # Value
+            $SRXEnv.ResultList2.Add($item.Name)
         }
         else{
             Write-Output $item.Name

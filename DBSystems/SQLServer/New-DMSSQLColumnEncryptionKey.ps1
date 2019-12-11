@@ -76,13 +76,13 @@ try{
         $cmdArgs.Add("EncryptedValue",$EncryptedValue)
     }
 
-    $Script:result = New-SqlColumnEncryptionKey @cmdArgs | Select-Object *
+    $result = New-SqlColumnEncryptionKey @cmdArgs | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

@@ -69,13 +69,13 @@ try{
 
     $dbInstance = GetSqlDatabase -DatabaseName $DatabaseName -ServerInstance $instance
     $CmkSettings = New-SqlCertificateStoreColumnMasterKeySettings -CertificateStoreLocation $CertificateStoreLocation -Thumbprint $CertificateThumbprint -ErrorAction Stop
-    $Script:result = New-SqlColumnMasterKey -Name $KeyName -ColumnMasterKeySettings $CmkSettings -InputObject $dbInstance -ErrorAction Stop
+    $result = New-SqlColumnMasterKey -Name $KeyName -ColumnMasterKeySettings $CmkSettings -InputObject $dbInstance -ErrorAction Stop
         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

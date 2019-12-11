@@ -76,12 +76,12 @@ try{
         Disable-SqlAlwaysOn @cmdArgs
     }  
     
-    $Script:result = Get-SqlInstance $instance | Select-Object $Properties
+    $result = Get-SqlInstance $instance | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

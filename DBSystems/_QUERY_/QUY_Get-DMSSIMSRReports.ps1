@@ -61,16 +61,12 @@ try{
         AND Created <  DATETIMEFROMPARTS ($($EndDate.Year), $($EndDate.Month), $($EndDate.Day), $($EndDate.Hour), $($EndDate.Minute), $($EndDate.Second),0)
         ORDER BY DisplayName DESC"
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
     $result = InvokeQuery -QuerySQL $query -ReturnResult
 
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $itm.Id # Value
-            $SRXEnv.ResultList2 += "$($itm.DisplayName) - ($($itm.Created))" # DisplayValue            
+            $SRXEnv.ResultList.Add($itm.Id) # Value
+            $SRXEnv.ResultList2.Add("$($itm.DisplayName) - ($($itm.Created))") # DisplayValue            
         }
         else{
             Write-Output "$($itm.DisplayName) - ($($itm.Created))"

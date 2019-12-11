@@ -67,14 +67,14 @@ try{
     }
     $role = GetSqlDatabase -DatabaseName $DBName -ServerInstance $instance | Select-Object -ExpandProperty Roles | Where-Object{$_.Name -eq $RoleName}
 
-    $Script:result = @()
-    $Script:result += $role | Select-Object *
-    $Script:result += "Members: $($role.enummembers() -join ',')"
+    $result = @()
+    $result += $role | Select-Object *
+    $result += "Members: $($role.enummembers() -join ',')"
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

@@ -66,13 +66,13 @@ try{
                             'MaxLogCount' = $MaxLogCount
                             }     
     $null = Set-SqlErrorLog @cmdArgs                            
-    $Script:result = Get-SqlErrorLog -InputObject $instance -ErrorAction Stop | Select-Object $Properties
+    $result = Get-SqlErrorLog -InputObject $instance -ErrorAction Stop | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

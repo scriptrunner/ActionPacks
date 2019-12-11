@@ -164,13 +164,13 @@ try{
     if($null -ne $ServerCredential){
         $cmdArgs.Add('Credential',$ServerCredential)
     }  
-    $Script:result = Read-SqlTableData @cmdArgs
+    $result = Read-SqlTableData @cmdArgs
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

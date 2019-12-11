@@ -73,15 +73,13 @@ Param(
     [ValidateSet('Midnight', 'Yesterday', 'LastWeek', 'LastMonth')]
     [string]$Since,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Name,Status,Size,SpaceAvailable,Owner,LastBackupDate,LastLogBackupDate,IsUpdateable,DefaultFileGroup,AutoShrink,ActiveConnections"
+    [ValidateSet('*','Name','Status','Size','SpaceAvailable','Owner','LastBackupDate','LastLogBackupDate','IsUpdateable','DefaultFileGroup','AutoShrink','ActiveConnections')]
+    [string[]]$Properties = @('Name','Status','Size','SpaceAvailable','Owner','LastBackupDate','LastLogBackupDate','IsUpdateable','DefaultFileGroup','AutoShrink','ActiveConnections')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
@@ -106,13 +104,13 @@ try{
         $cmdArgs.Add("Since",$Since)
     }
     
-    $Script:result = Get-SqlBackupHistory @cmdArgs | Select-Object *
+    $result = Get-SqlBackupHistory @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

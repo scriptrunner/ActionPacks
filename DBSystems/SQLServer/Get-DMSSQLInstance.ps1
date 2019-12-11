@@ -41,29 +41,28 @@ Param(
     [string]$ServerInstance,    
     [pscredential]$ServerCredential,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "DisplayNameOrName,Status,Edition,InstanceName,DomainInstanceName,LoginMode,ServerType,ServiceStartMode,ComputerNamePhysicalNetBIOS"
+    [Validateset('*','DisplayNameOrName','Status','Edition','InstanceName','DomainInstanceName','LoginMode','ServerType','ServiceStartMode','ComputerNamePhysicalNetBIOS')]
+    [string[]]$Properties = @('DisplayNameOrName','Status','Edition','InstanceName','DomainInstanceName','LoginMode','ServerType','ServiceStartMode','ComputerNamePhysicalNetBIOS')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'ServerInstance' = $ServerInstance
                             'ConnectionTimeout' = $ConnectionTimeout}
+
     if($null -ne $ServerCredential){
         $cmdArgs.Add('Credential',$ServerCredential)
     }
-    $Script:result = Get-SqlInstance  @cmdArgs | Select-Object $Properties.Split(',')        
+    $result = Get-SqlInstance  @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

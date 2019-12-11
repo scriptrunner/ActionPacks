@@ -53,16 +53,12 @@ try{
     }
     $instance = Get-SqlInstance @cmdArgs
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
     $bases = Get-SqlDatabase -InputObject $instance -ErrorAction Stop -Confirm:$false | Select-Object Name | Sort-Object Name
 
     foreach($itm in  $bases){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $itm.Name # Value
-            $SRXEnv.ResultList2 += $itm.Name
+            $SRXEnv.ResultList.Add($itm.Name) # Value
+            $SRXEnv.ResultList2.Add($itm.Name)
         }
         else{
             Write-Output $itm.Name

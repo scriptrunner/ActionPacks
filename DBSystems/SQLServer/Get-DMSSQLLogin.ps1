@@ -67,15 +67,13 @@ Param(
     [ValidateSet('All','WindowsUser', 'WindowsGroup', 'SqlLogin', 'Certificate', 'AsymmetricKey', 'ExternalUser', 'ExternalGroup')]
     [string]$LoginType = "All",
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Name,Status,LoginType,Language,IsLocked,IsDisabled,IsPasswordExpired,MustChangePassword,PasswordExpirationEnabled,HasAccess,State"
+    [ValidateSet('*','Name','Status','LoginType','Language','IsLocked','IsDisabled','IsPasswordExpired','MustChangePassword','PasswordExpirationEnabled','HasAccess','State')]
+    [string[]]$Properties = ('Name','Status','LoginType','Language','IsLocked','IsDisabled','IsPasswordExpired','MustChangePassword','PasswordExpirationEnabled','HasAccess','State')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
@@ -99,7 +97,7 @@ try{
         $cmdArgs.Add("LoginType",$LoginType)
     }    
     try{      
-        $Script:result = Get-SqlLogin @cmdArgs | Select-Object $Properties.Split(',')
+        $Script:result = Get-SqlLogin @cmdArgs | Select-Object $Properties
     }
     catch
     {

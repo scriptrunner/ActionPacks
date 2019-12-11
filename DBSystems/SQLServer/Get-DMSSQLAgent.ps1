@@ -42,21 +42,19 @@ Param(
     [string]$ServerInstance,    
     [pscredential]$ServerCredential,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Name,State,AgentLogLevel,ErrorLogFile,MaximumHistoryRows,ServiceAccount,ServiceStartMode,SqlAgentAutoStart"
+    [Validateset('*','Name','State','AgentLogLevel','ErrorLogFile','MaximumHistoryRows','ServiceAccount','ServiceStartMode','SqlAgentAutoStart')]
+    [string[]]$Properties = @('Name','State','AgentLogLevel','ErrorLogFile','MaximumHistoryRows','ServiceAccount','ServiceStartMode','SqlAgentAutoStart')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'InputObject' = $instance
                             }      
-    $result = Get-SqlAgent @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Get-SqlAgent @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

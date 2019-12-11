@@ -64,12 +64,21 @@ try{
     else {
         Start-SqlInstance @cmdArgs
     }  
-    
+
+    $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Confirm' = $false
+                'Credential' = $ServerCredential
+                'ServerInstance' = $ServerInstance
+                'ConnectionTimeout' = $ConnectionTimeout
+            }
+
+    $result = Get-SqlInstance  @cmdArgs | Select-Object $Properties
+
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

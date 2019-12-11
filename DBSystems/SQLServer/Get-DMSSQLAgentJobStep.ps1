@@ -50,15 +50,13 @@ Param(
     [string]$JobName,
     [string]$StepName,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Name,ID,State,Command,LastRunDate,LastRunDuration,LastRunDurationAsTimeSpan,OnFailAction,OnSuccessAction"
+    [ValidateSet('*','Name','ID','State','Command','LastRunDate','LastRunDuration','LastRunDurationAsTimeSpan','OnFailAction','OnSuccessAction')]
+    [string[]]$Properties = @('Name','ID','State','Command','LastRunDate','LastRunDuration','LastRunDurationAsTimeSpan','OnFailAction','OnSuccessAction')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'ServerInstance' = $ServerInstance
                             'ConnectionTimeout' = $ConnectionTimeout
@@ -76,7 +74,7 @@ try{
         $cmdStep.Add('Name',$StepName)
     }
     $result = Get-SqlAgent @cmdArgs | Get-SqlAgentJob @cmdJob `
-                | Get-SqlAgentJobStep @cmdStep | Select-Object $Properties.Split(',')
+                | Get-SqlAgentJobStep @cmdStep | Select-Object $Properties
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

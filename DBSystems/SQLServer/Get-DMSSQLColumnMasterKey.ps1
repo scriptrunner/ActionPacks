@@ -63,12 +63,12 @@ try{
         $cmdArgs.Add("Name",$KeyName)
     }
 
-    $Script:result = Get-SqlColumnMasterKey @cmdArgs | Select-Object *
+    $result = Get-SqlColumnMasterKey @cmdArgs | Select-Object *
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

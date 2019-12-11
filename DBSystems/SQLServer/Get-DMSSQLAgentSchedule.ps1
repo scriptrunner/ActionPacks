@@ -46,15 +46,13 @@ Param(
     [pscredential]$ServerCredential,
     [string]$ScheduleName,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Name,ID,State,ActiveStartDate,ActiveEndDate,DateCreated,FrequencyTypes,IsEnabled,JobCount"
+    [ValidateSet('*','Name','ID','State','ActiveStartDate','ActiveEndDate','DateCreated','FrequencyTypes','IsEnabled','JobCount')]
+    [string[]]$Properties = @('Name','ID','State','ActiveStartDate','ActiveEndDate','DateCreated','FrequencyTypes','IsEnabled','JobCount')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'ServerInstance' = $ServerInstance
                             'ConnectionTimeout' = $ConnectionTimeout
@@ -67,7 +65,7 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ScheduleName) -eq $false){
         $cmdSchedule.Add('Name',$ScheduleName)
     }
-    $result = Get-SqlAgent @cmdArgs | Get-SqlAgentSchedule @cmdSchedule | Select-Object $Properties.Split(',')
+    $result = Get-SqlAgent @cmdArgs | Get-SqlAgentSchedule @cmdSchedule | Select-Object $Properties
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

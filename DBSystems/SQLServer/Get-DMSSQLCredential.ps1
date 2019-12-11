@@ -56,13 +56,13 @@ try{
                             'Name' = $Name
                             'Confirm' = $false
                             }      
-    $Script:result = Get-SqlCredential @cmdArgs | Select-Object *
+    $result = Get-SqlCredential @cmdArgs | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

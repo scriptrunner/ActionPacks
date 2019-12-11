@@ -59,15 +59,13 @@ Param(
     [ValidateSet('Midnight', 'Yesterday', 'LastWeek','LastMonth')]
     [string]$Since,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Date,Source,Text,ServerInstance"
+    [ValidateSet('*','Date','Source','Text','ServerInstance')]
+    [string[]]$Properties = @('Date','Source','Text','ServerInstance')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
@@ -83,13 +81,13 @@ try{
     if((-not $After) -and (-not $Before) -and ([System.String]::IsNullOrWhiteSpace($Since) -eq $false)){
         $cmdArgs.Add("Since",$Since)
     }  
-    $Script:result = Get-SqlErrorLog @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Get-SqlErrorLog @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:result
+        Write-Output $result
     }
 }
 catch{

@@ -55,9 +55,6 @@
 
 .Parameter ConnectionTimeout
     Specifies the time period to retry the command on the target server
-
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Name,State. Use * for all properties
 #>
 
 [CmdLetBinding()]

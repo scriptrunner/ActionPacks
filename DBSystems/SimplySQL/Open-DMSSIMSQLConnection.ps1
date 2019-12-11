@@ -56,6 +56,7 @@ try{
                             'Server' = $ServerName
                             'CommandTimeout' = $CommandTimeout
                             'Database' = $DatabaseName}
+                            
     if($null -ne $SQLCredential){
         $cmdArgs.Add("Credential", $SQLCredential)
     }

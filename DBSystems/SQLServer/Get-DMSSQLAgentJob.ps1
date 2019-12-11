@@ -46,22 +46,20 @@ Param(
     [pscredential]$ServerCredential,
     [string]$JobName,
     [int]$ConnectionTimeout = 30,
-    [string]$Properties = "Name,State,LastRunDuration,CurrentRunStatus,DateLastModified,Description,EmailLevel,EventLogLevel,OwnerLoginName"
+    [Validateset('*','Name','State','LastRunDuration','CurrentRunStatus','DateLastModified','Description','EmailLevel','EventLogLevel','OwnerLoginName')]
+    [string[]]$Properties = @('Name','State','LastRunDuration','CurrentRunStatus','DateLastModified','Description','EmailLevel','EventLogLevel','OwnerLoginName')
 )
 
 Import-Module SQLServer
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
     if([System.String]::IsNullOrWhiteSpace($JobName) -eq $false){
         $cmdArgs.Add('Name',$JobName)
     }
-    $result = Get-SqlAgent -InputObject $instance -ErrorAction Stop | Get-SqlAgentJob @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Get-SqlAgent -InputObject $instance -ErrorAction Stop | Get-SqlAgentJob @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

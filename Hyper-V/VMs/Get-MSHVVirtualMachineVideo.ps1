@@ -42,7 +42,6 @@ param(
 Import-Module Hyper-V
 
 try {
-    $Script:output    
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }
@@ -54,12 +53,12 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }        
     if($null -ne $Script:VM){
-        $Script:output = Get-VMVideo -VM $Script:VM | Select-Object *
+        $output = Get-VMVideo -VM $Script:VM | Select-Object *
         if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
+            $SRXEnv.ResultMessage = $output
         }    
         else {
-            Write-Output $Script:output
+            Write-Output $output
         }
     }
     else{

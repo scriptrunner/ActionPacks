@@ -98,7 +98,7 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }    
-    [string]$Properties="ReplicationEnabled,AllowedAuthenticationType,KerberosAuthenticationPort,CertificateAuthenticationPort,AllowAnyServer,ReplicationAllowedFromAnyServer,DefaultStorageLocation,StatusDescriptions"
+    [string[]]$Properties = @('ReplicationEnabled','AllowedAuthenticationType','KerberosAuthenticationPort','CertificateAuthenticationPort','AllowAnyServer','ReplicationAllowedFromAnyServer','DefaultStorageLocation','StatusDescriptions')
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Force' = $null    
                             }
@@ -132,13 +132,13 @@ try {
         Set-VMReplicationServer @cmdArgs -DefaultStorageLocation $DefaultStorageLocation
     }
     $cmdArgs.Remove('Force')
-    $Script:output = Get-VMReplicationServer @cmdArgs | Select-Object $Properties.Split(',')
+    $output = Get-VMReplicationServer @cmdArgs | Select-Object $Properties
              
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

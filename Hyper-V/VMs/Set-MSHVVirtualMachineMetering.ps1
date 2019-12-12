@@ -52,14 +52,14 @@ param(
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('Enable','Reset','Disable')]
-    [string]$Command="Enable"
+    [string]$Command = "Enable"
 )
 
 Import-Module Hyper-V
 
 try {
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
-        $HostName=$VMHostName
+        $HostName = $VMHostName
     }    
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."

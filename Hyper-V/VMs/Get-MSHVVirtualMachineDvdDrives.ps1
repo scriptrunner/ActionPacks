@@ -51,7 +51,8 @@ param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties = "Name,DvdMediaType,Path,ControllerNumber,ControllerType,VMId,VMName"
+    [ValidateSet('*','Name','DvdMediaType','Path','ControllerNumber','ControllerType','VMId','VMName')]
+    [string[]]$Properties = @('Name','DvdMediaType','Path','ControllerNumber','ControllerType','VMId','VMName')
 )
 
 Import-Module Hyper-V
@@ -63,10 +64,7 @@ try {
     }    
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
-    }   
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
+    } 
     if($null -eq $AccessAccount){
         $Script:VM = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }
@@ -75,7 +73,7 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }        
     if($null -ne $Script:VM){
-        $Script:output = Get-VMDvdDrive -VM $Script:VM | Select-Object $Properties.Split(',')
+        $Script:output = Get-VMDvdDrive -VM $Script:VM | Select-Object $Properties
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output
         }    

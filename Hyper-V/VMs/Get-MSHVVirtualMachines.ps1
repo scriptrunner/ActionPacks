@@ -48,7 +48,8 @@ param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties="VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion",
+    [ValidateSet('*','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')]
+    [string[]]$Properties = @('VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion'),
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('All', 'Running', 'Off', 'Stopping', 'Saved', 'Paused', 'Starting', 'Reset', 'Saving', 'Pausing', 'Resuming',
@@ -68,12 +69,10 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }      
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
+    
     if($null -eq $AccessAccount){
         if($VMState -eq 'All'){
-            $Script:output = Get-VM -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties
         }
         else {
             $Script:output = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.State -eq $VMState} `
@@ -83,10 +82,11 @@ try {
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
         if($VMState -eq 'All'){
-            $Script:output = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')}
+            $Script:output = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties
+        }
         else {
             $Script:output = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.State -eq $VMState} `
-                | Select-Object $Properties.Split(',')
+                | Select-Object $Properties
         }
     }     
     if($SRXEnv) {

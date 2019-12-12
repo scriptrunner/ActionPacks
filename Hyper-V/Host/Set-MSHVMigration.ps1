@@ -96,7 +96,6 @@ Import-Module Hyper-V
 try {
     [string[]]$Script:addAddr = @()
     [string[]]$Script:remAddr = @()
-    [object[]]$Script:output = @()
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }   
@@ -109,7 +108,7 @@ try {
     if(-not [System.String]::IsNullOrWhiteSpace($NetworksToRemove)){
         $Script:remAddr = $NetworksToRemove.Split(',')
     }
-    [string]$Properties="Name,VirtualMachineMigrationEnabled,MaximumVirtualMachineMigrations,UseAnyNetworkForMigration,VirtualMachineMigrationAuthenticationType,VirtualMachineMigrationPerformanceOption"
+    [string[]]$Properties = @('Name','VirtualMachineMigrationEnabled','MaximumVirtualMachineMigrations','UseAnyNetworkForMigration','VirtualMachineMigrationAuthenticationType','VirtualMachineMigrationPerformanceOption')
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
         $cmdArgs.Add('ComputerName',$HostName)
@@ -143,14 +142,14 @@ try {
     foreach($maskR in $Script:remAddr){
         Remove-VMMigrationNetwork @cmdArgs -Subnet $maskR.Trim()
     }
-    $Script:output = Get-VMHost @cmdArgs | Select-Object $Properties.Split(',')
-    $Script:output += Get-VMMigrationNetwork @cmdArgs | Select-Object *
+    $output = Get-VMHost @cmdArgs | Select-Object $Properties
+    $output += Get-VMMigrationNetwork @cmdArgs | Select-Object *
             
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

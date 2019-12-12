@@ -88,7 +88,6 @@ param(
 Import-Module Hyper-V
 
 try {
-    $Script:output
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }    
@@ -144,12 +143,12 @@ try {
             $network = $null
         }
         Set-VMFirmware -VM $Script:VM -EnableSecureBoot $EnableSecureBoot -BootOrder $Script:start -PreferredNetworkBootProtocol $PreferredNetworkBootProtocol -ErrorAction Stop
-        $Script:output = Get-VMFirmware -VM $Script:VM | Select-Object *
+        $output = Get-VMFirmware -VM $Script:VM | Select-Object *
         if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
+            $SRXEnv.ResultMessage = $output
         }    
         else {
-            Write-Output $Script:output
+            Write-Output $output
         }
     }
     else{

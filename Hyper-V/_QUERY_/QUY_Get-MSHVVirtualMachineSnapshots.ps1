@@ -67,14 +67,10 @@ try {
             $Script:result = Get-VMSnapshot -VM $Script:VM -SnapshotType $SnapshotType -ErrorAction Stop | Select-Object $Properties.Split(",")  | Sort-Object Name
         }
         
-        if($SRXEnv) {
-            $SRXEnv.ResultList =@()
-            $SRXEnv.ResultList2 =@()
-        }
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2 += "Name: $($item.Name) created: $($item.CreationTime)" # DisplayValue            
-                $SRXEnv.ResultList += $item.Name # Value
+                $SRXEnv.ResultList2.Add("Name: $($item.Name) created: $($item.CreationTime)") # DisplayValue            
+                $SRXEnv.ResultList.Add($item.Name) # Value
             }
             else{
                 Write-Output $item.name

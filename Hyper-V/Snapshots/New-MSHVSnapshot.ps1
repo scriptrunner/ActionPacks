@@ -73,14 +73,14 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }        
     if($null -ne $Script:VM){
-        [string]$Properties="Name,Id,SnapshotType,Path,ParentCheckpointName,SizeOfSystemFiles,CreationTime"
+        [string[]]$Properties = @('Name','Id','SnapshotType','Path','ParentCheckpointName','SizeOfSystemFiles','CreationTime')
         if([System.String]::IsNullOrWhiteSpace($SnapshotName)){
             $Script:output = Checkpoint-VM -VM $Script:VM -Passthru -ErrorAction Stop 
         }
         else{
             $Script:output = Checkpoint-VM -VM $Script:VM -SnapshotName $SnapshotName -Passthru -ErrorAction Stop 
         }
-        $Script:output = Get-VMSnapshot -VM $Script:VM -Name $Script:output.Name  | Select-Object $Properties.Split(",") | Format-List
+        $Script:output = Get-VMSnapshot -VM $Script:VM -Name $Script:output.Name  | Select-Object $Properties | Format-List
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output
         }    

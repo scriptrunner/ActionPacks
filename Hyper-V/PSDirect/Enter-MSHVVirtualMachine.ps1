@@ -40,13 +40,13 @@ param(
 Import-Module Hyper-V
 
 try { 
-    $Script:sess = New-PSSession -VMName $VMName -Credential $AccessAccount -ErrorAction Stop
-    $Script:output = Invoke-Command $Script:sess -ScriptBlock {$env:COMPUTERNAME} # enter here your commands. see here: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6
+    $sess = New-PSSession -VMName $VMName -Credential $AccessAccount -ErrorAction Stop
+    $output = Invoke-Command $sess -ScriptBlock {$env:COMPUTERNAME} # enter here your commands. see here: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command?view=powershell-6
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

@@ -52,13 +52,13 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }    
-    [string]$Properties="Name,MacAddressMinimum,MacAddressMaximum"
+    [string[]]$Properties = @('Name','MacAddressMinimum','MacAddressMaximum')
     if($null -eq $AccessAccount){
-        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
-        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties
     }     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

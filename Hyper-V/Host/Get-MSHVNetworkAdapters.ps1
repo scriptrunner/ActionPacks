@@ -51,7 +51,8 @@ param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties="Name,SwitchName,IsManagementOs,MacAddress,AdapterID,Status,StatusDescription,IsExternalAdapter,IsDeleted",
+    [ValidateSet('*','Name','SwitchName','IsManagementOs','MacAddress','AdapterID','Status','StatusDescription','IsExternalAdapter','IsDeleted')]
+    [string[]]$Properties = @('Name','SwitchName','IsManagementOs','MacAddress','AdapterID','Status','StatusDescription','IsExternalAdapter','IsDeleted'),
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [switch]$All,
@@ -69,17 +70,14 @@ try {
     }   
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
-    }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }     
+    } 
     else{
         if($true -eq $IncludeVlanProperties){
-            if(($Properties -ne '*') -and ($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'Name'}))){
-                $Properties += ",Name"
+            if(($Properties -ne '*') -and ($null -eq ($Properties | Where-Object {$_ -eq 'Name'}))){
+                $Properties += "Name"
             }
-            if(($Properties -ne '*') -and ($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'IsManagementOs'}))){
-                $Properties += ",IsManagementOs"
+            if(($Properties -ne '*') -and ($null -eq ($Properties | Where-Object {$_ -eq 'IsManagementOs'}))){
+                $Properties += "IsManagementOs"
             }
         }
     }
@@ -98,7 +96,7 @@ try {
     else {        
         $cmdArgs.Add('ManagementOS',$null)
     }
-    $Script:adapters = Get-VMNetworkAdapter @cmdArgs | Select-Object $Properties.Split(',')    
+    $Script:adapters = Get-VMNetworkAdapter @cmdArgs | Select-Object $Properties
     if($null -ne $Script:adapters){
         if($true -eq $IncludeVlanProperties){
             ForEach($ada in $Script:adapters){

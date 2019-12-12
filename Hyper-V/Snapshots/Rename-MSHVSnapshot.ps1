@@ -63,7 +63,6 @@ param(
 Import-Module Hyper-V
 
 try {
-    $Script:output
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }      
@@ -78,13 +77,13 @@ try {
         $Script:shot = Get-VMSnapshot -VMName $VMName -Name $SnapshotName -CimSession $Script:Cim -ErrorAction Stop
     }        
     if($null -ne $Script:shot){
-        [string]$Properties="Name,Id,SnapshotType,Path,ParentCheckpointName,SizeOfSystemFiles,CreationTime"
-        $Script:output = Rename-VMSnapshot -VMSnapshot $Script:shot -NewName $NewName -Passthru -ErrorAction Stop | Select-Object $Properties.Split(",") | Format-List
+        [string[]]$Properties = @('Name','Id','SnapshotType','Path','ParentCheckpointName','SizeOfSystemFiles','CreationTime')
+        $output = Rename-VMSnapshot -VMSnapshot $Script:shot -NewName $NewName -Passthru -ErrorAction Stop | Select-Object $Properties | Format-List
         if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
+            $SRXEnv.ResultMessage = $output
         }    
         else {
-            Write-Output $Script:output
+            Write-Output $output
         }
     }
     else{

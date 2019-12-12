@@ -57,14 +57,10 @@ try {
         $Properties = @('Name','VMName','MacAddress','DynamicMacAddressEnabled','IPAddresses','Connected','SwitchName','AdapterId','Status','StatusDescription','IsManagementOs','IsExternalAdapter')
         $Script:result = Get-VMNetworkAdapter -VM $Script:VM | Select-Object $Properties | Where-Object {$_.Connected -eq $true} | Sort-Object Name
         
-        if($SRXEnv) {
-            $SRXEnv.ResultList =@()
-            $SRXEnv.ResultList2 =@()
-        }
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2 += "Name: $($item.Name) - Status: $($item.Status) - IPAddresses: $($item.IPAddresses)" # DisplayValue            
-                $SRXEnv.ResultList += $item.SwitchName # Value
+                $SRXEnv.ResultList2.Add("Name: $($item.Name) - Status: $($item.Status) - IPAddresses: $($item.IPAddresses)") # DisplayValue            
+                $SRXEnv.ResultList.Add($item.SwitchName) # Value
             }
             else{
                 Write-Output $item.Name

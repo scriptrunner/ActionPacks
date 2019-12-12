@@ -51,22 +51,20 @@ param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties="VMName,VMID,MeteringDuration,AverageProcessorUsage,AverageMemoryUsage,MaximumMemoryUsage,TotalDiskAllocation,AvgCPU,TotalDisk"
+    [ValidateSet('*','VMName','VMID','MeteringDuration','AverageProcessorUsage','AverageMemoryUsage','MaximumMemoryUsage','TotalDiskAllocation','AvgCPU','TotalDisk')]
+    [string[]]$Properties = @('VMName','VMID','MeteringDuration','AverageProcessorUsage','AverageMemoryUsage','MaximumMemoryUsage','TotalDiskAllocation','AvgCPU','TotalDisk')
 )
 
 Import-Module Hyper-V
 
 try {
-    $Script:output
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }    
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
+    
     if($null -eq $AccessAccount){
         $Script:VM = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }
@@ -75,12 +73,12 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }        
     if($null -ne $Script:VM){
-        $Script:output =Measure-VM -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",") | Format-List
+        $output =Measure-VM -VM $Script:VM -ErrorAction Stop | Select-Object $Properties | Format-List
         if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
+            $SRXEnv.ResultMessage = $output
         }    
         else {
-            Write-Output $Script:output
+            Write-Output $output
         }
     }
     else{

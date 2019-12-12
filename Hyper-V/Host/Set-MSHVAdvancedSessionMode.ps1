@@ -52,14 +52,13 @@ param(
 Import-Module Hyper-V
 
 try {
-    $Script:output
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
-        $HostName=$VMHostName
+        $HostName = $VMHostName
     }   
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }    
-    [string]$Properties="Name,EnableEnhancedSessionMode,MemoryCapacity,LogicalProcessorCount,MacAddressMinimum,MacAddressMaximum"
+    [string[]]$Properties = @('Name','EnableEnhancedSessionMode','MemoryCapacity','LogicalProcessorCount','MacAddressMinimum','MacAddressMaximum')
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
@@ -74,13 +73,13 @@ try {
     $cmdArgs.Add('EnableEnhancedSessionMode', ($Action -eq 'Enable'))
 
     Set-VMHost @cmdArgs
-    $Script:output = Get-VMHost @getArgs | Select-Object $Properties.Split(',')
+    $output = Get-VMHost @getArgs | Select-Object $Properties
              
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

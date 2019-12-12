@@ -48,7 +48,7 @@ param(
 Import-Module Hyper-V
 
 try {
-    if([System.String]::IsNullOrWhiteSpace($HostName)){
+    if([System.String]::IsNullOrWhiteSpace($HostName) -eq $true){
         $HostName = "."
     }
     if($null -eq $AccessAccount){
@@ -59,10 +59,6 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }        
     if($null -ne $Script:VM){
-        if($SRXEnv) {
-            $SRXEnv.ResultList =@()
-            $SRXEnv.ResultList2 =@()
-        }
         if(($DriveType -eq 'All') -or ($DriveType -eq "DVD") ){
             $Properties = "Name,DvdMediaType,Path,ControllerNumber,ControllerType,VMId,VMName"
             $Script:result = Get-VMDvdDrive -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",") 
@@ -74,8 +70,8 @@ try {
         if(($DriveType -eq 'All') -or ($DriveType -eq "Floppy") ){
             $Script:result = Get-VMFloppyDiskDrive -VM $Script:VM -ErrorAction Stop | Select-Object *
             foreach($item in $Script:result){
-                $SRXEnv.ResultList2 += "Floppy-Disk Name: $($item.Name) - Path: $($item.Path)" # DisplayValue            
-                $SRXEnv.ResultList += $item.Path # Value
+                $SRXEnv.ResultList2.Add("Floppy-Disk Name: $($item.Name) - Path: $($item.Path)") # DisplayValue            
+                $SRXEnv.ResultList.Add($item.Path) # Value
             }
         }
     }

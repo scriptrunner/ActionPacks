@@ -82,17 +82,13 @@ param(
 Import-Module Hyper-V
 
 try {
-    [string]$Properties="Name,ID,Notes,SwitchType,AllowManagementOS,IovEnabled,IsDeleted"
-    $Script:output =@()
+    [string[]]$Properties = @('Name','ID','Notes','SwitchType','AllowManagementOS','IovEnabled','IsDeleted')
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }   
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
-    }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }     
+    }  
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Name' = $SwitchName   
@@ -118,14 +114,14 @@ try {
         $cmdArgs.Add('NetAdapterName', $NetAdapterName)
         $cmdArgs.Add('AllowManagementOS', $AllowManagementOS)
     }
-    $Script:switch = New-VMSwitch @cmdArgs        
-    $Script:output = Get-VMSwitch @getArgs | Select-Object $Properties.Split(',')
+    $null = New-VMSwitch @cmdArgs        
+    $output = Get-VMSwitch @getArgs | Select-Object $Properties
   
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

@@ -73,12 +73,12 @@ try {
     }        
     if($null -ne $Script:VM){
         Set-VM -VM $Script:VM -AutomaticStopAction $Action -ErrorAction Stop
-        $Properties = "AutomaticStopAction,VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion"
+        [string[]]$Properties = @('AutomaticStopAction','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
         if($null -eq $AccessAccount){
-            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties
         }
         else {
-            $Script:output = Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Properties
         } 
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output

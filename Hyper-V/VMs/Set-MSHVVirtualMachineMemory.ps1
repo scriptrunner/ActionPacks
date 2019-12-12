@@ -125,12 +125,12 @@ try {
         if($PSBoundParameters.ContainsKey('Priority') -eq $true ){
             Set-VMMemory -VM $Script:VM -Priority $Priority -ErrorAction Stop
         }
-        $Script:output = Get-VMMemory -VM $Script:VM | Select-Object *
+        $output = Get-VMMemory -VM $Script:VM | Select-Object *
         if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
+            $SRXEnv.ResultMessage = $output
         }    
         else {
-            Write-Output $Script:output
+            Write-Output $output
         }
     }
     else{

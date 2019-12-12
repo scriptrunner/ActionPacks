@@ -51,7 +51,8 @@ param(
     [string]$SwitchName,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties="Name,ID,Notes,SwitchType,AllowManagementOS,IovEnabled,IsDeleted"
+    [ValidateSet('*','Name','ID','Notes','SwitchType','AllowManagementOS','IovEnabled','IsDeleted')]
+    [string[]]$Properties = @('Name','ID','Notes','SwitchType','AllowManagementOS','IovEnabled','IsDeleted')
 )
 
 Import-Module Hyper-V
@@ -63,10 +64,7 @@ try {
     }   
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
-    }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }     
+    } 
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
@@ -76,7 +74,7 @@ try {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
         $cmdArgs.Add('CimSession',$Script:Cim)
     } 
-    $Script:output = Get-VMSwitch @cmdArgs | Where-Object {$_.Name -eq $SwitchName -or $_.ID -eq $SwitchName} | Select-Object $Properties.Split(',')
+    $Script:output = Get-VMSwitch @cmdArgs | Where-Object {$_.Name -eq $SwitchName -or $_.ID -eq $SwitchName} | Select-Object $Properties
     
     if($null -ne $Script:output){
         if($SRXEnv) {

@@ -140,7 +140,7 @@ Import-Module Hyper-V
 
 try {
     $Script:output
-    [string]$Properties="VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion"
+    [string[]]$Properties = @('VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }    
@@ -209,13 +209,13 @@ try {
             Set-VMMemory -VM $Script:VM -MaximumBytes $MemoryMaximum -ErrorAction Stop
         }
     }
-    $Script:output = Get-VM @cmdArgs -Id $Script:VM.Id | Select-Object $Properties.Split(',')
+    $output = Get-VM @cmdArgs -Id $Script:VM.Id | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

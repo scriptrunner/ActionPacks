@@ -63,10 +63,10 @@ param(
 Import-Module Hyper-V
 
 try {
-    $Script:Properties = "SnapshotFileLocation,CheckpointType,VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion"
+    [string[]]$Script:Properties = @('SnapshotFileLocation','CheckpointType','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
-        $Script:Properties = "SnapshotFileLocation,VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion"
+        $Script:Properties = @('SnapshotFileLocation','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
     }    
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
@@ -86,10 +86,10 @@ try {
             Set-VM -VM $Script:VM -SnapshotFileLocation $SnapshotLocation -ErrorAction Stop            
         }
         if($null -eq $AccessAccount){
-            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Script:Properties.Split(',')
+            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Script:Properties
         }
         else {
-            $Script:output = Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Script:Properties.Split(',')
+            $Script:output = Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Script:Properties
         } 
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output

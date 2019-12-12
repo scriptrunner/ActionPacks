@@ -64,15 +64,15 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }    
-    [string]$Properties="Name,MacAddressMinimum,MacAddressMaximum"
+    [string[]]$Properties= @('Name','MacAddressMinimum','MacAddressMaximum')
     if($null -eq $AccessAccount){
         Set-VMHost -ComputerName $HostName -MacAddressMinimum $Minimum -MacAddressMaximum $Maximum -ErrorAction Stop
-        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-VMHost -ComputerName $HostName -ErrorAction Stop | Select-Object $Properties
     }
     else {
         $Script:Cim = New-CimSession -ComputerName $HostName -Credential $AccessAccount
         Set-VMHost -CimSession $Script:Cim -MacAddressMinimum $Minimum -MacAddressMaximum $Maximum -ErrorAction Stop
-        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-VMHost -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties
     }         
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

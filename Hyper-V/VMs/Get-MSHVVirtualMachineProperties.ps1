@@ -51,7 +51,8 @@ param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties="VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion"
+    [ValidateSet('*','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')]
+    [string[]]$Properties = @('VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
 )
 
 Import-Module Hyper-V
@@ -64,9 +65,6 @@ try {
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     if($null -eq $AccessAccount){
         $Script:VM = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }
@@ -76,10 +74,10 @@ try {
     }        
     if($null -ne $Script:VM){
         if($null -eq $AccessAccount){
-            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties
         }
         else {
-            $Script:output = Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Properties
         } 
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output

@@ -73,12 +73,12 @@ try {
     }       
     if($null -ne $Script:shot){
         Restore-VMSnapshot -VMSnapshot $Script:shot -Confirm:$false -ErrorAction Stop
-        $Properties = "VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,CPUUsage,MemoryDemand,SizeOfSystemFiles,IntegrationServicesVersion"
+        [string[]]$Properties = @('VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
         if($null -eq $AccessAccount){
-            $Script:output = Get-VM -ComputerName $HostName -Name $VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -ComputerName $HostName -Name $VMName | Select-Object $Properties
         }
         else {
-            $Script:output = Get-VM -CimSession $Script:Cim -Name $VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -CimSession $Script:Cim -Name $VMName | Select-Object $Properties
         }         
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output

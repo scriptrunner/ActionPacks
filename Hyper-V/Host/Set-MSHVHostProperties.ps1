@@ -76,8 +76,7 @@ param(
 Import-Module Hyper-V
 
 try {
-    [string]$Properties="ComputerName,VirtualHardDiskPath,VirtualMachinePath,NumaSpanningEnabled,MaximumStorageMigrations,EnableEnhancedSessionMode"
-    $Script:output
+    [string[]]$Properties = @('ComputerName','VirtualHardDiskPath','VirtualMachinePath','NumaSpanningEnabled','MaximumStorageMigrations','EnableEnhancedSessionMode')
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }   
@@ -108,13 +107,13 @@ try {
     if($PSBoundParameters.ContainsKey('EnableEnhancedSessionMode') -eq $true ){
         Set-VMHost @cmdArgs -EnableEnhancedSessionMode $EnableEnhancedSessionMode
     }
-    $Script:output = Get-VMHost @cmdArgs | Select-Object $Properties.Split(',')
+    $output = Get-VMHost @cmdArgs | Select-Object $Properties
         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

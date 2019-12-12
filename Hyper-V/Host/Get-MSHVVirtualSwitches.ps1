@@ -48,7 +48,8 @@ param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties="Name,ID,Notes,SwitchType,AllowManagementOS,IovEnabled,IsDeleted",
+    [ValidateSet('*','Name','ID','Notes','SwitchType','AllowManagementOS','IovEnabled','IsDeleted')]
+    [string[]]$Properties = @('Name','ID','Notes','SwitchType','AllowManagementOS','IovEnabled','IsDeleted'),
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('All','External','Internal','Private')]
@@ -58,16 +59,12 @@ param(
 Import-Module Hyper-V
 
 try {
-    $Script:output
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }   
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }  
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     if($null -eq $AccessAccount){
@@ -80,13 +77,13 @@ try {
     if($SwitchType -ne 'All'){
         $cmdArgs.Add('SwitchType',$SwitchType)
     }    
-    $Script:output = Get-VMSwitch @cmdArgs | Select-Object $Properties.Split(',')
+    $output = Get-VMSwitch @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $output
     }    
     else {
-        Write-Output $Script:output
+        Write-Output $output
     }
 }
 catch {

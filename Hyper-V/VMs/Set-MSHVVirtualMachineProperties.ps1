@@ -134,7 +134,7 @@ Import-Module Hyper-V
 
 try {    
     $Script:output
-    [string]$Properties="VMName,VMID,State,PrimaryOperationalStatus,PrimaryStatusDescription,ProcessorCount,MemoryStartup,DynamicMemoryEnabled,MemoryMinimum,MemoryMaximum,Notes,SnapshotFileLocation"
+    [string[]]$Properties = @('VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','ProcessorCount','MemoryStartup','DynamicMemoryEnabled','MemoryMinimum','MemoryMaximum','Notes','SnapshotFileLocation')
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }    
@@ -216,12 +216,12 @@ try {
             }
         }
         if($null -eq $AccessAccount){
-            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties.Split(',')
+            $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties
             $Properties = @('Name','VMName','MacAddress','DynamicMacAddressEnabled','IPAddresses','Connected','SwitchName','AdapterId','Status','StatusDescription','IsManagementOs','IsExternalAdapter')
             $Script:output += Get-VMNetworkAdapter -VM $Script:VM | Select-Object $Properties | Where-Object {$_.Connected -eq $true}
         }
         else {
-            $Script:output += Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Properties.Split(',')
+            $Script:output += Get-VM -CimSession $Script:Cim -Name $Script:VM.VMName | Select-Object $Properties
         } 
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output

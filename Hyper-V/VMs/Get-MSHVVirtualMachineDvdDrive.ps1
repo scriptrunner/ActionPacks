@@ -65,7 +65,8 @@ param(
     [int]$ControllerNumber,
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
-    [string]$Properties = "Name,DvdMediaType,Path,ControllerNumber,ControllerType,VMId,VMName"
+    [ValidateSet('*','Name','DvdMediaType','Path','ControllerNumber','ControllerType','VMId','VMName')]
+    [string[]]$Properties = @('Name','DvdMediaType','Path','ControllerNumber','ControllerType','VMId','VMName')
 )
 
 Import-Module Hyper-V
@@ -95,7 +96,7 @@ try {
         if([System.String]::IsNullOrWhiteSpace($Path)){
             $Path = $null
         }
-        $Script:output = Get-VMDvdDrive -VMDriveController $Script:controller | Select-Object $Properties.Split(',')
+        $Script:output = Get-VMDvdDrive -VMDriveController $Script:controller | Select-Object $Properties
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:output
         }    

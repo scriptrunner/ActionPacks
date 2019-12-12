@@ -61,14 +61,10 @@ try {
     if($null -ne $Script:VM){
         $Script:result = Get-VMNetworkAdapterVlan -VM $Script:VM -VMNetworkAdapterName $AdapterName | Select-Object *
         
-        if($SRXEnv) {
-            $SRXEnv.ResultList =@()
-            $SRXEnv.ResultList2 =@()
-        }
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2 += "AccessVlanId: $($item.AccessVlanId) - OperationMode: $($item.OperationMode) - IsTemplate: $($item.IsTemplate)" # DisplayValue            
-                $SRXEnv.ResultList += $item.AccessVlanId # Value
+                $SRXEnv.ResultList2.Add("AccessVlanId: $($item.AccessVlanId) - OperationMode: $($item.OperationMode) - IsTemplate: $($item.IsTemplate)") # DisplayValue            
+                $SRXEnv.ResultList.Add($item.AccessVlanId) # Value
             }
             else{
                 Write-Output $item.Name

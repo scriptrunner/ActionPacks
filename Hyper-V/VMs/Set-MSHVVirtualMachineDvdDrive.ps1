@@ -84,8 +84,7 @@ param(
 Import-Module Hyper-V
 
 try {
-    [string]$Script:Properties = "Name,DvdMediaType,Path,ControllerNumber,ControllerType,VMId,VMName"
-    $Script:output
+    [string]$Properties = @('Name','DvdMediaType','Path','ControllerNumber','ControllerType','VMId','VMName')
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }    
@@ -120,12 +119,12 @@ try {
             }
         }
         $Script:drive = Set-VMDvdDrive -VMDvdDrive $drive -Path $Path -ErrorAction Stop
-        $Script:output = Get-VMDvdDrive -VMDriveController $Script:controller | Select-Object $Script:Properties.Split(',')
+        $output = Get-VMDvdDrive -VMDriveController $Script:controller | Select-Object $Properties
         if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:output
+            $SRXEnv.ResultMessage = $output
         }    
         else {
-            Write-Output $Script:output
+            Write-Output $output
         }
     }
     else{

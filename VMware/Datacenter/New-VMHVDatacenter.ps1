@@ -52,13 +52,13 @@ try{
     
     $Script:folder = Get-Folder -Server $Script:vmServer -Name $FolderName -ErrorAction Stop
     $null = New-Datacenter -Server $Script:vmServer -NAme $CenterName -Location $Script:folder -Confirm:$false -ErrorAction Stop
-    $Script:Output = Get-Datacenter -Server $Script:vmServer -Name $CenterName -ErrorAction Stop | Select-Object *
+    $result = Get-Datacenter -Server $Script:vmServer -Name $CenterName -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

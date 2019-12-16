@@ -66,29 +66,27 @@ Param(
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
     [Parameter(ParameterSetName = "byVM")]
-    [string]$Properties = "Name,Id,HATotalSlots,HAUsedSlots,HAEnabled,HASlotMemoryGB,HASlotNumVCpus"
+    [ValidateSet('*','Name','Id','HATotalSlots','HAUsedSlots','HAEnabled','HASlotMemoryGB','HASlotNumVCpus')]
+    [string[]]$Properties = @('Name','Id','HATotalSlots','HAUsedSlots','HAEnabled','HASlotMemoryGB','HASlotNumVCpus')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     if($PSCmdlet.ParameterSetName  -eq "byID"){
-        $Script:Output = Get-Cluster -Server $Script:vmServer -Id $ClusterID -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:Output = Get-Cluster -Server $Script:vmServer -Id $ClusterID -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties
     }
     elseif($PSCmdlet.ParameterSetName  -eq "byVM"){
-        $Script:Output = Get-Cluster -Server $Script:vmServer -VM $VM  -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:Output = Get-Cluster -Server $Script:vmServer -VM $VM  -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties
     }
     else{
         if([System.String]::IsNullOrWhiteSpace($ClusterName) -eq $true){
-            $Script:Output = Get-Cluster -Server $Script:vmServer -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
+            $Script:Output = Get-Cluster -Server $Script:vmServer -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties
         }
         else{
-            $Script:Output = Get-Cluster -Server $Script:vmServer -Name $ClusterName -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties.Split(",")
+            $Script:Output = Get-Cluster -Server $Script:vmServer -Name $ClusterName -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties
         }        
     }
 

@@ -51,8 +51,8 @@ Import-Module VMware.PowerCLI
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
-    $Script:vAdapter = Get-VMHostNetworkAdapter -Server $Script:vmServer -Name $AdapterName -VMHost $HostName -ErrorAction Stop
-    $null = Remove-VMHostNetworkAdapter -Nic $Script:vAdapter -Confirm:$false -ErrorAction Stop
+    $vAdapter = Get-VMHostNetworkAdapter -Server $Script:vmServer -Name $AdapterName -VMHost $HostName -ErrorAction Stop
+    $null = Remove-VMHostNetworkAdapter -Nic $vAdapter -Confirm:$false -ErrorAction Stop
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Adapter $($AdapterName) successfully removed"

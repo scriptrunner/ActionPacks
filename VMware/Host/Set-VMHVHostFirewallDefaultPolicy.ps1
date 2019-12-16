@@ -53,9 +53,9 @@ Import-Module VMware.PowerCLI
 
 try{    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
 
-    $Script:defPolicy = Get-VMHostFirewallDefaultPolicy -Server $Script:vmServer -VMHost $Script:vmHost -ErrorAction Stop
+    $Script:defPolicy = Get-VMHostFirewallDefaultPolicy -Server $Script:vmServer -VMHost $vmHost -ErrorAction Stop
     $Script:Output = $Script:defPolicy | Select-Object *
     if($PSBoundParameters.ContainsKey('AllowIncoming') -eq $true){
         $Script:Output = Set-VMHostFirewallDefaultPolicy -Policy $Script:defPolicy -AllowIncoming $AllowIncoming -Confirm:$false -ErrorAction Stop | Select-Object *

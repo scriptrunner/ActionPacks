@@ -148,13 +148,13 @@ try{
     if($PSBoundParameters.ContainsKey('VsanTrafficEnabled') -eq $true){
         $Script:vAdapter = Set-VMHostNetworkAdapter @cmdArgs -VsanTrafficEnabled $VsanTrafficEnabled
     }
-    $Script:Output = $Script:vAdapter | Select-Object *
+    $result = $Script:vAdapter | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

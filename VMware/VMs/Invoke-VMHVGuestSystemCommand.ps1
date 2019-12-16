@@ -79,13 +79,13 @@ try{
             Restart-VMGuest -VM $Script:machine -Server $Script:vmServer -Confirm:$false -ErrorAction Stop
         }
     }
-    $Script:Output = Get-VMGuest -VM $Script:machine -Server $Script:vmServer -ErrorAction Stop | Select-Object $Properties
+    $result = Get-VMGuest -VM $Script:machine -Server $Script:vmServer -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

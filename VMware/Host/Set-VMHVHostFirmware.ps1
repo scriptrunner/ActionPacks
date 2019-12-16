@@ -67,13 +67,13 @@ try{
     else {
         $null = Set-VMHostFirmware -Server $Script:vmServer -VMHost $Script:vmHost -Restore -HostCredential $HostCredential -SourcePath $SourcePath -Force:$true -Confirm:$false -ErrorAction Stop
     }
-    $Script:Output = Get-VMHostFirmware -Server $Script:vmServer -VMHost $Script:vmHost -ErrorAction Stop | Select-Object *
+    $result = Get-VMHostFirmware -Server $Script:vmServer -VMHost $Script:vmHost -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -137,13 +137,13 @@ try{
         Set-Cluster -Cluster $Script:cluster -Server $Script:vmServer -Name $NewName -ErrorAction Stop
     } 
 
-    $Script:Output = Get-Cluster -Server $Script:vmServer -Name $Script:cluster.Name -ErrorAction Stop | Select-Object $Properties
+    $result = Get-Cluster -Server $Script:vmServer -Name $Script:cluster.Name -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

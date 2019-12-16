@@ -81,15 +81,13 @@ Param(
     [Parameter(ParameterSetName = "byDatastore")]
     [Parameter(ParameterSetName = "byResourcePool")]
     [Parameter(ParameterSetName = "byVM")]
-    [string]$Properties = "Name,Id,PowerState,ConnectionState,IsStandalone,LicenseKey"
+    [ValidateSet('*','Name','Id','PowerState','ConnectionState','IsStandalone','LicenseKey')]
+    [string[]]$Properties = @('Name','Id','PowerState','ConnectionState','IsStandalone','LicenseKey')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Server' = $Script:vmServer
@@ -110,13 +108,13 @@ try{
     elseif($PSCmdlet.ParameterSetName  -eq "byVM"){
         $cmdArgs.Add('VM', $VM)
     }
-    $Script:Output = Get-VMHost @cmdArgs | Select-Object $Properties.Split(",")
+    $result = Get-VMHost @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

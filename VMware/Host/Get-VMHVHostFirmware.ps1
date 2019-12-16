@@ -53,7 +53,7 @@ Import-Module VMware.PowerCLI
 
 try{    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
 
     if($BackupConfiguration -eq $true){
         $Script:Output = Get-VMHostFirmware -Server $Script:vmServer -VMHost $vmHost -BackupConfiguration -DestinationPath $DestinationPath -ErrorAction Stop | Select-Object *

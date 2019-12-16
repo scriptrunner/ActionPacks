@@ -39,19 +39,13 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop    
+    $stores = Get-Datacenter -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name | Sort-Object Name
     
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:stores = Get-Datacenter -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name | Sort-Object Name
-    
-    foreach($item in $Script:stores)
-    {
+    foreach($item in $stores){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += $item.Name # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

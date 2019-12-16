@@ -65,14 +65,14 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:Output = Get-Stat -Server $Script:vmServer -Common:$Common -Memory:$Memory -Cpu:$CPU `
+    $result = Get-Stat -Server $Script:vmServer -Common:$Common -Memory:$Memory -Cpu:$CPU `
                     -Disk:$Disk -Network:$Network -ErrorAction Stop | Select-Object -First $MaxResult
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result 
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

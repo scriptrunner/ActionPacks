@@ -51,13 +51,13 @@ try{
         $Name = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:Output = Get-Inventory -Server $Script:vmServer -NoRecursion:$NoRecursion -Name $Name -ErrorAction Stop
+    $result = Get-Inventory -Server $Script:vmServer -NoRecursion:$NoRecursion -Name $Name -ErrorAction Stop
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

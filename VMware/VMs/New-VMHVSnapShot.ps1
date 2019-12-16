@@ -88,15 +88,15 @@ try{
     else{
         $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     }
-    $Script:Output = New-Snapshot -Server $Script:vmServer -VM $Script:machine -Name $Name `
+    $result = New-Snapshot -Server $Script:vmServer -VM $Script:machine -Name $Name `
                         -Description $Description -Memory:$Memory -Quiesce:$Quiesce `
                         -Confirm:$false -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

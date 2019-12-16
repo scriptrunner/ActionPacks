@@ -40,19 +40,13 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    
-    $Script:groups = Get-VirtualPortgroup -Server $Script:vmServer -ErrorAction Stop `
+    $groups = Get-VirtualPortgroup -Server $Script:vmServer -ErrorAction Stop `
                         | Select-Object Name,VirtualSwitch,VLanId  | Sort-Object Name
 
-    foreach($item in $Script:groups)
-    {
+    foreach($item in $groups){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += "$($item.Name) - $($item.VirtualSwitch) VLan: $($item.VLanId)" # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.VirtualSwitch) VLan: $($item.VLanId)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.VirtualSwitch) VLan: $($item.VLanId)"

@@ -40,18 +40,12 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    $hosts = Get-VMHost -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,ConnectionState,PowerState | Sort-Object Name
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:hosts = Get-VMHost -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,ConnectionState,PowerState | Sort-Object Name
-
-    foreach($item in $Script:hosts)
-    {
+    foreach($item in $hosts){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Id.toString()
-            $SRXEnv.ResultList2 += "$($item.Name) - $($item.ConnectionState)/$($item.PowerState)" # Display
+            $SRXEnv.ResultList.Add($item.Id.toString())
+            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.ConnectionState)/$($item.PowerState)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.ConnectionState)/$($item.PowerState)"

@@ -54,17 +54,16 @@ Import-Module VMware.PowerCLI
 
 try{    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
 
-    $Script:fireEx = Get-VMHostFirewallException -Server $Script:vmServer -VMHost $vmHost -Name $ExceptionName -ErrorAction Stop
-    $Script:Output = $Script:fireEx
-    $Script:Output = Set-VMHostFirewallException -Exception $Script:fireEx -Enabled $Enabled -Confirm:$false -ErrorAction Stop | Select-Object *
+    $fireEx = Get-VMHostFirewallException -Server $Script:vmServer -VMHost $vmHost -Name $ExceptionName -ErrorAction Stop
+    $result = Set-VMHostFirewallException -Exception $fireEx -Enabled $Enabled -Confirm:$false -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

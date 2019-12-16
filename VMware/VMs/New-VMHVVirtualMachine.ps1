@@ -162,12 +162,12 @@ try{
         $null = Set-NetworkAdapter -NetworkName $Network -NetworkAdapter $adapter -Type $NetworkAdapterType -Confirm:$false -ErrorAction Stop
     }
 
-    $Script:output = Get-VM -Server $Script:vmServer -Name $VMName | Select-Object $Properties
+    $result = Get-VM -Server $Script:vmServer -Name $VMName | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

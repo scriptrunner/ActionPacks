@@ -40,18 +40,12 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    $machines = Get-VM -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,Notes | Sort-Object Name
 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:machines = Get-VM -Server $Script:vmServer -ErrorAction Stop | Select-Object Id,Name,Notes | Sort-Object Name
-
-    foreach($item in $Script:machines)
-    {
+    foreach($item in $machines){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += "$($item.Name) - $($item.Notes)" # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.Notes)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.Notes)"

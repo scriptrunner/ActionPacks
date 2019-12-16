@@ -40,18 +40,12 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:disks = Get-VMHostDiskPartition -Server $Script:vmServer -Id "*" -ErrorAction Stop | Select-Object * | Sort-Object PartitionNumber
+    $disks = Get-VMHostDiskPartition -Server $Script:vmServer -Id "*" -ErrorAction Stop | Select-Object * | Sort-Object PartitionNumber
         
-    foreach($item in $Script:disks)
-    {
+    foreach($item in $disks){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Id.toString()
-            $SRXEnv.ResultList2 += "PartitionNumber: $($item.PartitionNumber) - Type: $($item.Type)" # Display
+            $SRXEnv.ResultList.Add($item.Id.toString())
+            $SRXEnv.ResultList2.Add("PartitionNumber: $($item.PartitionNumber) - Type: $($item.Type)") # Display
         }
         else{
             Write-Output "PartitionNumber: $($item.PartitionNumber) - Type: $($item.Type)"

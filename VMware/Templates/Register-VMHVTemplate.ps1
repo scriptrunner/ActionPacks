@@ -58,15 +58,15 @@ try{
     $Script:vmhost = Get-VMHost -Server $Script:vmServer -Name $VMHost -ErrorAction Stop
     $Script:folder = Get-Folder -Name $FolderName -Server $Script:vmServer -ErrorAction Stop
     
-    $Script:Output = New-Template -Name $TemplateName -TemplateFilePath $TemplateFilePath -Location $Script:folder `
+    $result = New-Template -Name $TemplateName -TemplateFilePath $TemplateFilePath -Location $Script:folder `
                         -VMHost $Script:vmhost -Confirm:$false -Server $Script:vmServer `
                         -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

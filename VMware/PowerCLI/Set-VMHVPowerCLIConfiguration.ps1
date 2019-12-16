@@ -90,13 +90,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($CEIPDataTransferProxyPolicy) -eq $false){
         $null = Set-PowerCLIConfiguration -CEIPDataTransferProxyPolicy $CEIPDataTransferProxyPolicy -Scope $Scope -Confirm:$false -ErrorAction Stop
     }
-    $Script:Output = Get-PowerCLIConfiguration -Scope $Scope -ErrorAction Stop | Format-List
+    $result = Get-PowerCLIConfiguration -Scope $Scope -ErrorAction Stop | Format-List
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

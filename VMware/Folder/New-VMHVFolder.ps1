@@ -62,13 +62,13 @@ try{
     if($null -eq $Script:location){
         throw "Location $($LocationName) not found"
     }
-    $Script:Output = New-Folder -Server $Script:vmServer -Name $FolderName -Location $Script:location -Confirm:$False -ErrorAction Stop | Select-Object *        
+    $result = New-Folder -Server $Script:vmServer -Name $FolderName -Location $Script:location -Confirm:$False -ErrorAction Stop | Select-Object *        
         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result 
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -47,18 +47,12 @@ try{
         $HostName = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:disks = Get-VMHostDisk -Server $Script:vmServer -VMHost $HostName -ErrorAction Stop | Select-Object * | Sort-Object DeviceName      
+    $disks = Get-VMHostDisk -Server $Script:vmServer -VMHost $HostName -ErrorAction Stop | Select-Object * | Sort-Object DeviceName      
         
-    foreach($item in $Script:disks)
-    {
+    foreach($item in $disks){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Id.toString()
-            $SRXEnv.ResultList2 += "TotalSectors: $($item.TotalSectors) - DeviceName: $($item.DeviceName)" # Display
+            $SRXEnv.ResultList.Add($item.Id.toString())
+            $SRXEnv.ResultList2.Add("TotalSectors: $($item.TotalSectors) - DeviceName: $($item.DeviceName)") # Display
         }
         else{
             Write-Output "TotalSectors: $($item.TotalSectors) - DeviceName: $($item.DeviceName)"

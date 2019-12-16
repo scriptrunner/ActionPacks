@@ -141,13 +141,13 @@ try{
     if($PSBoundParameters.ContainsKey('StartConnected') -eq $true){
         $Script:drive = Set-CDDrive -CD $Script:drive -StartConnected $StartConnected -Confirm:$false -ErrorAction Stop
     }
-    $Script:Output = $Script:drive | Select-Object *
+    $result = $Script:drive | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

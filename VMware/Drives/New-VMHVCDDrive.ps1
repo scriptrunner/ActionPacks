@@ -68,13 +68,13 @@ try{
     if($PSBoundParameters.ContainsKey('HostDevice') -eq $true){
         $null = Set-CDDrive -CD $Script:drive -HostDevice $HostDevice -Confirm:$false -ErrorAction Stop
     }
-    $Script:Output = Get-CDDrive -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object *
+    $result = Get-CDDrive -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

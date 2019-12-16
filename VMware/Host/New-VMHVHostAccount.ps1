@@ -62,14 +62,14 @@ try{
     } 
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
-    $Script:Output = New-VMHostAccount -Server $Script:vmServer -UserAccount -Id $Id -Password $Password `
+    $result = New-VMHostAccount -Server $Script:vmServer -UserAccount -Id $Id -Password $Password `
                     -Description $Description -GrantShellAccess:$GrantShellAccess -Confirm:$false -ErrorAction Stop | Select-Object *
                     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

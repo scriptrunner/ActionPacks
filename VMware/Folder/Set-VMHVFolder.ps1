@@ -51,18 +51,18 @@ Import-Module VMware.PowerCLI
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
-    $Script:folder = Get-Folder -Server $Script:vmServer -Name $FolderName -ErrorAction Stop    
-    if($null -eq $Script:folder){
+    $folder = Get-Folder -Server $Script:vmServer -Name $FolderName -ErrorAction Stop    
+    if($null -eq $folder){
         throw "Folder $($FolderName) not found"
     }
 
-    $Script:Output = Set-Folder -Server $Script:vmServer -Folder $Script:folder -Name $NewName -Confirm:$false -ErrorAction Stop | Select-Object *
+    $result= Set-Folder -Server $Script:vmServer -Folder $folder -Name $NewName -Confirm:$false -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -45,11 +45,6 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
     if([System.String]::IsNullOrWhiteSpace($FolderType) -eq $false){
         $Script:folders = Get-Folder -Server $Script:vmServer -Type $FolderType -ErrorAction Stop | Select-Object Name | Sort-Object Name
     }
@@ -57,11 +52,10 @@ try{
         $Script:folders = Get-Folder -Server $Script:vmServer -ErrorAction Stop | Select-Object Name | Sort-Object Name
     }
     
-    foreach($item in $Script:folders)
-    {
+    foreach($item in $Script:folders){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += $item.Name # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

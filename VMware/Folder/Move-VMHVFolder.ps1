@@ -61,13 +61,13 @@ try{
         throw "Destination $($DestinationName) not found"
     }
 
-    $Script:Output = Move-Folder -Server $Script:vmServer -Folder $Script:folder -Destination $Script:destination -Confirm:$false -ErrorAction Stop | Select-Object *
+    $result = Move-Folder -Server $Script:vmServer -Folder $Script:folder -Destination $Script:destination -Confirm:$false -ErrorAction Stop | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

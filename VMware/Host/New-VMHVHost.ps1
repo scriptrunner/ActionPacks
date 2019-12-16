@@ -60,14 +60,14 @@ try{
     [string[]]$Properties = @("Name","Id","PowerState","ConnectionState","IsStandalone","LicenseKey")
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
-    $Script:location = Get-Folder -Server $Script:vmServer -Name $LocationName -ErrorAction Stop
-    if($null -eq $Script:location){
+    $location = Get-Folder -Server $Script:vmServer -Name $LocationName -ErrorAction Stop
+    if($null -eq $location){
         throw "Location $($LocationName) not found"
     }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Server' = $Script:vmServer
                             'Name' = $Name
-                            'Location' = $Script:location
+                            'Location' = $location
                             'Force' = $null
                             'Confirm' = $false
                             }                            
@@ -79,13 +79,13 @@ try{
         $cmdArgs.Add('Port', $Port)
     }
     $null = Add-VMHost @cmdArgs
-    $Script:Output = Get-VMHost -Server $Script:vmServer -Name $Name -NoRecursion:$true -ErrorAction Stop | Select-Object $Properties
+    $result = Get-VMHost -Server $Script:vmServer -Name $Name -NoRecursion:$true -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -119,13 +119,13 @@ try{
         $cmdArgs.Add('Datastore', $store)
         $cmdArgs.Add('DiskStorageFormat', $DiskStorageFormat)
     }
-    $Script:Output = Move-VM @cmdArgs | Select-Object $Properties
+    $result = Move-VM @cmdArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

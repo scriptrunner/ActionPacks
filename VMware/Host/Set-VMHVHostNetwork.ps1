@@ -97,13 +97,13 @@ Import-Module VMware.PowerCLI
 
 try{    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
 
-    $Script:netInfo = Get-VMHostNetwork -Server $Script:vmServer -VMHost $Script:vmHost -ErrorAction Stop
+    $netInfo = Get-VMHostNetwork -Server $Script:vmServer -VMHost $vmHost -ErrorAction Stop
     $Script:Output = $Script:netInfo | Select-Object *
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'Network' = $Script:netInfo
+                            'Network' = $netInfo
                             'Confirm' = $false
                             }                                
     

@@ -136,11 +136,11 @@ try{
         $vm = Get-VM @cmdArgs -Name $VMName  
         $cmdArgs.Add('VM', $vm)
     }  
-    $Script:adapter = Get-NetworkAdapter @cmdArgs -Name $AdapterName
+    $adapter = Get-NetworkAdapter @cmdArgs -Name $AdapterName
     $vdSwitch = Get-VDSwitch -Name $SwitchName -Server $Script:vmServer -ErrorAction Stop
     $cmdArgs = @{'ErrorAction' = 'Stop'
                 'Server' = $Script:vmServer
-                'NetworkAdapter' = $Script:adapter
+                'NetworkAdapter' = $adapter
                 'Confirm' = $false
                 }               
     $Script:Output = Set-NetworkAdapter @cmdArgs -DistributedSwitch $vdSwitch -PortId $PortID | Select-Object *

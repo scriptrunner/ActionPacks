@@ -46,8 +46,8 @@ Import-Module VMware.PowerCLI
 try{ 
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
-    $Script:uAccount = Get-VMHostAccount -Server $Script:vmServer -Id $Id -ErrorAction Stop
-    $null = Remove-VMHostAccount -HostAccount $Script:uAccount -Confirm:$false -ErrorAction Stop
+    $uAccount = Get-VMHostAccount -Server $Script:vmServer -Id $Id -ErrorAction Stop
+    $null = Remove-VMHostAccount -HostAccount $uAccount -Confirm:$false -ErrorAction Stop
                     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Host user account $($Id) successfully removed"

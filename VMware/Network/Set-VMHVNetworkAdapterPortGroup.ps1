@@ -93,15 +93,15 @@ try{
         $vm = Get-VM @cmdArgs -Name $VMName  
         $cmdArgs.Add('VM', $vm)
     }    
-    $Script:adapter = Get-NetworkAdapter @cmdArgs -Name $AdapterName
+    $adapter = Get-NetworkAdapter @cmdArgs -Name $AdapterName
     $vdGroup = Get-VDPortgroup -Name $PortGroupName -Server $Script:vmServer -ErrorAction Stop
-    $Script:Output = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $Script:adapter -Portgroup $vdGroup -Confirm:$false -ErrorAction Stop | Select-Object *
+    $result = Set-NetworkAdapter -Server $Script:vmServer -NetworkAdapter $adapter -Portgroup $vdGroup -Confirm:$false -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

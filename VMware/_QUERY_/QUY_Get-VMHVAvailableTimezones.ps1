@@ -40,18 +40,12 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:zones = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name "*" | Select-Object * | Sort-Object Name
+    $zones = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name "*" | Select-Object * | Sort-Object Name
 
-    foreach($item in $Script:zones)
-    {
+    foreach($item in $zones){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += "$($item.Name) - $($item.Description)" # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.Description)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.Description)"

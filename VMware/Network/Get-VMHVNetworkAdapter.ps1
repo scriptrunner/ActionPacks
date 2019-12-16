@@ -86,13 +86,13 @@ try{
         $vm = Get-VM @cmdArgs -Name $VMName  
         $cmdArgs.Add('VM', $vm)
     }
-    $Script:Output = Get-NetworkAdapter @cmdArgs -Name $AdapterName | Select-Object *
+    $result = Get-NetworkAdapter @cmdArgs -Name $AdapterName | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -45,22 +45,20 @@ Param(
     [pscredential]$VICredential,
     [string]$Datastore,
     [switch]$RefreshFirst,
-    [string]$Properties = "Name,State,CapacityGB,FreeSpaceGB,Datacenter"
+    [ValidateSet('*','Name','State','CapacityGB','FreeSpaceGB','Datacenter')]
+    [string[]]$Properties = @('Name','State','CapacityGB','FreeSpaceGB','Datacenter')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     if([System.String]::IsNullOrWhiteSpace($Datastore) -eq $true){
-        $Script:Output = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:Output = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -ErrorAction Stop | Select-Object $Properties
     }
     else {
-        $Script:Output = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -Name $Datastore -ErrorAction Stop | Select-Object $Properties.Split(",")       
+        $Script:Output = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -Name $Datastore -ErrorAction Stop | Select-Object $Properties   
     }
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 

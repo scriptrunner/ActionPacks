@@ -46,7 +46,7 @@ Import-Module VMware.PowerCLI
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
-    $Script:profile = Get-VMHostProfile -Server $Script:vmServer -Name $ProfileName -ErrorAction Stop
+    $profile = Get-VMHostProfile -Server $Script:vmServer -Name $ProfileName -ErrorAction Stop
     $null = Remove-VMHostProfile -Profile $profile -Server $Script:vmServer -Confirm:$false -ErrorAction Stop
 
     if($SRXEnv) {

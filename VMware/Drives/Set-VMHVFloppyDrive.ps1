@@ -85,13 +85,13 @@ try{
     if($PSBoundParameters.ContainsKey('NoMedia') -eq $true){
         $null = Set-FloppyDrive -Floppy $Script:floppy -NoMedia:$NoMedia -Confirm:$false -ErrorAction Stop
     }
-    $Script:Output = Get-FloppyDrive -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object *
+    $result = Get-FloppyDrive -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result 
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

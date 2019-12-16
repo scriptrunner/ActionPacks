@@ -59,13 +59,13 @@ try{
     else{
         $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     }
-    $Script:output = Get-VMResourceConfiguration -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object *
+    $result = Get-VMResourceConfiguration -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

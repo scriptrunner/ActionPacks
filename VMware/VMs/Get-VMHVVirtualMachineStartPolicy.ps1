@@ -51,15 +51,13 @@ Param(
     [string]$VMName,
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
-    [string]$Properties = "VirtualMachineName,StartAction,StartDelay,StopAction,StopDelay"
+    [ValidateSet('*','VirtualMachineName','StartAction','StartDelay','StopAction','StopDelay')]
+    [string[]]$Properties = @('VirtualMachineName','StartAction','StartDelay','StopAction','StopDelay')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     if($PSCmdlet.ParameterSetName  -eq "byID"){
@@ -69,13 +67,13 @@ try{
         $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     }
     
-    $Script:Output = Get-VMStartPolicy -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object $Properties.Split(",")
+    $result = Get-VMStartPolicy -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

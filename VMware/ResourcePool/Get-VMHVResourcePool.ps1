@@ -66,15 +66,13 @@ Param(
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
     [Parameter(ParameterSetName = "byVM")]
-    [string]$Properties = "Name,Id,MemReservationGB,MemLimitGB,CpuLimitMHz,CpuReservationMHz"
+    [ValidateSet('*','Name','Id','MemReservationGB','MemLimitGB','CpuLimitMHz','CpuReservationMHz')]
+    [string[]]$Properties = @('Name','Id','MemReservationGB','MemLimitGB','CpuLimitMHz','CpuReservationMHz')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Server' = $Script:vmServer
@@ -92,13 +90,13 @@ try{
     elseif($PSCmdlet.ParameterSetName  -eq "byVM"){
         $cmdArgs.Add('VM',$VM)
     }
-    $Script:Output = Get-ResourcePool @cmdArgs | Select-Object $Properties.Split(",")
+    $result = Get-ResourcePool @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

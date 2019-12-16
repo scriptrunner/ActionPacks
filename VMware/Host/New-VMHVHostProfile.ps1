@@ -62,17 +62,17 @@ try{
         $Description = " "
     }  
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
     
-    $null = New-VMHostProfile -Server $Script:vmServer -Name $ProfileName -ReferenceHost $Script:vmHost `
+    $null = New-VMHostProfile -Server $Script:vmServer -Name $ProfileName -ReferenceHost $vmHost `
                 -CompatibilityMode:$CompatibilityMode -Description $Description -ErrorAction Stop
 
-    $Script:Output = Get-VMHostProfile -Server $Script:vmServer -Name $ProfileName -ErrorAction Stop | Select-Object *
+    $result = Get-VMHostProfile -Server $Script:vmServer -Name $ProfileName -ErrorAction Stop | Select-Object *
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

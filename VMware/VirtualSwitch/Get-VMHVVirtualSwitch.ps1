@@ -93,13 +93,13 @@ try{
     elseif($PSCmdlet.ParameterSetName  -eq "byVM"){
         $cmdArgs.Add('VM', $VM)
     }
-    $Script:Output = Get-VirtualSwitch @cmdArgs | Select-Object *
+    $result = Get-VirtualSwitch @cmdArgs | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

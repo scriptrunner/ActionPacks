@@ -40,19 +40,13 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    
-    $Script:adapters = Get-NetworkAdapter -Server $Script:vmServer -VM * -ErrorAction Stop `
+    $adapters = Get-NetworkAdapter -Server $Script:vmServer -VM * -ErrorAction Stop `
                         | Select-Object NetworkName -Unique | Sort-Object NetworkName
 
-    foreach($item in $Script:adapters)
-    {
+    foreach($item in $adapters){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.NetworkName
-            $SRXEnv.ResultList2 += $item.NetworkName # Display
+            $SRXEnv.ResultList.Add($item.NetworkName)
+            $SRXEnv.ResultList2.Add($item.NetworkName) # Display
         }
         else{
             Write-Output $item.NetworkName

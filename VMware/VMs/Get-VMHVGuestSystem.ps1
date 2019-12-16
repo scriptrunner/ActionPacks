@@ -51,15 +51,13 @@ Param(
     [string]$VMName,
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
-    [string]$Properties = "OSFullName,State,IPAddress,Disks,ConfiguredGuestId,ToolsVersion"
+    [ValidateSet('*','OSFullName','State','IPAddress','Disks','ConfiguredGuestId','ToolsVersion')]
+    [string[]]$Properties = @('OSFullName','State','IPAddress','Disks','ConfiguredGuestId','ToolsVersion')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     if($PSCmdlet.ParameterSetName  -eq "byID"){
@@ -68,14 +66,14 @@ try{
     else{
         $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     }
-    $Script:Output = Get-VMGuest -VM $Script:machine -Server $Script:vmServer -ErrorAction Stop `
-                    | Select-Object $Properties.Split(",")
+    $ = Get-VMGuest -VM $Script:machine -Server $Script:vmServer -ErrorAction Stop `
+                    | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

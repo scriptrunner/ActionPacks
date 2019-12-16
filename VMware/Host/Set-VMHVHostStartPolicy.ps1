@@ -92,9 +92,9 @@ try{
         $Script:vmhost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
     }
 
-    $Script:poli = Get-VMHostStartPolicy -Server $Script:vmServer -VMHost $Script:vmhost -ErrorAction Stop
+    $poli = Get-VMHostStartPolicy -Server $Script:vmServer -VMHost $Script:vmhost -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'VMHostStartPolicy' = $Script:poli
+                            'VMHostStartPolicy' = $poli
                             'Confirm' = $false
                             }                            
 
@@ -112,13 +112,13 @@ try{
         Set-VMHostStartPolicy @cmdArgs -WaitForHeartBeat $WaitForHeartBeat
     }
 
-    $Script:Output = Get-VMHostStartPolicy -Server $Script:vmServer -VMHost $Script:vmhost -ErrorAction Stop | Select-Object *
+    $result = Get-VMHostStartPolicy -Server $Script:vmServer -VMHost $Script:vmhost -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

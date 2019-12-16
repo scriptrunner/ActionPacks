@@ -66,15 +66,13 @@ Param(
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
     [Parameter(ParameterSetName = "byDatastore")]
-    [string]$Properties = "Name,Id,PowerState,NumCpu,Notes,Guest,GuestId,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Folder"
+    [ValidateSet('*','Name','Id','PowerState','NumCpu','Notes','Guest','GuestId','MemoryMB','UsedSpaceGB','ProvisionedSpaceGB','Folder')]
+    [string[]]$Properties = @('Name','Id','PowerState','NumCpu','Notes','Guest','GuestId','MemoryMB','UsedSpaceGB','ProvisionedSpaceGB','Folder')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Server' = $Script:vmServer
@@ -89,13 +87,13 @@ try{
     elseif($PSCmdlet.ParameterSetName  -eq "byDatastore"){
         $cmdArgs.Add('Datastore',$Datastore)
     }
-    $Script:Output = Get-VM @cmdArgs | Select-Object $Properties.Split(",")
+    $result = Get-VM @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

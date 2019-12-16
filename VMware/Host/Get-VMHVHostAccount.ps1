@@ -47,14 +47,13 @@ try{
         $Id = "*"
     }      
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-
-    $Script:Output = Get-VMHostAccount -Server $Script:vmServer -Id $Id -ErrorAction Stop | Select-Object *
+    $result = Get-VMHostAccount -Server $Script:vmServer -Id $Id -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

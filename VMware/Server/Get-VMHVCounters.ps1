@@ -44,23 +44,21 @@ Param(
     [Parameter(Mandatory = $true)]
     [pscredential]$VICredential,
     [string]$CounterName,
-    [string]$Properties = "Name,UId,Fields",
+    [ValidateSet('*','Name','UId','Fields')]
+    [string[]]$Properties = @('Name','UId','Fields'),
     [switch]$ExpandFields
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     if([System.String]::IsNullOrWhiteSpace($CounterName) -eq $true){
         $CounterName = "*"
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     if($ExpandFields -eq $false){
-        $Script:Output = Get-EsxTop -Server $Script:vmServer -Counter -CounterName $CounterName -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:Output = Get-EsxTop -Server $Script:vmServer -Counter -CounterName $CounterName -ErrorAction Stop | Select-Object $Properties
     }
     else{
         $Script:Output = Get-EsxTop -Server $Script:vmServer -Counter -CounterName $CounterName -ErrorAction Stop | Select-Object -ExpandProperty Fields

@@ -71,13 +71,13 @@ try{
         throw "Destination $($DestinationName) not found"
     }
     $null = Move-VMHost -VMHost $Script:vmHost -Destination -$Script:destination -Server $Script:vmServer -Confirm:$false -ErrorAction Stop
-    $Script:Output = Get-VMHost -Server $Script:vmServer -Name $Script:vmHost.Name  -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties
+    $result = Get-VMHost -Server $Script:vmServer -Name $Script:vmHost.Name  -NoRecursion:$NoRecursion -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

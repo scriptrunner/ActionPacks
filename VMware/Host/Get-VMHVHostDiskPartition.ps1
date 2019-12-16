@@ -48,13 +48,13 @@ try{
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
-    $Script:Output = Get-VMHostDiskPartition -Server $Script:vmServer -Id $Id -ErrorAction Stop | Select-Object *
+    $result = Get-VMHostDiskPartition -Server $Script:vmServer -Id $Id -ErrorAction Stop | Select-Object *
         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

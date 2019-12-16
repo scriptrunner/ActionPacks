@@ -40,15 +40,10 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    
-    $Script:tasks = Get-Task -Server $Script:vmServer -ErrorAction Stop
+   
+    $tasks = Get-Task -Server $Script:vmServer -ErrorAction Stop
 
-    foreach($item in $Script:tasks)
-    {
+    foreach($item in $tasks){
         if(($item.State -eq "Running") -or ($item.State -eq "Queued")){
             $name = ""
             switch ($item.objectid.split("-")[0].toLower()){
@@ -72,8 +67,8 @@ try{
                 $name = $item.objectid
             }
             if($SRXEnv) {
-                $SRXEnv.ResultList += $item.ID.toString()
-                $SRXEnv.ResultList2 += "$($name) - $($item.Description)" # Display
+                $SRXEnv.ResultList.Add($item.ID.toString())
+                $SRXEnv.ResultList2.Add("$($name) - $($item.Description)") # Display
             }
             else{
                 Write-Output "$($name) - $($item.Description)"

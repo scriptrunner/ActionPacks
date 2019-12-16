@@ -48,13 +48,13 @@ try{
     }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
-    $Script:Output = Get-EsxTop -Server $Script:vmServer -TopologyInfo -Topology $TopologyName -ErrorAction Stop
+    $result = Get-EsxTop -Server $Script:vmServer -TopologyInfo -Topology $TopologyName -ErrorAction Stop
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

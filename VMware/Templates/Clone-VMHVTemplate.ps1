@@ -94,15 +94,15 @@ try{
     $Script:center = Get-Datacenter -Name $Datacenter -Server $Script:vmServer -ErrorAction Stop
     $Script:vmhost = Get-VMHost -Server $Script:vmServer -Name $VMHost -ErrorAction Stop
 
-    $Script:Output = New-Template -Name $TemplateName -Template $Script:source -Location $Script:center `
+    $result = New-Template -Name $TemplateName -Template $Script:source -Location $Script:center `
                         -VMHost $Script:vmhost -Datastore $Script:store -Confirm:$false -Server $Script:vmServer `
                         -DiskStorageFormat $DiskStorageFormat -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

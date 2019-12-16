@@ -47,18 +47,12 @@ try{
         $HostName = "*"
     }    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:result = Get-VMHostNetworkAdapter -Server $Script:vmServer -VMHost $HostName -ErrorAction Stop | Select-Object Name,VMHost | Sort-Object -Property VMHost
+    $result = Get-VMHostNetworkAdapter -Server $Script:vmServer -VMHost $HostName -ErrorAction Stop | Select-Object Name,VMHost | Sort-Object -Property VMHost
 
-    foreach($item in $Script:result)
-    {
+    foreach($item in $result){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += "$($item.Name) - $($item.VMHost)" # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.VMHost)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.VMHost)"

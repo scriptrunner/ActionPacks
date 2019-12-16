@@ -66,15 +66,15 @@ try{
     else{
         $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     }
-    $Script:snapshot = Get-Snapshot -Server $Script:vmServer -VM $Script:machine -Name $SnapShotName -ErrorAction Stop
-    $Script:Output = Set-VM -Server $Script:vmServer -VM $Script:machine -Snapshot $Script:snapshot `
+    $snapshot = Get-Snapshot -Server $Script:vmServer -VM $Script:machine -Name $SnapShotName -ErrorAction Stop
+    $result = Set-VM -Server $Script:vmServer -VM $Script:machine -Snapshot $snapshot `
                         -Confirm:$false -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

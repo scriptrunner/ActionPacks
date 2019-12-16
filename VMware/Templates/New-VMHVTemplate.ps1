@@ -73,14 +73,14 @@ try{
     }
     $Script:center = Get-Datacenter -Name $Datacenter -Server $Script:vmServer -ErrorAction Stop
     
-    $Script:Output = New-Template -Name $TemplateName -VM $Script:machine -Location $Script:center `
+    $result = New-Template -Name $TemplateName -VM $Script:machine -Location $Script:center `
                         -Server $Script:vmServer -Confirm:$false -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

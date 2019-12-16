@@ -45,20 +45,15 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
 
     $vm = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop        
-    $Script:harddisks = Get-HardDisk -Server $Script:vmServer -VM $vm -ErrorAction Stop
-    $script:disks = Get-ScsiController -Server $Script:vmServer -HardDisk $Script:harddisks -ErrorAction Stop | Select-Object * | Sort-Object Name
+    $harddisks = Get-HardDisk -Server $Script:vmServer -VM $vm -ErrorAction Stop
+    $disks = Get-ScsiController -Server $Script:vmServer -HardDisk $harddisks -ErrorAction Stop | Select-Object * | Sort-Object Name
 
-    foreach($item in $Script:disks)
-    {
+    foreach($item in $disks){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += "$($item.Parent) - $($item.Name)" # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add("$($item.Parent) - $($item.Name)") # Display
         }
         else{
             Write-Output "$($item.Parent) - $($item.Name)"

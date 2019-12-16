@@ -42,22 +42,20 @@ Param(
     [pscredential]$VICredential,
     [ValidateSet("Error","Queued","Running","Success")]
     [string]$Status,
-    [string]$Properties = "Description,State,IsCancelable,StartTime,FinishTime,PercentComplete,Name"
+    [ValidateSet('*','Description','State','IsCancelable','StartTime','FinishTime','PercentComplete','Name')]
+    [string[]]$Properties = @('Description','State','IsCancelable','StartTime','FinishTime','PercentComplete','Name')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     if([System.String]::IsNullOrWhiteSpace($Status) -eq $true){
-        $Script:Output = Get-Task -Server $Script:vmServer -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:Output = Get-Task -Server $Script:vmServer -ErrorAction Stop | Select-Object $Properties
     }
     else {
-        $Script:Output = Get-Task -Server $Script:vmServer -Status $Status -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:Output = Get-Task -Server $Script:vmServer -Status $Status -ErrorAction Stop | Select-Object $Properties
     }
 
     if($SRXEnv) {

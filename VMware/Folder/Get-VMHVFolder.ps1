@@ -76,13 +76,13 @@ try{
     if($LocationType -ne "All"){
         $cmdArgs.Add('Type', $LocationType)
     }
-    $Script:Output = Get-Folder @cmdArgs | Select-Object *
+    $result = Get-Folder @cmdArgs | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

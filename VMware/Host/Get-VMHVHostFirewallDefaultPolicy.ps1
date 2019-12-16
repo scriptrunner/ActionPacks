@@ -47,13 +47,13 @@ try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
 
-    $Script:Output = Get-VMHostFirewallDefaultPolicy -Server $Script:vmServer -VMHost $vmHost -ErrorAction Stop | Select-Object *
+    $result = Get-VMHostFirewallDefaultPolicy -Server $Script:vmServer -VMHost $vmHost -ErrorAction Stop | Select-Object *
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

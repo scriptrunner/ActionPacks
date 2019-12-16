@@ -136,45 +136,45 @@ try{
                             'Confirm' = $false}
 
     if($StartDelay -gt 0){
-        Set-VMStartPolicy @cmdArgs -StartDelay $StartDelay
+        $null = Set-VMStartPolicy @cmdArgs -StartDelay $StartDelay
     }
     if($StopDelay -gt 0){
-        Set-VMStartPolicy @cmdArgs -StopDelay $StopDelay
+        $null = Set-VMStartPolicy @cmdArgs -StopDelay $StopDelay
     }
     if($StartOrder -gt 0){
-        Set-VMStartPolicy @cmdArgs -StartOrder $StartOrder
+        $null = Set-VMStartPolicy @cmdArgs -StartOrder $StartOrder
     }
     if($PSBoundParameters.ContainsKey('StartAction') -eq $true){
-        Set-VMStartPolicy @cmdArgs -StartAction $StartAction
+        $null = Set-VMStartPolicy @cmdArgs -StartAction $StartAction
     }
     if($PSBoundParameters.ContainsKey('StopAction') -eq $true){
-        Set-VMStartPolicy @cmdArgs -StopAction $StopAction
+        $null = Set-VMStartPolicy @cmdArgs -StopAction $StopAction
     }
     if($PSBoundParameters.ContainsKey('UnspecifiedStartOrder') -eq $true){
-        Set-VMStartPolicy @cmdArgs -UnspecifiedStartOrder:$UnspecifiedStartOrder
+        $null = Set-VMStartPolicy @cmdArgs -UnspecifiedStartOrder:$UnspecifiedStartOrder
     }
     if($PSBoundParameters.ContainsKey('WaitForHeartBeat') -eq $true){
-        Set-VMStartPolicy @cmdArgs -WaitForHeartBeat $WaitForHeartBeat
+        $null = Set-VMStartPolicy @cmdArgs -WaitForHeartBeat $WaitForHeartBeat
     }
     if($PSBoundParameters.ContainsKey('InheritStartDelayFromHost') -eq $true){
-        Set-VMStartPolicy @cmdArgs -InheritStartDelayFromHost:$InheritStartDelayFromHost
+        $null = Set-VMStartPolicy @cmdArgs -InheritStartDelayFromHost:$InheritStartDelayFromHost
     }
     if($PSBoundParameters.ContainsKey('InheritStopActionFromHost') -eq $true){
-        Set-VMStartPolicy @cmdArgs -InheritStopActionFromHost:$InheritStopActionFromHost
+        $null = Set-VMStartPolicy @cmdArgs -InheritStopActionFromHost:$InheritStopActionFromHost
     }
     if($PSBoundParameters.ContainsKey('InheritStopDelayFromHost') -eq $true){
-        Set-VMStartPolicy @cmdArgs -InheritStopDelayFromHost:$InheritStopDelayFromHost
+        $null = Set-VMStartPolicy @cmdArgs -InheritStopDelayFromHost:$InheritStopDelayFromHost
     }
     if($PSBoundParameters.ContainsKey('InheritWaitForHeartbeatFromHost') -eq $true){
-        Set-VMStartPolicy @cmdArgs -InheritWaitForHeartbeatFromHost:$InheritWaitForHeartbeatFromHost
+        $null = Set-VMStartPolicy @cmdArgs -InheritWaitForHeartbeatFromHost:$InheritWaitForHeartbeatFromHost
     }
 
-    $Script:Output = Get-VMStartPolicy -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object $Properties
+    $result = Get-VMStartPolicy -Server $Script:vmServer -VM $Script:machine -ErrorAction Stop | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result 
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

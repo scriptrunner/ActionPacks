@@ -76,15 +76,13 @@ Param(
     [Parameter(ParameterSetName = "Days ago")]
     [Parameter(ParameterSetName = "Hours ago")]
     [Parameter(ParameterSetName = "Minutes ago")]
-    [string]$Properties = "EntityName,Description,State,Cancelled,StartTime,QueueTime,CompleteTime,Name,DescriptionId"
+    [VaildateSet('*','EntityName','Description','State','Cancelled','StartTime','QueueTime','CompleteTime','Name','DescriptionId')]
+    [string[]]$Properties = @('EntityName','Description','State','Cancelled','StartTime','QueueTime','CompleteTime','Name','DescriptionId')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     $sView = Get-View ServiceInstance -Server $Script:vmServer
@@ -108,14 +106,14 @@ try{
     }
     $Script:tCollector = Get-View ($taskMgr.CreateCollectorForTasks($Script:tFilter))
     $null = $Script:tCollector.RewindCollector
-    $Script:Output = $Script:tCollector.ReadNextTasks($MaxResult) | Select-Object $Properties.Split(",") | `
+    $result = $Script:tCollector.ReadNextTasks($MaxResult) | Select-Object $Properties | `
                     Sort-Object -Property StartTime -Descending
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

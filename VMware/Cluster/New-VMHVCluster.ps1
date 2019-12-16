@@ -104,13 +104,13 @@ try{
         Set-Cluster -Cluster $script:cluster -Server $Script:vmServer -DrsAutomationLevel $DrsAutomationLevel -ErrorAction Stop
     } 
 
-    $Script:Output = Get-Cluster -Server $Script:vmServer -Name $script:cluster.Name -ErrorAction Stop | Select-Object $Properties
+    $result = Get-Cluster -Server $Script:vmServer -Name $script:cluster.Name -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result 
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

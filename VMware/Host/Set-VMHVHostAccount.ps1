@@ -67,18 +67,20 @@ try{
 
     if($PSBoundParameters.ContainsKey('Password') -eq $true){
         $Script:uAccount = Set-VMHostAccount @cmdArgs -Password $Password
-    }if($PSBoundParameters.ContainsKey('Description') -eq $true){
+    }
+    if($PSBoundParameters.ContainsKey('Description') -eq $true){
         $Script:uAccount = Set-VMHostAccount @cmdArgs -Description $Description
-    }if($PSBoundParameters.ContainsKey('GrantShellAccess') -eq $true){
+    }
+    if($PSBoundParameters.ContainsKey('GrantShellAccess') -eq $true){
         $Script:uAccount = Set-VMHostAccount @cmdArgs -GrantShellAccess $GrantShellAccess
     }
-    $Script:Output = $Script:uAccount | Select-Object *
+    $result = $Script:uAccount | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -40,20 +40,15 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    
-    $Script:ids = Get-VMGuest -Server $Script:vmServer -VM * -ErrorAction Stop | Where-Object -Property GuestID -ne $null `
+   
+    $ids = Get-VMGuest -Server $Script:vmServer -VM * -ErrorAction Stop | Where-Object -Property GuestID -ne $null `
                         | Select-Object OSFullName,GuestId -Unique | Sort-Object -Property OSFullName
 
-    foreach($item in $Script:ids)
-    {
+    foreach($item in $ids){
         if([System.String]::IsNullOrEmpty($item.GuestId) -eq $false){            
             if($SRXEnv) {
-                $SRXEnv.ResultList += $item.GuestId.toString()
-                $SRXEnv.ResultList2 += $item.OSFullName # Display
+                $SRXEnv.ResultList.Add($item.GuestId.toString())
+                $SRXEnv.ResultList2.Add($item.OSFullName) # Display
             }
             else{
                 Write-Output $item.OSFullName

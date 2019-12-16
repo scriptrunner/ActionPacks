@@ -30,13 +30,13 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    $Script:Output =  Get-Module -Name VMware.PowerCLI -ErrorAction Stop | Format-List
+    $result =  Get-Module -Name VMware.PowerCLI -ErrorAction Stop | Format-List
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

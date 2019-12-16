@@ -40,18 +40,12 @@ Import-Module VMware.PowerCLI
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:groups = Get-VDPortgroup -Server $Script:vmServer -ErrorAction Stop | Select-Object * | Sort-Object Name
+    $groups = Get-VDPortgroup -Server $Script:vmServer -ErrorAction Stop | Select-Object * | Sort-Object Name
 
-    foreach($item in $Script:groups)
-    {
+    foreach($item in $groups){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += $item.Name # Display
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

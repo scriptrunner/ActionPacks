@@ -57,15 +57,13 @@ Param(
     [string]$Name, 
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
-    [string]$Properties = "Name,Created,PowerState,SizeGB,Description,IsCurrent,Id"
+    [ValidateSet('*','Name','Created','PowerState','SizeGB','Description','IsCurrent','Id')]
+    [string[]]$Properties = @('Name','Created','PowerState','SizeGB','Description','IsCurrent','Id')
 )
 
 Import-Module VMware.PowerCLI
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
     if([System.String]::IsNullOrWhiteSpace($Name) -eq $true){
         $Name = "*"
     }
@@ -77,14 +75,14 @@ try{
     else{
         $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop
     }
-    $Script:Output = Get-Snapshot -Server $Script:vmServer -VM $Script:machine -Name $Name `
-                        -ErrorAction Stop | Select-Object $Properties.Split(",")
+    $result = Get-Snapshot -Server $Script:vmServer -VM $Script:machine -Name $Name `
+                        -ErrorAction Stop | Select-Object $Properties
                         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

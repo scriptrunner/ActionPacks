@@ -89,10 +89,10 @@ Import-Module VMware.PowerCLI
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Server' = $Script:vmServer
-                            'VMHost' = $Script:vmHost
+                            'VMHost' = $vmHost
                             'Name' = $StoreName
                             'Path' = $Path
                             }

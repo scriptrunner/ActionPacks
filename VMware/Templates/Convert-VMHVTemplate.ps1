@@ -59,13 +59,13 @@ try{
     else{
         $Script:temp = Get-Template -Server $Script:vmServer -Name $TemplateName -ErrorAction Stop
     }
-    $Script:Output = Set-Template -Template $Script:temp -ToVM -Server $Script:vmServer -Confirm:$false -ErrorAction Stop
+    $result = Set-Template -Template $Script:temp -ToVM -Server $Script:vmServer -Confirm:$false -ErrorAction Stop
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

@@ -48,13 +48,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($TimezoneName) -eq $true){
         $TimezoneName = "*"
     }
-    $Script:Output = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name $TimezoneName | Select-Object *
+    $result = Get-VMHostAvailableTimeZone -Server $Script:vmServer -Name $TimezoneName | Select-Object *
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

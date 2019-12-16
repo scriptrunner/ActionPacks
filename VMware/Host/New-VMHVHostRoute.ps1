@@ -60,14 +60,14 @@ Import-Module VMware.PowerCLI
 try{    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
-    $Script:Output = New-VMHostRoute -VMHost $HostName -Destination $Destination -PrefixLength $PrefixLength `
+    $result = New-VMHostRoute -VMHost $HostName -Destination $Destination -PrefixLength $PrefixLength `
                              -Gateway $Gateway -ErrorAction Stop | Select-Object *
         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Output
+        Write-Output $result
     }
 }
 catch{

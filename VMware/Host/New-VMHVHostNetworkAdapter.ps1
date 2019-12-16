@@ -112,9 +112,9 @@ Import-Module VMware.PowerCLI
 try{  
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
-    $Script:vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
-    $Script:vSwitch = Get-VirtualSwitch -VMHost $Script:vmHost -Name $SwitchName -ErrorAction Stop   
-    $Script:vAdapter = New-VMHostNetworkAdapter -VMHost $Script:vmHost -VirtualSwitch $Script:vSwitch -ConsoleNic:$ConsoleNic -AutomaticIPv6:$AutomaticIPv6 `
+    $vmHost = Get-VMHost -Server $Script:vmServer -Name $HostName -ErrorAction Stop
+    $vSwitch = Get-VirtualSwitch -VMHost $vmHost -Name $SwitchName -ErrorAction Stop   
+    $vAdapter = New-VMHostNetworkAdapter -VMHost $vmHost -VirtualSwitch $vSwitch -ConsoleNic:$ConsoleNic -AutomaticIPv6:$AutomaticIPv6 `
                             -PortGroup $PortGroup -IPv6ThroughDhcp:$IPv6ThroughDhcp -Confirm:$false -ErrorAction Stop
          
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
@@ -157,7 +157,6 @@ try{
     if($PSBoundParameters.ContainsKey('IPv6Enabled') -eq $true){
         $Script:Output = Set-VMHostNetworkAdapter @cmdArgs -IPv6Enabled $IPv6Enabled | Select-Object *
     }
-
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output 

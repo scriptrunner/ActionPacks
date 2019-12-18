@@ -59,18 +59,15 @@ try{
     elseif($ObjectType  -eq "Files"){
         $Script:childs = Get-ChildItem -Path $StartObjectName -Force -Recurse:$Recurse -File -Filter $filter -ErrorAction SilentlyContinue | Sort-Object FullName
     } 
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     foreach($item in $Script:childs){
         if($SRXEnv) {
-            [string]$tmp=$item.FullName
-            $SRXEnv.ResultList += $tmp # Value
+            [string]$tmp = $item.FullName
+            $SRXEnv.ResultList.Add($tmp) # Value
             if($tmp.StartsWith($StartObjectName,[System.StringComparison]::OrdinalIgnoreCase) -eq $true){
                 $tmp= ("." + $tmp.Substring($StartObjectName.Length))
             }
-            $SRXEnv.ResultList2 +=$tmp # Display
+            $SRXEnv.ResultList2.Add($tmp) # Display
         }
         else{
             Write-Output $item.name

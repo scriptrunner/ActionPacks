@@ -41,10 +41,10 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     Get-CimInstance -ClassName Win32_LogicalDisk -CimSession $Script:Cim | Foreach-Object {
         if($OnlyLocalDisks -eq $true -and $_.DriveType -ne "3"){
@@ -52,6 +52,7 @@ try{
         }
         $Script:output += "Drive $($_.DeviceID) free bytes $($_.FreeSpace) from $($_.Size)"
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:output
     }

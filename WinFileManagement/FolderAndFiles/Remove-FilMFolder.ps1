@@ -38,11 +38,12 @@ Param(
 
 try{   
     if($null -eq $AccessAccount){
-        Remove-Item -Path $FolderName -Force -Recurse -ErrorAction Stop
+        $null = Remove-Item -Path $FolderName -Force -Recurse -ErrorAction Stop
     }
     else {
-        Remove-Item -Path $FolderName -Credential $AccessAccount -Force -Recurse -ErrorAction Stop
+        $null = Remove-Item -Path $FolderName -Credential $AccessAccount -Force -Recurse -ErrorAction Stop
     }    
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Folder $($FolderName) removed"
     }

@@ -41,7 +41,8 @@ Param(
     [int]$Number = -1,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties = "Number,FriendlyName,PartitionStyle,OperationalStatus,AllocatedSize,BootFromDisk,IsBoot,IsClustered,IsHighlyAvailable,IsSystem,Size"
+    [ValidateSet('*','Number','FriendlyName','PartitionStyle','OperationalStatus','AllocatedSize','BootFromDisk','IsBoot','IsClustered','IsHighlyAvailable','IsSystem','Size')]
+    [string[]]$Properties = @('Number','FriendlyName','PartitionStyle','OperationalStatus','AllocatedSize','BootFromDisk','IsBoot','IsClustered','IsHighlyAvailable','IsSystem','Size')
 )
 
 $Script:Cim=$null
@@ -50,24 +51,22 @@ try{
     if([System.String]::IsNullOrWhiteSpace($FriendlyName)){
         $FriendlyName= "*"
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     if($Number -lt 0){
-        $Script:output = Get-Disk -CimSession $Script:Cim -FriendlyName $FriendlyName | Select-Object $Properties.Split(',')
+        $Script:output = Get-Disk -CimSession $Script:Cim -FriendlyName $FriendlyName | Select-Object $Properties
     }
     else{
-        $Script:output = Get-Disk -CimSession $Script:Cim -Number $Number | Select-Object $Properties.Split(',')
+        $Script:output = Get-Disk -CimSession $Script:Cim -Number $Number | Select-Object $Properties
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:output
     }

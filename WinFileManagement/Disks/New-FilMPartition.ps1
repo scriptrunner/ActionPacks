@@ -79,23 +79,21 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 [string[]]$Script:Properties = @("PartitionNumber","OperationalStatus","DriveLetter","DiskNumber","IsActive","IsHidden","Size","MbrType")
 
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     $Script:Disk = Get-Disk -CimSession $Script:Cim -Number $Number -ErrorAction Stop
+
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'InputObject' = $Script:Disk
                             'AssignDriveLetter' = $AssignDriveLetter}
@@ -103,25 +101,28 @@ try{
         $cmdArgs.Add('Size',$Size)
     }
     else {
-        $cmdArgs.Add('UseMaximumSize',$Size)
+        $cmdArgs.Add('UseMaximumSize',$null)
     }
     if([System.String]::IsNullOrWhiteSpace($MbrType) -eq $false){
         $cmdArgs.Add('MbrType', $MbrType)
     }    
+    $Script:Parti = New-Partition @cmdArgs
+
     Start-Sleep -Seconds 5
     if(-not [System.String]::IsNullOrWhiteSpace($DriveLetter)){
-        Set-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber -NewDriveLetter $DriveLetter.toUpper() -ErrorAction Stop
+        $null = Set-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber -NewDriveLetter $DriveLetter.toUpper() -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('IsActive') -eq $true){
-        Set-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber -IsActive $IsActive -ErrorAction Stop
+        $null = Set-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber -IsActive $IsActive -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('IsHidden') -eq $true){
-        Set-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber -IsHidden $IsHidden -ErrorAction Stop
+        $null = Set-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber -IsHidden $IsHidden -ErrorAction Stop
     }
     if($FormatNewPartition){
-        $Script:Parti.ObjectID
-        Format-Volume -Partition $Script:Parti -FileSystem $FileSystem -Force -Full:$FormatFull -ErrorAction Stop
+      #  $Script:Parti.ObjectID
+        $null = Format-Volume -Partition $Script:Parti -FileSystem $FileSystem -Force -Full:$FormatFull -ErrorAction Stop
     }
+
     $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $Script:Parti.PartitionNumber | Select-Object $Script:Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:Parti

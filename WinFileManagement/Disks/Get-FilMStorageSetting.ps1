@@ -33,30 +33,29 @@
 Param(
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties = "NewDiskPolicy,ScrubPolicy"
+    [ValidateSet('*','NewDiskPolicy','ScrubPolicy')]
+    [string[]]$Properties = @('NewDiskPolicy','ScrubPolicy')
 )
 
 $Script:Cim=$null
 $Script:output = @()
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
-    $Script:output = Get-StorageSetting -CimSession $Script:Cim | Select-Object $Properties.Split(',')
+
+    $result = Get-StorageSetting -CimSession $Script:Cim | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:output
+        $SRXEnv.ResultMessage =$result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

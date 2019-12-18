@@ -33,47 +33,41 @@
 
 .Parameter IncludeHidden
     Indicates that shares that are created and used internally are also enumerated
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
 Param(
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties="Name,Description,Path,ShareState,ScopeName,CurrentUsers,ShareType,AvailabilityType",
+    [ValidateSet('*','Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType')]
+    [string[]]$Properties = @('Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType'),
     [bool]$SpecialShares,
     [switch]$IncludeHidden
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -or $Properties -eq '*'){
-        $Properties=@('*')
+    if($null -eq ($Properties | Where-Object {$_ -eq 'Name'})){
+        $Properties += "Name"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'Name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Shares =Get-SmbShare -CimSession $Script:Cim -IncludeHidden:$IncludeHidden -Special $SpecialShares  `
-                            | Select-Object $Script:props | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name | Format-List    
+
+    $objShares =Get-SmbShare -CimSession $Script:Cim -IncludeHidden:$IncludeHidden -Special $SpecialShares -ErrorAction Stop  `
+                            | Select-Object $Properties | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name | Format-List    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Shares 
+        $SRXEnv.ResultMessage = $objShares 
     }
     else{
-        Write-Output $Script:Shares
+        Write-Output $objShares
     }
 }
 catch{

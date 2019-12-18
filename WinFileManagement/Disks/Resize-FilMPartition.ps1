@@ -58,17 +58,18 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber -PartitionNumber $PartitionNumber -ErrorAction Stop
     if($UseMaximumSize -eq $true){
         $tmp = Get-PartitionSupportedSize -InputObject $Script:Parti | Select-Object SizeMax
         $Size = [uint64]$tmp.SizeMax
     }
-    Resize-Partition -InputObject $Script:Parti -Size $Size -ErrorAction Stop 
+    $null = Resize-Partition -InputObject $Script:Parti -Size $Size -ErrorAction Stop 
+    
     $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber -PartitionNumber $PartitionNumber | Select-Object $Script:Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:Parti

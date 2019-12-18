@@ -30,9 +30,6 @@
 
 .Parameter Properties
     List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -41,20 +38,16 @@ Param(
     [string]$ShareName,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties="Name,Description,Path,ShareState,ScopeName,CurrentUsers,ShareType,AvailabilityType"
+    [ValidateSet('*','Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType')]
+    [string[]]$Properties = @('Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType')
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -or $Properties -eq '*'){
-        $Properties=@('*')
+    if($null -eq ($Properties | Where-Object {$_ -eq 'Name'})){
+        $Properties += "Name"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'Name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
@@ -64,13 +57,14 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden `
-                            | Select-Object $Script:props | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name | Format-List    
+    $objShare = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop `
+                            | Select-Object $Properties | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name | Format-List    
+
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Share
+        $SRXEnv.ResultMessage = $objShare
     }
     else{
-        Write-Output $Script:Share
+        Write-Output $objShare
     }
 }
 catch{

@@ -45,14 +45,11 @@ try{
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     $result = Get-Disk -CimSession $Script:Cim | Select-Object @("Number","FriendlyName") | Sort-Object FriendlyName
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+   
     foreach($item in $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList += $item.Number.ToString() # Value            
-            $SRXEnv.ResultList2 += "$($item.FriendlyName) ($($item.Number.ToString()))" # Display
+            $SRXEnv.ResultList.Add($item.Number.ToString()) # Value            
+            $SRXEnv.ResultList2.Add("$($item.FriendlyName) ($($item.Number.ToString()))") # Display
         }
         else{
             Write-Output $item.name

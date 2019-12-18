@@ -49,35 +49,34 @@ Param(
     [PSCredential]$AccessAccount,
     [Parameter(ParameterSetName = "ByNumber")]
     [Parameter(ParameterSetName = "ByDriveLetter")]
-    [string]$Properties = "PartitionNumber,OperationalStatus,Type,DriveLetter,DiskNumber,IsActive,IsBoot,IsOffline,IsSystem,Size"
+    [ValidateSet('*','PartitionNumber','OperationalStatus','Type','DriveLetter','DiskNumber','IsActive','IsBoot','IsOffline','IsSystem','Size')]
+    [string[]]$Properties = @('PartitionNumber','OperationalStatus','Type','DriveLetter','DiskNumber','IsActive','IsBoot','IsOffline','IsSystem','Size')
 )
 
 $Script:Cim=$null
 $Script:output = @()
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     if($PSCmdlet.ParameterSetName  -eq "ByNumber"){
         if($Number -lt 0){
-            $Script:output = Get-Partition -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:output = Get-Partition -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties
         }
         else {
-            $Script:output = Get-Partition -CimSession $Script:Cim -DiskNumber $Number -ErrorAction Stop | Select-Object $Properties.Split(',')
+            $Script:output = Get-Partition -CimSession $Script:Cim -DiskNumber $Number -ErrorAction Stop | Select-Object $Properties
         }
     }
     else{
-        $Script:output = Get-Partition -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-Partition -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop | Select-Object $Properties
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:output
     }

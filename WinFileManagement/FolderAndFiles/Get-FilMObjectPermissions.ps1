@@ -42,8 +42,9 @@ Param(
 
 try{
     $Script:output=@()
-    [bool]$Script:IsGroup=$false
-    [bool]$Script:IsUser=$false
+    [bool]$Script:IsGroup = $false
+    [bool]$Script:IsUser = $false
+
     function CheckIdentity([string] $Name){
         if($ObjectClass -eq "All"){
             $Script:IsGroup=$true
@@ -95,7 +96,8 @@ try{
             $Script:IsUser = ($null -ne $chk)
         }
     }
-    $Script:acl =Get-Acl -Path $ObjectName -ErrorAction Stop
+
+    $Script:acl = Get-Acl -Path $ObjectName -ErrorAction Stop
     foreach($item in $Script:acl.Access){
         CheckIdentity $item.IdentityReference
         if($Script:IsGroup -eq $true -and $ObjectClass -ne "Users"){
@@ -105,6 +107,7 @@ try{
             $Script:output += $item
         }
     }
+    
     if($SRXEnv) { 
         $SRXEnv.ResultMessage = $Script:output
     }

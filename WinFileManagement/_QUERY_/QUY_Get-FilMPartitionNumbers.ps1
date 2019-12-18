@@ -40,9 +40,6 @@ Param(
 $Script:Cim=$null
 $Script:output = @()
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
@@ -52,15 +49,13 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
-    $result = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber | Select-Object @("DiskNumber","PartitionNumber","DriveLetter") | Sort-Object PartitionNumber
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    $result = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber | `
+                    Select-Object @("DiskNumber","PartitionNumber","DriveLetter") | Sort-Object PartitionNumber
+    
     foreach($item in $result){
         if($SRXEnv) {       
-            $SRXEnv.ResultList += $item.PartitionNumber # Value            
-            $SRXEnv.ResultList2 += "PartitionNumber:$($item.PartitionNumber.ToString()) - DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString())" # Display
+            $SRXEnv.ResultList.Add($item.PartitionNumber) # Value            
+            $SRXEnv.ResultList2.Add("PartitionNumber:$($item.PartitionNumber.ToString()) - DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString())") # Display
         }
         else{
             Write-Output $item.name

@@ -44,15 +44,12 @@ try{
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     $result = Get-Partition -CimSession $Script:Cim | Select-Object @("DiskNumber","PartitionNumber","DriveLetter") | Sort-Object DriveLetter
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     foreach($item in $result){
         if($SRXEnv) {       
             if([System.Char]::IsLetter($item.DriveLetter.ToString().Substring(0,1))){   
-                $SRXEnv.ResultList += $item.DriveLetter # Value            
-                $SRXEnv.ResultList2 += "DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString()) - PartitionNumber:$($item.PartitionNumber.ToString())" # Display
+                $SRXEnv.ResultList.Add($item.DriveLetter) # Value            
+                $SRXEnv.ResultList2.Add("DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString()) - PartitionNumber:$($item.PartitionNumber.ToString())") # Display
             }
         }
         else{

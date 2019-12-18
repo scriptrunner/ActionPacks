@@ -56,10 +56,10 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     if($PSCmdlet.ParameterSetName  -eq "ByUniqueID"){
         $Script:Disk = Get-Disk -CimSession $Script:Cim -UniqueId $UniqueID -ErrorAction Stop
@@ -67,13 +67,14 @@ try{
     else{
         $Script:Disk = Get-Disk -CimSession $Script:Cim -Number $Number -ErrorAction Stop
     }
-    Clear-Disk -InputObject $Script:Disk -Confirm:$false -ErrorAction Stop
-    $Script:Disk = Get-Disk -CimSession $Script:Cim -Number $Script:Disk.Number | Select-Object $Script:Properties
+    $null = Clear-Disk -InputObject $Script:Disk -Confirm:$false -ErrorAction Stop
+    
+    $result = Get-Disk -CimSession $Script:Cim -Number $Script:Disk.Number | Select-Object $Script:Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:Disk
+        $SRXEnv.ResultMessage =$result
     }
     else{
-        Write-Output $Script:Disk
+        Write-Output $result
     }
 }
 catch{

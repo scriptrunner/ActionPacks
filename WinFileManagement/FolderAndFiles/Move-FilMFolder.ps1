@@ -41,7 +41,6 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
 try{
     if($null -eq $AccessAccount){
         if( (Test-Path -Path $Destination) -eq $false){
@@ -54,10 +53,10 @@ try{
         }
     }     
     if($null -eq $AccessAccount){
-        Move-Item -Path $FolderName -Destination $Destination -Force -ErrorAction Stop
+        $null = Move-Item -Path $FolderName -Destination $Destination -Force -ErrorAction Stop
     }
     else {
-        Move-Item -Path $FolderName -Destination $Destination -Credential $AccessAccount -Force -ErrorAction Stop
+        $null = Move-Item -Path $FolderName -Destination $Destination -Credential $AccessAccount -Force -ErrorAction Stop
     }    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Folder $($FolderName) moved to $($Destination)"

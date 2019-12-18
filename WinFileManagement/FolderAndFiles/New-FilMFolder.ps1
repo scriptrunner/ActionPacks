@@ -59,7 +59,7 @@ Param(
 
 [string]$Script:Identity
 $Script:output=@()
-[string[]]$Script:Properties=@("Name","FullName","CreationTime","Root")
+[string[]]$Script:Properties = @("Name","FullName","CreationTime","Root")
 try{
     function CheckIdentity([string] $Name){
         $Name = $Name.Trim()
@@ -111,7 +111,7 @@ try{
         try{
             $ACE = New-Object System.Security.AccessControl.FileSystemAccessRule `
                 ($Script:Identity,$Permission, "ContainerInherit,ObjectInherit", "NoPropagateInherit", "Allow")
-            $dummy = $Script:acl.SetAccessRule($ACE)
+            $null = $Script:acl.SetAccessRule($ACE)
             Set-Acl -Path $newFolder -AclObject $Script:acl -ErrorAction Stop
             $Script:output += "$($Permission) access set for $($Script:Identity)"
         }
@@ -170,6 +170,7 @@ try{
             {$Script:output +="Error set ReadAndExecute access for $($no) - $($_.Exception.Message)"}
         }
     } 
+    
     $Script:output += Get-Item -Path $newFolder `
                     | Select-Object @($Script:Properties) | Format-List
     if($SRXEnv) {

@@ -54,19 +54,20 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $DiskNumber -PartitionNumber $PartitionNumber -ErrorAction Stop
     if($Confirm -eq $true){
-        Remove-Partition -InputObject $Script:Parti -Confirm:$false -ErrorAction Stop 
+        $null = Remove-Partition -InputObject $Script:Parti -Confirm:$false -ErrorAction Stop 
         $Script:output += "Partition: $($PartitionNumber) on disk: $($DiskNumber) removed"
     }
     else{
         $Script:output += $Script:Parti
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:output
     }

@@ -34,9 +34,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -50,17 +47,17 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 $Script:output = @()
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $Script:Share =Get-SmbShare -Name $SourceShareName -CimSession $Script:Cim -IncludeHidden `
                     | Select-Object * | Where-Object {$_.ShareType -eq 'FileSystemDirectory'}    
@@ -96,6 +93,7 @@ try{
             {$Script:output +="Error deny access set for $($item.AccountName) on $($TargetShareName)"}
         }
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

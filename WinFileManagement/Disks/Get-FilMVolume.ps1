@@ -37,7 +37,8 @@ Param(
     [string]$DriveLetter,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties = "DriveLetter,DriveType,HealthStatus,FileSystemType,AllocationUnitSize,Size,SizeRemaining,FileSystemLabel"
+    [ValidateSet('*','DriveLetter','DriveType','HealthStatus','FileSystemType','AllocationUnitSize','Size','SizeRemaining','FileSystemLabel')]
+    [string[]]$Properties = @('DriveLetter','DriveType','HealthStatus','FileSystemType','AllocationUnitSize','Size','SizeRemaining','FileSystemLabel')
 )
 
 $Script:Cim=$null
@@ -50,24 +51,22 @@ try{
             $DriveLetter = ""
         } 
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }        
     if([System.String]::IsNullOrWhiteSpace($DriveLetter)){
-        $Script:output = Get-Volume -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-Volume -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties
     } 
     else{
-        $Script:output = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop | Select-Object $Properties.Split(',')
+        $Script:output = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop | Select-Object $Properties
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:output
     }

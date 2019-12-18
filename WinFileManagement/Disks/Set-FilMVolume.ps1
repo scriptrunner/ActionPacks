@@ -46,8 +46,7 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
-$Script:output = @()
+$Script:Cim = $null
 [string[]]$Script:Properties = @("DriveLetter","FileSystemLabel","DedupMode","DriveType","HealthStatus","FileSystemType","AllocationUnitSize","Size","SizeRemaining")
 
 try{
@@ -58,24 +57,25 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }        
     $Script:vol = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop
     if(-not [System.String]::IsNullOrWhiteSpace($NewFileSystemLabel)){
-        Set-Volume -InputObject $Script:vol -NewFileSystemLabel $NewFileSystemLabel -ErrorAction Stop
+        $null = Set-Volume -InputObject $Script:vol -NewFileSystemLabel $NewFileSystemLabel -ErrorAction Stop
     }
     if($DedupMode -ne "None"){
-        Set-Volume -InputObject $Script:vol -DedupMode $DedupMode -ErrorAction Stop
+        $null = Set-Volume -InputObject $Script:vol -DedupMode $DedupMode -ErrorAction Stop
     }
-    $Script:output = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter | Select-Object $Script:Properties
+
+    $result = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop | Select-Object $Script:Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

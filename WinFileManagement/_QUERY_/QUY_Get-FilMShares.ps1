@@ -42,15 +42,6 @@ Param(
 
 $Script:Cim=$null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -or $Properties -eq '*'){
-        $Properties=@('*')
-    }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'Name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
@@ -62,15 +53,11 @@ try{
     }
     $Script:Shares =Get-SmbShare -CimSession $Script:Cim -IncludeHidden:$IncludeHidden -Special $SpecialShares -ErrorAction Stop  `
                             | Select-Object @("Name","Description","Path","ShareType") | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }    
+    
     foreach($item in $Script:Shares){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name # Value
-            #$SRXEnv.ResultList2 += $item.Name # Value
-            $SRXEnv.ResultList2 += $item.Path # Display
+            $SRXEnv.ResultList.Add($item.Name) # Value
+            $SRXEnv.ResultList2.Add($item.Path) # Display
         }
         else{
             Write-Output $item.Name

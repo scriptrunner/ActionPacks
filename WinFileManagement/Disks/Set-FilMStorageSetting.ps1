@@ -42,33 +42,30 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
-$Script:output = @()
+$Script:Cim = $null
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     if(($PSBoundParameters.ContainsKey('NewDiskPolicy') -eq $true) -and ($NewDiskPolicy -ne "None")){
-        Set-StorageSetting -CimSession $Script:Cim -NewDiskPolicy $NewDiskPolicy -ErrorAction Stop
+        $null = Set-StorageSetting -CimSession $Script:Cim -NewDiskPolicy $NewDiskPolicy -ErrorAction Stop
     }
     if(($PSBoundParameters.ContainsKey('ScrubPolicy') -eq $true) -and ($ScrubPolicy -ne "None")){
-        Set-StorageSetting -CimSession $Script:Cim -ScrubPolicy $ScrubPolicy -ErrorAction Stop
-    }    
-    $Script:output = Get-StorageSetting -CimSession $Script:Cim | Select-Object *
+        $null = Set-StorageSetting -CimSession $Script:Cim -ScrubPolicy $ScrubPolicy -ErrorAction Stop
+    }   
+
+    $result = Get-StorageSetting -CimSession $Script:Cim -ErrorAction Stop | Select-Object *
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:output
+        $SRXEnv.ResultMessage =$result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

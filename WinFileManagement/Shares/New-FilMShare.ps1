@@ -51,9 +51,6 @@
 
 .Parameter NoAccess
     Specifies which accounts are denied access to the share. Multiple accounts can be specified comma separated
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -73,23 +70,24 @@ Param(
     [string[]]$NoAccess
 )
 
-$Script:Cim=$null
-$Script:output=@()
-[string[]]$Script:Properties=@("Name","Description","Path","ShareState","ScopeName","CurrentUsers","ShareType","AvailabilityType","EncryptData")
+$Script:Cim = $null
+$Script:output = @()
+[string[]]$Properties = @("Name","Description","Path","ShareState","ScopeName","CurrentUsers","ShareType","AvailabilityType","EncryptData")
 try{
     if([System.String]::IsNullOrWhiteSpace($ScopeName)){
-        $ScopeName ='*'
+        $ScopeName = '*'
     }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $tmp = New-SmbShare -CimSession $Script:Cim -Name $ShareName -Path $Path -Description $Description -ScopeName $ScopeName -EncryptData $EncryptData -ErrorAction Stop
+
     # Change access
     if(-not [System.String]::IsNullOrWhiteSpace($ModifyAccess)){
         foreach($chn in $ModifyAccess){
@@ -134,8 +132,9 @@ try{
             {$Script:output +="Error set no access for $($no) - $($_.Exception.Message)"}
         }
     } 
-    $Script:output += Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden `
-                    | Select-Object @($Script:Properties)
+
+    $Script:output += Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop `
+                    | Select-Object @($Properties)
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

@@ -66,10 +66,10 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }        
     $Script:vol = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop
     if($AllocationUnitSize -gt 0){
@@ -79,14 +79,15 @@ try{
         Format-Volume -InputObject $Script:vol -Full:$Full -FileSystem $FileSystem -Force -ErrorAction Stop
     }
     if(-not [System.String]::IsNullOrWhiteSpace($NewFileSystemLabel)){
-        Set-Volume -InputObject $Script:vol -NewFileSystemLabel $NewFileSystemLabel -ErrorAction Stop
+        $null = Set-Volume -InputObject $Script:vol -NewFileSystemLabel $NewFileSystemLabel -ErrorAction Stop
     }
-    $Script:output = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter | Select-Object $Script:Properties
+
+    $result = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter | Select-Object $Script:Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:output
+        $SRXEnv.ResultMessage =$result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

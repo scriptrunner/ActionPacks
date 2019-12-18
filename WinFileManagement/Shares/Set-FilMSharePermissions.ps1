@@ -33,9 +33,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -51,25 +48,26 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
-$Script:output=@()
-[string[]]$Script:Properties=@("AccessControlType","AccessRight","AccountName")
+$Script:Cim = $null
+$Script:output = @()
+[string[]]$Properties = @("AccessControlType","AccessRight","AccountName")
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
+
     $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop
     # Change access
     if($AccessType -eq "Modify"){
         foreach($chn in $PermissionAccounts){
             try{
-                $tmp = Grant-SmbShareAccess -Name $ShareName -AccountName $chn -AccessRight Change -Force -CimSession $Script:Cim -ErrorAction Stop      
+                $null = Grant-SmbShareAccess -Name $ShareName -AccountName $chn -AccessRight Change -Force -CimSession $Script:Cim -ErrorAction Stop      
                 $Script:output += "Change access set for $($chn)"
             }
             catch
@@ -80,7 +78,7 @@ try{
     if($AccessType -eq "Read"){
         foreach($rd in $PermissionAccounts){
             try{
-                $tmp = Grant-SmbShareAccess -Name $ShareName -AccountName $rd -AccessRight Read -Force -CimSession $Script:Cim -ErrorAction Stop      
+                $null = Grant-SmbShareAccess -Name $ShareName -AccountName $rd -AccessRight Read -Force -CimSession $Script:Cim -ErrorAction Stop      
                 $Script:output += "Read access set for $($rd)"
             }
             catch
@@ -91,7 +89,7 @@ try{
     if($AccessType -eq "FullControlAccess"){
         foreach($fa in $PermissionAccounts){
             try{
-                $tmp = Grant-SmbShareAccess -Name $ShareName -AccountName $fa -AccessRight Full -Force -CimSession $Script:Cim -ErrorAction Stop      
+                $null = Grant-SmbShareAccess -Name $ShareName -AccountName $fa -AccessRight Full -Force -CimSession $Script:Cim -ErrorAction Stop      
                 $Script:output += "Full access set for $($fa)"
             }
             catch
@@ -102,15 +100,16 @@ try{
     if($AccessType -eq "NoAccess"){
         foreach($no in $PermissionAccounts){
             try{
-                $tmp = Block-SmbShareAccess -Name $ShareName -AccountName $no -Force -CimSession $Script:Cim -ErrorAction Stop      
+                $null = Block-SmbShareAccess -Name $ShareName -AccountName $no -Force -CimSession $Script:Cim -ErrorAction Stop      
                 $Script:output += "No access set for $($no)"
             }
             catch
             {$Script:output +="Error set no access for $($no) - $($_.Exception.Message)"}
         }
     } 
-    $Script:output += Get-SmbShareAccess -Name $ShareName -CimSession $Script:Cim `
-                    | Select-Object $Script:Properties | Sort-Object AccessControlType,AccountName | Format-List    
+
+    $Script:output += Get-SmbShareAccess -Name $ShareName -CimSession $Script:Cim -ErrorAction Stop `
+                    | Select-Object $Properties | Sort-Object AccessControlType,AccountName | Format-List    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

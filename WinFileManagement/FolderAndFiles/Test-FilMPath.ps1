@@ -34,7 +34,7 @@ Param(
 )
 
 try{
-    $Script:output
+    [string]$Script:output
     if($null -eq $AccessAccount){
         if((Test-Path -Path $Path -ErrorAction Stop) -eq $true){
             $Script:output = "Path $($Path) exists"    

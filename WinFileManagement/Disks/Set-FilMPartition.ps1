@@ -66,38 +66,36 @@ $Script:Cim=$null
 [string[]]$Script:Properties = @("PartitionNumber","DriveLetter","DiskNumber","IsActive","IsHidden","IsOffline","IsReadOnly")
 
 try{ 
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }         
     $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $PartitionNumber -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'InputObject' = $Script:Parti}
 
     if(-not [System.String]::IsNullOrWhiteSpace($NewDriveLetter)){
-        Set-Partition @cmdArgs -NewDriveLetter $NewDriveLetter.ToUpper() 
+        $null = Set-Partition @cmdArgs -NewDriveLetter $NewDriveLetter.ToUpper() -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('IsActive') -eq $true){
-        Set-Partition @cmdArgs -IsActive $IsActive 
+        $null = Set-Partition @cmdArgs -IsActive $IsActive -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('IsReadOnly') -eq $true){
-        Set-Partition @cmdArgs -IsReadOnly $IsReadOnly 
+        $null = Set-Partition @cmdArgs -IsReadOnly $IsReadOnly -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('IsOffline') -eq $true){
-        Set-Partition @cmdArgs -IsOffline $IsOffline 
+        $null = Set-Partition @cmdArgs -IsOffline $IsOffline -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('IsHidden') -eq $true){
-        Set-Partition @cmdArgs -IsHidden $IsHidden 
+        $null = Set-Partition @cmdArgs -IsHidden $IsHidden -ErrorAction Stop
     }
-    $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $PartitionNumber | Select-Object $Script:Properties
+
+    $Script:Parti = Get-Partition -CimSession $Script:Cim -DiskNumber $Number -PartitionNumber $PartitionNumber -ErrorAction Stop | Select-Object $Script:Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:Parti
     }

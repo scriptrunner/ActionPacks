@@ -34,9 +34,6 @@
 
 .Parameter EncryptData
     Indicates whether the share is encrypted
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -49,29 +46,31 @@ Param(
     [bool]$EncryptData
 )
 
-$Script:Cim=$null
-[string[]]$Script:Properties=@("Name","Description","Path","ShareState","ScopeName","CurrentUsers","ShareType","AvailabilityType","EncryptData")
+$Script:Cim = $null
+[string[]]$Properties = @("Name","Description","Path","ShareState","ScopeName","CurrentUsers","ShareType","AvailabilityType","EncryptData")
 try{    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden | Select-Object *
+
+    $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop | Select-Object *
     if($null -ne $Script:Share){
         if($PSBoundParameters.ContainsKey('Description') -eq $true ){
-            Set-SmbShare -Name $ShareName -CimSession $Script:Cim -Description $Description -Force
+            $null = Set-SmbShare -Name $ShareName -CimSession $Script:Cim -Description $Description -Force -ErrorAction Stop
         }
         if($PSBoundParameters.ContainsKey('EncryptData') -eq $true ){
-            Set-SmbShare -Name $ShareName -CimSession $Script:Cim -EncryptData $EncryptData -Force
+            $null = Set-SmbShare -Name $ShareName -CimSession $Script:Cim -EncryptData $EncryptData -Force -ErrorAction Stop
         }
-        $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden `
-                        | Select-Object @($Script:Properties)
-    }    
+        $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop `
+                        | Select-Object @($Properties)
+    }  
+      
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Share
     }

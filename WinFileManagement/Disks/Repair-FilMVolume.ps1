@@ -46,7 +46,6 @@ Param(
 )
 
 $Script:Cim=$null
-$Script:output = @()
 [string[]]$Script:Properties = @("DriveLetter","DriveType","HealthStatus","FileSystemType","AllocationUnitSize","Size","SizeRemaining","FileSystemLabel")
 
 try{
@@ -57,20 +56,20 @@ try{
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }        
     $Script:vol = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter -ErrorAction Stop
-    Repair-Volume -InputObject $Script:vol -OfflineScanAndFix:$OfflineScanAndFix -Scan:$Scan -ErrorAction Stop
+    $null = Repair-Volume -InputObject $Script:vol -OfflineScanAndFix:$OfflineScanAndFix -Scan:$Scan -ErrorAction Stop
 
-    $Script:output = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter | Select-Object $Script:Properties
+    $result = Get-Volume -CimSession $Script:Cim -DriveLetter $DriveLetter | Select-Object $Script:Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:output
+        $SRXEnv.ResultMessage =$result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

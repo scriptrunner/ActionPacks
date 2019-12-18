@@ -53,17 +53,17 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 [string[]]$Script:Properties = @("Number","FriendlyName","PartitionStyle","OperationalStatus","AllocatedSize","BootFromDisk","IsBoot","IsClustered","IsHighlyAvailable","IsSystem","Size")
 try{ 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     if($PSCmdlet.ParameterSetName  -eq "ByUniqueID"){
         $Script:Disk = Get-Disk -CimSession $Script:Cim -UniqueId $UniqueID -ErrorAction Stop
@@ -71,7 +71,8 @@ try{
     else{
         $Script:Disk = Get-Disk -CimSession $Script:Cim -Number $Number -ErrorAction Stop
     }
-    Initialize-Disk -InputObject $Script:Disk -PartitionStyle $PartitionStyle -ErrorAction Stop
+    $null = Initialize-Disk -InputObject $Script:Disk -PartitionStyle $PartitionStyle -ErrorAction Stop
+
     $Script:Disk = Get-Disk -CimSession $Script:Cim -Number $Script:Disk.Number | Select-Object $Script:Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:Disk

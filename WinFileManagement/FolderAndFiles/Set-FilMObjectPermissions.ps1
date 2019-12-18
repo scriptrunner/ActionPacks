@@ -83,10 +83,7 @@
     Inheritance specify the inheritance for the object
 
 .Parameter OnlyThisContainer
-    Apply the permissions to objects and/or containers within this container only
-
-.EXAMPLE    
-    
+    Apply the permissions to objects and/or containers within this container only    
 #>
 
 [CmdLetBinding()]
@@ -153,36 +150,36 @@ try{
     function CheckIdentity([string] $Name){
         if(($Name -eq "Jeder") -or ($Name -eq "Everyone") -or ($Name -eq "S-1-1-0"))
         {
-             $sid =New-Object System.Security.Principal.SecurityIdentifier("S-1-1-0")
+             $sid = New-Object System.Security.Principal.SecurityIdentifier("S-1-1-0")
              $Script:Identity= $sid.Translate([System.Security.Principal.NTAccount]).Value
     
         }
         elseif(($Name -eq "System") -or ($Name -eq "Local System") -or ($Name -eq "S-1-5-18"))
         {
-             $sid =New-Object System.Security.Principal.SecurityIdentifier("S-1-5-18")
+             $sid = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-18")
              $Script:Identity= $sid.Translate([System.Security.Principal.NTAccount]).Value
     
         }
         elseif(($Name -eq "Administratoren") -or ($Name -eq "Administrators") -or ($Name -eq "S-1-5-32-544"))
         {
-             $sid =New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-544")
+             $sid = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-544")
              $Script:Identity= $sid.Translate([System.Security.Principal.NTAccount]).Value
     
         }
         elseif(($Name -eq "Authenticated Users") -or ($Name -eq "Authentifizierte Benutzer") -or ($Name -eq "S-1-5-11"))
         {
-             $sid =New-Object System.Security.Principal.SecurityIdentifier("S-1-5-11")
+             $sid = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-11")
              $Script:Identity= $sid.Translate([System.Security.Principal.NTAccount]).Value
         }
         elseif(($Name -eq "Interactive") -or ($Name -eq "Interaktiv") -or ($Name -eq "S-1-5-4"))
         {
-             $sid =New-Object System.Security.Principal.SecurityIdentifier("S-1-5-4")
+             $sid = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-4")
              $Script:Identity= $sid.Translate([System.Security.Principal.NTAccount]).Value
     
         }
         elseif(($Name -eq "Users") -or($Name -eq "Benutzer") -or ($Name -eq "S-1-5-32-545"))
         {
-             $sid =New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-545")
+             $sid = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-545")
              $Script:Identity= $sid.Translate([System.Security.Principal.NTAccount]).Value
     
         }
@@ -238,16 +235,16 @@ try{
             if($ModifyType -eq "Set"){
                 if($PSCmdlet.ParameterSetName  -eq "Special permissions"){
                     $Modification = $False
-                    $dummy = $Script:acl.ModifyAccessRule("Remove", $delACE,[ref]$Modification)
-                    $dummy = $Script:acl.ModifyAccessRule("Add", $ACE,[ref]$Modification)    
+                    $null = $Script:acl.ModifyAccessRule("Remove", $delACE,[ref]$Modification)
+                    $null = $Script:acl.ModifyAccessRule("Add", $ACE,[ref]$Modification)    
                 }
                 else{
-                    $dummy = $Script:acl.RemoveAccessRule($delACE)
-                    $dummy = $Script:acl.SetAccessRule($ACE)
+                    $null = $Script:acl.RemoveAccessRule($delACE)
+                    $null = $Script:acl.SetAccessRule($ACE)
                 }              
             }
             else {
-                $dummy = $Script:acl.RemoveAccessRule($ACE)
+                $null = $Script:acl.RemoveAccessRule($ACE)
             }            
             Set-Acl -Path $ObjectName -AclObject $Script:acl -ErrorAction Stop
             $Script:output += "Permission $($Permission) $($ModifyType) on file $($ObjectName) for $($Script:Identity)"
@@ -307,10 +304,11 @@ try{
                 }
             }
         }
-        catch
-        {$Script:output +="Error change permissions for $($Script:Identity) on file $($ObjectName) - $($_.Exception.Message)"}
+        catch{
+            $Script:output +="Error change permissions for $($Script:Identity) on file $($ObjectName) - $($_.Exception.Message)"
+        }
     }
-  #  $Script:output += $Script:acl.Access | Select-Object *
+  
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output        
     }

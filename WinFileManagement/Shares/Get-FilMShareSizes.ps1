@@ -24,9 +24,6 @@
 
 .Parameter IncludeHidden
     Indicates that shares that are created and used internally are also enumerated
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -37,16 +34,17 @@ Param(
 
 $Script:output = @()
 try{
-    $Script:Shares =Get-SmbShare -IncludeHidden:$IncludeHidden -Special $SpecialShares  `
+    $objShares = Get-SmbShare -IncludeHidden:$IncludeHidden -Special $SpecialShares -ErrorAction Stop  `
                             | Select-Object Path,Name,ShareType | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name 
-    foreach($share in $Script:Shares){
+    foreach($share in $objShares){
         $childs = Get-ChildItem -Path $share.Path -Force -Recurse | Measure-Object -Property Length -Sum
-        $size=$childs.Sum
+        $size = $childs.Sum
         if($null -eq $size){
             $size = "0"
         }        
         $Script:output += "Size of share:$($share.Name) path:$($share.Path) is $($size)"
-    }                                
+    }    
+                                
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

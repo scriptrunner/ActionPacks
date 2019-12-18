@@ -43,11 +43,12 @@ Param(
 
 try{   
     if($null -eq $AccessAccount){
-        Rename-Item -Path $FolderName -NewName $NewName -Force -ErrorAction Stop
+        $null = Rename-Item -Path $FolderName -NewName $NewName -Force -ErrorAction Stop
     }
     else {
-        Rename-Item -Path $FolderName -NewName $NewName -Credential $AccessAccount -Force -ErrorAction Stop
-    }    
+        $null = Rename-Item -Path $FolderName -NewName $NewName -Credential $AccessAccount -Force -ErrorAction Stop
+    }   
+     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Folder $($FolderName) renamed to $($NewName)"
     }

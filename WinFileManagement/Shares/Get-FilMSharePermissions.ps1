@@ -27,9 +27,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -40,18 +37,9 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
-[string[]]$Script:Properties=@("AccessControlType","AccessRight","AccountName")
+$Script:Cim = $null
+[string[]]$Script:Properties = @("AccessControlType","AccessRight","AccountName")
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties) -or $Properties -eq '*'){
-        $Properties=@('*')
-    }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -eq 'Name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
@@ -61,13 +49,14 @@ try{
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Share = Get-SmbShareAccess -Name $ShareName -CimSession $Script:Cim `
-                        | Select-Object $Script:Properties | Sort-Object AccessControlType,AccountName | Format-List    
+
+    $objShare = Get-SmbShareAccess -Name $ShareName -CimSession $Script:Cim -ErrorAction Stop `
+                        | Select-Object $Properties | Sort-Object AccessControlType,AccountName | Format-List    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Share
+        $SRXEnv.ResultMessage = $objShare
     }
     else{
-        Write-Output $Script:Share
+        Write-Output $objShare
     }
 }
 catch{

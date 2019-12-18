@@ -29,7 +29,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
 #>
    
 [CmdLetBinding()]
@@ -40,19 +39,20 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim =$null
+$Script:Cim = $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
+
     $cinst = Get-CimInstance -CimSession $Script:Cim -Query "SELECT * FROM WIN32_Printer WHERE Name ='$($PrinterName)'"
-    $Script:Output=@()
+    $Script:Output = @()
     if($null -ne $cinst){
         $res=$Script:Cim.InvokeMethod($cinst,"PrintTestPage",$null)
         if($res.ReturnValue.Value -eq 0){
@@ -65,6 +65,7 @@ try{
     else{
         throw "Printer $($PrinterName) not found"
     }    
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage =$Script:Output
     }

@@ -24,7 +24,6 @@
 
 .Parameter ComputerName
     Specifies the name of the computer from which to retrieve the printer information
-
 #>
 
 [CmdLetBinding()]
@@ -34,17 +33,17 @@ Param(
     [string]$ComputerName
 )
 
-[System.Reflection.Assembly]::LoadWithPartialName('System.Printing')
+$null = [System.Reflection.Assembly]::LoadWithPartialName('System.Printing')
 
 try{
-    $Script:output=@()
+    $Script:output = @()
     [System.Printing.PrintServer]$Script:Server
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $Script:Server= New-Object System.Printing.LocalPrintServer
+        $Script:Server = New-Object System.Printing.LocalPrintServer
     }
     else{
         if (-not $ComputerName.StartsWith("\\")){ 
-            $ComputerName = "\\" +$ComputerName
+            $ComputerName = "\\" + $ComputerName
         }
         $Script:Server = New-Object System.Printing.PrintServer($ComputerName)
     }
@@ -58,7 +57,7 @@ try{
         if($null -eq $Script:que){
             foreach($prn in $Script:Server.GetPrintQueues(@([System.Printing.EnumeratedPrintQueueTypes]::Local))){
                 if($prn.FullName -eq $PrinterName -or $prn.Name -eq $PrinterName){
-                    $Script:que=$prn
+                    $Script:que = $prn
                     break
                 }
             }            
@@ -82,6 +81,7 @@ try{
     else{
         $Script:output += "Print server $($ComputerName) not found"
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

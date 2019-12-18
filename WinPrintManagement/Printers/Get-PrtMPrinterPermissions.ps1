@@ -29,7 +29,6 @@
 
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
 #>
 
 [CmdLetBinding()]
@@ -42,11 +41,11 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
-$Script:output=@()
+$Script:Cim = $null
+$Script:output = @()
 try{
     function GetAceDescription([int] $mask){
-        [string[]]$tmp=@()
+        [string[]]$tmp = @()
         $Script:AceDesc = ''
         if(($mask -band 131080) -eq 131080){
             $tmp += "Print"
@@ -71,18 +70,20 @@ try{
         }   
         $Script:AceDesc =$tmp -join ","
     }
+
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Printer=Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full
-    if($null -ne $Script:Printer){
-        $secDesc = New-Object -TypeName Security.AccessControl.CommonSecurityDescriptor $true, $false, $Script:Printer.PermissionSDDL
+
+    $printer = Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full -ErrorAction Stop
+    if($null -ne $printer){
+        $secDesc = New-Object -TypeName Security.AccessControl.CommonSecurityDescriptor $true, $false, $printer.PermissionSDDL
         $secDesc.DiscretionaryAcl | ForEach-Object{
             GetAceDescription $_.AccessMask
             if(-not [System.string]::IsNullOrWhiteSpace($Script:AceDesc)){
@@ -99,6 +100,7 @@ try{
             }
         }
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output | Format-List 
     }

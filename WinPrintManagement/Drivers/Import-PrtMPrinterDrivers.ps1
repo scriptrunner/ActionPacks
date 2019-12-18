@@ -45,7 +45,6 @@
 
 .EXAMPLE
     .\Import-PrinterDrivers.ps1 -CsvFile 'C:\Temp\drivers.csv'
-
 #>
    
 [CmdLetBinding()]
@@ -61,17 +60,17 @@ Param(
 
 Import-Module PrintManagement
 
-[bool]$Script:Err=$false
-$Script:Cim =$null
-$Script:Result=@()
-$Script:Errors=@()
-$Script:Output=@()
+[bool]$Script:Err = $false
+$Script:Cim = $null
+$Script:Result = @()
+$Script:Errors = @()
+$Script:Output = @()
 $Script:Failed = New-Object  "System.Collections.Generic.List[String]"
 $Script:Jobs = New-Object "System.Collections.Generic.Dictionary[Int,string]"
 try{
     if(Test-Path -Path $CsvFile -ErrorAction SilentlyContinue){
         $Script:Drivers = Import-Csv -Path $CsvFile -Delimiter $Delimiter -Encoding $FileEncoding `
-            -Header @('DriverName','ComputerName', 'InfFilePath') 
+            -Header @('DriverName','ComputerName', 'InfFilePath')  -ErrorAction Stop
         }
     else{
         Throw "$($CsvFile) does not exist"
@@ -85,10 +84,10 @@ try{
             $item.ComputerName=[System.Net.DNS]::GetHostByName('').HostName
         }          
         if($null -eq $AccessAccount){
-            $Script:Cim =New-CimSession -ComputerName $item.ComputerName -ErrorAction Stop
+            $Script:Cim = New-CimSession -ComputerName $item.ComputerName -ErrorAction Stop
         }
         else {
-            $Script:Cim =New-CimSession -ComputerName $item.ComputerName -Credential $AccessAccount -ErrorAction Stop
+            $Script:Cim = New-CimSession -ComputerName $item.ComputerName -Credential $AccessAccount -ErrorAction Stop
         } 
         if(Get-PrinterDriver -CimSession $Script:Cim -Name $item.DriverName.Trim() -ComputerName $item.ComputerName -ErrorAction SilentlyContinue ){
             $Script:Output += "Printer driver $($item.DriverName) already exists"
@@ -131,7 +130,7 @@ try{
         if($job.JobStateInfo.State -eq 'Failed'){
             $Script:Errors += "Install printer driver: $($Script:Jobs[$job.Id]) failed."
             $Script:Failed.Add($Script:Jobs[$job.Id])
-            $Script:Err=$true
+            $Script:Err = $true
         }
         if($job.JobStateInfo.State -eq 'Completed'){
             $Script:Result += "Install printer driver: $($Script:Jobs[$job.Id]) succeeded"

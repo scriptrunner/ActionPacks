@@ -91,8 +91,8 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
-$Script:output=@()
+$Script:Cim = $null
+$Script:output = @()
 try{
     function SetAceID(){
         $Script:AceValue = 0
@@ -118,6 +118,7 @@ try{
             $Script:AceValue =268435456
         }   #>
     }
+
     function RemoveAccess([string]$Member){
         try{
             $acc = New-Object Security.Principal.NTAccount($Member)
@@ -142,15 +143,15 @@ try{
     }
 
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Printer=Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full -ErrorAction Stop
+    $Script:Printer = Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -Full -ErrorAction Stop
     if($null -ne $Script:Printer){
         $Script:secDesc = New-Object -TypeName Security.AccessControl.CommonSecurityDescriptor ($true, $false, $Script:Printer.PermissionSDDL)
         if($PSCmdlet.ParameterSetName  -eq "Single permission"){
@@ -203,18 +204,18 @@ try{
                 }
             }
         }
-        $Script:done=$false
+        $Script:done = $false
         $perms = $Script:secDesc.GetSddlForm('All') 
         try{
-            Set-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -PermissionSDDL $perms -ErrorAction Stop
+            $null = Set-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -PermissionSDDL $perms -ErrorAction Stop
             $Script:done = $true
         }
         catch{
             # Problems with print server W2k16
         }
         if($Script:done -eq $false){
-            $prn =$PrinterName
-            $cmd ={ Set-Printer -Name $Using:prn -PermissionSDDL $Using:perms }
+            $prn = $PrinterName
+            $cmd = { Set-Printer -Name $Using:prn -PermissionSDDL $Using:perms }
             if($null -eq $AccessAccount){
                 Invoke-Command -ComputerName $ComputerName -validateset $cmd -ErrorAction Stop
             }
@@ -223,6 +224,7 @@ try{
             }
         }
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

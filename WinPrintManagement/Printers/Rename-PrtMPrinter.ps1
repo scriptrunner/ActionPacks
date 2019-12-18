@@ -29,7 +29,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
 #>
    
 [CmdLetBinding()]
@@ -41,17 +40,18 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim =$null
+$Script:Cim = $null
 try{
-    $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+    [string]$ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     if($null -eq $AccessAccount){
         $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $prn = Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -ErrorAction Stop    
-    Rename-Printer -CimSession $Script:Cim -InputObject $prn -NewName $NewName -ErrorAction Stop    
+    $prn = Get-Printer -Name $PrinterName -ComputerName $ComputerName -CimSession $Script:Cim -ErrorAction Stop
+
+    $null = Rename-Printer -CimSession $Script:Cim -InputObject $prn -NewName $NewName -ErrorAction Stop    
     if($SRXEnv) {
         $SRXEnv.ResultMessage ="Printer $($PrinterName) on $($ComputerName) renamed to $($NewName)"
     }

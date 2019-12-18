@@ -57,7 +57,6 @@
 
 .Parameter RenderingMode
     Specifies the rendering mode for the printer
-
 #>
    
 [CmdLetBinding()]
@@ -80,17 +79,17 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim =$null
-$Script:Output=@()
+$Script:Cim = $null
+$Script:Output = @()
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }  
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $prn = Get-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -ErrorAction SilentlyContinue 
     if($null -eq $prn){
@@ -106,31 +105,32 @@ try{
             if([System.String]::IsNullOrWhiteSpace($ShareName)){
                 $ShareName=$PrinterName
             }
-            Set-Printer @cmdArgs -Shared -ShareName $ShareName
+            $null = Set-Printer @cmdArgs -Shared -ShareName $ShareName
         }
         if($PSBoundParameters.ContainsKey('PrintProcessor') -eq $true){
-            Set-Printer -PrintProcessor $PrintProcessor
+            $null = Set-Printer -PrintProcessor $PrintProcessor
         }
         if($PSBoundParameters.ContainsKey('Comment') -eq $true){
-            Set-Printer @cmdArgs -Comment $Comment
+            $null =  Set-Printer @cmdArgs -Comment $Comment
         }
         if($PSBoundParameters.ContainsKey('DriverName') -eq $true){
-            Set-Printer @cmdArgs -DriverName $DriverName
+            $null = Set-Printer @cmdArgs -DriverName $DriverName
         }
         if($PSBoundParameters.ContainsKey('Location') -eq $true){
-            Set-Printer @cmdArgs -Location $Location
+            $null = Set-Printer @cmdArgs -Location $Location
         }
         if($PSBoundParameters.ContainsKey('Datatype') -eq $true){
-            Set-Printer @cmdArgs -Datatype $Datatype
+            $null = Set-Printer @cmdArgs -Datatype $Datatype
         }
         if($PSBoundParameters.ContainsKey('RenderingMode') -eq $true){
-            Set-Printer @cmdArgs -RenderingMode $RenderingMode
+            $null = Set-Printer @cmdArgs -RenderingMode $RenderingMode
         }
         if($PSBoundParameters.ContainsKey('PortName') -eq $true){
-            Set-Printer @cmdArgs -PortName $PortName
+            $null = Set-Printer @cmdArgs -PortName $PortName
         }
         $Script:Output += "Printer: $($PrinterName) changed"
     }   
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output
     } 

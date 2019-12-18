@@ -32,7 +32,6 @@
 
 .Parameter RemoveFromDriverStore
     Specifies whether to remove the printer driver from the driver store
-
 #>
 
 [CmdLetBinding()]
@@ -46,25 +45,22 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('RemoveFromDriverStore') -eq $true){
-        Remove-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -RemoveFromDriverStore -ErrorAction Stop
+        $null = Remove-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -RemoveFromDriverStore -ErrorAction Stop
     }
     else {
-        Remove-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -ErrorAction Stop
+        $null = Remove-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -ErrorAction Stop
     }
     
     if($SRXEnv) {

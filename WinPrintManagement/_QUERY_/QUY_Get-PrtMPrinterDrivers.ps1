@@ -19,7 +19,7 @@
     Requires Module PrintManagement
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Drivers
+    https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/_QUERY_
 
 .Parameter ComputerName
     Specifies the name of the computer from which to retrieve the printer drivers
@@ -32,34 +32,29 @@
 Param(
     [string]$ComputerName,
     [PSCredential]$AccessAccount
-    )
+)
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:Drivers =Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName  `
-        | Select-Object Name,PrinterEnvironment | Sort-Object Name
     
-    foreach($item in $Script:Drivers)
-    {
+    $result = Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName -ErrorAction Stop  `
+                                    | Select-Object Name,PrinterEnvironment | Sort-Object Name
+    
+    foreach($item in $result){
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name # key
-            $SRXEnv.ResultList2 += "$($item.Name) ($($item.PrinterEnvironment))" # display value
+            $SRXEnv.ResultList.Add($item.Name) # key
+            $SRXEnv.ResultList2.Add("$($item.Name) ($($item.PrinterEnvironment))") # display value
         }
         else{
             Write-Output "$($item.Name) ($($item.PrinterEnvironment))" 

@@ -59,7 +59,6 @@
 
 .Parameter RenderingMode
     Specifies the rendering mode for the printer
-
 #>
 
    
@@ -72,54 +71,55 @@ Param(
     [string]$ComputerName,
     [switch]$Shared,
     [string]$DifferentSharename,
-    [string]$PortAddress='LPT1:',
-    [int]$PortNumber=9100,
+    [string]$PortAddress = 'LPT1:',
+    [int]$PortNumber = 9100,
     [string]$Comment,
     [string]$Location,
     [PSCredential]$AccessAccount,
-    [string]$DataType='RAW',
-    [string]$PrintProcessor='winprint',
+    [string]$DataType = 'RAW',
+    [string]$PrintProcessor = 'winprint',
     [ValidateSet('SSR','CSR','BranchOffice')]
-    [string]$RenderingMode='SSR'
+    [string]$RenderingMode = 'SSR'
 )
 
 Import-Module PrintManagement
 
-$Script:Cim =$null
-$Script:Output=@()
+$Script:Cim = $null
+$Script:Output = @()
 try{
     # Create Port
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }  
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if(Get-PrinterPort -CimSession $Script:Cim -Name $PortAddress -ComputerName $ComputerName -ErrorAction SilentlyContinue ){
         $Script:Output += "Printer port $($PortAddress) already exists"
     }
     else{
         $Error.RemoveAt(0)
-        Add-PrinterPort -CimSession $Script:Cim -Name $PortAddress -ComputerName $ComputerName -PrinterHostAddress $PortAddress -PortNumber $PortNumber
+        $null = Add-PrinterPort -CimSession $Script:Cim -Name $PortAddress -ComputerName $ComputerName -PrinterHostAddress $PortAddress -PortNumber $PortNumber
         $Script:Output += "Create printer port: $($PortAddress) succeeded"
     }
      # Create Printer
     if([System.String]::IsNullOrWhiteSpace($DifferentSharename)){
-        $DifferentSharename=$PrinterName
+        $DifferentSharename = $PrinterName
     }
     if(Get-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -ErrorAction SilentlyContinue ){
         $Script:Output += "Printer $($PrinterName) already exists"
     }
     else{
         $Error.RemoveAt(0)
-        Add-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Shared:$Shared.ToBool() -ShareName $DifferentShareName -Name $PrinterName `
+        $null = Add-Printer -CimSession $Script:Cim -ComputerName $ComputerName -Shared:$Shared.ToBool() -ShareName $DifferentShareName -Name $PrinterName `
                 -PrintProcessor $PrintProcessor -Comment $Comment -PortName $PortAddress -DriverName $DriverName `
                 -Location $Location -RenderingMode $RenderingMode -Datatype $DataType -ErrorAction Stop
         $Script:Output += "Create printer: $($PrinterName) succeeded"
     }   
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Output
     } 

@@ -61,7 +61,6 @@
     HQSRVADM01;PRINTER1;"HP Universal Printing PCL 6";192.168.100.110;9100;True;PRINTER1;"Printer 1";DE, Ettlingen, Ludwig-Erhard-Str. 2, 1.OG, Raum 101;RAW;WinPrint;SSR
     HQSRVADM01;PRINTER2;"HP Universal Printing PCL 6";192.168.100.111;9100;False;PRINTER2;"Printer 2";DE, Ettlingen, Ludwig-Erhard-Str. 2, 2.OG, Raum 212;RAW;WinPrint;SSR
     HQSRVADM01;PRINTER3;"HP Universal Printing PCL 6";192.168.100.112;9100;True;PRINTER3;"Printer 3";DE, Ettlingen, Ludwig-Erhard-Str. 2, 3.OG, Raum 308;RAW;WinPrint;SSR
-
 #>
    
 [CmdLetBinding()]
@@ -83,17 +82,17 @@ Param(
 
 Import-Module PrintManagement
 
-[int]$Script:PortNumber=0
-[bool]$Script:Err=$false
-$Script:Cim =$null
-$Script:Result=@()
-$Script:Output=@()
-$Script:Errors=@()
-$Script:Failed =New-Object  "System.Collections.Generic.List[String]"
+[int]$Script:PortNumber = 0
+[bool]$Script:Err = $false
+$Script:Cim = $null
+$Script:Result = @()
+$Script:Output = @()
+$Script:Errors = @()
+$Script:Failed = New-Object  "System.Collections.Generic.List[String]"
 $Script:Jobs = New-Object "System.Collections.Generic.Dictionary[Int,string]"
 try{
     if(Test-Path -Path $CsvFile -ErrorAction SilentlyContinue){
-        $Script:Printers = Import-Csv -Path $CsvFile -Delimiter $Delimiter -Encoding $FileEncoding `
+        $Script:Printers = Import-Csv -Path $CsvFile -Delimiter $Delimiter -Encoding $FileEncoding -ErrorAction Stop `
             -Header @('ComputerName', 'PrinterName', 'PrinterDriver', 'PortAddress','PortNumber', 'Shared', 'DifferentShareName', 'Comment','Location','DataType','PrintProcessor','RenderingMode') 
         }
     else{
@@ -104,29 +103,29 @@ try{
         if($item.ComputerName -eq 'ComputerName'){
             continue
         }
-        $Script:Cim =$null
-        $Script:PortNumber=0
+        $Script:Cim = $null
+        $Script:PortNumber = 0
         if([System.string]::IsNullOrWhiteSpace($item.PortAddress)){
-            $item.PortAddress=$DefaultPortAddress
+            $item.PortAddress = $DefaultPortAddress
         }
         if([System.string]::IsNullOrWhiteSpace($item.PortNumber)){
-            $Script:PortNumber=$DefaultPortNumber
+            $Script:PortNumber = $DefaultPortNumber
         }
         else{
             if(-not [System.Int32]::TryParse($item.PortNumber,[ref] $Script:PortNumber)){
                 $Script:Errors += "Printer port number $($item.PortNumber) is not a valid number"
-                $Script:Err=$true
-                $Script:PortNumber=$DefaultPortNumber
+                $Script:Err = $true
+                $Script:PortNumber = $DefaultPortNumber
             }
         }        
         if([System.string]::IsNullOrWhiteSpace($item.ComputerName)){
-            $item.ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+            $item.ComputerName = [System.Net.DNS]::GetHostByName('').HostName
         }          
         if($null -eq $AccessAccount){
-            $Script:Cim =New-CimSession -ComputerName $item.ComputerName -ErrorAction Stop
+            $Script:Cim = New-CimSession -ComputerName $item.ComputerName -ErrorAction Stop
         }
         else {
-            $Script:Cim =New-CimSession -ComputerName $item.ComputerName -Credential $AccessAccount -ErrorAction Stop
+            $Script:Cim = New-CimSession -ComputerName $item.ComputerName -Credential $AccessAccount -ErrorAction Stop
         } 
         if(Get-PrinterPort -CimSession $Script:Cim -Name $item.PortAddress -ComputerName $item.ComputerName -ErrorAction SilentlyContinue ){
             $Script:Output += "Printer port $($item.PortAddress) already exists"
@@ -134,7 +133,7 @@ try{
         }
         else{
             $Error.RemoveAt(0)
-            $job = Add-PrinterPort -AsJob -CimSession $Script:Cim -Name $item.PortAddress -ComputerName $item.ComputerName -PrinterHostAddress $item.PortAddress -PortNumber $Script:PortNumber 
+            $job = Add-PrinterPort -AsJob -CimSession $Script:Cim -Name $item.PortAddress -ComputerName $item.ComputerName -PrinterHostAddress $item.PortAddress -PortNumber $Script:PortNumber -ErrorAction Stop
             $Script:Jobs.Add($job.ID,$item.PortAddress)
         }
         # Check max. jobs
@@ -164,7 +163,7 @@ try{
         if($job.JobStateInfo.State -eq 'Failed'){
             $Script:Errors += "Create printer port: $($Script:Jobs[$job.Id]) failed."
             $Script:Failed.Add($Script:Jobs[$job.Id])
-            $Script:Err=$true
+            $Script:Err = $true
         }
         if($job.JobStateInfo.State -eq 'Completed'){
             $Script:Result += "Create printer port: $($Script:Jobs[$job.Id]) succeeded"
@@ -172,18 +171,18 @@ try{
         }
     }
     $Script:Jobs.CLear()
-    [bool]$Script:Shared=$false
+    [bool]$Script:Shared = $false
      # Create Printers
     foreach($item in $Script:Printers){  
         if($item.ComputerName -eq 'ComputerName'){
             continue
         }
-        $Script:Cim=$null
+        $Script:Cim = $null
         if($null -eq $AccessAccount){
-            $Script:Cim =New-CimSession -ComputerName $item.ComputerName
+            $Script:Cim = New-CimSession -ComputerName $item.ComputerName
         }
         else {
-            $Script:Cim =New-CimSession -ComputerName $item.ComputerName -Credential $AccessAccount
+            $Script:Cim = New-CimSession -ComputerName $item.ComputerName -Credential $AccessAccount
         }  
         if($Script:Failed.Contains($item.PortAddress)){
             $Script:Errors += "Printer port: $($item.PortAddress) for printer $($item.PrinterName) erroneous."
@@ -192,16 +191,16 @@ try{
         try{
             $tmp=[System.Boolean]::TryParse($item.Shared,[ref] $Script:Shared)
             if([System.String]::IsNullOrWhiteSpace($item.DifferentShareName)){
-                $item.DifferentShareName=$item.PrinterName
+                $item.DifferentShareName = $item.PrinterName
             }
             if([System.String]::IsNullOrWhiteSpace($item.DataType)){
-                $item.DataType=$DefaultDataType
+                $item.DataType = $DefaultDataType
             }
             if([System.String]::IsNullOrWhiteSpace($item.PrintProcessor)){
-                $item.PrintProcessor=$DefaultProcessor
+                $item.PrintProcessor = $DefaultProcessor
             }
             if([System.String]::IsNullOrWhiteSpace($item.RenderingMode)){
-                $item.RenderingMode=$DefaultRenderingMode
+                $item.RenderingMode = $DefaultRenderingMode
             }
             if(Get-Printer -Name $item.PrinterName -ComputerName $item.ComputerName -CimSession $Script:Cim -ErrorAction SilentlyContinue ){
                 $Script:Output += "Printer $($item.PrinterName) already exists"
@@ -209,7 +208,7 @@ try{
             }
             else{
                 $Error.RemoveAt(0)
-                $job=Add-Printer -AsJob -ComputerName $item.ComputerName -Shared:$Script:Shared -ShareName $item.DifferentShareName -Name $item.PrinterName -CimSession $Script:Cim `
+                $job = Add-Printer -AsJob -ComputerName $item.ComputerName -Shared:$Script:Shared -ShareName $item.DifferentShareName -Name $item.PrinterName -CimSession $Script:Cim `
                         -PrintProcessor $item.PrintProcessor -Comment $item.Comment -PortName $item.PortAddress -DriverName $item.PrinterDriver `
                         -Location $item.Location -RenderingMode $item.RenderingMode -Datatype $item.DataType -ErrorAction Stop
                 $Script:Jobs.Add($job.ID,$item.PrinterName)
@@ -243,6 +242,7 @@ try{
             continue
         }
     }
+    
     if($SRXEnv) {
         if($Script:Err -eq $true){
             $SRXEnv.ResultMessage = $Script:Errors

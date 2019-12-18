@@ -46,8 +46,7 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
-[string]$Properties="ID,JobStatus,DocumentName,UserName,SubmittedTime"
+$Script:Cim = $null
 try{
     [bool]$Script:result
     function CheckStatus([string] $JobStatus){
@@ -62,39 +61,29 @@ try{
             }
         }
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties) -or $Properties -eq '*'){
-        $Properties=@('*')
-    }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'ID'})){
-            $Properties += ",ID"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:Jobs = Get-PrintJob -CimSession $Script:Cim -PrinterName $PrinterName -ComputerName $ComputerName  `
-        | Select-Object $Script:props | Sort-Object ID 
-    foreach($item in $Script:Jobs)
+
+    $jobs = Get-PrintJob -CimSession $Script:Cim -PrinterName $PrinterName -ComputerName $ComputerName -ErrorAction Stop  `
+                        | Select-Object @('ID','JobStatus','DocumentName','UserName','SubmittedTime') | Sort-Object ID 
+
+    foreach($item in $jobs)
     {
         CheckStatus $item.JobStatus
         if($Script:result -eq $false){
             continue
         }
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.ID.toString()
-            $SRXEnv.ResultList2 += "$($item.DocumentName) | $($item.UserName) | $($item.SubmittedTime)"
+            $SRXEnv.ResultList.Add($item.ID.toString())
+            $SRXEnv.ResultList2.Add("$($item.DocumentName) | $($item.UserName) | $($item.SubmittedTime)")
         }
         else{
             Write-Output "$($item.DocumentName) | $($item.UserName) | $($item.SubmittedTime)"

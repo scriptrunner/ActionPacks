@@ -53,9 +53,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -99,13 +96,13 @@ Import-Module PrintManagement
 $Script:Cim=$null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'CimSession' = $Script:Cim 
@@ -116,7 +113,7 @@ try{
     if($PSCmdlet.ParameterSetName  -eq "LPR Port"){
         $cmdArgs.Add('HostName', $HostName)
         $cmdArgs.Add('PrinterName', $PrinterName)
-        Add-PrinterPort @cmdArgs
+        $null = Add-PrinterPort @cmdArgs
         $Script:Port = Get-PrinterPort -Name $PrinterName
     }
     if($PSCmdlet.ParameterSetName  -eq "TCP Port"){
@@ -138,7 +135,7 @@ try{
         }
     }
     if($null -eq $Script:Port){
-        Add-PrinterPort @cmdArgs
+        $null = Add-PrinterPort @cmdArgs
         $Script:Port = Get-PrinterPort -Name $PortName
     }
     if($SRXEnv) {

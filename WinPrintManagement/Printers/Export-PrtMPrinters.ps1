@@ -41,9 +41,7 @@
     Specifies the export of the TCP/IP port address and number
 
 .EXAMPLE
-
     .\Export-Printers.ps1 -ExportFile 'C:\Temp\printers.csv' -IncludePortProperties
-
 #>
 
 [CmdLetBinding()]
@@ -60,24 +58,25 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
+    [string[]]$Properties = @('Name','DriverName','PortName','Shared','Sharename','Comment','Location','Datatype','PrintProcessor','RenderingMode')
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount
     }
-    $Script:Printers=Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName | Where-Object {$_.Type -eq 'Local'} `
-        | Select-Object Name,DriverName,PortName,Shared,Sharename,Comment,Location,Datatype,PrintProcessor,RenderingMode `
-        | Sort-Object Name
+
+    $printers = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName -ErrorAction Stop | Where-Object {$_.Type -eq 'Local'} `
+                            | Select-Object $Properties | Sort-Object Name
     $Script:Csv=@()
     $Script:Msg=@()
     $Script:Port
-    foreach($item in $Script:Printers)
+    foreach($item in $printers)
     {
         $tmp= ([ordered] @{            
             ComputerName= $ComputerName
@@ -93,14 +92,14 @@ try{
             PrintProcessor = $item.PrintProcessor
             RenderingMode = $item.RenderingMode
         }   )
-        if($item.Shared -and $item.Sharename -ne $item.Name){
+        if($item.Shared -and ($item.Sharename -ne $item.Name)){
             $tmp.DifferentShareName = $item.Sharename
         }
         if($IncludeTcpIpPortProperties){
             try{
-                $Script:Port=Get-PrinterPort -CimSession $Script:Cim -Name $item.PortName -ComputerName $ComputerName -ErrorAction SilentlyContinue
+                $Script:Port = Get-PrinterPort -CimSession $Script:Cim -Name $item.PortName -ComputerName $ComputerName -ErrorAction SilentlyContinue
                 if($null -ne $Script:Port.PrinterHostAddress){
-                    $tmp.PortAddress =$Script:Port.PrinterHostAddress                
+                    $tmp.PortAddress = $Script:Port.PrinterHostAddress                
                     if($null -ne $Script:Port.PortNumber){
                         $tmp.PortNumber =$Script:Port.PortNumber
                     }                
@@ -112,7 +111,7 @@ try{
         }
         $Script:Csv += New-Object PSObject -Property $tmp 
     }
-    $Script:Csv | Export-Csv -Path $ExportFile -Delimiter $Delimiter -Encoding $FileEncoding -Force -NoTypeInformation 
+    $Script:Csv | Export-Csv -Path $ExportFile -Delimiter $Delimiter -Encoding $FileEncoding -Force -NoTypeInformation -ErrorAction Stop 
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Printers exported in file: $($ExportFile)" + $Script:Msg
@@ -121,7 +120,6 @@ try{
         Write-Output "Printers exported in file: $($ExportFile)" 
         Write-Output $Script:Msg
     }
-  #  Write-Output $Script:Printers
 }
 catch{
     throw

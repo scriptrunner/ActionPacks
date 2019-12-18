@@ -32,7 +32,6 @@
 
 .Parameter InfFilePath
     Specifies the path of the printer driver INF file in the driver store. INF files contain information about the printer and the printer driver.
-
 #>
 
 [CmdLetBinding()]
@@ -46,19 +45,17 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
+    [string[]]$Properties = @("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor") 
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('InfFilePath') -eq $true){
         Add-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -InfPath $InfFilePath -ErrorAction Stop
@@ -67,14 +64,13 @@ try{
         Add-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -ErrorAction Stop
     }
     
-    $Script:Driver =Get-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName  `
-        | Select-Object @("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor") 
-
+    $driver = Get-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -ErrorAction Stop  `
+                        | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Driver
+        $SRXEnv.ResultMessage = $driver
     }
     else{
-        Write-Output $Script:Driver
+        Write-Output $driver
     }
 }
 catch{

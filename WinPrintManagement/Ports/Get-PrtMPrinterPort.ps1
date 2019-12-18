@@ -32,9 +32,6 @@
 
 .Parameter Properties
     List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -43,38 +40,35 @@ Param(
     [string]$PortName,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties="Caption,Description,Status"
+    [ValidateSet('*','Caption','Description','Status','Name')]
+    [string[]]$Properties = @('Caption','Description','Status')
 )
 
 Import-Module PrintManagement
 
 $Script:Cim=$null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
+    if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
+        $Properties += "Name"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Port =Get-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -Name $PortName  `
-        | Select-Object $Script:props | Sort-Object Name | Format-List    
+
+    $port = Get-PrinterPort -CimSession $Script:Cim -ComputerName $ComputerName -Name $PortName -ErrorAction Stop  `
+                                | Select-Object $Properties | Sort-Object Name | Format-List    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Port
+        $SRXEnv.ResultMessage = $port
     }
     else{
-        Write-Output $Script:Port
+        Write-Output $port
     }
 }
 catch{

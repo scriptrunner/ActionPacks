@@ -32,7 +32,6 @@
 
 .Parameter Properties
     List of properties to expand. Use * for all properties
-
 #>
 
 [CmdLetBinding()]
@@ -41,33 +40,31 @@ Param(
     [string]$DriverName,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string[]]$Properties=@("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor")
-    )
+    [ValidateSet('*','Name','Description','InfPath','ConfigFile', 'MajorVersion','PrinterEnvironment','PrintProcessor')]
+    [string[]]$Properties = @("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor")
+)
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
-    if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+    if([System.String]::IsNullOrWhiteSpace($ComputerName)){
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Driver =Get-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName  `
-        | Select-Object $Properties | Sort-Object Name
-    
+
+    $driver =Get-PrinterDriver -CimSession $Script:Cim -Name $DriverName -ComputerName $ComputerName -ErrorAction Stop  `
+        | Select-Object $Properties | Sort-Object Name    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Driver
+        $SRXEnv.ResultMessage = $driver
     }
     else{
-        Write-Output $Script:Driver
+        Write-Output $driver
     }
 }
 catch{

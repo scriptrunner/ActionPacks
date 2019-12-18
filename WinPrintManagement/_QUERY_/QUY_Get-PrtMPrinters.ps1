@@ -40,7 +40,7 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
@@ -54,22 +54,16 @@ try{
     [string]$filter ="*"
     if(-not [System.String]::IsNullOrWhiteSpace($PrinterFilter)){
         $filter = "*$($PrinterFilter)*"
-    }
-    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:Printers = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName | Where-Object {$_.Type -eq 'Local'} `
-        | Select-Object Name,DriverName,PortName,Shared,Sharename,Comment,Location,Datatype,PrintProcessor,RenderingMode `
-        | Where-Object {$_.Name -like $filter} `
-        | Sort-Object Name
+    }   
+   
+    $result = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName -ErrorAction Stop | Where-Object {$_.Type -eq 'Local'} `
+        | Select-Object Name | Where-Object {$_.Name -like $filter} | Sort-Object Name
 
-    foreach($item in $Script:Printers)
+    foreach($item in $result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += $item.Name
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add($item.Name)
         }
         else{
             Write-Output $item.name

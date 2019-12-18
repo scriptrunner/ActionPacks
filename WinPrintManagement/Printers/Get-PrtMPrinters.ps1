@@ -29,7 +29,6 @@
 
 .Parameter IncludeTcpIpPortProperties
     Specifies get the TCP/IP port address and number
-
 #>
 
 [CmdLetBinding()]
@@ -41,24 +40,25 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
+    [string[]]$Properties = @('Name','DriverName','PortName','Shared','Sharename','Comment','Location','Datatype','PrintProcessor','RenderingMode')
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Printers = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName | Where-Object {$_.Type -eq 'Local'} `
-        | Select-Object Name,DriverName,PortName,Shared,Sharename,Comment,Location,Datatype,PrintProcessor,RenderingMode `
-        | Sort-Object Name
+
+    $printers = Get-Printer -Full -CimSession $Script:Cim -ComputerName $ComputerName -ErrorAction Stop | Where-Object {$_.Type -eq 'Local'} `
+                                    | Select-Object $Properties | Sort-Object Name
     $Script:Csv=@()
     $Script:Msg=@()
     $Script:Port
-    foreach($item in $Script:Printers)
+    foreach($item in $printers)
     {
         $tmp= ([ordered] @{            
             ComputerName= $ComputerName
@@ -79,7 +79,7 @@ try{
         }
         if($IncludeTcpIpPortProperties){
             try{
-                $Script:Port=Get-PrinterPort -CimSession $Script:Cim -Name $item.PortName -ComputerName $ComputerName -ErrorAction SilentlyContinue
+                $Script:Port = Get-PrinterPort -CimSession $Script:Cim -Name $item.PortName -ComputerName $ComputerName -ErrorAction SilentlyContinue
                 if($null -ne $Script:Port.PrinterHostAddress){
                     $tmp.PortAddress =$Script:Port.PrinterHostAddress                
                     if($null -ne $Script:Port.PortNumber){
@@ -93,13 +93,13 @@ try{
         }
         $Script:Csv += New-Object PSObject -Property $tmp 
     }
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Csv
     }
     else{
         Write-Output $Script:Csv
     }
-  #  Write-Output $Script:Printers
 }
 catch{
     throw

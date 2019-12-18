@@ -41,7 +41,6 @@
 
 .Parameter PaperSize
     Specifies the paper size the printer uses by default
-
 #>
    
 [CmdLetBinding()]
@@ -68,13 +67,14 @@ Param(
 )
 
 Import-Module PrintManagement
-$Script:Cim =$null
+
+$Script:Cim = $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
         $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
@@ -84,16 +84,16 @@ try{
                             'ComputerName' = $ComputerName 
                             'CimSession' = $Script:Cim}
     if($PSBoundParameters.ContainsKey('Collate') -eq $true){
-        Set-PrintConfiguration @cmdArgs -Collate $Collate
+        $null = Set-PrintConfiguration @cmdArgs -Collate $Collate
     }
     if($PSBoundParameters.ContainsKey('Color') -eq $true){
-        Set-PrintConfiguration @cmdArgs -Color $Color
+        $null = Set-PrintConfiguration @cmdArgs -Color $Color
     }
     if($PSBoundParameters.ContainsKey('DuplexingMode') -eq $true){
-        Set-PrintConfiguration @cmdArgs -DuplexingMode $DuplexingMode
+        $null = Set-PrintConfiguration @cmdArgs -DuplexingMode $DuplexingMode
     }
     if($PSBoundParameters.ContainsKey('PaperSize') -eq $true){
-        Set-PrintConfiguration @cmdArgs -PaperSize $PaperSize
+        $null = Set-PrintConfiguration @cmdArgs -PaperSize $PaperSize
     }
 
     if($SRXEnv) {

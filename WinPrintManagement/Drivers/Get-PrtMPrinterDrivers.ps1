@@ -29,40 +29,37 @@
 
 .Parameter Properties
     List of properties to expand. Use * for all properties
-
 #>
 
 [CmdLetBinding()]
 Param(
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string[]]$Properties=@("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor")
-    )
+    [ValidateSet('*','Name','Description','InfPath','ConfigFile', 'MajorVersion','PrinterEnvironment','PrintProcessor')]
+    [string[]]$Properties = @('Name','Description','InfPath','ConfigFile', 'MajorVersion','PrinterEnvironment','PrintProcessor')
+)
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount
     }
-    $Script:Drivers =Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName  `
-        | Select-Object $Properties | Sort-Object Name
-    
+
+    $drivers = Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName -ErrorAction Stop  `
+                                    | Select-Object $Properties | Sort-Object Name    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Drivers 
+        $SRXEnv.ResultMessage = $drivers 
     }
     else{
-        Write-Output $Script:Drivers
+        Write-Output $drivers
     }
 }
 catch{

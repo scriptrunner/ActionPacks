@@ -29,7 +29,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
 #>
    
 [CmdLetBinding()]
@@ -40,18 +39,19 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim =$null
+$Script:Cim = $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    Remove-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName  -ErrorAction Stop    
+    
+    $null = Remove-Printer -CimSession $Script:Cim -Name $PrinterName -ComputerName $ComputerName -ErrorAction Stop    
     if($SRXEnv) {
         $SRXEnv.ResultMessage ="Printer $($PrinterName) removed from $($ComputerName)"
     }

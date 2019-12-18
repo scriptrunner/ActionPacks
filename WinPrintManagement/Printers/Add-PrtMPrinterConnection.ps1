@@ -34,15 +34,14 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Output=@()
 try{
-    Add-Printer -ConnectionName $ConnectionName -ErrorAction Stop
-    $Script:Output += "Add printer: $($ConnectionName) succeeded"
+    $null = Add-Printer -ConnectionName $ConnectionName -ErrorAction Stop
+    [string]$result = "Add printer: $($ConnectionName) succeeded"
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Output
+        $SRXEnv.ResultMessage = $result
     } 
     else {
-        Write-Output $Script:Output   
+        Write-Output $result
     }    
 }
 catch{

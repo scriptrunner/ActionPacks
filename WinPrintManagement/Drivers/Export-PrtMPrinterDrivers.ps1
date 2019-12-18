@@ -37,9 +37,7 @@
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .EXAMPLE
-
     .\Export-PrinterDrivers.ps1 -ExportFile 'C:\Temp\drivers.csv'
-
 #>
 
 [CmdLetBinding()]
@@ -55,30 +53,30 @@ Param(
 
 Import-Module PrintManagement
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Drivers =Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName  `
+    $drivers = Get-PrinterDriver -CimSession $Script:Cim -ComputerName $ComputerName -ErrorAction Stop  `
         | Select-Object Name,DriverName,InfPath | Sort-Object Name
-    $Script:Csv=@()
-    foreach($item in $Script:Drivers)
-    {
+    
+    $Script:Csv = @()
+    foreach($item in $drivers) {
         $tmp= ([ordered] @{            
             DriverName = $item.Name
-            ComputerName= $ComputerName
-            InfFilePath= $item.InfPath
+            ComputerName = $ComputerName
+            InfFilePath = $item.InfPath
         }   )
         $Script:Csv += New-Object PSObject -Property $tmp 
     }
-    $Script:Csv | Export-Csv -Path $ExportFile -Delimiter $Delimiter -Encoding $FileEncoding -Force -NoTypeInformation 
+    $Script:Csv | Export-Csv -Path $ExportFile -Delimiter $Delimiter -Encoding $FileEncoding -Force -NoTypeInformation -ErrorAction Stop 
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Printer drivers exported in file: $($ExportFile)" 

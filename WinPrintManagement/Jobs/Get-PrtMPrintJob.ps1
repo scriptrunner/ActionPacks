@@ -35,9 +35,6 @@
 
 .Parameter Properties
     List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -48,38 +45,35 @@ Param(
     [int]$JobID,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties="ID,JobStatus,DocumentName,UserName,Position,Size,PagesPrinted,TotalPages,SubmittedTime,Priority"
+    [ValidateSet('*','ID','JobStatus','DocumentName','UserName','Position','Size','PagesPrinted','TotalPages','SubmittedTime','Priority')]
+    [string[]]$Properties = @('ID','JobStatus','DocumentName','UserName','Position','Size','PagesPrinted','TotalPages','SubmittedTime','Priority')
 )
 
 Import-Module PrintManagement
 
 $Script:Cim=$null
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
+    if($null -eq ($Properties | Where-Object {$_ -like 'ID'})){
+        $Properties += "ID"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'ID'})){
-            $Properties += ",ID"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Jobs =Get-PrintJob -CimSession $Script:Cim -PrinterName $PrinterName -ComputerName $ComputerName -ID $JobID  `
-        | Select-Object $Script:props | Sort-Object ID | Format-List    
+
+    $jobs = Get-PrintJob -CimSession $Script:Cim -PrinterName $PrinterName -ComputerName $ComputerName -ID $JobID -ErrorAction Stop  `
+                            | Select-Object $Properties | Sort-Object ID | Format-List    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Jobs 
+        $SRXEnv.ResultMessage = $jobs 
     }
     else{
-        Write-Output $Script:Jobs
+        Write-Output $jobs
     }
 }
 catch{

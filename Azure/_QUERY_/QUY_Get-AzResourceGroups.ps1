@@ -55,12 +55,12 @@ try{
         if($SRXEnv) {
             $key
             if($GetIDs -eq $true){
-                $SRXEnv.ResultList.Add($grp.ResourceId)
+                $null = $SRXEnv.ResultList.Add($grp.ResourceId)
             }
             else{
-                $SRXEnv.ResultList.Add($grp.ResourceGroupName)
+                $null = $SRXEnv.ResultList.Add($grp.ResourceGroupName)
             }
-            $SRXEnv.ResultList2.Add($grp.ResourceGroupName) # Display
+            $null = $SRXEnv.ResultList2.Add($grp.ResourceGroupName) # Display
         }
         else{
             Write-Output $grp.ResourceGroupName

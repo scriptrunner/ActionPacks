@@ -57,8 +57,8 @@ try{
         
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm.Name) # Value
-            $SRXEnv.ResultList2.Add($itm.Name)
+            $null = $SRXEnv.ResultList.Add($itm.Name) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.Name)
         }
         else{
             Write-Output $itm.Name

@@ -52,8 +52,8 @@ try{
 
     foreach($vm in $vms){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($vm.Name)
-            $SRXEnv.ResultList2.Add($vm.Name) # Display
+            $null = $SRXEnv.ResultList.Add($vm.Name)
+            $null = $SRXEnv.ResultList2.Add($vm.Name) # Display
         }
         else{
             Write-Output $grp.ResourceGroupName

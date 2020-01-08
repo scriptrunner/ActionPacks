@@ -62,8 +62,8 @@ try{
 
     foreach($itm in $roles){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm) # Value
-            $SRXEnv.ResultList2.Add($itm)
+            $null = $SRXEnv.ResultList.Add($itm) # Value
+            $null = $SRXEnv.ResultList2.Add($itm)
         }
         else{
             Write-Output $itm

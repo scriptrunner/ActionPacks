@@ -77,8 +77,8 @@ try{
 
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm.Item($IDColumn)) # Value
-            $SRXEnv.ResultList2.Add($itm.Item($DisplayColumn)) # DisplayValue            
+            $null = $SRXEnv.ResultList.Add($itm.Item($IDColumn)) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.Item($DisplayColumn)) # DisplayValue            
         }
         else{
             Write-Output $itm.Item($DisplayColumn)

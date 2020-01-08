@@ -34,8 +34,8 @@ try{
 
     foreach($itm in  $cons){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm.ConnectionName) # Value
-            $SRXEnv.ResultList2.Add("$($itm.ConnectionName) State: ($($itm.ConnectionState))") # DisplayValue            
+            $null = $SRXEnv.ResultList.Add($itm.ConnectionName) # Value
+            $null = $SRXEnv.ResultList2.Add("$($itm.ConnectionName) State: ($($itm.ConnectionState))") # DisplayValue            
         }
         else{
             Write-Output "$($itm.ConnectionName) State: ($($itm.ConnectionState))"

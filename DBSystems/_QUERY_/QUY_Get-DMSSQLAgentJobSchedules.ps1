@@ -58,8 +58,8 @@ try{
     
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm.Name) # Value
-            $SRXEnv.ResultList2.Add("Schedule: $($itm.Name) - Job: $($itm.Parent)")
+            $null = $SRXEnv.ResultList.Add($itm.Name) # Value
+            $null = $SRXEnv.ResultList2.Add("Schedule: $($itm.Name) - Job: $($itm.Parent)")
         }
         else{
             Write-Output "Schedule: $($itm.Name) - Job: $($itm.Parent)"

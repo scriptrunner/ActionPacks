@@ -88,8 +88,8 @@ try{
     if($null -ne $Script:users){
         foreach($itm in  $users){
             if($SRXEnv) {            
-                $SRXEnv.ResultList.Add($itm.DistinguishedName) # Value
-                $SRXEnv.ResultList2.Add("$($itm.DisplayName) ($($itm.SamAccountName))") # DisplayValue            
+                $null = $SRXEnv.ResultList.Add($itm.DistinguishedName) # Value
+                $null = $SRXEnv.ResultList2.Add("$($itm.DisplayName) ($($itm.SamAccountName))") # DisplayValue            
             }
             else{
                 Write-Output "$($itm.DisplayName) ($($itm.SamAccountName))"

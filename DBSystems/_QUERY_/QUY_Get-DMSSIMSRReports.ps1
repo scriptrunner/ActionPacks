@@ -65,8 +65,8 @@ try{
 
     foreach($itm in  $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm.Id) # Value
-            $SRXEnv.ResultList2.Add("$($itm.DisplayName) - ($($itm.Created))") # DisplayValue            
+            $null = $SRXEnv.ResultList.Add($itm.Id) # Value
+            $null = $SRXEnv.ResultList2.Add("$($itm.DisplayName) - ($($itm.Created))") # DisplayValue            
         }
         else{
             Write-Output "$($itm.DisplayName) - ($($itm.Created))"

@@ -52,8 +52,8 @@ try{
     foreach($item in $result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.InterfaceAlias)
-            $SRXEnv.ResultList2.Add("$($item.InterfaceAlias) | $($item.IPAddress)")
+            $null = $SRXEnv.ResultList.Add($item.InterfaceAlias)
+            $null = $SRXEnv.ResultList2.Add("$($item.InterfaceAlias) | $($item.IPAddress)")
         }
         else{
             Write-Output $item.InterfaceAlias

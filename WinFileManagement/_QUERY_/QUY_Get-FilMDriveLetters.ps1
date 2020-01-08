@@ -48,8 +48,8 @@ try{
     foreach($item in $result){
         if($SRXEnv) {       
             if([System.Char]::IsLetter($item.DriveLetter.ToString().Substring(0,1))){   
-                $SRXEnv.ResultList.Add($item.DriveLetter) # Value            
-                $SRXEnv.ResultList2.Add("DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString()) - PartitionNumber:$($item.PartitionNumber.ToString())") # Display
+                $null = $SRXEnv.ResultList.Add($item.DriveLetter) # Value            
+                $null = $SRXEnv.ResultList2.Add("DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString()) - PartitionNumber:$($item.PartitionNumber.ToString())") # Display
             }
         }
         else{

@@ -45,8 +45,8 @@ try{
 
     foreach($item in $groups){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.VirtualSwitch) VLan: $($item.VLanId)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add("$($item.Name) - $($item.VirtualSwitch) VLan: $($item.VLanId)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.VirtualSwitch) VLan: $($item.VLanId)"

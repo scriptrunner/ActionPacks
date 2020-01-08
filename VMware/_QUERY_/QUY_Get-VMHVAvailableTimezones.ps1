@@ -44,8 +44,8 @@ try{
 
     foreach($item in $zones){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.Description)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add("$($item.Name) - $($item.Description)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.Description)"

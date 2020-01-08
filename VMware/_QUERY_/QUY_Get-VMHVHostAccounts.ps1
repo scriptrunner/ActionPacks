@@ -44,8 +44,8 @@ try{
 
     foreach($item in $result){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.tostring())
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.tostring())
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

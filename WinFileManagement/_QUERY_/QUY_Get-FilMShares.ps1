@@ -56,8 +56,8 @@ try{
     
     foreach($item in $Script:Shares){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name) # Value
-            $SRXEnv.ResultList2.Add($item.Path) # Display
+            $null = $SRXEnv.ResultList.Add($item.Name) # Value
+            $null = $SRXEnv.ResultList2.Add($item.Path) # Display
         }
         else{
             Write-Output $item.Name

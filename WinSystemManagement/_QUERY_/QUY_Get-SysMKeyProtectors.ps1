@@ -61,8 +61,8 @@ try{
         foreach($item in $drive.KeyProtector)
         {
             if($SRXEnv) {
-                $SRXEnv.ResultList.Add($item.KeyProtectorId)
-                $SRXEnv.ResultList2.Add("$($drive.MountPoint) - $($item.KeyProtectorType)") # Display
+                $null = $SRXEnv.ResultList.Add($item.KeyProtectorId)
+                $null = $SRXEnv.ResultList2.Add("$($drive.MountPoint) - $($item.KeyProtectorType)") # Display
             }
             else{
                 Write-Output "$($drive.MountPoint) - $($item.KeyProtectorType)"

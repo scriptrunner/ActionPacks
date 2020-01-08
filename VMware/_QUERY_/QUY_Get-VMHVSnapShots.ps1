@@ -51,8 +51,8 @@ try{
                         
     foreach($item in $shots){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

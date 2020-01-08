@@ -52,8 +52,8 @@ try{
                         
     foreach($item in $shots){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

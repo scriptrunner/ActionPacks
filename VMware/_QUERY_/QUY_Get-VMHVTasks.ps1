@@ -67,8 +67,8 @@ try{
                 $name = $item.objectid
             }
             if($SRXEnv) {
-                $SRXEnv.ResultList.Add($item.ID.toString())
-                $SRXEnv.ResultList2.Add("$($name) - $($item.Description)") # Display
+                $null = $SRXEnv.ResultList.Add($item.ID.toString())
+                $null = $SRXEnv.ResultList2.Add("$($name) - $($item.Description)") # Display
             }
             else{
                 Write-Output "$($name) - $($item.Description)"

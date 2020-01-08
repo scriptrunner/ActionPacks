@@ -43,8 +43,8 @@ try{
     $items = Get-VirtualSwitch -Server $Script:vmServer -ErrorAction Stop | Select-Object * | Sort-Object Name
     foreach($item in $items){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

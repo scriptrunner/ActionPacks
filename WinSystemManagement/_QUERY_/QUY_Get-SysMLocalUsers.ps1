@@ -51,8 +51,8 @@ try{
     foreach($item in $Script:users)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.SID.toString())
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.SID.toString())
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

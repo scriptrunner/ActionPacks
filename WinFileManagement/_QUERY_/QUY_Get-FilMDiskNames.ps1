@@ -48,8 +48,8 @@ try{
 
     foreach($item in $result){
         if($SRXEnv) {            
-            $SRXEnv.ResultList2.Add($item.Number.ToString()) # DisplayValue            
-            $SRXEnv.ResultList.Add($item.FriendlyName) # Value
+            $null = $SRXEnv.ResultList2.Add($item.Number.ToString()) # DisplayValue            
+            $null = $SRXEnv.ResultList.Add($item.FriendlyName) # Value
         }
         else{
             Write-Output $item.name

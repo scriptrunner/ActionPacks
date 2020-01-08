@@ -68,8 +68,8 @@ try{
     foreach($item in $Script:Rules)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add("$($item.DisplayName) | $($item.Direction) | $($item.Action)")
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add("$($item.DisplayName) | $($item.Direction) | $($item.Action)")
         }
         else{
             Write-Output "$($item.DisplayName) | $($item.Direction) | $($item.Action)"

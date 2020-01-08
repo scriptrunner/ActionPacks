@@ -59,8 +59,8 @@ try {
         
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2.Add("Name: $($item.Name) - Status: $($item.Status) - IPAddresses: $($item.IPAddresses)") # DisplayValue            
-                $SRXEnv.ResultList.Add($item.SwitchName) # Value
+                $null = $SRXEnv.ResultList2.Add("Name: $($item.Name) - Status: $($item.Status) - IPAddresses: $($item.IPAddresses)") # DisplayValue            
+                $null = $SRXEnv.ResultList.Add($item.SwitchName) # Value
             }
             else{
                 Write-Output $item.Name

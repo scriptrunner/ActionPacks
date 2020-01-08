@@ -69,8 +69,8 @@ try {
         
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2.Add("Name: $($item.Name) created: $($item.CreationTime)") # DisplayValue            
-                $SRXEnv.ResultList.Add($item.Name) # Value
+                $null = $SRXEnv.ResultList2.Add("Name: $($item.Name) created: $($item.CreationTime)") # DisplayValue            
+                $null = $SRXEnv.ResultList.Add($item.Name) # Value
             }
             else{
                 Write-Output $item.name

@@ -49,8 +49,8 @@ try{
         $usr = Get-ADUser -Filter{SID -eq $sid} -Properties Name | Sort-Object Name
         if([System.String]::IsNullOrWhiteSpace($usr.Name) -eq $false){
             if($SRXEnv) {            
-                $SRXEnv.ResultList.Add($sid) # Value
-                $SRXEnv.ResultList2.Add("$($usr.Name) - last use $($itm.LastUseTime)") # DisplayValue            
+                $null =  $SRXEnv.ResultList.Add($sid) # Value
+                $null = $SRXEnv.ResultList2.Add("$($usr.Name) - last use $($itm.LastUseTime)") # DisplayValue            
             }
             else{
                 Write-Output "$($usr.Name) - last use $($itm.LastUseTime)"

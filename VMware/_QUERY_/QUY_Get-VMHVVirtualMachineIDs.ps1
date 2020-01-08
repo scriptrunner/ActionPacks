@@ -44,8 +44,8 @@ try{
 
     foreach($item in $machines){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.Notes)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add("$($item.Name) - $($item.Notes)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.Notes)"

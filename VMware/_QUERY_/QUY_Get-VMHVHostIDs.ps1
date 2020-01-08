@@ -44,8 +44,8 @@ try{
 
     foreach($item in $hosts){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add("$($item.Name) - $($item.ConnectionState)/$($item.PowerState)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add("$($item.Name) - $($item.ConnectionState)/$($item.PowerState)") # Display
         }
         else{
             Write-Output "$($item.Name) - $($item.ConnectionState)/$($item.PowerState)"

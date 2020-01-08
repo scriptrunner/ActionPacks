@@ -51,8 +51,8 @@ try{
     foreach($item in $Script:result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.SequenceNumber.toString())
-            $SRXEnv.ResultList2.Add($item.Description) # Display
+            $null = $SRXEnv.ResultList.Add($item.SequenceNumber.toString())
+            $null = $SRXEnv.ResultList2.Add($item.Description) # Display
         }
         else{
             Write-Output $item.Description

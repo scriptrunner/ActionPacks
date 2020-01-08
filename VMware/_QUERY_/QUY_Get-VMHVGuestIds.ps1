@@ -47,8 +47,8 @@ try{
     foreach($item in $ids){
         if([System.String]::IsNullOrEmpty($item.GuestId) -eq $false){            
             if($SRXEnv) {
-                $SRXEnv.ResultList.Add($item.GuestId.toString())
-                $SRXEnv.ResultList2.Add($item.OSFullName) # Display
+                $null = $SRXEnv.ResultList.Add($item.GuestId.toString())
+                $null = $SRXEnv.ResultList2.Add($item.OSFullName) # Display
             }
             else{
                 Write-Output $item.OSFullName

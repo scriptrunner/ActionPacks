@@ -48,8 +48,8 @@ try{
     foreach($item in $tasks)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.TaskName)
-            $SRXEnv.ResultList2.Add("$($item.TaskName) ($($item.TaskPath))") # Display
+            $null = $SRXEnv.ResultList.Add($item.TaskName)
+            $null = $SRXEnv.ResultList2.Add("$($item.TaskName) ($($item.TaskPath))") # Display
         }
         else{
             Write-Output "$($item.TaskName) ($($item.TaskPath))"

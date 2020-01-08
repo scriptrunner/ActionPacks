@@ -43,8 +43,8 @@ try{
     $pools = Get-ResourcePool -Server $Script:vmServer -ErrorAction Stop | Sort-Object Name
     foreach($item in $pools) {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

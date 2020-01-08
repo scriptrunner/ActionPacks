@@ -37,8 +37,8 @@ try{
     foreach($item in $logs)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Log)
-            $SRXEnv.ResultList2.Add($item.LogDisplayName) # Display
+            $null = $SRXEnv.ResultList.Add($item.Log)
+            $null = $SRXEnv.ResultList2.Add($item.LogDisplayName) # Display
         }
         else{
             Write-Output $item.LogDisplayName

@@ -39,8 +39,8 @@ try{
     foreach($item in $services)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add($item.DisplayName)
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add($item.DisplayName)
         }
         else{
             Write-Output $item.DisplayName

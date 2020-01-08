@@ -82,8 +82,8 @@ try{
             continue
         }
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.ID.toString())
-            $SRXEnv.ResultList2.Add("$($item.DocumentName) | $($item.UserName) | $($item.SubmittedTime)")
+            $null = $SRXEnv.ResultList.Add($item.ID.toString())
+            $null = $SRXEnv.ResultList2.Add("$($item.DocumentName) | $($item.UserName) | $($item.SubmittedTime)")
         }
         else{
             Write-Output "$($item.DocumentName) | $($item.UserName) | $($item.SubmittedTime)"

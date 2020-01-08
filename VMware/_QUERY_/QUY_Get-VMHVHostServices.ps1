@@ -54,12 +54,12 @@ try{
     foreach($item in $services){
         if($SRXEnv) {
             if($GetKeys -eq $true){
-                $SRXEnv.ResultList.Add($item.Key)
+                $null = $SRXEnv.ResultList.Add($item.Key)
             }
             else{
-                $SRXEnv.ResultList.Add($item.Label)
+                $null = $SRXEnv.ResultList.Add($item.Label)
             }
-            $SRXEnv.ResultList2.Add($item.Label) # Display
+            $null = $SRXEnv.ResultList2.Add($item.Label) # Display
         }
         else{
             Write-Output $item.Label

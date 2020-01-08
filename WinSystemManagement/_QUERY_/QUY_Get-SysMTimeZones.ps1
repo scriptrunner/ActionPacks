@@ -30,8 +30,8 @@ try{
     foreach($item in $zones)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.ID)
-            $SRXEnv.ResultList2.Add($item.DisplayName) # Display
+            $null = $SRXEnv.ResultList.Add($item.ID)
+            $null = $SRXEnv.ResultList2.Add($item.DisplayName) # Display
         }
         else{
             Write-Output $item.DisplayName

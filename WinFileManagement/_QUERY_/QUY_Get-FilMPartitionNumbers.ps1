@@ -54,8 +54,8 @@ try{
     
     foreach($item in $result){
         if($SRXEnv) {       
-            $SRXEnv.ResultList.Add($item.PartitionNumber) # Value            
-            $SRXEnv.ResultList2.Add("PartitionNumber:$($item.PartitionNumber.ToString()) - DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString())") # Display
+            $null = $SRXEnv.ResultList.Add($item.PartitionNumber) # Value            
+            $null = $SRXEnv.ResultList2.Add("PartitionNumber:$($item.PartitionNumber.ToString()) - DriveLetter:$($item.DriveLetter) - DiskNumber:$($item.DiskNumber.ToString())") # Display
         }
         else{
             Write-Output $item.name

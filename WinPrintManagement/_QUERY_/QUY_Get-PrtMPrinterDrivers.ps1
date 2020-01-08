@@ -53,8 +53,8 @@ try{
     
     foreach($item in $result){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name) # key
-            $SRXEnv.ResultList2.Add("$($item.Name) ($($item.PrinterEnvironment))") # display value
+            $null = $SRXEnv.ResultList.Add($item.Name) # key
+            $null = $SRXEnv.ResultList2.Add("$($item.Name) ($($item.PrinterEnvironment))") # display value
         }
         else{
             Write-Output "$($item.Name) ($($item.PrinterEnvironment))" 

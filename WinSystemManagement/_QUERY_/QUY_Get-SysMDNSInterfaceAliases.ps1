@@ -48,8 +48,8 @@ try{
     foreach($item in $result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.InterfaceAlias)
-            $SRXEnv.ResultList2.Add("$($item.InterfaceAlias) | $($item.ServerAddresses)")
+            $null = $SRXEnv.ResultList.Add($item.InterfaceAlias)
+            $null = $SRXEnv.ResultList2.Add("$($item.InterfaceAlias) | $($item.ServerAddresses)")
         }
         else{
             Write-Output $item.InterfaceAlias

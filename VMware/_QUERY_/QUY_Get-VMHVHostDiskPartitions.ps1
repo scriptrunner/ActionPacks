@@ -44,8 +44,8 @@ try{
         
     foreach($item in $disks){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add("PartitionNumber: $($item.PartitionNumber) - Type: $($item.Type)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add("PartitionNumber: $($item.PartitionNumber) - Type: $($item.Type)") # Display
         }
         else{
             Write-Output "PartitionNumber: $($item.PartitionNumber) - Type: $($item.Type)"

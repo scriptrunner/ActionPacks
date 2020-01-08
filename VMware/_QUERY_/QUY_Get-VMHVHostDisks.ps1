@@ -51,8 +51,8 @@ try{
         
     foreach($item in $disks){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add("TotalSectors: $($item.TotalSectors) - DeviceName: $($item.DeviceName)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add("TotalSectors: $($item.TotalSectors) - DeviceName: $($item.DeviceName)") # Display
         }
         else{
             Write-Output "TotalSectors: $($item.TotalSectors) - DeviceName: $($item.DeviceName)"

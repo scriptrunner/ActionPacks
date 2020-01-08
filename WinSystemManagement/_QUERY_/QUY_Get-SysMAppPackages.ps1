@@ -52,8 +52,8 @@ try{
     foreach($item in $Script:packItems)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.PackageFullName)
-            $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($item.PackageFullName)
+            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

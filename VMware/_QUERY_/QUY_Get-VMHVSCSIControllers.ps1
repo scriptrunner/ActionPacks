@@ -52,8 +52,8 @@ try{
 
     foreach($item in $disks){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Name)
-            $SRXEnv.ResultList2.Add("$($item.Parent) - $($item.Name)") # Display
+            $null = $SRXEnv.ResultList.Add($item.Name)
+            $null = $SRXEnv.ResultList2.Add("$($item.Parent) - $($item.Name)") # Display
         }
         else{
             Write-Output "$($item.Parent) - $($item.Name)"

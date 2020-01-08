@@ -76,8 +76,8 @@ try{
 			$key = $vm.VMName
 			$display = "{0} | {1} - {2}" -f $vmstate, $vmname, $vm.Status
 			if ($SRXEnv) {
-				$SRXEnv.ResultList.Add($key)
-				$SRXEnv.ResultList2.Add($display)
+				$null = $SRXEnv.ResultList.Add($key)
+				$null = $SRXEnv.ResultList2.Add($display)
 			}
 			else {
 				Write-Output "$($key) = $($display)"

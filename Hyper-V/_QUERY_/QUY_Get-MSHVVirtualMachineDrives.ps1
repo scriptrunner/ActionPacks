@@ -70,8 +70,8 @@ try {
         if(($DriveType -eq 'All') -or ($DriveType -eq "Floppy") ){
             $Script:result = Get-VMFloppyDiskDrive -VM $Script:VM -ErrorAction Stop | Select-Object *
             foreach($item in $Script:result){
-                $SRXEnv.ResultList2.Add("Floppy-Disk Name: $($item.Name) - Path: $($item.Path)") # DisplayValue            
-                $SRXEnv.ResultList.Add($item.Path) # Value
+                $null = $SRXEnv.ResultList2.Add("Floppy-Disk Name: $($item.Name) - Path: $($item.Path)") # DisplayValue            
+                $null = $SRXEnv.ResultList.Add($item.Path) # Value
             }
         }
     }

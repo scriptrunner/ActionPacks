@@ -54,8 +54,8 @@ try{
     foreach($item in $Script:result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.BackupSetID)
-            $SRXEnv.ResultList2.Add($item.BackupTime) # Display
+            $null = $SRXEnv.ResultList.Add($item.BackupSetID)
+            $null = $SRXEnv.ResultList2.Add($item.BackupTime) # Display
         }
         else{
             Write-Output $item.BackupTime

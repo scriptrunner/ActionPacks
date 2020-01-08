@@ -45,8 +45,8 @@ try{
 
     foreach($item in $adapters){
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.NetworkName)
-            $SRXEnv.ResultList2.Add($item.NetworkName) # Display
+            $null = $SRXEnv.ResultList.Add($item.NetworkName)
+            $null = $SRXEnv.ResultList2.Add($item.NetworkName) # Display
         }
         else{
             Write-Output $item.NetworkName

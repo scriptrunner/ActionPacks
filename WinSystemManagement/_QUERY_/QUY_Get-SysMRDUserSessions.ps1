@@ -55,8 +55,8 @@ try{
         if(([System.Char]::IsLetter($item.UserName.ToCharArray()[0])) -and `
             [System.Char]::IsDigit($item.ID.ToCharArray()[0])){
                 if($SRXEnv) {
-                    $SRXEnv.ResultList.Add($item.ID.toString())
-                    $SRXEnv.ResultList2.Add($item.UserName) # Display
+                    $null = $SRXEnv.ResultList.Add($item.ID.toString())
+                    $null = $SRXEnv.ResultList2.Add($item.UserName) # Display
                 }
                 else{
                     Write-Output $UserName

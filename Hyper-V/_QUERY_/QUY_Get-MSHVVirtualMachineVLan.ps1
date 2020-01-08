@@ -63,8 +63,8 @@ try {
         
         foreach($item in $Script:result){
             if($SRXEnv) {            
-                $SRXEnv.ResultList2.Add("AccessVlanId: $($item.AccessVlanId) - OperationMode: $($item.OperationMode) - IsTemplate: $($item.IsTemplate)") # DisplayValue            
-                $SRXEnv.ResultList.Add($item.AccessVlanId) # Value
+                $null = $SRXEnv.ResultList2.Add("AccessVlanId: $($item.AccessVlanId) - OperationMode: $($item.OperationMode) - IsTemplate: $($item.IsTemplate)") # DisplayValue            
+                $null = $SRXEnv.ResultList.Add($item.AccessVlanId) # Value
             }
             else{
                 Write-Output $item.Name

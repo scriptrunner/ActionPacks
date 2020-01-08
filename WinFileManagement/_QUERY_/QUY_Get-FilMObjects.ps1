@@ -63,11 +63,11 @@ try{
     foreach($item in $Script:childs){
         if($SRXEnv) {
             [string]$tmp = $item.FullName
-            $SRXEnv.ResultList.Add($tmp) # Value
+            $null = $SRXEnv.ResultList.Add($tmp) # Value
             if($tmp.StartsWith($StartObjectName,[System.StringComparison]::OrdinalIgnoreCase) -eq $true){
                 $tmp= ("." + $tmp.Substring($StartObjectName.Length))
             }
-            $SRXEnv.ResultList2.Add($tmp) # Display
+            $null = $SRXEnv.ResultList2.Add($tmp) # Display
         }
         else{
             Write-Output $item.name

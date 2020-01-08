@@ -42,8 +42,8 @@ try{
     foreach($item in $sources)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Source)
-            $SRXEnv.ResultList2.Add($item.Source) # Display
+            $null = $SRXEnv.ResultList.Add($item.Source)
+            $null = $SRXEnv.ResultList2.Add($item.Source) # Display
         }
         else{
             Write-Output $item.Source

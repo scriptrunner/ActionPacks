@@ -49,8 +49,8 @@ try{
     foreach($item in $Script:processes)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList.Add($item.Id.toString())
-            $SRXEnv.ResultList2.Add("$($item.ProcessName) ($($UserName))") # Display
+            $null = $SRXEnv.ResultList.Add($item.Id.toString())
+            $null = $SRXEnv.ResultList2.Add("$($item.ProcessName) ($($UserName))") # Display
         }
         else{
             Write-Output "$($item.ProcessName) ($($UserName))"

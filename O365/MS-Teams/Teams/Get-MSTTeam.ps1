@@ -41,7 +41,7 @@
     Filters to return teams with a set "visibility" value
     
 .Parameter Properties
-    List of comma separated properties to expand. Use * for all properties
+    List of properties to expand. Use * for all properties
 
 .Parameter TenantID
     Specifies the ID of a tenant
@@ -57,7 +57,8 @@ Param(
     [string]$MailNickName,
     [ValidateSet('Public','Private')]
     [string]$Visibility,
-    [string]$Properties = "GroupId,DisplayName,Description,Visibility,MailNickName,Archived",
+    [ValidateSet('*','GroupId','DisplayName','Description','Visibility','MailNickName','Archived')]
+    [string[]]$Properties = @('GroupId','DisplayName','Description','Visibility','MailNickName','Archived'),
     [string]$TenantID
 )
 
@@ -65,9 +66,6 @@ Import-Module microsoftteams
 
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'Archived' = $Archived

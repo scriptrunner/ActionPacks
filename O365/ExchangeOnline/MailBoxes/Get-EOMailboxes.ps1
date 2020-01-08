@@ -36,9 +36,6 @@ param(
     [switch]$ExcludeResources
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     if($true -eq $InactiveMailboxOnly){
         $box = Get-Mailbox -InactiveMailboxOnly -SortBy DisplayName | `
@@ -70,6 +67,9 @@ try{
             Write-Output "No Mailboxes found"
         }
     }
+}
+catch{
+    throw
 }
 finally{
     

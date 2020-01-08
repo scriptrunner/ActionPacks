@@ -44,7 +44,7 @@ try{
         $Script:Grp = Get-AzureADGroup -All $true | Where-Object {$_.Displayname -eq $GroupName} 
     }
     if($null -ne $Script:Grp){
-        Remove-AzureADGroup -ObjectId $Script:Grp.ObjectId 
+        $null = Remove-AzureADGroup -ObjectId $Script:Grp.ObjectId 
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Group $($Script:Grp.DisplayName) removed"
         } 

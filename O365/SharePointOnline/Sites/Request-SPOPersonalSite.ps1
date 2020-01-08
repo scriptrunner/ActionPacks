@@ -32,7 +32,8 @@
 
 param(   
     [Parameter(Mandatory = $true)]  
-    [string]$UserEmails 
+    [string]$UserEmails ,
+    [switch]$NoWait
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell

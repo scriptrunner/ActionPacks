@@ -42,27 +42,32 @@ param(
     [guid]$TenantId
 )
 
-$Script:result = @()
-$Script:Usr
-if($PSCmdlet.ParameterSetName  -eq "User object id"){
-    $Script:Usr = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object *
-}
-else{
-    $Script:Usr = Get-MsolUser -TenantId $TenantId | `
-    Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-    Select-Object *
-}
-if($null -ne $Script:Usr){
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Usr
-    } 
+try{    
+    $Script:result = @()
+    $Script:Usr
+    if($PSCmdlet.ParameterSetName  -eq "User object id"){
+        $Script:Usr = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object *
+    }
     else{
-        Write-Output $Script:Usr 
+        $Script:Usr = Get-MsolUser -TenantId $TenantId | `
+                Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                Select-Object *
+    }
+    if($null -ne $Script:Usr){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:Usr
+        } 
+        else{
+            Write-Output $Script:Usr 
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not found"
+        }    
+        Throw "User not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not found"
-    }    
-    Throw "User not found"
+catch{
+    throw
 }

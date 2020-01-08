@@ -103,39 +103,39 @@ try{
     }
     else{
         $Script:User = Get-AzureADUser -All $true | `
-        Where-Object {($_.DisplayName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-            Select-Object ObjectID,DisplayName
+            Where-Object {($_.DisplayName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                Select-Object ObjectID,DisplayName
     }
     if($null -ne $Script:User){
         if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -DisplayName $DisplayName
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -DisplayName $DisplayName
         }
         if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -GivenName $FirstName
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -GivenName $FirstName
         }
         if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -Surname $LastName
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -Surname $LastName
         }
         if($PSBoundParameters.ContainsKey('PostalCode') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -PostalCode $PostalCode
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -PostalCode $PostalCode
         }
         if($PSBoundParameters.ContainsKey('City') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -City $City
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -City $City
         }
         if($PSBoundParameters.ContainsKey('Street') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -StreetAddress $Street
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -StreetAddress $Street
         }
         if($PSBoundParameters.ContainsKey('PhoneNumber') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -TelephoneNumber $PhoneNumber
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -TelephoneNumber $PhoneNumber
         }
         if($PSBoundParameters.ContainsKey('MobilePhone') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -Mobile $MobilePhone
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -Mobile $MobilePhone
         }
         if($PSBoundParameters.ContainsKey('Department') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -Department $Department
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -Department $Department
         }
         if($PSBoundParameters.ContainsKey('Enabled') -eq $true ){
-            Set-AzureADUser -ObjectId $Script:User.ObjectId -AccountEnabled $Enabled
+            $null = Set-AzureADUser -ObjectId $Script:User.ObjectId -AccountEnabled $Enabled
         }
         $Script:User = Get-AzureADUser -ObjectId $Script:User.ObjectId | Select-Object *
         if($SRXEnv) {

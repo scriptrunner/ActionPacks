@@ -82,7 +82,7 @@ try{
     $Script:Role
     foreach($id in $RoleIds){
         try{
-            $Script:Role =Get-AzureADDirectoryRole -ObjectId $id | Select-Object ObjectID,DisplayName
+            $Script:Role = Get-AzureADDirectoryRole -ObjectId $id | Select-Object ObjectID,DisplayName
         }
         catch{
             $Script:result += "Error: Role $($id) not found "
@@ -101,7 +101,7 @@ try{
                     continue
                 }
                 try{
-                    Add-AzureADDirectoryRoleMember -ObjectId $Script:Role.ObjectID -RefObjectId $usr.ObjectID -ErrorAction Stop
+                    $null = Add-AzureADDirectoryRoleMember -ObjectId $Script:Role.ObjectID -RefObjectId $usr.ObjectID -ErrorAction Stop
                     $Script:result += "User $($usr.DisplayName) added to Role $($Script:Role.DisplayName)"
                 }
                 catch{

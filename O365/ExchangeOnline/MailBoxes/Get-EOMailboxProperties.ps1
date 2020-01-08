@@ -30,16 +30,11 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$MailboxId,
+    [ValidateSet('*','DisplayName','FirstName','LastName','Office', 'Phone','WindowsEmailAddress','AccountDisabled','DistinguishedName','Alias','Guid','ResetPasswordOnNextLogon','UserPrincipalName')]
     [string[]]$Properties=@("DisplayName","FirstName","LastName","Office", "Phone","WindowsEmailAddress","AccountDisabled","DistinguishedName","Alias","Guid","ResetPasswordOnNextLogon","UserPrincipalName")
 )
 
-#Clear
-#$ErrorActionPreference = 'Stop'
-
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
     $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
     if($null -ne $res){        
         if($SRXEnv) {
@@ -55,6 +50,9 @@ try{
         } 
         Throw  "Mailbox $($MailboxId) not found"
     }
+}
+catch{
+    throw
 }
 Finally{
    

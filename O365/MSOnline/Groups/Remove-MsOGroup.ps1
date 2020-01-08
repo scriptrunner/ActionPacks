@@ -42,24 +42,29 @@ param(
     [guid]$TenantId
 )
 
-if($PSCmdlet.ParameterSetName  -eq "Group object id"){
-    $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  
-}
-else{
-    $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} 
-}
-if($null -ne $Script:Grp){
-    Remove-MsolGroup -ObjectId $Script:Grp.ObjectId -TenantId $TenantId -Force
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($Script:Grp.DisplayName) removed"
-    } 
+try{
+    if($PSCmdlet.ParameterSetName  -eq "Group object id"){
+        $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  
+    }
     else{
-        Write-Output "Group $($Script:Grp.DisplayName) removed"
+        $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} 
+    }
+    if($null -ne $Script:Grp){
+        $null = Remove-MsolGroup -ObjectId $Script:Grp.ObjectId -TenantId $TenantId -Force
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($Script:Grp.DisplayName) removed"
+        } 
+        else{
+            Write-Output "Group $($Script:Grp.DisplayName) removed"
+        }
+    }
+    else {
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group not found"
+        } 
+        Throw "Group not found"
     }
 }
-else {
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group not found"
-    } 
-    Throw "Group not found"
+catch{
+    throw
 }

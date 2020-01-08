@@ -50,37 +50,38 @@ param(
     [string]$WindowsEmailAddress
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
-        $box = New-Mailbox -Name  $Name -Room -Force
-        if($null -ne $box){
-            if(-not [System.String]::IsNullOrWhiteSpace($Alias)){
-                Set-Mailbox -Identity $Name -Alias $Alias
-            }
-            if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-                Set-Mailbox -Identity $Name -DisplayName $DisplayName
-            }
-            if($PSBoundParameters.ContainsKey('ResourceCapacity') -eq $true ){
-                Set-Mailbox -Identity $Name -ResourceCapacity $ResourceCapacity
-            }
-            if(-not [System.String]::IsNullOrWhiteSpace($WindowsEmailAddress)){
-                Set-Mailbox -Identity $Name -WindowsEmailAddress $WindowsEmailAddress
-            }
-            if($PSBoundParameters.ContainsKey('AccountDisabled') -eq $true ){
-                Set-Mailbox -Identity $Name -AccountDisabled $AccountDisabled.ToBool() -Confirm:$false
-            }
-            $resultMessage = @()
-            $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `
-                    Select-Object AccountDisabled,Alias,DisplayName,ResourceCapacity,WindowsEmailAddress            
-            if($SRXEnv) {
-                $SRXEnv.ResultMessage = $resultMessage  
-            }
-            else{
-                Write-Output $resultMessage
-            }
+    [string[]]$Properties = @('AccountDisabled','Alias','DisplayName','ResourceCapacity','WindowsEmailAddress')
+
+    $box = New-Mailbox -Name  $Name -Room -Force
+    if($null -ne $box){
+        if(-not [System.String]::IsNullOrWhiteSpace($Alias)){
+            $null = Set-Mailbox -Identity $Name -Alias $Alias
         }
+        if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
+            $null = Set-Mailbox -Identity $Name -DisplayName $DisplayName
+        }
+        if($PSBoundParameters.ContainsKey('ResourceCapacity') -eq $true ){
+            $null = Set-Mailbox -Identity $Name -ResourceCapacity $ResourceCapacity
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($WindowsEmailAddress)){
+            $null = Set-Mailbox -Identity $Name -WindowsEmailAddress $WindowsEmailAddress
+        }
+        if($PSBoundParameters.ContainsKey('AccountDisabled') -eq $true ){
+            $null = Set-Mailbox -Identity $Name -AccountDisabled $AccountDisabled.ToBool() -Confirm:$false
+        }
+        
+        $resultMessage = Get-Mailbox -Identity $box.UserPrincipalName | Select-Object $Properties            
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $resultMessage  
+        }
+        else{
+            Write-Output $resultMessage
+        }
+    }
+}
+catch{
+    throw
 }
 finally{
    

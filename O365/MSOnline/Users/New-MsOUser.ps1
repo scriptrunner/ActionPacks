@@ -93,22 +93,27 @@ param(
     [guid]$TenantId
 )
 
-$Script:User = New-MsolUser -UserPrincipalName $UserPrincipalName -TenantId $TenantId -DisplayName $DisplayName -BlockCredential (-not $Enabled) `
-                -City $City -Department $Department -FirstName $FirstName -LastName $LastName -MobilePhone -$MobilePhone -PhoneNumber $PhoneNumber `
-                -Office $Office -PasswordNeverExpires $PasswordNeverExpires.ToBool() -PostalCode $PostalCode -StreetAddress $Street -Password $Password `
-                -ForceChangePassword $ForceChangePassword.ToBool() | Select-Object *
-if($null -ne $Script:User){
-    $Script:User = Get-MsolUser -TenantId $TenantId | Where-Object {$_.UserPrincipalName -eq $UserPrincipalName} | Select-Object *
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:User
-    } 
+try{
+    $Script:User = New-MsolUser -UserPrincipalName $UserPrincipalName -TenantId $TenantId -DisplayName $DisplayName -BlockCredential (-not $Enabled) `
+                            -City $City -Department $Department -FirstName $FirstName -LastName $LastName -MobilePhone -$MobilePhone -PhoneNumber $PhoneNumber `
+                            -Office $Office -PasswordNeverExpires $PasswordNeverExpires.ToBool() -PostalCode $PostalCode -StreetAddress $Street -Password $Password `
+                            -ForceChangePassword $ForceChangePassword.ToBool() | Select-Object *
+    if($null -ne $Script:User){
+        $Script:User = Get-MsolUser -TenantId $TenantId | Where-Object {$_.UserPrincipalName -eq $UserPrincipalName} | Select-Object *
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:User
+        } 
+        else{
+            Write-Output $Script:User 
+        }
+    }
     else{
-        Write-Output $Script:User 
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not created"
+        }    
+        Throw "User not created"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not created"
-    }    
-    Throw "User not created"
+catch{
+    throw
 }

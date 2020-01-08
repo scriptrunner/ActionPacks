@@ -38,7 +38,7 @@
         Displays sites of a specific template
 
     .Parameter Properties
-        List of comma separated properties to expand. Use * for all properties
+        List properties to expand. Use * for all properties
 #>
 
 param(        
@@ -56,15 +56,13 @@ param(
     [int]$Limit = 200,    
     [Parameter(ParameterSetName="Set 1")]
     [Parameter(ParameterSetName="Set 2")]
-    [string]$Properties = 'Title,Status,Url,DisableFlows,AllowEditing,LastContentModifiedDate,CommentsOnSitePagesDisabled'
+    [ValidateSet('*','Title','Status','Url','DisableFlows','AllowEditing','LastContentModifiedDate','CommentsOnSitePagesDisabled')]
+    [string[]]$Properties = @('Title','Status','Url','DisableFlows','AllowEditing','LastContentModifiedDate','CommentsOnSitePagesDisabled')
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Detailed' = $Detailed
                             }      
@@ -84,7 +82,7 @@ try{
         $cmdArgs.Add('Limit',$Limit)
     }
 
-    $result = Get-SPOSite @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Get-SPOSite @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

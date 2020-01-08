@@ -55,58 +55,63 @@ param(
     [guid]$TenantId
 )
 
-$Script:Members=@()
+try{
+    $Script:Members=@()
 
-function Get-NestedGroupMember($group) { 
-    $Script:Members += "Group: $($group.DisplayName)" 
-    if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Users')){
-        Get-MsolGroupMember -GroupObjectId $group.ObjectId -MemberObjectTypes 'User' -TenantId $TenantId | `
-            Sort-Object -Property DisplayName | ForEach-Object{
-                $Script:Members += "User: $($_.DisplayName)"
-            }
-    }
-    if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Groups')){
-        Get-MsolGroupMember -GroupObjectId $group.ObjectId -MemberObjectTypes 'Group' -TenantId $TenantId | `
-            Sort-Object -Property DisplayName | ForEach-Object{
-                if($Nested -eq $true){
-                    Get-NestedGroupMember $_
+    function Get-NestedGroupMember($group) { 
+        $Script:Members += "Group: $($group.DisplayName)" 
+        if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Users')){
+            Get-MsolGroupMember -GroupObjectId $group.ObjectId -MemberObjectTypes 'User' -TenantId $TenantId | `
+                Sort-Object -Property DisplayName | ForEach-Object{
+                    $Script:Members += "User: $($_.DisplayName)"
                 }
-                else {
-                    $Script:Members += "Group: $($_.DisplayName)"
-                }                
-            }
+        }
+        if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Groups')){
+            Get-MsolGroupMember -GroupObjectId $group.ObjectId -MemberObjectTypes 'Group' -TenantId $TenantId | `
+                Sort-Object -Property DisplayName | ForEach-Object{
+                    if($Nested -eq $true){
+                        Get-NestedGroupMember $_
+                    }
+                    else {
+                        $Script:Members += "Group: $($_.DisplayName)"
+                    }                
+                }
+        }
     }
-}
 
-if($PSCmdlet.ParameterSetName  -eq "Group object id"){
-    $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  
-}
-else{
-    $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} 
-}
-if($null -ne $Script:Grp){
-    Get-NestedGroupMember $Script:Grp
-}
-else {
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group not found"
-    } 
-    Throw "Group not found"
-}
+    if($PSCmdlet.ParameterSetName  -eq "Group object id"){
+        $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  
+    }
+    else{
+        $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} 
+    }
+    if($null -ne $Script:Grp){
+        Get-NestedGroupMember $Script:Grp
+    }
+    else {
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group not found"
+        } 
+        Throw "Group not found"
+    }
 
-if($null -ne $Script:Members){
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Members
-    } 
-    else{
-        Write-Output $Script:Members 
+    if($null -ne $Script:Members){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:Members
+        } 
+        else{
+            Write-Output $Script:Members 
+        }
+    }
+    else {
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No members found"
+        } 
+        else{
+            Write-Output "No members found"
+        }
     }
 }
-else {
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "No members found"
-    } 
-    else{
-        Write-Output "No members found"
-    }
+catch{
+    throw
 }

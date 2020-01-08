@@ -110,15 +110,12 @@ param(
     [int]$EndMinute=0 
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $box = Get-Mailbox -Identity $MailboxId
     if($null -ne $box){
         $resultMessage = @()
         if($PSCmdlet.ParameterSetName  -eq "Disable Auto Reply"){
-            Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState Disabled -Confirm:$false
+            $null = Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState Disabled -Confirm:$false
             $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
             $resultMessage += "Mailbox $($box.UserPrincipalName) disabled"
         }
@@ -147,13 +144,13 @@ try{
                 if($end.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
                     $end =$start.AddDays(1)
                 }
-                Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Scheduled' -Confirm:$false -ExternalAudience $type `
+                $null = Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Scheduled' -Confirm:$false -ExternalAudience $type `
                     -InternalMessage $InternalText -ExternalMessage $ExternalText -EndTime $end -StartTime $start
                 $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
                 $resultMessage += "Mailbox $($box.UserPrincipalName) scheduled"
             }
             else {
-                Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Enabled' -Confirm:$false -ExternalAudience $type `
+                $null = Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Enabled' -Confirm:$false -ExternalAudience $type `
                     -InternalMessage $InternalText -ExternalMessage $ExternalText 
                 $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
                 $resultMessage += "Mailbox $($box.UserPrincipalName) enabled"
@@ -172,6 +169,9 @@ try{
         } 
         Throw "Mailbox $($MailboxId) not found"
     }
+}
+catch{
+    throw
 }
 finally{
     

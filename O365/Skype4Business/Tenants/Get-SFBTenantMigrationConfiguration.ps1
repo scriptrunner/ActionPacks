@@ -28,9 +28,6 @@
 
     .Parameter TenantID
         Unique identifier for the tenant
-    
-    .Parameter Properties
-        List of comma separated properties to expand. Use * for all properties
 #>
 
 param(    

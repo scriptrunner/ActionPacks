@@ -48,26 +48,31 @@ param(
     [guid]$TenantId
 )
  
-if($PSCmdlet.ParameterSetName  -eq "User object id"){
-    $Script:Usr = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object ObjectID,DisplayName
-}
-else{
-    $Script:Usr = Get-MsolUser -TenantId $TenantId | `
-    Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-    Select-Object ObjectID,DisplayName
-}
-if($null -ne $Script:Usr){
-    Set-MsolUser -ObjectId $Script:Usr.ObjectId -BlockCredential (-not $Enabled) -TenantId $TenantId 
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User $($Script:Usr.DisplayName) lock on state set to $($Enabled.toString())"
-    } 
+try{
+    if($PSCmdlet.ParameterSetName  -eq "User object id"){
+        $Script:Usr = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object ObjectID,DisplayName
+    }
     else{
-        Write-Output "User $($Script:Usr.DisplayName) lock on state set to $($Enabled.toString())"
+        $Script:Usr = Get-MsolUser -TenantId $TenantId | `
+                            Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                            Select-Object ObjectID,DisplayName
+    }
+    if($null -ne $Script:Usr){
+        $null = Set-MsolUser -ObjectId $Script:Usr.ObjectId -BlockCredential (-not $Enabled) -TenantId $TenantId 
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User $($Script:Usr.DisplayName) lock on state set to $($Enabled.toString())"
+        } 
+        else{
+            Write-Output "User $($Script:Usr.DisplayName) lock on state set to $($Enabled.toString())"
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not found"
+        }
+        Throw  "User not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not found"
-    }
-    Throw  "User not found"
+catch{
+    throw
 }

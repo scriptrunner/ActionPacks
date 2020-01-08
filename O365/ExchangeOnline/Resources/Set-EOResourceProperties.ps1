@@ -74,52 +74,49 @@ param(
     [bool]$ScheduleOnlyDuringWorkHours
 )
 
-#Clear
-# $ErrorActionPreference='Stop'
-
 try{
+    [string[]]$Properties = @('AccountDisabled','Alias','DisplayName','ResourceCapacity','WindowsEmailAddress')
+    [string[]]$calProperties = @('AllBookInPolicy','AllowRecurringMeetings','BookingWindowInDays','EnforceSchedulingHorizon','MaximumDurationInMinutes','ScheduleOnlyDuringWorkHours')
+
     $box = Get-Mailbox -Identity $MailboxId
     if($null -ne $box){
         if(-not [System.String]::IsNullOrWhiteSpace($Alias)){
-            Set-Mailbox -Identity $MailboxId -Alias $Alias
+            $null = Set-Mailbox -Identity $MailboxId -Alias $Alias
         }
         if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-            Set-Mailbox -Identity $MailboxId -DisplayName $DisplayName
+            $null = Set-Mailbox -Identity $MailboxId -DisplayName $DisplayName
         }
         if($PSBoundParameters.ContainsKey('ResourceCapacity') -eq $true ){
-            Set-Mailbox -Identity $MailboxId -ResourceCapacity $ResourceCapacity
+            $null = Set-Mailbox -Identity $MailboxId -ResourceCapacity $ResourceCapacity
         }
         if(-not [System.String]::IsNullOrWhiteSpace($WindowsEmailAddress)){
-            Set-Mailbox -Identity $MailboxId -WindowsEmailAddress $WindowsEmailAddress
+            $null = Set-Mailbox -Identity $MailboxId -WindowsEmailAddress $WindowsEmailAddress
         }
         if($PSBoundParameters.ContainsKey('AllBookInPolicy') -eq $true ){
-            Set-CalendarProcessing -Identity $MailboxId -AllBookInPolicy $AllBookInPolicy
+            $null = Set-CalendarProcessing -Identity $MailboxId -AllBookInPolicy $AllBookInPolicy
         }
         if($PSBoundParameters.ContainsKey('AllowRecurringMeetings') -eq $true ){
-            Set-CalendarProcessing -Identity $MailboxId -AllowRecurringMeetings $AllowRecurringMeetings
+            $null = Set-CalendarProcessing -Identity $MailboxId -AllowRecurringMeetings $AllowRecurringMeetings
         }
         if($PSBoundParameters.ContainsKey('BookingWindowInDays') -eq $true ){
-            Set-CalendarProcessing -Identity $MailboxId -BookingWindowInDays $BookingWindowInDays
+            $null = Set-CalendarProcessing -Identity $MailboxId -BookingWindowInDays $BookingWindowInDays
         }      
         if($PSBoundParameters.ContainsKey('EnforceSchedulingHorizon') -eq $true ){
-            Set-CalendarProcessing -Identity $MailboxId -EnforceSchedulingHorizon $EnforceSchedulingHorizon
+            $null = Set-CalendarProcessing -Identity $MailboxId -EnforceSchedulingHorizon $EnforceSchedulingHorizon
         }
         if($PSBoundParameters.ContainsKey('MaximumDurationInMinutes') -eq $true ){
-            Set-CalendarProcessing -Identity $MailboxId -MaximumDurationInMinutes $MaximumDurationInMinutes
+            $null = Set-CalendarProcessing -Identity $MailboxId -MaximumDurationInMinutes $MaximumDurationInMinutes
         }
         if($PSBoundParameters.ContainsKey('ScheduleOnlyDuringWorkHours') -eq $true ){
-            Set-CalendarProcessing -Identity $MailboxId -ScheduleOnlyDuringWorkHours $ScheduleOnlyDuringWorkHours
+            $null = Set-CalendarProcessing -Identity $MailboxId -ScheduleOnlyDuringWorkHours $ScheduleOnlyDuringWorkHours
         }
         if($PSBoundParameters.ContainsKey('AccountDisabled') -ne $true){
             $AccountDisabled = $box.AccountDisabled
         }
-        Set-Mailbox -Identity $box.Name -AccountDisabled:$AccountDisabled -Confirm:$false
+        $null = Set-Mailbox -Identity $box.Name -AccountDisabled:$AccountDisabled -Confirm:$false
 
-        $resultMessage = @()
-        $resultMessage += Get-Mailbox -Identity $MailboxId | `
-                Select-Object AccountDisabled,Alias,DisplayName,ResourceCapacity,WindowsEmailAddress
-        $resultMessage += Get-CalendarProcessing -Identity $MailboxId | `
-                Select-Object AllBookInPolicy,AllowRecurringMeetings,BookingWindowInDays,EnforceSchedulingHorizon,MaximumDurationInMinutes,ScheduleOnlyDuringWorkHours
+        $resultMessage = Get-Mailbox -Identity $MailboxId | Select-Object $Properties
+        $resultMessage += Get-CalendarProcessing -Identity $MailboxId | Select-Object $calProperties
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $resultMessage  
         }
@@ -133,6 +130,9 @@ try{
         } 
         Throw  "Resource $($MailboxId) not found"
     }
+}
+catch{
+    throw
 }
 finally{
    

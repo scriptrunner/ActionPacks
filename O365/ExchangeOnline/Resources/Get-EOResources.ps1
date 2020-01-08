@@ -24,24 +24,26 @@
 param(
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
-$res = Get-Mailbox -SortBy DisplayName | Select-Object * | Where-Object -Property IsResource -EQ $true
-if($null -ne $res){
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $res
-    } 
+try{
+    $res = Get-Mailbox -SortBy DisplayName | Select-Object * | Where-Object -Property IsResource -EQ $true
+    if($null -ne $res){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $res
+        } 
+        else{
+            Write-Output $res 
+        }
+    }
     else{
-        Write-Output $res 
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No resources found"
+        } 
+        else{
+            Write-Output  "No resources found"
+        }
+
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "No resources found"
-    } 
-    else{
-        Write-Output  "No resources found"
-    }
-
+catch{
+    throw
 }

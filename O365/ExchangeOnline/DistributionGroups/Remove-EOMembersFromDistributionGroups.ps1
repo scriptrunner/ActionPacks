@@ -37,9 +37,6 @@ param(
     [string[]]$UserIds
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:result = @()
     $Script:err =$false
@@ -58,7 +55,7 @@ try{
             if($null -ne $GroupIds){
                 forEach($itm in $GroupIds){
                     try{
-                        $addGrp=Get-DistributionGroup -Identity $itm
+                        $addGrp = Get-DistributionGroup -Identity $itm
                     }
                     catch{
                         $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
@@ -67,7 +64,7 @@ try{
                     }
                     if($null -ne $Script:addGrp){
                         try{
-                            Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false
+                            $null = Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false
                             $Script:result += "Group $($Script:addGrp.DisplayName) removed from Distribution group $($grp.DisplayName)"
                         }
                         catch{
@@ -81,7 +78,7 @@ try{
             if($null -ne $UserIds){
                 forEach($itm in $UserIds){
                     try{
-                        $Script:usr=Get-MailUser -Identity $itm
+                        $Script:usr = Get-MailUser -Identity $itm
                     }
                     catch{
                         $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
@@ -90,7 +87,7 @@ try{
                     }
                     if($null -ne $Script:usr){
                         try{
-                            Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false
+                            $null = Remove-DistributionGroupMember -Identity $gid -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false
                             $Script:result += "User $($Script:usr.DisplayName) removed from Distribution group $($grp.DisplayName)"
                         }
                         catch{
@@ -117,6 +114,9 @@ try{
         Write-Output $Script:result 
     }
 }
-Finally{
+catch{
+    throw
+}
+finally{
     
 }

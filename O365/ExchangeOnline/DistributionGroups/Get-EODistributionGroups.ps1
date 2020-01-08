@@ -24,9 +24,6 @@
 param(
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $res = Get-DistributionGroup  | Select-Object *
        
@@ -47,6 +44,9 @@ try{
         }
     }
 }
-Finally{
+catch{
+    throw
+}
+finally{
     
 }

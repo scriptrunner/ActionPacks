@@ -42,28 +42,33 @@ param(
     [guid]$TenantId
 )
 
-$Script:User 
+try{
+    $Script:User 
 
-if([System.String]::IsNullOrWhiteSpace($UserName)){
-    $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId -ReturnDeletedUsers  | Select-Object *
-}
-else{
-    $Script:User = Get-MsolUser -TenantId $TenantId -ReturnDeletedUsers | `
-    Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-    Select-Object *
-}
-if($null -ne $Script:User){
-    $Script:User =Restore-MsolUser -ObjectId $Script:User.ObjectID -TenantId $TenantId
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage ="User $($Script:User.DisplayName) restored"
+    if([System.String]::IsNullOrWhiteSpace($UserName)){
+        $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId -ReturnDeletedUsers  | Select-Object *
     }
-    else {
-        Write-Output "User $($Script:User.DisplayName) restored"
+    else{
+        $Script:User = Get-MsolUser -TenantId $TenantId -ReturnDeletedUsers | `
+                                Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                                Select-Object *
+    }
+    if($null -ne $Script:User){
+        $Script:User = Restore-MsolUser -ObjectId $Script:User.ObjectID -TenantId $TenantId
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage ="User $($Script:User.DisplayName) restored"
+        }
+        else {
+            Write-Output "User $($Script:User.DisplayName) restored"
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not found"
+        }    
+        Throw "User not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not found"
-    }    
-    Throw "User not found"
+catch{
+    throw
 }

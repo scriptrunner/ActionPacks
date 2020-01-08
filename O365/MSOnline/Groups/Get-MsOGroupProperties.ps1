@@ -42,25 +42,30 @@ param(
     [guid]$TenantId
 )
 
-$Script:result = @()
-$Script:Grp
-if($PSCmdlet.ParameterSetName  -eq "Group object id"){
-    $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  | Select-Object *
-}
-else{
-    $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} | Select-Object *
-}
-if($null -ne $Script:Grp){
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Grp
-    } 
+try{
+    $Script:result = @()
+    $Script:Grp
+    if($PSCmdlet.ParameterSetName  -eq "Group object id"){
+        $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  | Select-Object *
+    }
     else{
-        Write-Output $Script:Grp 
+        $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} | Select-Object *
+    }
+    if($null -ne $Script:Grp){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:Grp
+        } 
+        else{
+            Write-Output $Script:Grp 
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group not found"
+        }    
+        Throw "Group not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group not found"
-    }    
-    Throw "Group not found"
+catch{
+    throw
 }

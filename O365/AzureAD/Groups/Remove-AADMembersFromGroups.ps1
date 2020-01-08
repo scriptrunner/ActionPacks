@@ -117,7 +117,7 @@ try{
                 $addGrp
                 forEach($itm in $GroupIds){
                     try{
-                        $addGrp=Get-AzureADGroup -ObjectId $itm
+                        $addGrp = Get-AzureADGroup -ObjectId $itm
                     }
                     catch{
                         $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
@@ -126,7 +126,7 @@ try{
                     }
                     if($null -ne $addGrp){
                         try{
-                            Remove-AzureADGroupMember -ObjectId $gid -MemberId $itm
+                            $null = Remove-AzureADGroupMember -ObjectId $gid -MemberId $itm
                             $Script:result += "Group $($addGrp.DisplayName) removed from Group $($grp.DisplayName)"
                         }
                         catch{
@@ -150,7 +150,7 @@ try{
                     }
                     if($null -ne $usr){
                         try{
-                            Remove-AzureADGroupMember -ObjectId $gid -MemberId $itm
+                            $null =  Remove-AzureADGroupMember -ObjectId $gid -MemberId $itm
                             $Script:result += "User $($usr.DisplayName) removed from Group $($grp.DisplayName)"
                         }
                         catch{

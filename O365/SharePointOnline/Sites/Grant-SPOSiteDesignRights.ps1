@@ -40,10 +40,11 @@ param(
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
+    [string[]]$tmp = $Principals.Split(',')
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Identity' = $Site
                             'Rights' = 'View'
-                            'Principals' = $Principals.Split(',')
+                            'Principals' = $tmp
                             }              
 
     $result = Grant-SPOSiteDesignRights @cmdArgs                      

@@ -33,19 +33,16 @@ param(
     [switch]$Enable
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $box = Get-Mailbox -Identity $MailboxId
     if($null -ne $box){
         if($Enable){
-            Enable-Mailbox -Identity $MailboxId -Archive -Confirm:$false
+            $null = Enable-Mailbox -Identity $MailboxId -Archive -Confirm:$false
         }
         else{
-            Disable-Mailbox -Identity $MailboxId -Archive -Confirm:$false
+            $null = Disable-Mailbox -Identity $MailboxId -Archive -Confirm:$false
         }
-        $res =  Get-Mailbox -Identity $MailboxId | Select-Object ArchiveStatus,UserPrincipalName,DisplayName,WindowsEmailAddress
+        $res = Get-Mailbox -Identity $MailboxId | Select-Object ArchiveStatus,UserPrincipalName,DisplayName,WindowsEmailAddress
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $res | Format-List
         } 
@@ -59,6 +56,9 @@ try{
         } 
         Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
 }
 finally{
     

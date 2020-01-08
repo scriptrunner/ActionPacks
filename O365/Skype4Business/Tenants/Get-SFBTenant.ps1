@@ -30,29 +30,27 @@
         Unique identifier for the tenant
     
     .Parameter Properties
-        List of comma separated properties to expand. Use * for all properties
+        List of properties to expand. Use * for all properties
 #>
 
 param(    
     [Parameter(Mandatory = $true)]
     [PSCredential]$SFBCredential,  
     [string]$TenantID,
-    [string]$Properties = 'DisplayName,Domains,IsValid,TenantId'
+    [ValidateSet('*',)]
+    [string[]]$Properties = @('DisplayName','Domains','IsValid','TenantId')
 )
 
 Import-Module SkypeOnlineConnector
 
 try{
     ConnectS4B -S4BCredential $SFBCredential
-
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
+    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
     if([System.String]::IsNullOrWhiteSpace($TenantID) -eq $false){
         $cmdArgs.Add('Tenant',$TenantID)
     }    
-    $result = Get-CsTenant @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Get-CsTenant @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

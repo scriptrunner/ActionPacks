@@ -47,35 +47,40 @@ param(
     [guid]$TenantId
 )
 
-if ($IsAgentRole -eq $true) {
-    if([System.String]::IsNullOrWhiteSpace($GroupType -or $GroupType -eq 'All')){
-        $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly -TenantId $TenantId -IsAgentRole
+try{    
+    if ($IsAgentRole -eq $true) {
+        if([System.String]::IsNullOrWhiteSpace($GroupType -or $GroupType -eq 'All')){
+            $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly -TenantId $TenantId -IsAgentRole
+        }
+        else {
+            $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly -GroupType $GroupType  -TenantId $TenantId -IsAgentRole
+        }
     }
     else {
-        $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly -GroupType $GroupType  -TenantId $TenantId -IsAgentRole
+        if([System.String]::IsNullOrWhiteSpace($GroupType) -or $GroupType -eq 'All'){
+            $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly  -TenantId $TenantId
+        }
+        else {
+            $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly -GroupType $GroupType  -TenantId $TenantId
+        }
     }
-}
-else {
-    if([System.String]::IsNullOrWhiteSpace($GroupType) -or $GroupType -eq 'All'){
-        $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly  -TenantId $TenantId
+    if($null -ne $Script:Grps){
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:Grps | Sort-Object -Property DisplayName | Format-List -Property DisplayName, Objectid, GroupType  
+        } 
+        else{
+            Write-Output $Script:Grps | Sort-Object -Property DisplayName | Format-List -Property DisplayName, Objectid, GroupType
+        }
     }
     else {
-        $Script:Grps = Get-MsolGroup -HasLicenseErrorsOnly:$HasLicenseErrorsOnly.ToBool() -HasErrorsOnly:$HasErrorsOnly -GroupType $GroupType  -TenantId $TenantId
-    }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No groups found"
+        } 
+        else{
+            Write-Output "No groups found"
+        }
+    }    
 }
-if($null -ne $Script:Grps){
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Grps | Sort-Object -Property DisplayName | Format-List -Property DisplayName, Objectid, GroupType  
-    } 
-    else{
-        Write-Output $Script:Grps | Sort-Object -Property DisplayName | Format-List -Property DisplayName, Objectid, GroupType
-    }
-}
-else {
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "No groups found"
-    } 
-    else{
-        Write-Output "No groups found"
-    }
+catch{
+    throw
 }

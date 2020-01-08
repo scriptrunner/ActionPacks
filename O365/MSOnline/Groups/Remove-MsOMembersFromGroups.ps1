@@ -62,122 +62,127 @@ param(
     [guid]$TenantId
 )
 
-$Script:result = @()
-$Script:err = $false
-if($PSCmdlet.ParameterSetName  -eq "Names"){
-    $GroupObjectIds=@()
-    $tmp
-    foreach($itm in $TargetGroupNames){
-        try{
-            $tmp = Get-MsolGroup -TenantId $TenantId | Where-Object -Property DisplayName -eq $itm 
-            $GroupObjectIds += $tmp.ObjectID
-        }
-        catch{
-            $Script:result += "Error: Target group $($itm) not found "
-            $Script:err = $true
-            continue
-        }
-    }
-    if($null -ne $UserNames){
-        $UserIds=@()
-        foreach($itm in $UserNames){
+try{
+    $Script:result = @()
+    $Script:err = $false
+    if($PSCmdlet.ParameterSetName  -eq "Names"){
+        $GroupObjectIds=@()
+        $tmp
+        foreach($itm in $TargetGroupNames){
             try{
-                $tmp = Get-MsolUser -TenantId $TenantId | `
-                    Where-Object {($_.DisplayName -eq $itm) -or ($_.SignInName -eq $itm) -or ($_.UserPrincipalName -eq $itm)} 
-                $UserIds += $tmp.ObjectID
+                $tmp = Get-MsolGroup -TenantId $TenantId | Where-Object -Property DisplayName -eq $itm 
+                $GroupObjectIds += $tmp.ObjectID
             }
             catch{
-                $Script:result += "Error: User $($itm) not found "
+                $Script:result += "Error: Target group $($itm) not found "
                 $Script:err = $true
                 continue
             }
         }
-    }
-    if($null -ne $GroupNames){
-        $GroupIds=@()
-        foreach($itm in $GroupNames){
-            try{
-                $tmp = Get-MsolGroup -TenantId $TenantId | Where-Object -Property DisplayName -eq $itm
-                $GroupIds += $tmp.ObjectID
-            }
-            catch{
-                $Script:result += "Error:Group $($itm) not found"
-                $Script:err = $true
-                continue
-            }
-        }
-    }
-}
-forEach($gid in $GroupObjectIds){
-    try{
-        $grp = Get-MsolGroup -ObjectId $gid -TenantId $TenantId
-    }
-    catch{
-        $Script:result += "Error: GroupObjectID $($gid) $($_.Exception.Message)"
-        $Script:err = $true
-        continue
-    }
-    if($null -ne $grp){
-        if($null -ne $GroupIds){
-            $addGrp
-            forEach($itm in $GroupIds){
+        if($null -ne $UserNames){
+            $UserIds=@()
+            foreach($itm in $UserNames){
                 try{
-                    $addGrp=Get-MsolGroup -ObjectId $itm -TenantId $TenantId
+                    $tmp = Get-MsolUser -TenantId $TenantId | `
+                        Where-Object {($_.DisplayName -eq $itm) -or ($_.SignInName -eq $itm) -or ($_.UserPrincipalName -eq $itm)} 
+                    $UserIds += $tmp.ObjectID
                 }
                 catch{
-                    $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
+                    $Script:result += "Error: User $($itm) not found "
                     $Script:err = $true
                     continue
                 }
-                if($null -ne $addGrp){
+            }
+        }
+        if($null -ne $GroupNames){
+            $GroupIds=@()
+            foreach($itm in $GroupNames){
+                try{
+                    $tmp = Get-MsolGroup -TenantId $TenantId | Where-Object -Property DisplayName -eq $itm
+                    $GroupIds += $tmp.ObjectID
+                }
+                catch{
+                    $Script:result += "Error:Group $($itm) not found"
+                    $Script:err = $true
+                    continue
+                }
+            }
+        }
+    }
+    forEach($gid in $GroupObjectIds){
+        try{
+            $grp = Get-MsolGroup -ObjectId $gid -TenantId $TenantId
+        }
+        catch{
+            $Script:result += "Error: GroupObjectID $($gid) $($_.Exception.Message)"
+            $Script:err = $true
+            continue
+        }
+        if($null -ne $grp){
+            if($null -ne $GroupIds){
+                $addGrp
+                forEach($itm in $GroupIds){
                     try{
-                        Remove-MsolGroupMember  -GroupObjectId $gid -GroupMemberObjectId $itm -GroupMemberType 'Group' -TenantId $TenantId
-                        $Script:result += "Group $($addGrp.DisplayName) removed from Group $($grp.DisplayName)"
+                        $addGrp = Get-MsolGroup -ObjectId $itm -TenantId $TenantId
                     }
                     catch{
                         $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
                         $Script:err = $true
                         continue
                     }
-                }                
+                    if($null -ne $addGrp){
+                        try{
+                            $null = Remove-MsolGroupMember  -GroupObjectId $gid -GroupMemberObjectId $itm -GroupMemberType 'Group' -TenantId $TenantId
+                            $Script:result += "Group $($addGrp.DisplayName) removed from Group $($grp.DisplayName)"
+                        }
+                        catch{
+                            $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
+                            $Script:err = $true
+                            continue
+                        }
+                    }                
+                }
             }
-        }
-        if($null -ne $UserIds){
-            $usr
-            forEach($itm in $UserIds){
-                try{
-                    $usr=Get-MsolUser -ObjectId $itm -TenantId $TenantId
-                }
-                catch{
-                    $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
-                    $Script:err = $true
-                    continue
-                }
-                if($null -ne $usr){
+            if($null -ne $UserIds){
+                $usr
+                forEach($itm in $UserIds){
                     try{
-                        Remove-MsolGroupMember -GroupObjectId $gid -GroupMemberObjectId $itm -GroupMemberType 'User' -TenantId $TenantId
-                        $Script:result += "User $($usr.DisplayName) removed from Group $($grp.DisplayName)"
+                        $usr = Get-MsolUser -ObjectId $itm -TenantId $TenantId
                     }
                     catch{
                         $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
                         $Script:err = $true
                         continue
                     }
+                    if($null -ne $usr){
+                        try{
+                            $null = Remove-MsolGroupMember -GroupObjectId $gid -GroupMemberObjectId $itm -GroupMemberType 'User' -TenantId $TenantId
+                            $Script:result += "User $($usr.DisplayName) removed from Group $($grp.DisplayName)"
+                        }
+                        catch{
+                            $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
+                            $Script:err = $true
+                            continue
+                        }
+                    }
                 }
             }
         }
+        else {
+            $Script:result += "Group $($gid) not found"
+            $Script:err = $true
+        }
     }
-    else {
-        $Script:result += "Group $($gid) not found"
-        $Script:err = $true
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $Script:result
+        if($Script:err -eq $true){
+            Throw $($Script:result -join ' ')
+        }
+    } 
+    else{    
+        Write-Output $Script:result 
     }
 }
-if($SRXEnv) {
-    $SRXEnv.ResultMessage = $Script:result
-    if($Script:err -eq $true){
-        Throw $($Script:result -join ' ')
-    }
-} 
-else{    
-    Write-Output $Script:result 
+catch{
+    throw
 }

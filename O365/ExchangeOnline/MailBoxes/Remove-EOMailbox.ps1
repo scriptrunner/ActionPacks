@@ -36,7 +36,7 @@ param(
 try{
     $box = Get-Mailbox -Identity $MailboxId | Select-Object UserPrincipalName,DisplayName
     if($null -ne $box){
-        Remove-Mailbox -Identity $box.UserPrincipalName -Permanent $Permanent.ToBool() -Confirm:$false -Force
+        $null = Remove-Mailbox -Identity $box.UserPrincipalName -Permanent $Permanent.ToBool() -Confirm:$false -Force -ErrorAction Stop
 
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Mailbox $($box.DisplayName) removed"
@@ -51,6 +51,9 @@ try{
         } 
         Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
 }
 finally{
 

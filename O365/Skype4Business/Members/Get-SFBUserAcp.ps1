@@ -34,7 +34,7 @@
         4) the user's Active Directory display name 
 
     .Parameter Properties
-        List of comma separated properties to expand. Use * for all properties
+        List of properties to expand. Use * for all properties
 #>
 
 param(    

@@ -48,31 +48,36 @@ param(
     [guid]$TenantId
 )
 
-$Script:User 
+try{
+    $Script:User 
 
-if([System.String]::IsNullOrWhiteSpace($UserName)){
-    $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object *
-}
-else{
-    $Script:User = Get-MsolUser -TenantId $TenantId | `
-    Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-    Select-Object *
-}
-if($null -ne $Script:User){
-    Remove-MsolUser -ObjectId $Script:User.ObjectID -Force -TenantId $TenantId
-    if($RemoveFromRecycleBin -eq $true){
-        Remove-MsolUser -ObjectId $Script:User.ObjectID -Force -RemoveFromRecycleBin -TenantId $TenantId
+    if([System.String]::IsNullOrWhiteSpace($UserName)){
+        $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object *
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage ="User $($Script:User.DisplayName) removed"
+    else{
+        $Script:User = Get-MsolUser -TenantId $TenantId | `
+                            Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                            Select-Object *
     }
-    else {
-        Write-Output "User $($Script:User.DisplayName) removed"
+    if($null -ne $Script:User){
+        $null = Remove-MsolUser -ObjectId $Script:User.ObjectID -Force -TenantId $TenantId
+        if($RemoveFromRecycleBin -eq $true){
+            $null = Remove-MsolUser -ObjectId $Script:User.ObjectID -Force -RemoveFromRecycleBin -TenantId $TenantId
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage ="User $($Script:User.DisplayName) removed"
+        }
+        else {
+            Write-Output "User $($Script:User.DisplayName) removed"
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not found"
+        }    
+        Throw "User not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not found"
-    }    
-    Throw "User not found"
+catch{
+    throw
 }

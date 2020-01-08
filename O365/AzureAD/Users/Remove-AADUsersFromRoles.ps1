@@ -82,7 +82,7 @@ try{
     $Script:Role
     foreach($id in $RoleIds){
         try{
-            $role =Get-AzureADDirectoryRole -ObjectId $id | Select-Object ObjectID,DisplayName
+            $role = Get-AzureADDirectoryRole -ObjectId $id | Select-Object ObjectID,DisplayName
         }
         catch{
             $Script:result += "Error: Role $($id) not found "
@@ -101,7 +101,7 @@ try{
                     continue
                 }
                 try{
-                    Remove-AzureADDirectoryRoleMember -ObjectId $role.ObjectID -MemberId $usr.ObjectID
+                    $null = Remove-AzureADDirectoryRoleMember -ObjectId $role.ObjectID -MemberId $usr.ObjectID 
                     $Script:result += "User $($usr.DisplayName) removes from Role $($role.DisplayName)"
                 }
                 catch{

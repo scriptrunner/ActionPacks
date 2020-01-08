@@ -37,7 +37,7 @@
         Enables you to limit the number of records returned
     
     .Parameter Properties
-        List of comma separated properties to expand. Use * for all properties
+        List of properties to expand. Use * for all properties
 #>
 
 param(    

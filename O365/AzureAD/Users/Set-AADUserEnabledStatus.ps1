@@ -52,7 +52,7 @@ try{
             Select-Object ObjectID,DisplayName
     }
     if($null -ne $Script:Usr){
-        Set-AzureADUser -ObjectId $Script:Usr.ObjectId -AccountEnabled $Enabled
+        $null = Set-AzureADUser -ObjectId $Script:Usr.ObjectId -AccountEnabled $Enabled
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "User $($Script:Usr.DisplayName) enabled status is $($Enabled.toString())"
         } 

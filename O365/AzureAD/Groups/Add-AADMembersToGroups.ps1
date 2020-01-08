@@ -117,7 +117,7 @@ try{
                 $addGrp
                 forEach($itm in $GroupIds){
                     try{
-                        $addGrp=Get-AzureADGroup -ObjectId $itm
+                        $addGrp = Get-AzureADGroup -ObjectId $itm
                     }
                     catch{
                         $Script:result += "Error: GroupID $($itm) $($_.Exception.Message)"
@@ -126,7 +126,7 @@ try{
                     }
                     if($null -ne $addGrp){
                         try{
-                            Add-AzureADGroupMember -ObjectId $gid -RefObjectId $itm
+                            $null = Add-AzureADGroupMember -ObjectId $gid -RefObjectId $itm
                             $Script:result += "Group $($addGrp.DisplayName) added to Group $($grp.DisplayName)"
                         }
                         catch{
@@ -141,7 +141,7 @@ try{
                 $usr
                 forEach($itm in $UserIds){
                     try{
-                        $usr= Get-AzureADUser -ObjectId $itm 
+                        $usr = Get-AzureADUser -ObjectId $itm 
                     }
                     catch{
                         $Script:result += "Error: UserID $($itm) $($_.Exception.Message)"
@@ -150,7 +150,7 @@ try{
                     }
                     if($null -ne $usr){
                         try{
-                            Add-AzureADGroupMember -ObjectId $gid -RefObjectId $itm
+                            $null = Add-AzureADGroupMember -ObjectId $gid -RefObjectId $itm
                             $Script:result += "User $($usr.DisplayName) added to Group $($grp.DisplayName)"
                         }
                         catch{

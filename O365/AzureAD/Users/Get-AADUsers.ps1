@@ -32,7 +32,7 @@ param(
  
 try{
     $Script:result = @()
-    $Script:Users =Get-AzureADUser -All $true -SearchString $SearchString | `
+    $Script:Users = Get-AzureADUser -All $true -SearchString $SearchString | `
         Select-Object DisplayName, ObjectID,UserPrincipalName,AccountEnabled -Unique | Sort-Object -Property DisplayName
     if($null -ne $Script:Users){
         foreach($usr in $Script:Users){

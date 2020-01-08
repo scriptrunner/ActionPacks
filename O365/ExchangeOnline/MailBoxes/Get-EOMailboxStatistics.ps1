@@ -33,11 +33,8 @@ param(
     [switch]$Archive
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
-    $box = Get-Mailbox  -Identity $MailboxId
+    $box = Get-Mailbox -Identity $MailboxId
     if($null -ne $box){
         $res = Get-MailboxStatistics -Identity $MailboxId -Archive:$Archive 
         if($SRXEnv) {
@@ -53,6 +50,9 @@ try{
         } 
         Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
 }
 finally{
     

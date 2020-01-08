@@ -59,10 +59,10 @@ try{
     }
     if($null -ne $Script:Grp){
         if(-not [System.String]::IsNullOrWhiteSpace($Description)){
-            Set-AzureADGroup -ObjectId $Script:Grp.ObjectId -Description $Description
+            $null = Set-AzureADGroup -ObjectId $Script:Grp.ObjectId -Description $Description
         }
         if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-            Set-AzureADGroup -ObjectId $Script:Grp.ObjectId -DisplayName $DisplayName
+            $null = Set-AzureADGroup -ObjectId $Script:Grp.ObjectId -DisplayName $DisplayName
         }
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Group $($Script:Grp.DisplayName) changed"

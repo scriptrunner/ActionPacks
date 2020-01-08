@@ -269,6 +269,7 @@ param(
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
+    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'LegacyAuthProtocolsEnabled' = $LegacyAuthProtocolsEnabled
 #                            'OrphanedPersonalSitesRetentionPeriod' = $OrphanedPersonalSitesRetentionPeriod
@@ -446,7 +447,7 @@ try{
     }
 
     $null = Set-SPOTenant @cmdArgs
-    $result = Get-SPOTenant -ErrorAction Stop | Select-Object @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
+    $result = Get-SPOTenant -ErrorAction Stop | Select-Object $Properties
       
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

@@ -30,23 +30,19 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$MailboxId,
-    [string[]]$Properties=@("DisplayName","WindowsEmailAddress","ResourceCapacity","AccountDisabled","IsMailboxEnabled","DistinguishedName","Alias","Guid","SamAccountName")
+    [ValidateSet('*','DisplayName','WindowsEmailAddress','ResourceCapacity','AccountDisabled','IsMailboxEnabled','DistinguishedName','Alias','Guid','SamAccountName')]
+    [string[]]$Properties = @('DisplayName','WindowsEmailAddress','ResourceCapacity','AccountDisabled','IsMailboxEnabled','DistinguishedName','Alias','Guid','SamAccountName')
 )
 
-#Clear
-#$ErrorActionPreference = 'Stop'
-
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties='*'
-    }
+    [string[]]$calProperties = @('AllBookInPolicy','AllowRecurringMeetings','BookingWindowInDays','EnforceSchedulingHorizon','MaximumDurationInMinutes','ScheduleOnlyDuringWorkHours')
     $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
 
     if($null -ne $res){
         $resultMessage = @()
         $resultMessage += $res
-        $res = Get-CalendarProcessing -Identity $MailboxId | `
-            Select-Object AllBookInPolicy,AllowRecurringMeetings,BookingWindowInDays,EnforceSchedulingHorizon,MaximumDurationInMinutes,ScheduleOnlyDuringWorkHours
+        $res = Get-CalendarProcessing -Identity $MailboxId | Select-Object $calProperties
+
         if($null -ne $res){        
             $resultMessage +=$res
         }
@@ -64,6 +60,8 @@ try{
         Throw  "Resource $($MailboxId) not found"
     }
 }
-Finally{
-   
+catch{
+    throw
+}
+finally{   
 }

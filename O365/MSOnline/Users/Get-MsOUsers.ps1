@@ -51,27 +51,31 @@ param(
     [guid]$TenantId
 )
  
-
-$Script:result = @()
-$Script:Users =Get-MsolUser -TenantId $TenantId -ReturnDeletedUsers:$OnlyDeletedUsers -UnlicensedUsersOnly:$OnlyUnlicensedUsers -EnabledFilter $Filter `
-    -HasErrorsOnly:$HasErrorsOnly -LicenseReconciliationNeededOnly:$LicenseReconciliationNeededOnly | `
-    Select-Object DisplayName, ObjectID,SignInName,UserPrincipalName,IsLicensed -Unique | Sort-Object -Property DisplayName
-if($null -ne $Script:Users){
-    foreach($usr in $Script:Users){
-        $Script:result += $usr
+try{
+    $Script:result = @()
+    $Script:Users = Get-MsolUser -TenantId $TenantId -ReturnDeletedUsers:$OnlyDeletedUsers -UnlicensedUsersOnly:$OnlyUnlicensedUsers -EnabledFilter $Filter `
+                                -HasErrorsOnly:$HasErrorsOnly -LicenseReconciliationNeededOnly:$LicenseReconciliationNeededOnly | `
+                                Select-Object DisplayName, ObjectID,SignInName,UserPrincipalName,IsLicensed -Unique | Sort-Object -Property DisplayName
+    if($null -ne $Script:Users){
+        foreach($usr in $Script:Users){
+            $Script:result += $usr
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:result
+        } 
+        else{
+            Write-Output $Script:result
+        }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:result
-    } 
     else{
-        Write-Output $Script:result
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "No users found"
+        }
+        else{
+            Write-Output "No users found"
+        }
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "No users found"
-    }
-    else{
-        Write-Output "No users found"
-    }
+catch{
+    throw
 }

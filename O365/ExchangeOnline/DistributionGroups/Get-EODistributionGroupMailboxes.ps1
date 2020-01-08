@@ -38,9 +38,6 @@ param(
     [string]$MemberObjectTypes='All'
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:Members=@()
     function Get-NestedGroupMember($group) { 
@@ -91,6 +88,9 @@ try{
         }
     }
 }
-Finally{
+catch{
+    throw
+}
+finally{
     
 }

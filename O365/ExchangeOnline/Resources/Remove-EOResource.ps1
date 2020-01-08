@@ -33,11 +33,8 @@ param(
     [switch]$Permanent
 )
 
-#Clear
-# $ErrorActionPreference='Stop'
-
 try{
-    Remove-Mailbox -Identity $MailboxId -Permanent:$Permanent -Force -Confirm:$false
+    $null = Remove-Mailbox -Identity $MailboxId -Permanent:$Permanent -Force -Confirm:$false
                   
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Resource $($MailboxId) removed"
@@ -45,6 +42,9 @@ try{
     else{
         Write-Output "Resource $($MailboxId) removed"
     }        
+}
+catch{
+    throw
 }
 finally{
    

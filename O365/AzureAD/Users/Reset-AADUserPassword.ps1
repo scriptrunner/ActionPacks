@@ -62,12 +62,12 @@ try{
     if($null -ne $Script:User){
         $res=@()
         if($PSBoundParameters.ContainsKey('ForceChangePasswordNextLogin') -eq $true ){
-            Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $NewPassword -ForceChangePasswordNextLogin $ForceChangePasswordNextLogin -ErrorAction Stop
+            $null = Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $NewPassword -ForceChangePasswordNextLogin $ForceChangePasswordNextLogin -ErrorAction Stop
             $res = "New password of user $($Script:User.DisplayName) is set. "
             $res += "User must change the password next time they sign in = $($ForceChangePasswordNextLogin)"
         }
         else {
-            Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $NewPassword -ErrorAction Stop
+            $null = Set-AzureADUserPassword -ObjectId $Script:User.ObjectID -Password $NewPassword -ErrorAction Stop
             $res = "New password of user $($Script:User.DisplayName) is set"
         }
         if($SRXEnv) {

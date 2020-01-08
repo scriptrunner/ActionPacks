@@ -50,8 +50,8 @@ try{
     $teams = Get-Team -ErrorAction Stop | Sort-Object -Property DisplayName    
     foreach($itm in  $teams){
         if($SRXEnv) {            
-            $SRXEnv.ResultList.Add($itm.GroupId) # Value
-            $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
+            $null = $SRXEnv.ResultList.Add($itm.GroupId) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
         }
         else{
             Write-Output $itm.DisplayName 

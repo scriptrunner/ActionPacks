@@ -118,62 +118,68 @@ param(
     [guid]$TenantId
 )
 
-if($PSCmdlet.ParameterSetName  -eq "User object id"){
-    $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object ObjectID
-}
-else{
-    $Script:User = Get-MsolUser -TenantId $TenantId | `
-    Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-    Select-Object ObjectID,DisplayName
-}
-if($null -ne $Script:User){
-    if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -DisplayName $DisplayName
+try{
+    if($PSCmdlet.ParameterSetName  -eq "User object id"){
+        $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object ObjectID
     }
-    if(-not [System.String]::IsNullOrWhiteSpace($FirstName)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -FirstName $FirstName
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($LastName)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -LastName $LastName
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($PostalCode)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -PostalCode $PostalCode
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($City)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -City $City
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($Street)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -StreetAddress $Street
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($PhoneNumber)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -PhoneNumber $PhoneNumber
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($MobilePhone)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -MobilePhone $MobilePhone
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($Office)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -Office $Office
-    }
-    if(-not [System.String]::IsNullOrWhiteSpace($Department)){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -Department $Department
-    }
-    if($PSBoundParameters.ContainsKey('PasswordNeverExpires') -eq $true ){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -PasswordNeverExpires $PasswordNeverExpires.ToBool()
-    }
-    if($PSBoundParameters.ContainsKey('Enabled') -eq $true ){
-        Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -BlockCredential (-not $Enabled)
-    }
-    $Script:User = Get-MsolUser -ObjectId $Script:User.ObjectId -TenantId $TenantId  | Select-Object *
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:User
-    } 
     else{
-        Write-Output $Script:User 
+        $Script:User = Get-MsolUser -TenantId $TenantId | `
+                            Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                            Select-Object ObjectID,DisplayName
+    }
+    if($null -ne $Script:User){
+        if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -DisplayName $DisplayName
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($FirstName)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -FirstName $FirstName
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($LastName)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -LastName $LastName
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($PostalCode)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -PostalCode $PostalCode
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($City)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -City $City
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($Street)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -StreetAddress $Street
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($PhoneNumber)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -PhoneNumber $PhoneNumber
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($MobilePhone)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -MobilePhone $MobilePhone
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($Office)){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -Office $Office
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($Department)){
+            $null =  Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -Department $Department
+        }
+        if($PSBoundParameters.ContainsKey('PasswordNeverExpires') -eq $true ){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -PasswordNeverExpires $PasswordNeverExpires.ToBool()
+        }
+        if($PSBoundParameters.ContainsKey('Enabled') -eq $true ){
+            $null = Set-MsolUser -TenantId $TenantId -ObjectId $Script:User.ObjectId -BlockCredential (-not $Enabled)
+        }
+
+        $Script:User = Get-MsolUser -ObjectId $Script:User.ObjectId -TenantId $TenantId  | Select-Object *
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = $Script:User
+        } 
+        else{
+            Write-Output $Script:User 
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not found"
+        }    
+        Throw "User not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not found"
-    }    
-    Throw "User not found"
+catch{
+    throw
 }

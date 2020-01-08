@@ -33,14 +33,11 @@ param(
     [bool]$Activate
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $box = Get-CASMailbox -Identity $MailboxId
     if($null -ne $box){
-        Set-CASMailbox -Identity $MailboxId -ActiveSyncEnabled $Activate 
-        $resultMessage =  Get-CASMailbox -Identity $MailboxId | Select-Object ActiveSyncEnabled,PrimarySmtpAddress,DisplayName
+        $null = Set-CASMailbox -Identity $MailboxId -ActiveSyncEnabled $Activate 
+        $resultMessage = Get-CASMailbox -Identity $MailboxId | Select-Object ActiveSyncEnabled,PrimarySmtpAddress,DisplayName
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $resultMessage | Format-List
         } 
@@ -54,6 +51,9 @@ try{
         } 
         Throw  "Mailbox not found"
     }
+}
+catch{
+    throw
 }
 finally{
     

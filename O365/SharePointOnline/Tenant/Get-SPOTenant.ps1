@@ -23,22 +23,20 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter Properties
-        List of comma separated properties to expand. Use * for all properties
+        List of properties to expand. Use * for all properties
 #>
 
-param(            
-    [string]$Properties = 'AllowEditing,PublicCdnAllowedFileTypes,ExternalServicesEnabled,StorageQuotaAllocated,ResourceQuotaAllocated,OneDriveStorageQuota'
+param(         
+    [ValidateSet('*','AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')]   
+    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
     
-    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties.Split(',')
+    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties
       
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

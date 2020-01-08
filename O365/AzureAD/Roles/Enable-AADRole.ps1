@@ -41,7 +41,7 @@ try{
     $roleTemplate = Get-AzureADDirectoryRoleTemplate | Where-Object { $_.DisplayName -eq $RoleName }
 
     # Enable an instance of the DirectoryRole template
-    Enable-AzureADDirectoryRole -RoleTemplateId $roleTemplate.ObjectId
+    $null = Enable-AzureADDirectoryRole -RoleTemplateId $roleTemplate.ObjectId -ErrorAction Stop
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Role: $($RoleName) enabled"

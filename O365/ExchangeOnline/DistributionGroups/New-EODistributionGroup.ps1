@@ -58,9 +58,6 @@ param(
     [string]$GroupType='Distribution'
 )
 
-#Clear
-#$ErrorActionPreference='Stop'
-
 try{
     $Script:result = @()
     $Script:err =$false
@@ -81,7 +78,7 @@ try{
                 }
                 if($null -ne $Script:usr){
                     try{
-                        Add-DistributionGroupMember -Identity $Script:grp.DistinguishedName -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false
+                        $null = Add-DistributionGroupMember -Identity $Script:grp.DistinguishedName -Member $itm -BypassSecurityGroupManagerCheck -Confirm:$false
                         $Script:result += "Member $($Script:usr.DisplayName) added to Distribution group $($grp.DisplayName)"
                     }
                     catch{
@@ -108,5 +105,8 @@ try{
         Write-Output $Script:result 
     }
 }
-Finally{
+catch{
+    throw
+}
+finally{
 }

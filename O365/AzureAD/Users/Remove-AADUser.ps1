@@ -47,7 +47,7 @@ try{
             Select-Object ObjectID,DisplayName
     }
     if($null -ne $Script:User){
-        Remove-AzureADUser -ObjectId $Script:User.ObjectID 
+        $null = Remove-AzureADUser -ObjectId $Script:User.ObjectID -ErrorAction Stop
         if($SRXEnv) {
             $SRXEnv.ResultMessage ="User $($Script:User.DisplayName) removed"
         }

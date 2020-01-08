@@ -55,30 +55,35 @@ param(
     [guid]$TenantId
 )
  
-$Script:Grp
-if($PSCmdlet.ParameterSetName  -eq "Group object id"){
-    $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId 
-}
-else{
-    $Script:Grp = Get-MsolGroup -TenantId $TenantId | Where-Object {$_.Displayname -eq $GroupName} 
-}
-if($null -ne $Script:Grp){
-    if(-not [System.String]::IsNullOrWhiteSpace($Description)){
-        Set-MsolGroup -ObjectId $Script:Grp.ObjectId -TenantId $TenantId -Description $Description
+try{
+    $Script:Grp
+    if($PSCmdlet.ParameterSetName  -eq "Group object id"){
+        $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId 
     }
-    if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-        Set-MsolGroup -ObjectId $Script:Grp.ObjectId -TenantId $TenantId -DisplayName $DisplayName
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($Script:Grp.DisplayName) changed"
-    } 
     else{
-        Write-Output  "Group $($Script:Grp.DisplayName) changed"
+        $Script:Grp = Get-MsolGroup -TenantId $TenantId | Where-Object {$_.Displayname -eq $GroupName} 
+    }
+    if($null -ne $Script:Grp){
+        if(-not [System.String]::IsNullOrWhiteSpace($Description)){
+            $null = Set-MsolGroup -ObjectId $Script:Grp.ObjectId -TenantId $TenantId -Description $Description
+        }
+        if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
+            $null = Set-MsolGroup -ObjectId $Script:Grp.ObjectId -TenantId $TenantId -DisplayName $DisplayName
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($Script:Grp.DisplayName) changed"
+        } 
+        else{
+            Write-Output  "Group $($Script:Grp.DisplayName) changed"
+        }
+    }
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group not found"
+        }    
+        Throw "Group not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group not found"
-    }    
-    Throw "Group not found"
+catch{
+    throw
 }

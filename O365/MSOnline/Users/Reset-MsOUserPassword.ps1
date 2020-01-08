@@ -61,39 +61,44 @@ param(
     [guid]$TenantId
 )
 
-$Script:User 
+try{
+    $Script:User 
 
-if($PSCmdlet.ParameterSetName  -eq "User object id"){
-    $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object *
-}
-else{
-    $Script:User = Get-MsolUser -TenantId $TenantId | `
-    Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
-    Select-Object *
-}
-if($null -ne $Script:User){
-    $res=@()
-    if($ForceChangePasswordOnly){
-        Set-MsolUserPassword -ObjectId $Script:User.ObjectID -ForceChangePasswordOnly $true -ForceChangePassword $true -TenantId $TenantId 
-        $res = "User must change the password next time they sign in"
+    if($PSCmdlet.ParameterSetName  -eq "User object id"){
+        $Script:User = Get-MsolUser -ObjectId $UserObjectId -TenantId $TenantId  | Select-Object *
     }
-    else {
-        Set-MsolUserPassword -ObjectId $Script:User.ObjectID -ForceChangePassword $ForceChangePassword.ToBool() -NewPassword $NewPassword -TenantId $TenantId 
-        $res = "New password of user $($Script:User.DisplayName) is set. "
-        if($ForceChangePassword){
-            $res += "User must change the password next time they sign in."
+    else{
+        $Script:User = Get-MsolUser -TenantId $TenantId | `
+                                Where-Object {($_.DisplayName -eq $UserName) -or ($_.SignInName -eq $UserName) -or ($_.UserPrincipalName -eq $UserName)} | `
+                                Select-Object *
+    }
+    if($null -ne $Script:User){
+        $res=@()
+        if($ForceChangePasswordOnly){
+            $null = Set-MsolUserPassword -ObjectId $Script:User.ObjectID -ForceChangePasswordOnly $true -ForceChangePassword $true -TenantId $TenantId 
+            $res = "User must change the password next time they sign in"
+        }
+        else {
+            $null = Set-MsolUserPassword -ObjectId $Script:User.ObjectID -ForceChangePassword $ForceChangePassword.ToBool() -NewPassword $NewPassword -TenantId $TenantId 
+            $res = "New password of user $($Script:User.DisplayName) is set. "
+            if($ForceChangePassword){
+                $res += "User must change the password next time they sign in."
+            }
+        }
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage =$res
+        }
+        else {
+            Write-Output $res
         }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage =$res
-    }
-    else {
-        Write-Output $res
+    else{
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "User not found"
+        }    
+        Throw "User not found"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User not found"
-    }    
-    Throw "User not found"
+catch{
+    throw
 }

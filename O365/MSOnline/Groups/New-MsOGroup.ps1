@@ -39,19 +39,24 @@ param(
     [guid]$TenantId
 )
 
-$Script:Grp = New-MsolGroup -DisplayName $GroupName -Description $Description -TenantId $TenantId | Select-Object *
-if($null -ne $Script:Grp){
-    $res=@("Group $($GroupName) created",$Script:Grp)
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group $($GroupName) created"
-    } 
+try{
+    $Script:Grp = New-MsolGroup -DisplayName $GroupName -Description $Description -TenantId $TenantId | Select-Object *
+    if($null -ne $Script:Grp){
+        $res=@("Group $($GroupName) created",$Script:Grp)
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group $($GroupName) created"
+        } 
+        else{
+            Write-Output $res
+        }
+    }
     else{
-        Write-Output $res
+        if($SRXEnv) {
+            $SRXEnv.ResultMessage = "Group not created"
+        }    
+        Throw "Group not created"
     }
 }
-else{
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Group not created"
-    }    
-    Throw "Group not created"
+catch{
+    throw
 }

@@ -76,38 +76,37 @@ param(
     [switch]$AccountDisabled
 )
 
-
 try{
-    $box = New-Mailbox -Name $Name -MicrosoftOnlineServicesID $UserPrincipalName -Password $Password -ResetPasswordOnNextLogon:$ResetPasswordOnNextLogon  -Force -Confirm:$false 
+    [string[]]$Properties = @('AccountDisabled','Alias','DisplayName','Name','FirstName','LastName','Office','Phone','WindowsEmailAddress','ResetPasswordOnNextLogon','UserPrincipalName')
+    
+    $box = New-Mailbox -Name $Name -MicrosoftOnlineServicesID $UserPrincipalName -Password $Password -ResetPasswordOnNextLogon:$ResetPasswordOnNextLogon -Force -Confirm:$false -ErrorAction Stop
     if($null -ne $box){
         if($PSBoundParameters.ContainsKey('AccountDisabled') -eq $true ){
-            Set-Mailbox -Identity $box.UserPrincipalName -AccountDisabled $AccountDisabled.ToBool() -Confirm:$false 
+            $null = Set-Mailbox -Identity $box.UserPrincipalName -AccountDisabled $AccountDisabled.ToBool() -Confirm:$false 
         }
         if($PSBoundParameters.ContainsKey('Alias') -eq $true ){
-            Set-Mailbox -Identity $box.UserPrincipalName -Alias $Alias -Confirm:$false
+            $null = Set-Mailbox -Identity $box.UserPrincipalName -Alias $Alias -Confirm:$false
         }
         if($PSBoundParameters.ContainsKey('DisplayName') -eq $true ){
-            Set-Mailbox -Identity $box.UserPrincipalName -DisplayName $DisplayName -Confirm:$false
+            $null = Set-Mailbox -Identity $box.UserPrincipalName -DisplayName $DisplayName -Confirm:$false
         }
         if($PSBoundParameters.ContainsKey('FirstName') -eq $true ){
-            Set-User -Identity $box.UserPrincipalName -FirstName $FirstName -Confirm:$false
+            $null = Set-User -Identity $box.UserPrincipalName -FirstName $FirstName -Confirm:$false
         }
         if($PSBoundParameters.ContainsKey('LastName') -eq $true ){
-            Set-User -Identity $box.UserPrincipalName -LastName $LastName -Confirm:$false
+            $null = Set-User -Identity $box.UserPrincipalName -LastName $LastName -Confirm:$false
         }
         if($PSBoundParameters.ContainsKey('Office') -eq $true ){
-            Set-User -Identity $box.UserPrincipalName -Office  $Office -Confirm:$false
+            $null = Set-User -Identity $box.UserPrincipalName -Office  $Office -Confirm:$false
         }
         if($PSBoundParameters.ContainsKey('Phone') -eq $true ){
-            Set-User -Identity $box.UserPrincipalName -Phone $Phone -Confirm:$false
+            $null = Set-User -Identity $box.UserPrincipalName -Phone $Phone -Confirm:$false
         }
         if($PSBoundParameters.ContainsKey('WindowsEmailAddress') -eq $true ){
-            Set-Mailbox -Identity $box.UserPrincipalName -WindowsEmailAddress $WindowsEmailAddress -Confirm:$false
+            $null = Set-Mailbox -Identity $box.UserPrincipalName -WindowsEmailAddress $WindowsEmailAddress -Confirm:$false
         }
-        $resultMessage = @()
-        $resultMessage += Get-Mailbox -Identity $box.UserPrincipalName | `
-                Select-Object AccountDisabled,Alias,DisplayName,Name,FirstName,LastName,Office,Phone,WindowsEmailAddress, `
-                                ResetPasswordOnNextLogon,UserPrincipalName              
+        $resultMessage = Get-Mailbox -Identity $box.UserPrincipalName | Select-Object $Properties
+
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $resultMessage  
         }

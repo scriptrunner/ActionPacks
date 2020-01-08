@@ -51,10 +51,10 @@ try{
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($EnableRestore -eq $true){
-            Enable-ComputerRestore -Drive $DriveLetter -Confirm:$false -ErrorAction Stop
+            $null = Enable-ComputerRestore -Drive $DriveLetter -Confirm:$false -ErrorAction Stop
         }
         else {
-            Disable-ComputerRestore -Drive $DriveLetter -Confirm:$false -ErrorAction Stop
+            $null = Disable-ComputerRestore -Drive $DriveLetter -Confirm:$false -ErrorAction Stop
         }
         vssadmin resize shadowstorage /for=$DriveLetter /on=$DriveLetter /maxsize="$($DiskSpaceUsagePercent)%"
     }

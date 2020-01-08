@@ -96,7 +96,8 @@ try{
                 } -ErrorAction Stop
             }
         }
-    }          
+    }       
+       
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

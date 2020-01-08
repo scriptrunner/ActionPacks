@@ -56,19 +56,19 @@ try{
     }
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){       
       #  Set-ItemProperty -Path $Script:regKey -Name DisableWebSearch -Value $Script:web -Force -ErrorAction Stop
-        Set-ItemProperty -Path $Script:regKey -Name AllowSearchToUseLocation -Value $Script:position -Force -ErrorAction Stop
-        Set-ItemProperty -Path $Script:regKey -Name AllowCortana -Value $Script:cortana -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $Script:regKey -Name AllowSearchToUseLocation -Value $Script:position -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $Script:regKey -Name AllowCortana -Value $Script:cortana -Force -ErrorAction Stop
     }
     else {
         if($null -eq $AccessAccount){
-            Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
             #    Set-ItemProperty -Path $Using:regKey -Name DisableWebSearch -Value $Using:web -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name AllowSearchToUseLocation -Value $Using:position -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name AllowCortana -Value $Using:cortana -Force -ErrorAction Stop
             } -ErrorAction Stop
         }
         else {
-            Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
          #       Set-ItemProperty -Path $Using:regKey -Name DisableWebSearch -Value $Using:web -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name AllowSearchToUseLocation -Value $Using:position -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name AllowCortana -Value $Using:cortana -Force -ErrorAction Stop

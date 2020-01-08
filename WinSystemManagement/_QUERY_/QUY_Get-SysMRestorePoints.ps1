@@ -33,11 +33,6 @@ Param(
 )
 
 try{
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $Script:result = Get-ComputerRestorePoint -ErrorAction Stop | Select-Object @("Description","SequenceNumber")
     }
@@ -56,8 +51,8 @@ try{
     foreach($item in $Script:result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.SequenceNumber.toString()
-            $SRXEnv.ResultList2 += $item.Description # Display
+            $SRXEnv.ResultList.Add($item.SequenceNumber.toString())
+            $SRXEnv.ResultList2.Add($item.Description) # Display
         }
         else{
             Write-Output $item.Description

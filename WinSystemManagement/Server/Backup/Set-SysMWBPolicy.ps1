@@ -42,9 +42,6 @@
 
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Schedule,BackupTargets. Use * for all properties
 #>
 
 [CmdLetBinding()]
@@ -156,7 +153,7 @@ try{
             $null = Set-WBSchedule -Policy $policy -Schedule $Script:Schedules -ErrorAction Stop
         }
         $null = Set-WBPolicy -Policy $policy -AllowDeleteOldBackups:$AllowDeleteOldBackups -Force -Confirm:$false -ErrorAction Stop
-        $Script:output = Get-WBPolicy | Select-Object $Script:Properties
+        $Script:output = Get-WBPolicy -ErrorAction Stop | Select-Object $Script:Properties
     }
     
     if($SRXEnv) {

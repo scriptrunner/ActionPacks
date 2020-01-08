@@ -54,7 +54,7 @@ try{
     }
     else {
         $pol = Get-WBPolicy -Editable -ErrorAction Stop
-        $Script:output = Get-WBFileSpec -Policy $pol -Confirm:$false | Format-List
+        $Script:output = Get-WBFileSpec -Policy $pol -Confirm:$false -ErrorAction Stop | Format-List
     }
     
     if($SRXEnv) {

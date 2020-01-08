@@ -33,13 +33,13 @@ param(
 $Script:Cim= $null
 try{
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $profiles = Get-CimInstance -CimSession $Script:Cim -ClassName Win32_UserProfile -ErrorAction Stop `
                                 | Where-Object{$_.Special -eq $false} | Select-Object LastUseTime,SID
@@ -49,8 +49,8 @@ try{
         $usr = Get-ADUser -Filter{SID -eq $sid} -Properties Name | Sort-Object Name
         if([System.String]::IsNullOrWhiteSpace($usr.Name) -eq $false){
             if($SRXEnv) {            
-                $SRXEnv.ResultList += $sid # Value
-                $SRXEnv.ResultList2 += "$($usr.Name) - last use $($itm.LastUseTime)" # DisplayValue            
+                $SRXEnv.ResultList.Add($sid) # Value
+                $SRXEnv.ResultList2.Add("$($usr.Name) - last use $($itm.LastUseTime)") # DisplayValue            
             }
             else{
                 Write-Output "$($usr.Name) - last use $($itm.LastUseTime)"

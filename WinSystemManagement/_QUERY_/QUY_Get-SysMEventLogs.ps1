@@ -29,19 +29,16 @@ Param(
 )
 
 try{
-    if([System.String]::IsNullOrWhiteSpace($ComputerName)){
+    if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         $ComputerName = "."
-    }   
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:logs = Get-EventLog -ComputerName $ComputerName -List -ErrorAction Stop | Select-Object *  | Sort-Object LogDisplayName
-    foreach($item in $Script:logs)
+    } 
+    
+    $logs = Get-EventLog -ComputerName $ComputerName -List -ErrorAction Stop | Select-Object @('Log','LogDisplayName')  | Sort-Object LogDisplayName
+    foreach($item in $logs)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Log
-            $SRXEnv.ResultList2 += $item.LogDisplayName # Display
+            $SRXEnv.ResultList.Add($item.Log)
+            $SRXEnv.ResultList2.Add($item.LogDisplayName) # Display
         }
         else{
             Write-Output $item.LogDisplayName

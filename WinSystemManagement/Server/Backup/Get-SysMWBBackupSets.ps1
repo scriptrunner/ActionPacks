@@ -33,29 +33,27 @@
 Param(
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties = "BackupTime,BackupSetId,RecoverableItems,BackupTarget,Volume"
+    [ValidateSet('*','BackupTime','BackupSetId','RecoverableItems','BackupTarget','Volume')]
+    [string[]]$Properties = @('BackupTime','BackupSetId','RecoverableItems','BackupTarget','Volume')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
-    [string[]]$Script:props = $Properties.Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                Get-WBBackupSet | Select-Object $Using:props
+                Get-WBBackupSet | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
         else {
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock {
-                Get-WBBackupSet | Select-Object $Using:props
+                Get-WBBackupSet | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
     }
     else {
-        $Script:output = Get-WBBackupSet | Select-Object $Script:props
+        $Script:output = Get-WBBackupSet -ErrorAction Stop | Select-Object $Properties
     }
     
     if($SRXEnv) {

@@ -24,9 +24,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -35,10 +32,11 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
+    [string[]]$Properties = @('ID','Location','StatusMessage','JobStateInfo','PSBeginTime','PSEndTime')
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
         $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
@@ -47,7 +45,8 @@ try{
         $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $job = Start-MpWDOScan -CimSession $Script:Cim -AsJob -ErrorAction Stop
-    $res = Get-Job -Id $job.ID | Select-Object ID,Location,StatusMessage,JobStateInfo,PSBeginTime,PSEndTime
+
+    $res = Get-Job -Id $job.ID | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $res
     }

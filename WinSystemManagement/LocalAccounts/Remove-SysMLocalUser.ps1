@@ -49,38 +49,39 @@ Param(
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
-            Remove-LocalUser -Name $Name -Confirm:$false -ErrorAction Stop
+            $null = Remove-LocalUser -Name $Name -Confirm:$false -ErrorAction Stop
         }
         else {
-            Remove-LocalUser -SID $SID -Confirm:$false -ErrorAction Stop
+            $null = Remove-LocalUser -SID $SID -Confirm:$false -ErrorAction Stop
         }
     }
     else {
         if($null -eq $AccessAccount){
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Remove-LocalUser -Name $Using:Name -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalUser -Name $Using:Name -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
             else {
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Remove-LocalUser -SID $Using:SID -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalUser -SID $Using:SID -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
         }
         else {
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Remove-LocalUser -Name $Using:Name -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalUser -Name $Using:Name -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
             else {
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Remove-LocalUser -SID $Using:SID -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalUser -SID $Using:SID -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
         }
     }          
+    
     if($SRXEnv) {
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
             $SRXEnv.ResultMessage = "User account: $($Name) removed"

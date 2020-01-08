@@ -37,47 +37,45 @@ Param(
     [uint32]$Previous,
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties = "JobType,StartTime,EndTime,JobState,ErrorDescription"
+    [ValidateSet('*','JobType','StartTime','EndTime','JobState','ErrorDescription')]
+    [string[]]$Properties = @('JobType','StartTime','EndTime','JobState','ErrorDescription')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
-    [string[]]$Script:props = $Properties.Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             if($Previous -gt 0){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                    Get-WBJob -Previous $Using:Previous | Select-Object $Using:props
+                    Get-WBJob -Previous $Using:Previous | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                     Get-WBJob | Select-Object $Using:props
+                     Get-WBJob | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
         else {
             if($Previous -gt 0){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-WBJob -Previous $Using:Previous | Select-Object $Using:props
+                    Get-WBJob -Previous $Using:Previous | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-WBJob | Select-Object $Using:props
+                    Get-WBJob | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
     }
     else {
         if($Previous -gt 0){
-            $Script:output = Get-WBJob -Previous $Previous | Select-Object $Script:props
+            $Script:output = Get-WBJob -Previous $Previous -ErrorAction Stop | Select-Object $Properties
         }
         else {
-            $Script:output = Get-WBJob | Select-Object $Script:props
+            $Script:output = Get-WBJob -ErrorAction Stop | Select-Object $Properties
         }
     }
     

@@ -37,7 +37,7 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     } 
-    Remove-EventLog -ComputerName $ComputerName -Source $Source -Confirm:$false -ErrorAction Stop
+    $null = Remove-EventLog -ComputerName $ComputerName -Source $Source -Confirm:$false -ErrorAction Stop
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Source: $($Source) removed"

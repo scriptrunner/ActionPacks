@@ -72,17 +72,17 @@ try{
                 }
                 $Script:value = 0
                 if($HideFileExtensions -eq $true){$Script:value = 1}
-                Set-ItemProperty -Path $regKey -Name "HideFileExt" -Value $Script:value -Force -ErrorAction Stop
+                $null = Set-ItemProperty -Path $regKey -Name "HideFileExt" -Value $Script:value -Force -ErrorAction Stop
                 $Script:value = 1
                 if($ShowHiddenFilesFoldersDrives -eq $false){$Script:value = 2}
-                Set-ItemProperty -Path $regKey -Name "Hidden" -Value $Script:value -Force -ErrorAction Stop
+                $null = Set-ItemProperty -Path $regKey -Name "Hidden" -Value $Script:value -Force -ErrorAction Stop
                 $Script:value = 0
                 if($CheckBoxesToSelectItems -eq $true){$Script:value = 1}
-                Set-ItemProperty -Path $regKey -Name "AutoCheckSelect" -Value $Script:value -Force -ErrorAction Stop
+                $null = Set-ItemProperty -Path $regKey -Name "AutoCheckSelect" -Value $Script:value -Force -ErrorAction Stop
             }
         }
         finally{
-            Remove-PSDrive -Name HKU -ErrorAction Ignore
+            $null = Remove-PSDrive -Name HKU -ErrorAction Ignore
         }
     }
     else {
@@ -100,7 +100,7 @@ try{
             }    
             foreach($usr in $Script:users){
                 [string]$regKey = [System.String]::Format($ExplorerKey,$usr)
-                Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     $null = New-PSDrive -Name HKU -PSProvider Registry -Root Registry::HKEY_Users;
                     if((Test-Path -Path $Using:regKey) -eq $true){
                         [int]$setValue = 0;
@@ -131,7 +131,7 @@ try{
             }    
             foreach($usr in $Script:users){
                 [string]$regKey = [System.String]::Format($ExplorerKey,$usr)
-                Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                     $null = New-PSDrive -Name HKU -PSProvider Registry -Root Registry::HKEY_Users;
                     if((Test-Path -Path $Using:regKey) -eq $true){
                         [int]$setValue = 0;

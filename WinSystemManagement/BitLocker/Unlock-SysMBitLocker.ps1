@@ -75,16 +75,16 @@ try{
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName -eq "AdAccountOrGroup"){
-            Unlock-BitLocker -MountPoint $DriveLetter -AdAccountOrGroup -Confirm:$false -ErrorAction Stop
+            $null = Unlock-BitLocker -MountPoint $DriveLetter -AdAccountOrGroup -Confirm:$false -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "ByPassword"){
-            Unlock-BitLocker -MountPoint $DriveLetter -Password $Password -Confirm:$false -ErrorAction Stop
+            $null = Unlock-BitLocker -MountPoint $DriveLetter -Password $Password -Confirm:$false -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "ByRecoveryPassword"){
-            Unlock-BitLocker -MountPoint $DriveLetter -RecoveryPassword $RecoveryPassword -Confirm:$false -ErrorAction Stop
+            $null = Unlock-BitLocker -MountPoint $DriveLetter -RecoveryPassword $RecoveryPassword -Confirm:$false -ErrorAction Stop
         }
         elseif($PSCmdlet.ParameterSetName -eq "ByRecoveryKeyPath"){
-            Unlock-BitLocker -MountPoint $DriveLetter -RecoveryKeyPath $RecoveryKeyPath -Confirm:$false -ErrorAction Stop
+            $null = Unlock-BitLocker -MountPoint $DriveLetter -RecoveryKeyPath $RecoveryKeyPath -Confirm:$false -ErrorAction Stop
         }
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }

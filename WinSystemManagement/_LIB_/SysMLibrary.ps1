@@ -44,7 +44,7 @@ function RemoveComputerProfile(){
         )
 
         try{
-            $profilePath = $CimInstance.LocalPath
+            [string]$profilePath = $CimInstance.LocalPath
             if($Action -eq 'ZipProfile'){
                 $archiveName = $profilePath + ".zip"
                 if($null -eq $AccessAccount){            
@@ -71,7 +71,7 @@ function RemoveComputerProfile(){
                     } -ErrorAction Stop
                 }
             }
-            Remove-CimInstance -CimSession $Script:Cim -InputObject $usrProfile -Confirm:$false -ErrorAction Stop
+            $null = Remove-CimInstance -CimSession $Script:Cim -InputObject $usrProfile -Confirm:$false -ErrorAction Stop
         }
         catch{
             throw
@@ -115,14 +115,14 @@ function RemoveServerProfile(){
 
         try{
             if(([System.String]::IsNullOrWhiteSpace($ADUser.ProfilePath) -eq $false) -and ($Action -ne 'None')){
-                $srvProfile = $ADUser.ProfilePath
+                [string]$srvProfile = $ADUser.ProfilePath
                 if($Action -eq 'ZipProfile'){
-                    Compress-Archive -LiteralPath $srvProfile -CompressionLevel Optimal -DestinationPath ($srvProfile + '.zip') -Update -ErrorAction Stop
+                    $null = Compress-Archive -LiteralPath $srvProfile -CompressionLevel Optimal -DestinationPath ($srvProfile + '.zip') -Update -ErrorAction Stop
                 }
                 elseif($Action -eq 'Rename'){
-                    Rename-Item -Path $srvProfile -NewName ($srvProfile + '.old') -Force -Confirm:$false -ErrorAction Stop
+                    $null = Rename-Item -Path $srvProfile -NewName ($srvProfile + '.old') -Force -Confirm:$false -ErrorAction Stop
                 }
-                Remove-Item -Path $srvProfile -Force -Confirm:$false -Recurse -ErrorAction Stop
+                $null = Remove-Item -Path $srvProfile -Force -Confirm:$false -Recurse -ErrorAction Stop
             }
         }
         catch{

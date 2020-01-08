@@ -43,19 +43,19 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                $bSet = Get-WBBackupSet | Where-Object -Property BackupSetID -eq $Using:BackupSetID -ErrorAction Stop;
+                $bSet = Get-WBBackupSet -ErrorAction Stop | Where-Object -Property BackupSetID -eq $Using:BackupSetID;
                 $null = Remove-WBBackupSet -BackupSet $bSet -Force -ErrorAction Stop
             } -ErrorAction Stop
         }
         else {
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock {
-                $bSet = Get-WBBackupSet | Where-Object -Property BackupSetID -eq $Using:BackupSetID -ErrorAction Stop;
+                $bSet = Get-WBBackupSet -ErrorAction Stop | Where-Object -Property BackupSetID -eq $Using:BackupSetID;
                 $null = Remove-WBBackupSet -BackupSet $bSet -Force -ErrorAction Stop
             } -ErrorAction Stop
         }
     }
     else {
-        $bSet = Get-WBBackupSet | Where-Object -Property BackupSetID -eq $BackupSetID -ErrorAction Stop
+        $bSet = Get-WBBackupSet -ErrorAction Stop | Where-Object -Property BackupSetID -eq $BackupSetID
         $null = Remove-WBBackupSet -BackupSet $bSet -Force -ErrorAction Stop
     }
     

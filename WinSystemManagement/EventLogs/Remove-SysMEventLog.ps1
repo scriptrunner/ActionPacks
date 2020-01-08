@@ -48,7 +48,7 @@ try{
     if($PSCmdlet.ParameterSetName  -eq "Classic event logs"){
         $CustomLogName = $LogName
     }
-    Remove-EventLog -ComputerName $ComputerName -LogName $CustomLogName -Confirm:$false -ErrorAction Stop
+    $null = Remove-EventLog -ComputerName $ComputerName -LogName $CustomLogName -Confirm:$false -ErrorAction Stop
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Event log: $($CustomLogName) removed"

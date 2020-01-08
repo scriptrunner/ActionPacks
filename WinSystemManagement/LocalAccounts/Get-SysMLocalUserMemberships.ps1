@@ -48,7 +48,6 @@ Param(
 
 try{
     [string[]]$Script:output = @()
-    [string[]]$Properties = @("Name","SID")
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $groups = Get-LocalGroup -ErrorAction Stop | Select-Object -Property Name
@@ -111,7 +110,8 @@ try{
                 }
             }
         }
-    }          
+    }      
+        
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

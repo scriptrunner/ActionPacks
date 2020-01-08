@@ -50,39 +50,39 @@ try{
     [string]$regKey = "HKLM:\System\CurrentControlSet\Control\Terminal Server"
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     } 
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if($Enable -eq "False"){
         $Script:newStatus = 1
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
-        Set-ItemProperty -Path $regKey -Name fDenyTSConnections -Value $Script:newStatus -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $regKey -Name fDenyTSConnections -Value $Script:newStatus -Force -ErrorAction Stop
     }
     else {
         if($null -eq $AccessAccount){
-            Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                 Set-ItemProperty -Path $Using:regKey -Name fDenyTSConnections -Value $Using:newStatus -Force -ErrorAction Stop
             } -ErrorAction Stop
         }
         else {
-            Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                 Set-ItemProperty -Path $Using:regKey -Name fDenyTSConnections -Value $Using:newStatus -Force -ErrorAction Stop
             } -ErrorAction Stop
         }
     }      
     if($SetFirewallRule -eq $true){
         if($Script:newStatus -eq 0){
-            Enable-NetFirewallRule -CimSession $Script:Cim -DisplayGroup $FirewallRuleGroupName -ErrorAction Stop
+            $null = Enable-NetFirewallRule -CimSession $Script:Cim -DisplayGroup $FirewallRuleGroupName -ErrorAction Stop
         }
         else {
-            Disable-NetFirewallRule -CimSession $Script:Cim -DisplayGroup $FirewallRuleGroupName -ErrorAction Stop
+            $null = Disable-NetFirewallRule -CimSession $Script:Cim -DisplayGroup $FirewallRuleGroupName -ErrorAction Stop
         }
     }
 

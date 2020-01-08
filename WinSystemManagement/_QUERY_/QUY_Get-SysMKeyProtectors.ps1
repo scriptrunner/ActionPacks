@@ -55,17 +55,14 @@ try{
             } -ErrorAction Stop 
         }
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()        
-    }
+    
     foreach($drive in $Script:result)
     {
         foreach($item in $drive.KeyProtector)
         {
             if($SRXEnv) {
-                $SRXEnv.ResultList += $item.KeyProtectorId
-                $SRXEnv.ResultList2 += "$($drive.MountPoint) - $($item.KeyProtectorType)" # Display
+                $SRXEnv.ResultList.Add($item.KeyProtectorId)
+                $SRXEnv.ResultList2.Add("$($drive.MountPoint) - $($item.KeyProtectorType)") # Display
             }
             else{
                 Write-Output "$($drive.MountPoint) - $($item.KeyProtectorType)"

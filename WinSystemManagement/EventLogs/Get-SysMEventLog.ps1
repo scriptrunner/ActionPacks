@@ -42,26 +42,27 @@ Param(
     [Parameter(ParameterSetName = "Classic event logs")]
     [Parameter(ParameterSetName = "Custom event log")]
     [string]$ComputerName,
-    [string]$Properties = "Log,LogDisplayName,MaximumKilobytes,OverflowAction,MinimumRetentionDays"
+    [Parameter(ParameterSetName = "Classic event logs")]
+    [Parameter(ParameterSetName = "Custom event log")]
+    [ValidateSet('*','Log','LogDisplayName','MaximumKilobytes','OverflowAction','MinimumRetentionDays')]
+    [string[]]$Properties = @('Log','LogDisplayName','MaximumKilobytes','OverflowAction','MinimumRetentionDays')
 )
 
 try{
     $Script:output
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
-    }        
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
+    }   
     if($PSCmdlet.ParameterSetName  -eq "Classic event logs"){
         $CustomLogName = $LogName
     }
     if($CustomLogName -eq "All"){
-        $Script:output = Get-EventLog -List -ComputerName $ComputerName | Select-Object  $Properties.Split(',')
+        $Script:output = Get-EventLog -List -ComputerName $ComputerName | Select-Object  $Properties
     }
     else {
-        $Script:output = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $CustomLogName  | Select-Object $Properties.Split(',')
+        $Script:output = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $CustomLogName  | Select-Object $Properties
     }
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

@@ -38,29 +38,27 @@ Param(
     [string]$DriveLetter,
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties = "VolumeLabel,FileSystem,TotalSpace,FreeSpace,Property"
+    [ValidateSet('*','VolumeLabel','FileSystem','TotalSpace','FreeSpace','Property')]
+    [string[]]$Properties = @('VolumeLabel','FileSystem','TotalSpace','FreeSpace','Property')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
-    [string[]]$Script:props = $Properties.Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                Get-WBVolume -VolumePath $Using:DriveLetter | Select-Object $Using:props
+                Get-WBVolume -VolumePath $Using:DriveLetter | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
         else {
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock {
-                Get-WBVolume -VolumePath $Using:DriveLetter | Select-Object $Using:props
+                Get-WBVolume -VolumePath $Using:DriveLetter | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
     }
     else {
-        $Script:output = Get-WBVolume -VolumePath $DriveLetter | Select-Object $Script:props
+        $Script:output = Get-WBVolume -VolumePath $DriveLetter -ErrorAction Stop | Select-Object $Properties
     }
     
     if($SRXEnv) {

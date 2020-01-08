@@ -26,16 +26,12 @@ Param(
 )
 
 try{
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:Zones = Get-TimeZone -ListAvailable -ErrorAction Stop | Select-Object ID,DisplayName | Sort-Object -Property DisplayName
-    foreach($item in $Script:Zones)
+    $zones = Get-TimeZone -ListAvailable -ErrorAction Stop | Select-Object ID,DisplayName | Sort-Object -Property DisplayName
+    foreach($item in $zones)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.ID
-            $SRXEnv.ResultList2 += $item.DisplayName # Display
+            $SRXEnv.ResultList.Add($item.ID)
+            $SRXEnv.ResultList2.Add($item.DisplayName) # Display
         }
         else{
             Write-Output $item.DisplayName

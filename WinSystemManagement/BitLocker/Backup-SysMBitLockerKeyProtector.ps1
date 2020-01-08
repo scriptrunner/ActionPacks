@@ -47,7 +47,7 @@ try{
     [string[]]$Properties = @("MountPoint","KeyProtector","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){        
-        Backup-BitLockerKeyProtector -MountPoint $DriveLetter -KeyProtectorId $ProtectorID -Confirm:$false -ErrorAction Stop
+        $null = Backup-BitLockerKeyProtector -MountPoint $DriveLetter -KeyProtectorId $ProtectorID -Confirm:$false -ErrorAction Stop
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }
     else {

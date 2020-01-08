@@ -56,7 +56,8 @@ Param(
     [string]$Publisher,
     [string]$User,
     [string]$Volume,
-    [string]$Properties = "Name,Publisher,Architecture,Version,PackageFullName",
+    [ValidateSet('*','Name','Publisher','Architecture','Version','PackageFullName')]
+    [string[]]$Properties = @('Name','Publisher','Architecture','Version','PackageFullName'),
     [string]$ComputerName,    
     [PSCredential]$AccessAccount
 )
@@ -71,11 +72,8 @@ try{
     }
     if([System.String]::IsNullOrWhiteSpace($Publisher) -eq $true){
         $Publisher = '*'
-    }
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties='*'
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    }    
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                                 'Publisher' = $Publisher
@@ -91,7 +89,7 @@ try{
         else {
             $cmdArgs.Add('User', $User)
         }
-        $Script:output = Get-AppxPackage @cmdArgs | Select-Object $Script:props
+        $Script:output = Get-AppxPackage @cmdArgs | Select-Object $Properties
     }
     else {
         if($null -eq $AccessAccount){
@@ -99,13 +97,13 @@ try{
                 if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
                     $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                         Get-AppxPackage -AllUsers:$Using:AllUsers -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }
                 else{
                     $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                         Get-AppxPackage -User $Using:User -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }
             }
@@ -113,13 +111,13 @@ try{
                 if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
                     $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                         Get-AppxPackage -AllUsers:$Using:AllUsers -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }
                 else{
                     $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                         Get-AppxPackage -User $Using:User -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }
             }
@@ -129,13 +127,13 @@ try{
                 if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
                     $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                         Get-AppxPackage -AllUsers:$Using:AllUsers -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }
                 else{
                     $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                         Get-AppxPackage -User $Using:User -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }    
             }
@@ -143,13 +141,13 @@ try{
                 if([System.String]::IsNullOrWhiteSpace($User) -eq $true){
                     $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                         Get-AppxPackage -AllUsers:$Using:AllUsers -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }
                 else{
                     $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                         Get-AppxPackage -User $Using:User -PackageTypeFilter $Using:PackageTypeFilter -Name $Using:Name `
-                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:props
+                            -Publisher $Using:Publisher -Volume $Using:Volume -ErrorAction Stop | Select-Object $Using:Properties
                     } -ErrorAction Stop
                 }            
             }            

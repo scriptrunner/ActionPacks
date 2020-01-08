@@ -65,38 +65,39 @@ try{
             $Script:grp = Get-LocalGroup -SID $SID
         }
         $null = Remove-LocalGroupMember -Group $Script:grp -Member $tmpMembers -ErrorAction Stop
-        $Script:output = Get-LocalGroupMember -Group $Script:grp | Select-Object $Properties
+        $Script:output = Get-LocalGroupMember -Group $Script:grp -ErrorAction Stop | Select-Object $Properties
     }
     else {
         if($null -eq $AccessAccount){
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Remove-LocalGroupMember -Name $Using:Name -Member $Using:tmpMembers -ErrorAction Stop;
-                    Get-LocalGroupMember -Name $Using:Name | Select-Object $Using:Properties
+                    $null = Remove-LocalGroupMember -Name $Using:Name -Member $Using:tmpMembers -ErrorAction Stop;
+                    Get-LocalGroupMember -Name $Using:Name -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Remove-LocalGroupMember -SID $Using:SID -Member $Using:tmpMembers -ErrorAction Stop;
-                    Get-LocalGroupMember -SID $Using:SID | Select-Object $Using:Properties
+                    $null = Remove-LocalGroupMember -SID $Using:SID -Member $Using:tmpMembers -ErrorAction Stop;
+                    Get-LocalGroupMember -SID $Using:SID -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
         else {
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Remove-LocalGroupMember -Name $Using:Name -Member $Using:tmpMembers -ErrorAction Stop;
-                    Get-LocalGroupMember -Name $Using:Name | Select-Object $Using:Properties
+                    $null = Remove-LocalGroupMember -Name $Using:Name -Member $Using:tmpMembers -ErrorAction Stop;
+                    Get-LocalGroupMember -Name $Using:Name -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Remove-LocalGroupMember -SID $Using:SID -Member $Using:tmpMembers -ErrorAction Stop;
-                    Get-LocalGroupMember -SID $Using:SID | Select-Object $Using:Properties
+                    $null = Remove-LocalGroupMember -SID $Using:SID -Member $Using:tmpMembers -ErrorAction Stop;
+                    Get-LocalGroupMember -SID $Using:SID -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
-    }          
+    }
+              
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

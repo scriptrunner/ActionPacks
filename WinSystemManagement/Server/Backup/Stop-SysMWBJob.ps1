@@ -34,7 +34,6 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("JobType","StartTime","EndTime","JobState","ErrorDescription")
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){

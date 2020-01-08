@@ -48,31 +48,28 @@ try{
         $RuleName = "*$($RuleName)*"
     }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     if($RuleName -eq "*"){
-        $Script:Rules =Get-NetFirewallRule -CimSession $Script:Cim -Name *  `
+        $Script:Rules = Get-NetFirewallRule -CimSession $Script:Cim -Name *  `
             | Select-Object Name,DisplayName | Sort-Object DisplayName
     }
     else{
-        $Script:Rules =Get-NetFirewallRule -CimSession $Script:Cim | Where-Object {$_.Name -like $RuleName -or $_.DisplayName -like $RuleName} `
+        $Script:Rules = Get-NetFirewallRule -CimSession $Script:Cim | Where-Object {$_.Name -like $RuleName -or $_.DisplayName -like $RuleName} `
             | Select-Object Name,DisplayName,Direction,Action | Sort-Object DisplayName   
     }
     foreach($item in $Script:Rules)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Name
-            $SRXEnv.ResultList2 += "$($item.DisplayName) | $($item.Direction) | $($item.Action)"
+            $SRXEnv.ResultList.Add($item.Name)
+            $SRXEnv.ResultList2.Add("$($item.DisplayName) | $($item.Direction) | $($item.Action)")
         }
         else{
             Write-Output "$($item.DisplayName) | $($item.Direction) | $($item.Action)"

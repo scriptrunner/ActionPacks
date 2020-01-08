@@ -37,50 +37,47 @@ Param(
     [string]$DriveLetter,
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties="MountPoint,EncryptionMethod,VolumeStatus,ProtectionStatus,EncryptionPercentage,VolumeType,CapacityGB"
+    [ValidateSet('*','MountPoint','EncryptionMethod','VolumeStatus','ProtectionStatus','EncryptionPercentage','VolumeType','CapacityGB')]
+    [string[]]$Properties = @('MountPoint','EncryptionMethod','VolumeStatus','ProtectionStatus','EncryptionPercentage','VolumeType','CapacityGB')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
-    }
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if([System.String]::IsNullOrWhiteSpace($DriveLetter) -eq - $false){
-            $Script:output = Get-BitLockerVolume -ErrorAction Stop | Select-Object $Properties.Split(",")
+            $Script:output = Get-BitLockerVolume -ErrorAction Stop | Select-Object $Properties
         }
         else {
-            $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object $Properties.Split(",")
+            $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter -ErrorAction Stop | Select-Object $Properties
         }
     }
     else {
-        [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
         if($null -eq $AccessAccount){
             if([System.String]::IsNullOrWhiteSpace($DriveLetter) -eq - $false){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-BitLockerVolume -ErrorAction Stop | Select-Object $Using:props
+                    Get-BitLockerVolume -ErrorAction Stop | Select-Object $Using:Properties
                 }  -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-BitLockerVolume -MountPoint $Using:DriveLetter -ErrorAction Stop | Select-Object $Using:props
+                    Get-BitLockerVolume -MountPoint $Using:DriveLetter -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }        
         }
         else {
             if([System.String]::IsNullOrWhiteSpace($DriveLetter) -eq - $false){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-BitLockerVolume -ErrorAction Stop | Select-Object $Using:props
+                    Get-BitLockerVolume -ErrorAction Stop | Select-Object $Using:Properties
                 }  -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-BitLockerVolume -MountPoint $Using:DriveLetter -ErrorAction Stop | Select-Object $Using:props
+                    Get-BitLockerVolume -MountPoint $Using:DriveLetter -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }  
         }
-    }
-      
+    }      
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

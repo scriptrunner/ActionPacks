@@ -47,41 +47,41 @@ Param(
 )
 
 try{
-    $Script:output
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
-            Remove-LocalGroup -Name $Name -Confirm:$false -ErrorAction Stop
+            $null = Remove-LocalGroup -Name $Name -Confirm:$false -ErrorAction Stop
         }
         else {
-            Remove-LocalGroup -SID $SID -Confirm:$false -ErrorAction Stop
+            $null = Remove-LocalGroup -SID $SID -Confirm:$false -ErrorAction Stop
         }
     }
     else {
         if($null -eq $AccessAccount){
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Remove-LocalGroup -Name $Using:Name -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalGroup -Name $Using:Name -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
             else {
                 Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Remove-LocalGroup -SID $Using:SID -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalGroup -SID $Using:SID -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
         }
         else {
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Remove-LocalGroup -Name $Using:Name -Confirm:$false
+                    $null = Remove-LocalGroup -Name $Using:Name -Confirm:$false
                 } -ErrorAction Stop
             }
             else {
                 Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Remove-LocalGroup -SID $Using:SID -Confirm:$false -ErrorAction Stop
+                    $null = Remove-LocalGroup -SID $Using:SID -Confirm:$false -ErrorAction Stop
                 } -ErrorAction Stop
             }
         }
     }          
+
     if($SRXEnv) {
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
             $SRXEnv.ResultMessage = "Group: $($Name) removed"

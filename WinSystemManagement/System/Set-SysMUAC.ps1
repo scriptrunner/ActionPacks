@@ -76,14 +76,14 @@ try{
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){       
-        Set-ItemProperty -Path $UACKey -Name ConsentPromptBehaviorAdmin -Value $Script:Prompt -Force -ErrorAction Stop
-        Set-ItemProperty -Path $UACKey -Name ConsentPromptBehaviorUser -Value $Script:Prompt -Force -ErrorAction Stop
-        Set-ItemProperty -Path $UACKey -Name PromptOnSecureDesktop -Value $Script:Sec -Force -ErrorAction Stop
-        Set-ItemProperty -Path $UACKey -Name EnableLUA -Value $Script:LUA -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $UACKey -Name ConsentPromptBehaviorAdmin -Value $Script:Prompt -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $UACKey -Name ConsentPromptBehaviorUser -Value $Script:Prompt -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $UACKey -Name PromptOnSecureDesktop -Value $Script:Sec -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $UACKey -Name EnableLUA -Value $Script:LUA -Force -ErrorAction Stop
     }
     else {
         if($null -eq $AccessAccount){
-            Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                 Set-ItemProperty -Path $Using:UACKey -Name ConsentPromptBehaviorAdmin -Value $Using:Prompt -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:UACKey -Name ConsentPromptBehaviorUser -Value $Using:Prompt -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:UACKey -Name PromptOnSecureDesktop -Value $Using:Sec -Force -ErrorAction Stop
@@ -94,14 +94,14 @@ try{
             }
         }
         else {
-            Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                 Set-ItemProperty -Path $Using:UACKey -Name ConsentPromptBehaviorAdmin -Value $Using:Prompt -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:UACKey -Name ConsentPromptBehaviorUser -Value $Using:Prompt -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:UACKey -Name PromptOnSecureDesktop -Value $Using:Sec -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:UACKey -Name EnableLUA -Value $Using:LUA -Force -ErrorAction Stop
             } -ErrorAction Stop
             if($RebootAfterChanges -eq $true){
-                Restart-Computer -Credential $AccessAccount -ComputerName $ComputerName -DcomAuthentication "Packet" -Force -Confirm:$false -ErrorAction Stop
+                $null = Restart-Computer -Credential $AccessAccount -ComputerName $ComputerName -DcomAuthentication "Packet" -Force -Confirm:$false -ErrorAction Stop
             }
         }
     }      

@@ -39,7 +39,7 @@ param(
 
 try{ 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     [hashtable]$cmdArgs = @{'ErrorAction' = 'SilentlyContinue'
                 'Force' = $null

@@ -52,7 +52,7 @@ try{
     if($null -ne $AccessAccount){
         $cmdArgs.Add('Credential', $AccessAccount)
     }
-    Restart-Computer @cmdArgs -ComputerName $ComputerNames.Split(',') 
+    $null = Restart-Computer @cmdArgs -ComputerName $ComputerNames.Split(',') 
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Computers restarted"

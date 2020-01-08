@@ -122,7 +122,7 @@ try{
         if($PSBoundParameters.ContainsKey('NewName') -eq $true ){
             $null = Rename-LocalUser -InputObject $Script:user -NewName $NewName -ErrorAction Stop
         }
-        $Script:output = Get-LocalUser -SID $Script:user.SID | Select-Object $Properties
+        $Script:output = Get-LocalUser -SID $Script:user.SID -ErrorAction Stop | Select-Object $Properties
     }
     else {        
         if($null -eq $AccessAccount){
@@ -172,7 +172,7 @@ try{
                 } -ErrorAction Stop
             }
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                Get-LocalUser -SID $Using:user.SID | Select-Object $Using:Properties
+                Get-LocalUser -SID $Using:user.SID -ErrorAction Stop | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
         else {
@@ -222,10 +222,11 @@ try{
                 } -ErrorAction Stop
             }
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                Get-LocalUser -SID $Using:user.SID | Select-Object $Using:Properties
+                Get-LocalUser -SID $Using:user.SID -ErrorAction Stop | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
     }          
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

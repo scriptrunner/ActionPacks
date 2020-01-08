@@ -33,29 +33,27 @@
 Param(
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties="Schedule,BackupTargets,VolumesToBackup,FilesSpecsToBackup,FilesSpecsToExclude"
+    [ValidateSet('*','Schedule','BackupTargets','VolumesToBackup','FilesSpecsToBackup','FilesSpecsToExclude')]
+    [string[]]$Properties = @('Schedule','BackupTargets','VolumesToBackup','FilesSpecsToBackup','FilesSpecsToExclude')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
-    [string[]]$Script:props = $Properties.Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                Get-WBPolicy | Select-Object $Using:props
+                Get-WBPolicy | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
         else {
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock {
-                Get-WBPolicy | Select-Object $Using:props
+                Get-WBPolicy | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
     }
     else {
-        $Script:output = Get-WBPolicy | Select-Object $Script:props
+        $Script:output = Get-WBPolicy -ErrorAction Stop | Select-Object $Properties
     }
     
     if($SRXEnv) {

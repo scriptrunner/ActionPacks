@@ -50,19 +50,19 @@ try{
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $null = New-LocalGroup -Name $Name -Description $Description -Confirm:$false -ErrorAction Stop
-        $Script:output = Get-LocalGroup -Name $Name | Select-Object $Properties
+        $Script:output = Get-LocalGroup -Name $Name -ErrorAction Stop | Select-Object $Properties
     }
     else {
         if($null -eq $AccessAccount){
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                 $null = New-LocalGroup -Name $Using:Name -Description $Using:Description -Confirm:$false -ErrorAction Stop;
-                Get-LocalGroup -Name $Using:Name | Select-Object $Using:Properties
+                Get-LocalGroup -Name $Using:Name -ErrorAction Stop | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
         else {
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                 $null = New-LocalGroup -Name $Using:Name -Description $Using:Description -Confirm:$false -ErrorAction Stop;
-                Get-LocalGroup -Name $Using:Name | Select-Object $Using:Properties
+                Get-LocalGroup -Name $Using:Name -ErrorAction Stop | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
     }          

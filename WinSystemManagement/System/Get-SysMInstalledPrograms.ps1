@@ -33,38 +33,32 @@
 Param(
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties="Name,Version,Caption,Description,InstallDate,InstallSource,PackageName"
+    [ValidateSet('*','Name','Version','Caption','Description','InstallDate','InstallSource','PackageName')]
+    [string[]]$Properties = @('Name','Version','Caption','Description','InstallDate','InstallSource','PackageName')
 )
 
 try{
-    $Script:output
-
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
-    }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'Name'})){
-            $Properties += ",Name"
-        }
+    if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
+            $Properties += "Name"
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:output = Get-CimInstance -ClassName "Win32_Product" -CimSession $Script:Cim -ErrorAction Stop | `
-                    Select-Object $Properties.Split(",") | Sort-Object -Property Name
+    $result = Get-CimInstance -ClassName "Win32_Product" -CimSession $Script:Cim -ErrorAction Stop | `
+                    Select-Object $Properties | Sort-Object -Property Name
         
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

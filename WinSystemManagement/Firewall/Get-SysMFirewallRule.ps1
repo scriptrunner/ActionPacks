@@ -33,9 +33,6 @@
 
 .Parameter Enabled 
     Specifies that matching firewall rules of the indicated state are retrieved
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -53,40 +50,37 @@ Param(
     [PSCredential]$AccessAccount,
     [Parameter(Mandatory = $true,ParameterSetName = "by Name")]
     [Parameter(Mandatory = $true,ParameterSetName = "by Status")]
-    [string]$Properties="Name,Description,DisplayName,Enabled,Profile,Direction,Action,PrimaryStatus,Status"
+    [ValidateSet('*','Name','Description','DisplayName','Enabled','Profile','Direction','Action','PrimaryStatus','Status')]
+    [string[]]$Properties = @('Name','Description','DisplayName','Enabled','Profile','Direction','Action','PrimaryStatus','Status')
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.String]::IsNullOrWhiteSpace($RuleName)){
         $RuleName= "*"
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties = '*'
+    if($null -eq ($Properties | Where-Object {$_ -like 'DisplayName'})){
+        $Properties += "DisplayName"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'DisplayName'})){
-            $Properties += ",DisplayName"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    if(($PSCmdlet.ParameterSetName  -eq "by Name") -or ($Enabled -eq "All")) {
-        $Script:Rules =Get-NetFirewallRule -CimSession $Script:Cim | Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"} `
-                    | Select-Object $Script:props | Sort-Object DisplayName | Format-List    
+    if(($PSCmdlet.ParameterSetName -eq "by Name") -or ($Enabled -eq "All")) {
+        $Script:Rules = Get-NetFirewallRule -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"} `
+                    | Select-Object $Properties | Sort-Object DisplayName | Format-List    
     }
     else {
-        $Script:Rules =Get-NetFirewallRule -CimSession $Script:Cim -Enabled $Enabled  `
-                    | Select-Object $Script:props | Sort-Object DisplayName | Format-List
+        $Script:Rules = Get-NetFirewallRule -CimSession $Script:Cim -Enabled $Enabled -ErrorAction Stop  `
+                    | Select-Object $Properties | Sort-Object DisplayName | Format-List
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Rules 
     }

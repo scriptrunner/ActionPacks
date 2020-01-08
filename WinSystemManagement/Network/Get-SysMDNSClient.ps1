@@ -37,33 +37,33 @@ Param(
     [string]$AdapterName,
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
-    [string]$Properties = "Name,InterfaceAlias,InterfaceIndex"
+    [ValidateSet('*','Name','InterfaceAlias','InterfaceIndex')]
+    [string[]]$Properties = @('Name','InterfaceAlias','InterfaceIndex')
 )
 
 $Script:Cim
 try{
     if([System.String]::IsNullOrWhiteSpace($AdapterName)){
-        $AdapterName= "*"
+        $AdapterName = "*"
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
-    [string[]]$Script:props = $Properties.Replace(' ','').Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Msg = Get-DnsClient -CimSession $Script:Cim | Where-Object{$_.InterfaceAlias -like $AdapterName } | Select-Object $Script:props
+    
+    $result = Get-DnsClient -CimSession $Script:Cim -ErrorAction Stop `
+                | Where-Object{$_.InterfaceAlias -like $AdapterName } | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Msg 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Msg
+        Write-Output $result
     }
 }
 catch{

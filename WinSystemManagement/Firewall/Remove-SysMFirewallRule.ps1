@@ -37,21 +37,22 @@ Param(
     [PSCredential]$AccessAccount    
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Rule =Get-NetFirewallRule -CimSession $Script:Cim  `
-    |               Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"}
+    $Script:Rule = Get-NetFirewallRule -CimSession $Script:Cim -ErrorAction Stop | `
+                   Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"}
+    
     if($null -ne $Script:Rule){
-        Remove-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -ErrorAction Stop
+        $null = Remove-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -ErrorAction Stop
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Rule $($RuleName) removed" 
         }

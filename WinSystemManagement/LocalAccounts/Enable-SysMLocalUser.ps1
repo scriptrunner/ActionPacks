@@ -52,11 +52,11 @@ try{
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
-            Enable-LocalUser -Name $Name -Confirm:$false -ErrorAction Stop
+            $null = Enable-LocalUser -Name $Name -Confirm:$false -ErrorAction Stop
             $Script:output = Get-LocalUser -Name $Name | Select-Object $Properties
         }
         else {
-            Enable-LocalUser -SID $SID -Confirm:$false -ErrorAction Stop
+            $null = Enable-LocalUser -SID $SID -Confirm:$false -ErrorAction Stop
             $Script:output = Get-LocalUser -SID $SID | Select-Object $Properties
         }
     }
@@ -90,6 +90,7 @@ try{
             }
         }
     }          
+    
     if($SRXEnv) {        
         $SRXEnv.ResultMessage = $Script:output
     }

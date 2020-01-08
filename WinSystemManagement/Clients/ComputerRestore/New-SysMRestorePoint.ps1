@@ -47,7 +47,7 @@ try{
     [string[]]$Properties = @("SequenceNumber","Description")
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
-        Checkpoint-Computer -Description $Description -RestorePointType $RestorePointType -ErrorAction Stop
+        $null = Checkpoint-Computer -Description $Description -RestorePointType $RestorePointType -ErrorAction Stop
         $Script:output = Get-ComputerRestorePoint -ErrorAction Stop | Select-Object -Last 1 -Property $Properties
     }
     else {

@@ -37,21 +37,22 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 [string[]]$Properties = @("TaskName","TaskPath","State","Description","URI","Author")
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Task = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop
-    $null = Start-ScheduledTask -InputObject $Script:Task -ErrorAction Stop
-    $output = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName | Select-Object $Properties
+    $task = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop
+    $null = Start-ScheduledTask -InputObject $task -ErrorAction Stop
+    
+    $output = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $output
     }

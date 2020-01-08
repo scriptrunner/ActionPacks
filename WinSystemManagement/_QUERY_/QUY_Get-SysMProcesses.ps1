@@ -32,11 +32,7 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-try{    
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:processes = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
@@ -53,8 +49,8 @@ try{
     foreach($item in $Script:processes)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Id.toString()
-            $SRXEnv.ResultList2 += "$($item.ProcessName) ($($UserName))" # Display
+            $SRXEnv.ResultList.Add($item.Id.toString())
+            $SRXEnv.ResultList2.Add("$($item.ProcessName) ($($UserName))") # Display
         }
         else{
             Write-Output "$($item.ProcessName) ($($UserName))"

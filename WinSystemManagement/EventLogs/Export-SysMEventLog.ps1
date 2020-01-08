@@ -58,13 +58,13 @@ Param(
 
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if($PSCmdlet.ParameterSetName  -eq "Classic event logs"){
         $CustomLogName = $LogName
@@ -72,8 +72,8 @@ try{
     $quy = [System.String]::Format("SELECT * FROM Win32_NTEventLogFile WHERE Filename = '{0}'",$CustomLogName)
     $cimcl = Get-CimInstance -CimSession $Script:Cim -Query $quy
     $buFile = $BackupPath + "\$($CustomLogName).evtx"
-    $null = Invoke-CimMethod -InputObject $cimcl -MethodName BackupEventlog -Arguments @{ ArchiveFileName = $buFile } -ErrorAction Stop
 
+    $null = Invoke-CimMethod -InputObject $cimcl -MethodName BackupEventlog -Arguments @{ ArchiveFileName = $buFile } -ErrorAction Stop
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Event log: $($CustomLogName) successfully exported"
     }

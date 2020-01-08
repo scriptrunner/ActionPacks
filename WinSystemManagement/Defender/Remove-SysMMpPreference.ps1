@@ -43,9 +43,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -60,10 +57,10 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
         $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
@@ -72,25 +69,25 @@ try{
         $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ExclusionExtension') -eq $true ){
-        Remove-MpPreference -CimSession $Script:Cim -ExclusionExtension $ExclusionExtension.Split(",") -Force -ErrorAction Stop
+        $null = Remove-MpPreference -CimSession $Script:Cim -ExclusionExtension $ExclusionExtension.Split(",") -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ExclusionPath') -eq $true ){
-        Remove-MpPreference -CimSession $Script:Cim -ExclusionPath $ExclusionPath.Split(",") -Force -ErrorAction Stop
+        $null = Remove-MpPreference -CimSession $Script:Cim -ExclusionPath $ExclusionPath.Split(",") -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('HighThreatDefaultAction') -eq $true ){
-        Remove-MpPreference -CimSession $Script:Cim  -HighThreatDefaultAction:$HighThreatDefaultAction -Force -ErrorAction Stop
+        $null = Remove-MpPreference -CimSession $Script:Cim  -HighThreatDefaultAction:$HighThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('LowThreatDefaultAction') -eq $true ){
-        Remove-MpPreference -CimSession $Script:Cim  -LowThreatDefaultAction:$LowThreatDefaultAction -Force -ErrorAction Stop
+        $null = Remove-MpPreference -CimSession $Script:Cim  -LowThreatDefaultAction:$LowThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ModerateThreatDefaultAction') -eq $true ){
-        Remove-MpPreference -CimSession $Script:Cim  -ModerateThreatDefaultAction:$ModerateThreatDefaultAction -Force -ErrorAction Stop
+        $null = Remove-MpPreference -CimSession $Script:Cim  -ModerateThreatDefaultAction:$ModerateThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SevereThreatDefaultAction') -eq $true ){
-        Remove-MpPreference -CimSession $Script:Cim -SevereThreatDefaultAction:$SevereThreatDefaultAction -Force -ErrorAction Stop
+        $null = Remove-MpPreference -CimSession $Script:Cim -SevereThreatDefaultAction:$SevereThreatDefaultAction -Force -ErrorAction Stop
     }
-    $refs = Get-MpPreference -CimSession $Script:Cim -ErrorAction Stop
-    
+
+    $refs = Get-MpPreference -CimSession $Script:Cim -ErrorAction Stop    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $refs
     }

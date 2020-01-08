@@ -46,7 +46,7 @@ try{
         }
     }
     else {
-        Remove-WBPolicy -All -Force -ErrorAction Stop
+        $null = Remove-WBPolicy -All -Force -ErrorAction Stop
     }
     
     if($SRXEnv) {

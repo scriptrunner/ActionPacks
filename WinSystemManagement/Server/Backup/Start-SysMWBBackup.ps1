@@ -58,8 +58,8 @@ try{
     }
     else {
         $pol = Get-WBPolicy -ErrorAction Stop
-        Start-WBBackup -Policy $pol -Async -Force -AllowDeleteOldBackups:$AllowDeleteOldBackups -ErrorAction Stop
-        $Script:output = Get-WBJob | Select-Object $Properties
+        $null = Start-WBBackup -Policy $pol -Async -Force -AllowDeleteOldBackups:$AllowDeleteOldBackups -ErrorAction Stop
+        $Script:output = Get-WBJob -ErrorAction Stop | Select-Object $Properties
     }
     
     if($SRXEnv) {

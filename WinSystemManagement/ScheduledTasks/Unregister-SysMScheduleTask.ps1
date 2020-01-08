@@ -37,20 +37,20 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
-[string[]]$Properties = @("TaskName","TaskPath","State","Description","URI","Author")
+$Script:Cim = $null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    $Script:Task = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop
+    $null = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop
     $null = Unregister-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -Confirm:$false -ErrorAction Stop
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Task: $($TaskName) deregistered"
     }

@@ -35,24 +35,21 @@ Param(
 try{
     $Script:Cim=$null
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
-    $Script:Tasks = Get-ScheduledTask -CimSession $Script:Cim | Select-Object TaskName,TaskPath | Sort-Object -Property TaskName
-    foreach($item in $Script:Tasks)
+
+    $tasks = Get-ScheduledTask -CimSession $Script:Cim | Select-Object TaskName,TaskPath | Sort-Object -Property TaskName
+    foreach($item in $tasks)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.TaskName
-            $SRXEnv.ResultList2 += "$($item.TaskName) ($($item.TaskPath))" # Display
+            $SRXEnv.ResultList.Add($item.TaskName)
+            $SRXEnv.ResultList2.Add("$($item.TaskName) ($($item.TaskPath))") # Display
         }
         else{
             Write-Output "$($item.TaskName) ($($item.TaskPath))"

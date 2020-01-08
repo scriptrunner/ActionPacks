@@ -56,29 +56,29 @@ try{
         $Script:LogonOn = 1
     }
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){       
-        Set-ItemProperty -Path $Script:regKey -Name AutoAdminLogon -Value $Script:LogonOn -Force -ErrorAction Stop
-        Set-ItemProperty -Path $Script:regKey -Name DefaultUserName -Value $DefaultUserName -Force -ErrorAction Stop
-        Set-ItemProperty -Path $Script:regKey -Name DefaultDomainName -Value $DefaultDomainName -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $Script:regKey -Name AutoAdminLogon -Value $Script:LogonOn -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $Script:regKey -Name DefaultUserName -Value $DefaultUserName -Force -ErrorAction Stop
+        $null = Set-ItemProperty -Path $Script:regKey -Name DefaultDomainName -Value $DefaultDomainName -Force -ErrorAction Stop
     }
     else {
         if($null -eq $AccessAccount){
-            Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                 Set-ItemProperty -Path $Using:regKey -Name AutoAdminLogon -Value $Using:LogonOn -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name DefaultUserName -Value $Using:DefaultUserName -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name DefaultDomainName -Value $Using:DefaultDomainName -Force -ErrorAction Stop
             } -ErrorAction Stop
             if($RebootAfterChanges -eq $true){
-                Restart-Computer -ComputerName $ComputerName -DcomAuthentication "Packet" -Force -Confirm:$false -ErrorAction Stop
+                $null = Restart-Computer -ComputerName $ComputerName -DcomAuthentication "Packet" -Force -Confirm:$false -ErrorAction Stop
             }
         }
         else {
-            Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+            $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                 Set-ItemProperty -Path $Using:regKey -Name AutoAdminLogon -Value $Using:LogonOn -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name DefaultUserName -Value $Using:DefaultUserName -Force -ErrorAction Stop
                 Set-ItemProperty -Path $Using:regKey -Name DefaultDomainName -Value $Using:DefaultDomainName -Force -ErrorAction Stop
             } -ErrorAction Stop
             if($RebootAfterChanges -eq $true){
-                Restart-Computer -Credential $AccessAccount -ComputerName $ComputerName -DcomAuthentication "Packet" -Force -Confirm:$false -ErrorAction Stop
+                $null = Restart-Computer -Credential $AccessAccount -ComputerName $ComputerName -DcomAuthentication "Packet" -Force -Confirm:$false -ErrorAction Stop
             }
         }
     }      

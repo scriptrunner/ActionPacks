@@ -34,10 +34,7 @@ Param(
 
 try{
     $Script:result
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:result = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
@@ -57,8 +54,8 @@ try{
     foreach($item in $Script:result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.BackupSetID
-            $SRXEnv.ResultList2 += $item.BackupTime # Display
+            $SRXEnv.ResultList.Add($item.BackupSetID)
+            $SRXEnv.ResultList2.Add($item.BackupTime) # Display
         }
         else{
             Write-Output $item.BackupTime

@@ -35,24 +35,21 @@ Param(
 $Script:Cim
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+
     $result = Get-DnsClientServerAddress -CimSession $Script:Cim | Select-Object InterfaceAlias,ServerAddresses | Sort-Object InterfaceAlias
     foreach($item in $result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.InterfaceAlias
-            $SRXEnv.ResultList2 += "$($item.InterfaceAlias) | $($item.ServerAddresses)"
+            $SRXEnv.ResultList.Add($item.InterfaceAlias)
+            $SRXEnv.ResultList2.Add("$($item.InterfaceAlias) | $($item.ServerAddresses)")
         }
         else{
             Write-Output $item.InterfaceAlias

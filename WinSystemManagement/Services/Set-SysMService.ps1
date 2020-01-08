@@ -52,7 +52,7 @@ Param(
 )
 
 try{
-    [string[]]$Properties=@("Name","DisplayName","Status","RequiredServices","DependentServices","CanStop","CanShutdown","CanPauseAndContinue")
+    [string[]]$Properties = @("Name","DisplayName","Status","RequiredServices","DependentServices","CanStop","CanShutdown","CanPauseAndContinue")
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $ComputerName = "."
@@ -71,12 +71,12 @@ try{
         $null = Set-Service -ComputerName $ComputerName -Name $Script:srv.Name -Status $Status -Confirm:$false -ErrorAction Stop
     }
 
-    $Script:output = Get-Service -ComputerName $ComputerName -Name $Script:srv.Name | Select-Object $Properties
+    $result = Get-Service -ComputerName $ComputerName -Name $Script:srv.Name -ErrorAction Stop | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

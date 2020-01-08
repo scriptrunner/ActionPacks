@@ -33,24 +33,25 @@ Param(
 )
 
 $Script:Cim
-[string[]]$Script:Properties = @("Name","InterfaceAlias","InterfaceIndex")
+[string[]]$Properties = @("Name","InterfaceAlias","InterfaceIndex")
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    Register-DnsClient -CimSession $Script:Cim -ErrorAction Stop
-    $Script:Msg = Get-DnsClient -CimSession $Script:Cim | Select-Object $Script:Properties
+    $null = Register-DnsClient -CimSession $Script:Cim -ErrorAction Stop
+
+    $result = Get-DnsClient -CimSession $Script:Cim -ErrorAction Stop | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Msg 
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Msg
+        Write-Output $result
     }
 }
 catch{

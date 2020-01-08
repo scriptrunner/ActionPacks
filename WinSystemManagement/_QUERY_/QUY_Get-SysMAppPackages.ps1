@@ -33,10 +33,6 @@ Param(
 )
 
 try{
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $Script:packItems = Get-AppxPackage -AllUsers -ErrorAction Stop | Select-Object Name,PackageFullName | Sort-Object Name
     }
@@ -56,8 +52,8 @@ try{
     foreach($item in $Script:packItems)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.PackageFullName
-            $SRXEnv.ResultList2 += $item.Name # Display
+            $SRXEnv.ResultList.Add($item.PackageFullName)
+            $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

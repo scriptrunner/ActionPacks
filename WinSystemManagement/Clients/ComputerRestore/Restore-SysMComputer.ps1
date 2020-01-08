@@ -41,7 +41,7 @@ try{
     $Script:output
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
-        Restore-Computer -RestorePoint $RestorePointID -Confirm:$false -ErrorAction Stop
+        $null = Restore-Computer -RestorePoint $RestorePointID -Confirm:$false -ErrorAction Stop
     }
     else {
         if($null -eq $AccessAccount){            
@@ -57,10 +57,10 @@ try{
     }      
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Computer restores"
+        $SRXEnv.ResultMessage = "Computer restored"
     }
     else{
-        Write-Output "Computer restores"
+        Write-Output "Computer restored"
     }
 }
 catch{

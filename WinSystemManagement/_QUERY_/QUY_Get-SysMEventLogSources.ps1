@@ -36,17 +36,14 @@ Param(
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
-    }   
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
     }
-    $Script:Sources = Get-EventLog -ComputerName $ComputerName -LogName $LogName  -ErrorAction Stop | Select-Object Source -Unique  | Sort-Object Source
-    foreach($item in $Script:Sources)
+    
+    $sources = Get-EventLog -ComputerName $ComputerName -LogName $LogName  -ErrorAction Stop | Select-Object Source -Unique  | Sort-Object Source
+    foreach($item in $sources)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.Source
-            $SRXEnv.ResultList2 += $item.Source # Display
+            $SRXEnv.ResultList.Add($item.Source)
+            $SRXEnv.ResultList2.Add($item.Source) # Display
         }
         else{
             Write-Output $item.Source

@@ -39,24 +39,21 @@ Import-Module nettcpip
 $Script:Cim
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     $result = Get-NetIPAddress -CimSession $Script:Cim | Select-Object InterfaceAlias,IPAddress | Sort-Object InterfaceAlias
     foreach($item in $result)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.InterfaceAlias
-            $SRXEnv.ResultList2 += "$($item.InterfaceAlias) | $($item.IPAddress)"
+            $SRXEnv.ResultList.Add($item.InterfaceAlias)
+            $SRXEnv.ResultList2.Add("$($item.InterfaceAlias) | $($item.IPAddress)")
         }
         else{
             Write-Output $item.InterfaceAlias

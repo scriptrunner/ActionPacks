@@ -52,10 +52,10 @@ try{
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
-            $Script:output = Get-LocalGroupMember -Name $Name | Select-Object $Properties
+            $Script:output = Get-LocalGroupMember -Name $Name -ErrorAction Stop | Select-Object $Properties
         }
         else {
-            $Script:output = Get-LocalGroupMember -SID $SID | Select-Object $Properties
+            $Script:output = Get-LocalGroupMember -SID $SID -ErrorAction Stop | Select-Object $Properties
         }
     }
     else {
@@ -83,7 +83,8 @@ try{
                 } -ErrorAction Stop
             }
         }
-    }          
+    }         
+     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

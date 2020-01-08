@@ -58,9 +58,9 @@ try{
     }
     else {
         $pol = Get-WBPolicy -Editable -ErrorAction Stop
-        $spec = New-WBFileSpec -FileSpec $File
-        Remove-WBFileSpec -Policy $pol -FileSpec $spec -ErrorAction Stop
-        $Script:output = Get-WBFileSpec -Policy $pol | Format-List
+        $spec = New-WBFileSpec -FileSpec $File -ErrorAction Stop
+        $null = Remove-WBFileSpec -Policy $pol -FileSpec $spec -ErrorAction Stop
+        $Script:output = Get-WBFileSpec -Policy $pol -ErrorAction Stop | Format-List
     }
     
     if($SRXEnv) {

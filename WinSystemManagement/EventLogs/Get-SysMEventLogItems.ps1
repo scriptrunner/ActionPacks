@@ -64,22 +64,19 @@ Param(
     [int64]$InstanceId,
     [int32]$MaximumItems=100,
     [string]$Message,
-    [string]$Properties = "EventID,Index,EntryType,InstanceId,TimeGenerated,UserName"
+    [ValidateSet('*','EventID','Index','EntryType','InstanceId','TimeGenerated','UserName')]
+    [string[]]$Properties = @('EventID','Index','EntryType','InstanceId','TimeGenerated','UserName')
 )
 
 try{
     $Script:output
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
-    }        
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
+    }  
+    if($null -eq ($Properties | Where-Object {$_ -like 'TimeWritten'})){
+        $Properties += "TimeWritten"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'TimeWritten'})){
-            $Properties += ",TimeWritten"
-        }
-    }
+
     if($PSCmdlet.ParameterSetName  -eq "Classic event logs"){
         $CustomLogName = $LogName
     }    
@@ -106,7 +103,7 @@ try{
         $Script:items = $Script:items | Where-Object -Property InstanceId -eq $InstanceId
     }
     if(($null -ne $Script:items) -and ($Script:items.length -gt 0)){
-        $Script:output = $Script:items[0..$MaximumItems] | Select-Object $Properties.Split(',') `
+        $Script:output = $Script:items[0..$MaximumItems] | Select-Object $Properties `
                 | Sort-Object TimeWritten | Format-List
     }
 

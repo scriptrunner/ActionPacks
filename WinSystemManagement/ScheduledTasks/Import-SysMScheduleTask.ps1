@@ -42,23 +42,21 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 [string[]]$Properties = @("TaskName","TaskPath","State","Description","URI","Author")
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $null = Register-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -Force -Xml (Get-Content $ImportFile | Out-String) -ErrorAction Stop
-    $output = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName | Select-Object $Properties
-    if(-not [System.String]::IsNullOrWhiteSpace($ExportFile)){
-        $output | Out-File $ExportFile
-    }
+    
+    $output = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop | Select-Object $Properties   
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $output
     }

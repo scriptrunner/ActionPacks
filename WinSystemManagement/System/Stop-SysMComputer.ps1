@@ -55,7 +55,7 @@ try{
     else {
         $cmdArgs.Add('DcomAuthentication', $DcomAuthentication)
     }
-    Stop-Computer @cmdArgs -ComputerName $ComputerNames.Split(',')
+    $null = Stop-Computer @cmdArgs -ComputerName $ComputerNames.Split(',')
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Computers stopped"

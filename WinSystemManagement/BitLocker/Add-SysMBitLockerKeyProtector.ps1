@@ -130,6 +130,7 @@ Param(
 try{
     $Script:output
     [string[]]$Properties = @("MountPoint","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
+
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                                 'MountPoint' = $DriveLetter
@@ -171,7 +172,7 @@ try{
             $cmdArgs.Add('RecoveryKeyProtector', $null)
             $cmdArgs.Add('RecoveryKeyPath', $RecoveryKeyPath)
         }
-        Add-BitLockerKeyProtector @cmdArgs
+        $null = Add-BitLockerKeyProtector @cmdArgs
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }
     else {

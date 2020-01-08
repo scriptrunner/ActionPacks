@@ -157,9 +157,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -224,10 +221,10 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
         $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
@@ -236,140 +233,139 @@ try{
         $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ExclusionExtension') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ExclusionExtension $ExclusionExtension.Split(",") -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ExclusionExtension $ExclusionExtension.Split(",") -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ExclusionPath') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ExclusionPath $ExclusionPath.Split(",") -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ExclusionPath $ExclusionPath.Split(",") -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('HighThreatDefaultAction') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim  -HighThreatDefaultAction $HighThreatDefaultAction -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim  -HighThreatDefaultAction $HighThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('LowThreatDefaultAction') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim  -LowThreatDefaultAction $LowThreatDefaultAction -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim  -LowThreatDefaultAction $LowThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ModerateThreatDefaultAction') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim  -ModerateThreatDefaultAction $ModerateThreatDefaultAction -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim  -ModerateThreatDefaultAction $ModerateThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SevereThreatDefaultAction') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SevereThreatDefaultAction $SevereThreatDefaultAction -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SevereThreatDefaultAction $SevereThreatDefaultAction -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('UnknownThreatDefaultAction') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -UnknownThreatDefaultAction $UnknownThreatDefaultAction -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -UnknownThreatDefaultAction $UnknownThreatDefaultAction -Force -ErrorAction Stop
     }    
     if($PSBoundParameters.ContainsKey('CheckForSignaturesBeforeRunningScan') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -CheckForSignaturesBeforeRunningScan $CheckForSignaturesBeforeRunningScan -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -CheckForSignaturesBeforeRunningScan $CheckForSignaturesBeforeRunningScan -Force -ErrorAction Stop
     }    
     if($PSBoundParameters.ContainsKey('DisableArchiveScanning') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableArchiveScanning $DisableArchiveScanning -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableArchiveScanning $DisableArchiveScanning -Force -ErrorAction Stop
     }    
     if($PSBoundParameters.ContainsKey('DisableAutoExclusions') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableAutoExclusions $DisableAutoExclusions -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableAutoExclusions $DisableAutoExclusions -Force -ErrorAction Stop
     }    
     if($PSBoundParameters.ContainsKey('DisableBehaviorMonitoring') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableBehaviorMonitoring $DisableBehaviorMonitoring -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableBehaviorMonitoring $DisableBehaviorMonitoring -Force -ErrorAction Stop
     }    
     if($PSBoundParameters.ContainsKey('DisableCatchupFullScan') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableCatchupFullScan $DisableCatchupFullScan -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableCatchupFullScan $DisableCatchupFullScan -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableCatchupQuickScan') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableCatchupQuickScan $DisableCatchupQuickScan -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableCatchupQuickScan $DisableCatchupQuickScan -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableEmailScanning') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableEmailScanning $DisableEmailScanning -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableEmailScanning $DisableEmailScanning -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableIOAVProtection') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableIOAVProtection $DisableIOAVProtection -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableIOAVProtection $DisableIOAVProtection -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableIntrusionPreventionSystem') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableIntrusionPreventionSystem $DisableIntrusionPreventionSystem -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableIntrusionPreventionSystem $DisableIntrusionPreventionSystem -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisablePrivacyMode') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisablePrivacyMode $DisablePrivacyMode -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisablePrivacyMode $DisablePrivacyMode -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableRealtimeMonitoring') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableRealtimeMonitoring $DisableRealtimeMonitoring -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableRealtimeMonitoring $DisableRealtimeMonitoring -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableRemovableDriveScanning') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableRemovableDriveScanning $DisableRemovableDriveScanning -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableRemovableDriveScanning $DisableRemovableDriveScanning -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableRestorePoint') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableRestorePoint $DisableRestorePoint -Force -ErrorAction Stop    
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableRestorePoint $DisableRestorePoint -Force -ErrorAction Stop    
     }
     if($PSBoundParameters.ContainsKey('DisableScanningMappedNetworkDrivesForFullScan') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableScanningMappedNetworkDrivesForFullScan $DisableScanningMappedNetworkDrivesForFullScan -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableScanningMappedNetworkDrivesForFullScan $DisableScanningMappedNetworkDrivesForFullScan -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableScanningNetworkFiles') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableScanningNetworkFiles $DisableScanningNetworkFiles -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableScanningNetworkFiles $DisableScanningNetworkFiles -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('DisableScriptScanning') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -DisableScriptScanning $DisableScriptScanning -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -DisableScriptScanning $DisableScriptScanning -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('MAPSReporting') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -MAPSReporting $MAPSReporting -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -MAPSReporting $MAPSReporting -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('QuarantinePurgeItemsAfterDelay') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -QuarantinePurgeItemsAfterDelay $QuarantinePurgeItemsAfterDelay -Force -ErrorAction Stop
+        $null =  Set-MpPreference -CimSession $Script:Cim -QuarantinePurgeItemsAfterDelay $QuarantinePurgeItemsAfterDelay -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('RealTimeScanDirection') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -RealTimeScanDirection $RealTimeScanDirection -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -RealTimeScanDirection $RealTimeScanDirection -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('RandomizeScheduleTaskTimes') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -RandomizeScheduleTaskTimes $RandomizeScheduleTaskTimes -Force -ErrorAction Stop    
+        $null = Set-MpPreference -CimSession $Script:Cim -RandomizeScheduleTaskTimes $RandomizeScheduleTaskTimes -Force -ErrorAction Stop    
     }
     if($PSBoundParameters.ContainsKey('RemediationScheduleDay') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -RemediationScheduleDay $RemediationScheduleDay -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -RemediationScheduleDay $RemediationScheduleDay -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ReportingAdditionalActionTimeOut') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ReportingAdditionalActionTimeOut $ReportingAdditionalActionTimeOut -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ReportingAdditionalActionTimeOut $ReportingAdditionalActionTimeOut -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ReportingCriticalFailureTimeOut') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ReportingCriticalFailureTimeOut $ReportingCriticalFailureTimeOut -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ReportingCriticalFailureTimeOut $ReportingCriticalFailureTimeOut -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ReportingNonCriticalTimeOut') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ReportingNonCriticalTimeOut $ReportingNonCriticalTimeOut -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ReportingNonCriticalTimeOut $ReportingNonCriticalTimeOut -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ScanAvgCPULoadFactor') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ScanAvgCPULoadFactor $ScanAvgCPULoadFactor -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ScanAvgCPULoadFactor $ScanAvgCPULoadFactor -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ScanOnlyIfIdleEnabled') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ScanOnlyIfIdleEnabled $ScanOnlyIfIdleEnabled -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ScanOnlyIfIdleEnabled $ScanOnlyIfIdleEnabled -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ScanParameters') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ScanParameters $ScanParameters -Force -ErrorAction Stop    
+        $null = Set-MpPreference -CimSession $Script:Cim -ScanParameters $ScanParameters -Force -ErrorAction Stop    
     }
     if($PSBoundParameters.ContainsKey('ScanPurgeItemsAfterDelay') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ScanPurgeItemsAfterDelay $ScanPurgeItemsAfterDelay -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ScanPurgeItemsAfterDelay $ScanPurgeItemsAfterDelay -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('ScanScheduleDay') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -ScanScheduleDay $ScanScheduleDay -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -ScanScheduleDay $ScanScheduleDay -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SignatureAuGracePeriod') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SignatureAuGracePeriod $SignatureAuGracePeriod -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SignatureAuGracePeriod $SignatureAuGracePeriod -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SignatureDisableUpdateOnStartupWithoutEngine') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SignatureDisableUpdateOnStartupWithoutEngine $SignatureDisableUpdateOnStartupWithoutEngine -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SignatureDisableUpdateOnStartupWithoutEngine $SignatureDisableUpdateOnStartupWithoutEngine -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SignatureFirstAuGracePeriod') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SignatureFirstAuGracePeriod $SignatureFirstAuGracePeriod -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SignatureFirstAuGracePeriod $SignatureFirstAuGracePeriod -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SignatureScheduleDay') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SignatureScheduleDay $SignatureScheduleDay -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SignatureScheduleDay $SignatureScheduleDay -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SignatureUpdateCatchupInterval') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SignatureUpdateCatchupInterval $SignatureUpdateCatchupInterval -Force -ErrorAction Stop    
+        $null = Set-MpPreference -CimSession $Script:Cim -SignatureUpdateCatchupInterval $SignatureUpdateCatchupInterval -Force -ErrorAction Stop    
     }
     if($PSBoundParameters.ContainsKey('SignatureUpdateInterval') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SignatureUpdateInterval $SignatureUpdateInterval -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SignatureUpdateInterval $SignatureUpdateInterval -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('SubmitSamplesConsent') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -SubmitSamplesConsent $SubmitSamplesConsent -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -SubmitSamplesConsent $SubmitSamplesConsent -Force -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('UILockdown') -eq $true ){
-        Set-MpPreference -CimSession $Script:Cim -UILockdown $UILockdown -Force -ErrorAction Stop
+        $null = Set-MpPreference -CimSession $Script:Cim -UILockdown $UILockdown -Force -ErrorAction Stop
     }
 
-    $status = Get-MpPreference -CimSession $Script:Cim -ErrorAction Stop
-    
+    $status = Get-MpPreference -CimSession $Script:Cim -ErrorAction Stop    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $status
     }

@@ -33,29 +33,27 @@
 Param(
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties = "DiskName,DiskNumber,DiskId,TotalSpace,FreeSpace,ContainsBackup"
+    [ValidateSet('*','DiskName','DiskNumber','DiskId','TotalSpace','FreeSpace','ContainsBackup')]
+    [string[]]$Properties = @('DiskName','DiskNumber','DiskId','TotalSpace','FreeSpace','ContainsBackup')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = "*"
-    }
-    [string[]]$Script:props = $Properties.Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock {
-                Get-WBDisk | Select-Object $Using:props
+                Get-WBDisk | Select-Object $Using:Properties
             } -ErrorAction Stop
         }
         else {
             $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock {
-                Get-WBDisk | Select-Object $Using:props
-            } -ErrorAction Stop
+                Get-WBDisk | Select-Object $Using:Properties
+            } 
         }
     }
     else {
-        $Script:output = Get-WBDisk | Select-Object $Script:props
+        $Script:output = Get-WBDisk -ErrorAction Stop | Select-Object $Properties
     }
     
     if($SRXEnv) {

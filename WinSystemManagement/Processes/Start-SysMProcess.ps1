@@ -57,7 +57,6 @@ Param(
 
 try{
     [string[]]$Properties = @("Name","ID","FileVersion","UserName","PagedMemorySize","PrivateMemorySize","VirtualMemorySize","TotalProcessorTime","Path","CPU","StartTime")
-    $Script:output
 
     if([System.String]::IsNullOrWhiteSpace($ArgumentList) -eq $true){
         $ArgumentList = " "
@@ -85,13 +84,13 @@ try{
     }
         
     $Script:process = Start-Process @cmdArgs
-    $Script:output = Get-Process -ID $Script:process.ID -IncludeUserName | Select-Object $Properties
 
+    $result = Get-Process -ID $Script:process.ID -IncludeUserName | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

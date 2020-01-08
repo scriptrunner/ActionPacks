@@ -47,7 +47,7 @@ try{
     [string[]]$Properties = @("MountPoint","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
-        Suspend-BitLocker -MountPoint $DriveLetter -RebootCount $RebootCount -Confirm:$false -ErrorAction Stop
+        $null = Suspend-BitLocker -MountPoint $DriveLetter -RebootCount $RebootCount -Confirm:$false -ErrorAction Stop
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }
     else {

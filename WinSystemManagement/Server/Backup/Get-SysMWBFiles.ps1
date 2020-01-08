@@ -50,7 +50,7 @@ try{
     }
     else {
         $pol = Get-WBPolicy -ErrorAction Stop
-        $Script:output = Get-WBFileSpec -Policy $pol | Format-List
+        $Script:output = Get-WBFileSpec -Policy $pol -ErrorAction Stop | Format-List
     }
     
     if($SRXEnv) {

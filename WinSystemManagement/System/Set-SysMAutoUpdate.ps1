@@ -48,20 +48,20 @@ try{
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if((Test-Path -Path $WindowsUpdateKey) -eq $true){
-            Remove-Item -Path $WindowsUpdateKey -Recurse -Force -ErrorAction Stop
+            $null = Remove-Item -Path $WindowsUpdateKey -Recurse -Force -ErrorAction Stop
         }
         If ($UpdateOption -gt 0) {
             $null = New-Item -Path $WindowsUpdateKey -Force -ErrorAction Stop
             $null = New-Item -Path $AutoUpdateKey -Force -ErrorAction Stop
         }        
         If ($UpdateOption -eq 1) {
-            Set-ItemProperty -Path $AutoUpdateKey -Name NoAutoUpdate -Value 1 -Force -ErrorAction Stop
+            $null = Set-ItemProperty -Path $AutoUpdateKey -Name NoAutoUpdate -Value 1 -Force -ErrorAction Stop
         }
         elseif ($UpdateOption -gt 2) {
-            Set-ItemProperty -Path $AutoUpdateKey -Name NoAutoUpdate -Value 0 -Force -ErrorAction Stop
-            Set-ItemProperty -Path $AutoUpdateKey -Name AUOptions -Value $UpdateOption -Force -ErrorAction Stop
-            Set-ItemProperty -Path $AutoUpdateKey -Name ScheduledInstallDay -Value 0 -Force -ErrorAction Stop
-            Set-ItemProperty -Path $AutoUpdateKey -Name ScheduledInstallTime -Value 3 -Force -ErrorAction Stop
+            $null = Set-ItemProperty -Path $AutoUpdateKey -Name NoAutoUpdate -Value 0 -Force -ErrorAction Stop
+            $null = Set-ItemProperty -Path $AutoUpdateKey -Name AUOptions -Value $UpdateOption -Force -ErrorAction Stop
+            $null = Set-ItemProperty -Path $AutoUpdateKey -Name ScheduledInstallDay -Value 0 -Force -ErrorAction Stop
+            $null = Set-ItemProperty -Path $AutoUpdateKey -Name ScheduledInstallTime -Value 3 -Force -ErrorAction Stop
         }
     }
     else {
@@ -70,23 +70,23 @@ try{
                 Test-Path -Path $Using:WindowsUpdateKey
             } -ErrorAction Stop
             if($tmp -eq $true){
-                Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Remove-Item -Path $Using:WindowsUpdateKey -Recurse -Force -ErrorAction Stop
                 } -ErrorAction Stop
             }
             If ($UpdateOption -gt 0) {
-                Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     $null = New-Item -Path $Using:WindowsUpdateKey -Force -ErrorAction Stop;
                     $null = New-Item -Path $Using:AutoUpdateKey -Force -ErrorAction Stop
                 } -ErrorAction Stop
             }        
             If ($UpdateOption -eq 1) {
-                Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name NoAutoUpdate -Value 1 -Force -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif ($UpdateOption -gt 2) {
-                Invoke-Command -ComputerName $ComputerName -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name NoAutoUpdate -Value 0 -Force -ErrorAction Stop;
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name AUOptions -Value $Using:UpdateOption -Force -ErrorAction Stop;
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name ScheduledInstallDay -Value 0 -Force -ErrorAction Stop;
@@ -99,23 +99,23 @@ try{
                 Test-Path -Path $Using:WindowsUpdateKey
             } -ErrorAction Stop
             if($tmp -eq $true){
-                Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                     Remove-Item -Path $Using:WindowsUpdateKey -Recurse -Force -ErrorAction Stop
                 } -ErrorAction Stop
             }
             If ($UpdateOption -gt 0) {
-                Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                     $null = New-Item -Path $Using:WindowsUpdateKey -Force -ErrorAction Stop;
                     $null = New-Item -Path $Using:AutoUpdateKey -Force -ErrorAction Stop
                 } -ErrorAction Stop
             }        
             If ($UpdateOption -eq 1) {
-                Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name NoAutoUpdate -Value 1 -Force -ErrorAction Stop
                 } -ErrorAction Stop
             }
             elseif ($UpdateOption -gt 2) {
-                Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
+                $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name NoAutoUpdate -Value 0 -Force -ErrorAction Stop;
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name AUOptions -Value $Using:UpdateOption -Force -ErrorAction Stop;
                     Set-ItemProperty -Path $Using:AutoUpdateKey -Name ScheduledInstallDay -Value 0 -Force -ErrorAction Stop;

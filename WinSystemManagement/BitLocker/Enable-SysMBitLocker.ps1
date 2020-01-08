@@ -229,7 +229,7 @@ try{
             $cmdArgs.Add('RecoveryKeyProtector', $null)
             $cmdArgs.Add('RecoveryKeyPath', $RecoveryKeyPath)
         }
-        Enable-BitLocker @cmdArgs
+        $null = Enable-BitLocker @cmdArgs
         $Script:output = Get-BitLockerVolume -MountPoint $DriveLetter | Select-Object $Properties
     }
     else {

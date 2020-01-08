@@ -42,7 +42,6 @@ Param(
 )
 
 try{
-    $Script:output
     [string[]]$Properties = @("Log","LogDisplayName","MaximumKilobytes","OverflowAction","MinimumRetentionDays")
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
@@ -51,13 +50,13 @@ try{
         $CustomLogName = $LogName
     }
     Clear-EventLog -ComputerName $ComputerName -LogName $CustomLogName -Confirm:$false -ErrorAction Stop
-    $Script:output = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $CustomLogName  | Select-Object $Properties
 
+    $result = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $CustomLogName  | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

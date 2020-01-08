@@ -104,7 +104,7 @@ try{
     }
     else {
         $Script:bSet = Get-WBBackupSet | Where-Object -Property BackupSetID -eq $BackupSetID -ErrorAction Stop
-        $Script:target = Get-WBBackupVolumeBrowsePath -BackupSet $bset -VolumeInBackup $bset.Volume[0]
+        $Script:target = Get-WBBackupVolumeBrowsePath -BackupSet $bset -VolumeInBackup $bset.Volume[0] -ErrorAction Stop
         if([System.String]::IsNullOrWhiteSpace($TargetPath) -eq $false){
             $Script:output = Start-WBFileRecovery -BackupSet $Script:bSet -SourcePath $Script:target -Option $RecoveryOption -Async:$RecoveryAsync -Recursive:$RecoveryRecursive -Force -ErrorAction Stop
         }
@@ -112,7 +112,7 @@ try{
             $Script:output = Start-WBFileRecovery -BackupSet $Script:bSet -SourcePath $Script:target -TargetPath $TargetPath -Option $RecoveryOption -Async:$RecoveryAsync -Recursive:$RecoveryRecursive -Force -ErrorAction Stop
         }
         if($RecoveryAsync -eq $true){
-            $Script:output = Get-WBJob
+            $Script:output = Get-WBJob -ErrorAction Stop
         }
     }
     

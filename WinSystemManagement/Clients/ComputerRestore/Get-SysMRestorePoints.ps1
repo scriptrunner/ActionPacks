@@ -39,17 +39,14 @@
 Param(
     [int32]$RestorePointID,
     [switch]$LastStatus,
-    [string]$Properties = "SequenceNumber,Description,CreationTime",
+    [Validateset('*','SequenceNumber','Description','CreationTime')]
+    [string[]]$Properties = @('SequenceNumber','Description','CreationTime'),
     [string]$ComputerName,    
     [PSCredential]$AccessAccount
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
@@ -59,7 +56,7 @@ try{
         elseif ($RestorePointID -gt 0) {
             $cmdArgs.Add('RestorePoint',$RestorePoint)
         }
-        $Script:output = Get-ComputerRestorePoint @cmdArgs | Select-Object $Script:props
+        $Script:output = Get-ComputerRestorePoint @cmdArgs | Select-Object $Properties
     }
     else {
         if($null -eq $AccessAccount){
@@ -70,12 +67,12 @@ try{
             }
             elseif ($RestorePointID -gt 0) {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-ComputerRestorePoint -RestorePoint $Using:RestorePointID -ErrorAction Stop | Select-Object $Using:props
+                    Get-ComputerRestorePoint -RestorePoint $Using:RestorePointID -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-ComputerRestorePoint -ErrorAction Stop | Select-Object $Using:props
+                    Get-ComputerRestorePoint -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
@@ -87,12 +84,12 @@ try{
             }
             elseif ($RestorePointID -gt 0) {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-ComputerRestorePoint -RestorePoint $Using:RestorePointID -ErrorAction Stop | Select-Object $Using:props
+                    Get-ComputerRestorePoint -RestorePoint $Using:RestorePointID -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-ComputerRestorePoint -ErrorAction Stop | Select-Object $Using:props
+                    Get-ComputerRestorePoint -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }

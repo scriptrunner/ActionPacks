@@ -73,7 +73,8 @@ Param(
     [Parameter(ParameterSetName ="All")]
     [Parameter(ParameterSetName ="ById")]
     [Parameter(ParameterSetName ="ByName")]
-    [string]$Properties="Name,ID,FileVersion,UserName,PagedMemorySize,PrivateMemorySize,VirtualMemorySize,TotalProcessorTime,Path,CPU,StartTime"
+    [ValidateSet('*','Name','ID','FileVersion','UserName','PagedMemorySize','PrivateMemorySize','VirtualMemorySize','TotalProcessorTime','Path','CPU','StartTime')]
+    [string[]]$Properties = @('Name','ID','FileVersion','UserName','PagedMemorySize','PrivateMemorySize','VirtualMemorySize','TotalProcessorTime','Path','CPU','StartTime')
 )
 
 try{
@@ -81,81 +82,108 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ProcessName) -eq $true){
         $ProcessName = '*'
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
-    }    
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'Name'})){
-            $Properties += ",Name"
-        }
+    if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
+        $Properties += "Name"
     }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
             if($IncludeUserName -eq $true){
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -Name $Using:ProcessName -IncludeUserName | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName -IncludeUserName | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -ID $Using:ProcessID -IncludeUserName | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID -IncludeUserName | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
             elseif($FileVersionInfo -eq $true){
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -Name $Using:ProcessName -FileVersionInfo | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName -FileVersionInfo | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -ID $Using:ProcessID -FileVersionInfo | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID -FileVersionInfo | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
             elseif($Module -eq $true){
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -Name $Using:ProcessName -Module | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName -Module | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -ID $Using:ProcessID -Module | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID -Module | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
             else{
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -Name $Using:ProcessName | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -ID $Using:ProcessID | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
         }
         else {
             if($IncludeUserName -eq $true){
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -Name $Using:ProcessName -IncludeUserName | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName -IncludeUserName | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -ID $Using:ProcessID -IncludeUserName | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID -IncludeUserName | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
             elseif($FileVersionInfo -eq $true){
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -Name $Using:ProcessName -FileVersionInfo | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName -FileVersionInfo | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -ID $Using:ProcessID -FileVersionInfo | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID -FileVersionInfo | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
             elseif($Module -eq $true){
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -Name $Using:ProcessName -Module | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName -Module | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -ID $Using:ProcessID -Module | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID -Module | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
             else{
                 if($ProcessID -le 0){
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -Name $Using:ProcessName | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -Name $Using:ProcessName | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
                 else {
-                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -ID $Using:ProcessID | Select-Object $Using:props }
+                    $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ 
+                        Get-Process -ID $Using:ProcessID | Select-Object $Using:Properties 
+                    } -ErrorAction Stop
                 }
             }
         }
@@ -177,8 +205,9 @@ try{
         elseif($Module -eq $true){
             $cmdArgs.Add('Module',$null)
         }
-        $Script:output = Get-Process @cmdArgs | Select-Object $Script:props
+        $Script:output = Get-Process @cmdArgs | Select-Object $Script:Properties
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

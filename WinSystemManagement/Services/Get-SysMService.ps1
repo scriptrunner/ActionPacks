@@ -37,7 +37,8 @@ Param(
     [string]$ComputerName,
     [string]$ServiceName,
     [string]$ServiceDisplayName ,
-    [string]$Properties="Name,DisplayName,Status,RequiredServices,DependentServices,CanStop,CanShutdown,CanPauseAndContinue"
+    [ValidateSet('*','Name','DisplayName','Status','RequiredServices','DependentServices','CanStop','CanShutdown','CanPauseAndContinue')]
+    [string]$Properties = @('Name','DisplayName','Status','RequiredServices','DependentServices','CanStop','CanShutdown','CanPauseAndContinue')
 )
 
 try{
@@ -45,15 +46,10 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $ComputerName = "."
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
+    if($null -eq ($Properties | Where-Object {$_ -like 'DisplayName'})){
+        $Properties += "DisplayName"
     }
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'DisplayName'})){
-            $Properties += ",DisplayName"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
+    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'ComputerName' = $ComputerName}
     if([System.String]::IsNullOrWhiteSpace($ServiceName) -eq $false){
@@ -62,14 +58,15 @@ try{
     elseif([System.String]::IsNullOrWhiteSpace($ServiceDisplayName) -eq $false){
         $cmdArgs.Add('DisplayName', $ServiceDisplayName)
     }
-    $Script:output = Get-Service @cmdArgs | Select-Object $Script:props `
+
+    $result = Get-Service @cmdArgs | Select-Object $Properties `
                          | Sort-Object DisplayName | Format-List
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

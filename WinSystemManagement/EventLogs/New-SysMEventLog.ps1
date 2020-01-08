@@ -53,7 +53,7 @@ Param(
 
 try{
     [string[]]$Properties = @("Log","LogDisplayName","MaximumKilobytes","OverflowAction","MinimumRetentionDays")
-    $Script:output
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     }   
@@ -71,14 +71,14 @@ try{
     if(-not [System.String]::IsNullOrWhiteSpace($ParameterResourceFile)){
         $cmdArgs.Add('ParameterResourceFile', $ParameterResourceFile)
     }
-    New-EventLog @cmdArgs
+    $null = New-EventLog @cmdArgs
 
-    $Script:output = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $LogName  | Select-Object $Properties
+    $result = Get-EventLog -List -ComputerName $ComputerName | Where-Object -Property "Log" -eq $LogName  | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

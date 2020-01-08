@@ -57,7 +57,6 @@
 
 .Parameter RemoteAddress
     Specifies that network packet with matching IP address match this rule
-
 #>
 
 [CmdLetBinding()]
@@ -85,17 +84,17 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
-[string[]]$Script:Properties="Name","Description","DisplayName","Enabled","Direction","Action","PrimaryStatus","Status"
+$Script:Cim = $null
+[string[]]$Script:Properties = @('Name','Description','DisplayName','Enabled','Direction','Action','PrimaryStatus','Status')
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if([System.String]::IsNullOrWhiteSpace($Name)){
         $Script:Rule = New-NetFirewallRule -CimSession $Script:Cim -DisplayName $DisplayName -Direction $Direction -Action $Action `
@@ -106,31 +105,31 @@ try{
                                            -Enabled $Enabled -Name $Name -ErrorAction Stop
     }                                           
     if($PSBoundParameters.ContainsKey('Description') -eq $true){
-        Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Description $Description -ErrorAction Stop
+        $null = Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Description $Description -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('Authentication') -eq $true){
-        Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Authentication $Authentication -ErrorAction Stop
+        $null = Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Authentication $Authentication -ErrorAction Stop
         $Script:Properties += "Authentication"
     }
     if($PSBoundParameters.ContainsKey('Protocol') -eq $true){
-        Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Protocol $Protocol -ErrorAction Stop
+        $null = Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Protocol $Protocol -ErrorAction Stop
         $Script:Properties += "Protocol"
     }
     if($PSBoundParameters.ContainsKey('LocalPort') -eq $true){
-        Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -LocalPort @($LocalPort) -ErrorAction Stop
+        $null = Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -LocalPort @($LocalPort) -ErrorAction Stop
         $Script:Properties += "LocalPort"
     }
     if($PSBoundParameters.ContainsKey('RemoteAddress') -eq $true){
-        Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -RemoteAddress $RemoteAddress -ErrorAction Stop
+        $null = Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -RemoteAddress $RemoteAddress -ErrorAction Stop
         $Script:Properties += "RemoteAddress"
     }
     if($PSBoundParameters.ContainsKey('Program') -eq $true){
-        Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Program $Program -ErrorAction Stop
+        $null = Set-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -Program $Program -ErrorAction Stop
         $Script:Properties += "Program"
     }
-    $Script:Rule = Get-NetFirewallRule -CimSession $Script:Cim -DisplayName $DisplayName `
-                    | Select-Object $Script:Properties
-    
+
+    $Script:Rule = Get-NetFirewallRule -CimSession $Script:Cim -DisplayName $DisplayName -ErrorAction Stop `
+                    | Select-Object $Script:Properties    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:Rule 
     }

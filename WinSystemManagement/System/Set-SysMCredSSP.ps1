@@ -47,10 +47,10 @@ try{
         if([System.String]::IsNullOrWhiteSpace($DelegateComputer) -eq $false){
             $cmdArgs.Add('DelegateComputer',$DelegateComputer)
         }
-        Enable-WSManCredSSP @cmdArgs
+        $null = Enable-WSManCredSSP @cmdArgs
     }
     else{
-        Disable-WSManCredSSP -Role $Role -ErrorAction Stop
+        $null = Disable-WSManCredSSP -Role $Role -ErrorAction Stop
     }
     
     if($SRXEnv) {

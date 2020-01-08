@@ -39,24 +39,25 @@ Param(
 )
 
 $Script:Cim
-[string[]]$Script:Properties = @("ElementName","Address","EnabledState","InterfaceAlias")
+[string[]]$Properties = @("ElementName","Address","EnabledState","InterfaceAlias")
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    Set-DnsClientServerAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ResetServerAddresses -ErrorAction Stop
-    $Script:Msg = Get-DnsClientServerAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName | Select-Object $Script:Properties
+    $null = Set-DnsClientServerAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ResetServerAddresses -ErrorAction Stop
+    
+    $result = Get-DnsClientServerAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ErrorAction Stop | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Msg 
+        $SRXEnv.ResultMessage = $result 
     }
     else{
-        Write-Output $Script:Msg
+        Write-Output $result
     }
 }
 catch{

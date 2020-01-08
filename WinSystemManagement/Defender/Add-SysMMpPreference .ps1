@@ -31,9 +31,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -47,7 +44,7 @@ Param(
 $Script:Cim=$null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
         $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
@@ -56,13 +53,13 @@ try{
         $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     if([System.String]::IsNullOrWhiteSpace($ExclusionPath) -eq $false){       
-        Add-MpPreference -CimSession $Script:Cim -ExclusionPath $ExclusionPath.Split(",") -ErrorAction Stop
+        $null = Add-MpPreference -CimSession $Script:Cim -ExclusionPath $ExclusionPath.Split(",") -ErrorAction Stop
     }
     if([System.String]::IsNullOrWhiteSpace($ExclusionExtension) -eq $false){       
-        Add-MpPreference -CimSession $Script:Cim -ExclusionExtension $ExclusionExtension.Split(",") -ErrorAction Stop
+        $null = Add-MpPreference -CimSession $Script:Cim -ExclusionExtension $ExclusionExtension.Split(",") -ErrorAction Stop
     }
-    $prefs = Get-MpPreference -CimSession $Script:Cim | Select-Object -Property ExclusionPath,ExclusionExtension | Format-List
-    
+
+    $prefs = Get-MpPreference -CimSession $Script:Cim | Select-Object -Property ExclusionPath,ExclusionExtension | Format-List    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $prefs
     }

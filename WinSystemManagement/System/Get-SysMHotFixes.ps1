@@ -33,23 +33,21 @@
 Param(
     [string]$ComputerName,    
     [PSCredential]$AccessAccount,
-    [string]$Properties="Caption,Description,HotFixID,InstallDate,InstalledBy,FixComments"
+    [ValidateSet('*','Caption','Description','HotFixID','InstallDate','InstalledBy','FixComments')]
+    [string[]]$Properties = @('Caption','Description','HotFixID','InstallDate','InstalledBy','FixComments')
 )
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
-    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     }
       
     if($null -eq $AccessAccount){
-        $Script:output = Get-HotFix -ComputerName $ComputerName -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:output = Get-HotFix -ComputerName $ComputerName -ErrorAction Stop | Select-Object $Properties
     }
     else {
-        $Script:output = Get-HotFix -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop | Select-Object $Properties.Split(",")
+        $Script:output = Get-HotFix -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop | Select-Object $Properties
     }
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output

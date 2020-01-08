@@ -34,10 +34,10 @@ Import-Module WindowsErrorReporting
 try{
     [string]$Script:Msg
     if($Status -eq "Enable"){
-        Enable-WindowsErrorReporting -ErrorAction Stop
+        $null = Enable-WindowsErrorReporting -ErrorAction Stop
     }
     else {
-        Disable-WindowsErrorReporting -ErrorAction Stop
+        $null = Disable-WindowsErrorReporting -ErrorAction Stop
     }
     $Script:Msg = Get-WindowsErrorReporting | Format-List
     if($SRXEnv) {

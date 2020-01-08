@@ -30,9 +30,6 @@
 
 .Parameter Enable
     Enable or disable the firewall rule
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -45,28 +42,30 @@ Param(
     [PSCredential]$AccessAccount    
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 [string[]]$Script:Properties = @("Name","Description","DisplayName","Enabled","Direction","Action","PrimaryStatus","Status")
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount 
     }
-    $Script:Rule =Get-NetFirewallRule -CimSession $Script:Cim  `
-    |               Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"}
+    $Script:Rule = Get-NetFirewallRule -CimSession $Script:Cim -ErrorAction Stop | `
+                    Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"}
+
     if($null -ne $Script:Rule){
         if(($Script:Rule.Enabled -eq "True") -and ($Enable -eq $false)){ # disable
-            Disable-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -ErrorAction Stop
+            $null = Disable-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -ErrorAction Stop
         }
         elseif(($Script:Rule.Enabled -eq "False") -and ($Enable -eq $true)){ # enable
-            Enable-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -ErrorAction Stop
+            $null = Enable-NetFirewallRule -CimSession $Script:Cim -InputObject $Script:Rule -ErrorAction Stop
         }
-        $Script:Rule =Get-NetFirewallRule -CimSession $Script:Cim -Name $Script:Rule.Name | Select-Object $Script:Properties
+        
+        $Script:Rule = Get-NetFirewallRule -CimSession $Script:Cim -Name $Script:Rule.Name -ErrorAction Stop | Select-Object $Script:Properties
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $Script:Rule
         }

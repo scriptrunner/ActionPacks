@@ -72,7 +72,7 @@ try{
                 $null = Rename-LocalGroup -Name $Name -NewName $NewName -ErrorAction Stop
                 $Name = $NewName
             }
-            $Script:output = Get-LocalGroup -Name $Name | Select-Object $Properties
+            $Script:output = Get-LocalGroup -Name $Name -ErrorAction Stop | Select-Object $Properties
         }
         else {
             if([System.String]::IsNullOrWhiteSpace($Description) -eq $false){
@@ -81,7 +81,7 @@ try{
             if([System.String]::IsNullOrWhiteSpace($NewName) -eq $false){
                 $null = Rename-LocalGroup -SID $SID -NewName $NewName -ErrorAction Stop
             }
-            $Script:output = Get-LocalGroup -SID $SID | Select-Object $Properties
+            $Script:output = Get-LocalGroup -SID $SID -ErrorAction Stop | Select-Object $Properties
         }
     }
     else {
@@ -99,7 +99,7 @@ try{
                     $Name = $NewName
                 }
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-LocalGroup -Name $Using:Name | Select-Object $Using:Properties
+                    Get-LocalGroup -Name $Using:Name -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
@@ -114,7 +114,7 @@ try{
                     } -ErrorAction Stop
                 }
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-LocalGroup -SID $Using:SID | Select-Object $Using:Properties
+                    Get-LocalGroup -SID $Using:SID -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
@@ -132,7 +132,7 @@ try{
                     $Name = $NewName
                 }
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-LocalGroup -Name $Using:Name | Select-Object $Using:Properties
+                    Get-LocalGroup -Name $Using:Name -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
@@ -147,11 +147,12 @@ try{
                     } -ErrorAction Stop
                 }
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-LocalGroup -SID $Using:SID | Select-Object $Using:Properties
+                    Get-LocalGroup -SID $Using:SID -ErrorAction Stop | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
-    }          
+    }        
+      
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

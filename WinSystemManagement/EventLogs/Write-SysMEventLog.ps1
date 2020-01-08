@@ -77,23 +77,22 @@ Param(
 )
 
 try{
-    $Script:output
     [string[]]$Properties = @("EventID","Index","EntryType","InstanceId","TimeGenerated","UserName")
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     } 
-    if($PSCmdlet.ParameterSetName  -eq "Classic event logs"){
+    if($PSCmdlet.ParameterSetName -eq "Classic event logs"){
         $CustomLogName = $LogName
         $SourceName = $Source
     }
-    Write-EventLog -ComputerName $ComputerName -LogName $CustomLogName -Source $SourceName -Message $Message -EventId $EventID -EntryType $EntryType -Category $Category -ErrorAction Stop
-    $Script:output = Get-EventLog -LogName $CustomLogName -ComputerName $ComputerName -Newest 3 | Select-Object $Properties
+    $null = Write-EventLog -ComputerName $ComputerName -LogName $CustomLogName -Source $SourceName -Message $Message -EventId $EventID -EntryType $EntryType -Category $Category -ErrorAction Stop
 
+    $result = Get-EventLog -LogName $CustomLogName -ComputerName $ComputerName -Newest 3 | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:output
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:output
+        Write-Output $result
     }
 }
 catch{

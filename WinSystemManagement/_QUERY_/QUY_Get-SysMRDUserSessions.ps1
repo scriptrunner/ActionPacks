@@ -35,10 +35,6 @@ Param(
 try{
     [string[]]$Script:Header = @("SessionName","UserName","ID","Status","Type","Device") 
     $Script:result
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $Script:result = qwinsta | ForEach-Object { (($_.Trim() -replace "\s+",","))} | ConvertFrom-Csv -Header $Script:Header
@@ -59,8 +55,8 @@ try{
         if(([System.Char]::IsLetter($item.UserName.ToCharArray()[0])) -and `
             [System.Char]::IsDigit($item.ID.ToCharArray()[0])){
                 if($SRXEnv) {
-                    $SRXEnv.ResultList += $item.ID.toString()
-                    $SRXEnv.ResultList2 += $item.UserName # Display
+                    $SRXEnv.ResultList.Add($item.ID.toString())
+                    $SRXEnv.ResultList2.Add($item.UserName) # Display
                 }
                 else{
                     Write-Output $UserName

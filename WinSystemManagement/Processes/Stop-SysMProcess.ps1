@@ -51,21 +51,12 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ProcessName) -eq $true){
         $ProcessName = '*'
     }
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties = '*'
-    }    
-    else{
-        if($null -eq ($Properties.Split(',') | Where-Object {$_ -like 'Name'})){
-            $Properties += ",Name"
-        }
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){            
             if($ProcessID -le 0){
-                $Script:process = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -Name $Using:ProcessName }
+                $Script:process = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -Name $Using:ProcessName } -ErrorAction Stop
                 if($null -ne $Script:process){
-                    Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Stop-Process -Name $Using:ProcessName -Confirm:$false -Force -ErrorAction Stop }
+                    $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Stop-Process -Name $Using:ProcessName -Confirm:$false -Force -ErrorAction Stop }
                     $Script:output = "Process $($ProcessName) stopped"
                 }
                 else {                
@@ -73,9 +64,9 @@ try{
                 }
             }
             else {
-                $Script:process = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -ID $Using:ProcessID }
+                $Script:process = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Get-Process -ID $Using:ProcessID } -ErrorAction Stop 
                 if($null -ne $Script:process){
-                    Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Stop-Process -ID $Using:ProcessID -Confirm:$false -Force -ErrorAction Stop }
+                    $null = Invoke-Command -ComputerName $ComputerName -ScriptBlock{ Stop-Process -ID $Using:ProcessID -Confirm:$false -Force -ErrorAction Stop }
                     $Script:output = "Process $($ProcessID) stopped"
                 }
                 else {                
@@ -85,9 +76,9 @@ try{
         }
         else {            
             if($ProcessID -le 0){
-                $Script:process = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -Name $Using:ProcessName  }
+                $Script:process = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -Name $Using:ProcessName  } -ErrorAction Stop
                 if($null -ne $Script:process){
-                    Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Stop-Process -Name $Using:ProcessName -Confirm:$false -Force -ErrorAction Stop }
+                    $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Stop-Process -Name $Using:ProcessName -Confirm:$false -Force -ErrorAction Stop }
                     $Script:output = "Process $($ProcessName) stopped"
                 }
                 else {                
@@ -95,9 +86,9 @@ try{
                 }
             }
             else {
-                $Script:process = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -ID $Using:ProcessID  }
+                $Script:process = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Get-Process -ID $Using:ProcessID  } -ErrorAction Stop
                 if($null -ne $Script:process){
-                    Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Stop-Process -ID $Using:ProcessID -Confirm:$false -Force -ErrorAction Stop }
+                    $null = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{ Stop-Process -ID $Using:ProcessID -Confirm:$false -Force -ErrorAction Stop }
                     $Script:output = "Process $($ProcessID) stopped"
                 }
                 else {                
@@ -110,7 +101,7 @@ try{
         if($ProcessID -le 0){
             $Script:process = Get-Process -Name $ProcessName -ErrorAction Stop
             if($null -ne $Script:process){
-                Stop-Process -InputObject $Script:process -Confirm:$false -Force -ErrorAction Stop
+                $null = Stop-Process -InputObject $Script:process -Confirm:$false -Force -ErrorAction Stop
                 $Script:output = "Process $($ProcessName) stopped"
             }
             else {                
@@ -120,7 +111,7 @@ try{
         else {
             $Script:process = Get-Process -ID $ProcessID -ErrorAction Stop
             if($null -ne $Script:process){
-                Stop-Process -InputObject $Script:process -Confirm:$false -Force -ErrorAction Stop
+                $null = Stop-Process -InputObject $Script:process -Confirm:$false -Force -ErrorAction Stop
                 $Script:output = "Process $($ProcessID) stopped"
             }
             else {                
@@ -128,6 +119,7 @@ try{
             }
         }
     }
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

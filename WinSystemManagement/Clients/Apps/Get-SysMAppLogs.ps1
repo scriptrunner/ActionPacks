@@ -38,7 +38,8 @@
 [CmdLetBinding()]
 Param(
     [string]$ActivityID,
-    [string]$Properties = "Id,UserID,TimeCreated,ActivityId,LevelDisplayName",
+    [VaildateSet('*','Id','UserID','TimeCreated','ActivityId','LevelDisplayName')]
+    [string[]]$Properties = @('Id','UserID','TimeCreated','ActivityId','LevelDisplayName'),
     [ValidateRange(1,100)]
     [int]$ResultItems = 20,
     [string]$ComputerName,    
@@ -46,42 +47,38 @@ Param(
 )
 
 try{
-    $Script:output
+    $Script:output    
     
-    if([System.String]::IsNullOrWhiteSpace($Properties) -eq $true){
-        $Properties='*'
-    }
-    [string[]]$Script:props=$Properties.Replace(' ','').Split(',')
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if([System.String]::IsNullOrWhiteSpace($ActivityID) -eq $true){
-            $Script:output = Get-AppxLog -All -ErrorAction Stop | Select-Object $Script:props -Last $ResultItems
+            $Script:output = Get-AppxLog -All -ErrorAction Stop | Select-Object $Properties -Last $ResultItems
         }
         else{
-            $Script:output = Get-AppxLog -ActivityId $ActivityID -ErrorAction Stop | Select-Object $Script:props
+            $Script:output = Get-AppxLog -ActivityId $ActivityID -ErrorAction Stop | Select-Object $Properties
         }
     }
     else {
         if($null -eq $AccessAccount){
             if([System.String]::IsNullOrWhiteSpace($ActivityID) -eq $true){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-AppxLog -All -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                    Get-AppxLog -All -ErrorAction Stop | Select-Object $Using:Properties -Last $Using:ResultItems
                 } -ErrorAction Stop
             }
             else{
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-AppxLog -ActivityId $Using:ActivityID -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                    Get-AppxLog -ActivityId $Using:ActivityID -ErrorAction Stop | Select-Object $Using:Properties -Last $Using:ResultItems
                 } -ErrorAction Stop
             }
         }
         else {
             if([System.String]::IsNullOrWhiteSpace($ActivityID) -eq $true){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-AppxLog -All -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                    Get-AppxLog -All -ErrorAction Stop | Select-Object $Using:Properties -Last $Using:ResultItems
                 } -ErrorAction Stop
             }
             else{
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-AppxLog -ActivityId $Using:ActivityID -ErrorAction Stop | Select-Object $Using:props -Last $Using:ResultItems
+                    Get-AppxLog -ActivityId $Using:ActivityID -ErrorAction Stop | Select-Object $Using:Properties -Last $Using:ResultItems
                 } -ErrorAction Stop
             }
         }

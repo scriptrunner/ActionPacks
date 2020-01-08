@@ -82,7 +82,7 @@ try{
         $Script:output = Start-WBVolumeRecovery -BackupSet $Script:bSet -VolumeInBackup  $Script:bset.Volume[$VolumeInBackup] -SkipBadClusterCheck:$RecoverySkipBadClusterCheck `
                                     -Async:$RecoveryAsync -Force -ErrorAction Stop
         if($RecoveryAsync -eq $true){
-            $Script:output = Get-WBJob
+            $Script:output = Get-WBJob -ErrorAction Stop
         }
     }
     

@@ -34,10 +34,7 @@ Param(
 
 try{
     $Script:output   
-    if($SRXEnv) {
-        $SRXEnv.ResultList =@()
-        $SRXEnv.ResultList2 =@()
-    }
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $Script:groups = Get-LocalGroup | Select-Object Name,SID | Sort-Object Name
     }
@@ -56,8 +53,8 @@ try{
     foreach($item in $Script:groups)
     {
         if($SRXEnv) {
-            $SRXEnv.ResultList += $item.SID.toString()
-            $SRXEnv.ResultList2 += $item.Name # Display
+            $SRXEnv.ResultList.Add($item.SID.toString())
+            $SRXEnv.ResultList2.Add($item.Name) # Display
         }
         else{
             Write-Output $item.Name

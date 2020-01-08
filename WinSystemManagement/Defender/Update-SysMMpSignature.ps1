@@ -27,9 +27,6 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
 #>
 
 [CmdLetBinding()]
@@ -40,10 +37,10 @@ Param(
     [PSCredential]$AccessAccount
 )
 
-$Script:Cim=$null
+$Script:Cim = $null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
         $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
@@ -51,8 +48,8 @@ try{
     else {
         $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
-    Update-MpSignature -CimSession $Script:Cim -UpdateSource $UpdateSource -ErrorAction Stop
-    
+
+    Update-MpSignature -CimSession $Script:Cim -UpdateSource $UpdateSource -ErrorAction Stop    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = "Antimalware definitions successfully updated"
     }

@@ -59,13 +59,13 @@ Import-Module nettcpip
 $Script:Cim
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $old = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
@@ -82,18 +82,18 @@ try{
     if($PrefixLength -gt 0){
         $cmdArgs.Add('PrefixLength', $PrefixLength)
     }
-    New-NetIPAddress @cmdArgs
+    $null = New-NetIPAddress @cmdArgs
 
     if($null -ne $old){
-        Remove-NetIPAddress -InputObject $old -Confirm:$false
+        $null = Remove-NetIPAddress -InputObject $old -Confirm:$false -ErrorAction Stop
     }
 
-    $Script:Msg = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName | Select-Object $Script:Properties
+    $result = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ErrorAction Stop | Select-Object $Properties
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $Script:Msg
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $Script:Msg
+        Write-Output $result
     }
 }
 catch{

@@ -43,7 +43,8 @@ Param(
     [string]$SID,
     [Parameter(ParameterSetName = "ByName")]   
     [Parameter(ParameterSetName = "BySID")]   
-    [string]$Properties = "Name,Description,SID",
+    [ValidateSet('*','Name','Description','SID')]
+    [string[]]$Properties = @('Name','Description','SID'),
     [Parameter(ParameterSetName = "ByName")]   
     [Parameter(ParameterSetName = "BySID")]     
     [string]$ComputerName,    
@@ -54,47 +55,45 @@ Param(
 
 try{
     $Script:output
-    if([System.String]::IsNullOrWhiteSpace($Properties)){
-        $Properties=@('*')
-    }
     if([System.String]::IsNullOrWhiteSpace($Name)){
-        $Name='*'
+        $Name = '*'
     }
-    $Script:props = $Properties.Split(',')
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
-            $Script:output = Get-LocalGroup -Name $Name | Select-Object $Script:props
+            $Script:output = Get-LocalGroup -Name $Name -ErrorAction Stop | Select-Object $Properties
         }
         else {
-            $Script:output = Get-LocalGroup -SID $SID | Select-Object $Script:props
+            $Script:output = Get-LocalGroup -SID $SID -ErrorAction Stop | Select-Object $Properties
         }
     }
     else {
         if($null -eq $AccessAccount){
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-LocalGroup -Name $Using:Name | Select-Object $Using:props
+                    Get-LocalGroup -Name $Using:Name | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -ScriptBlock{
-                    Get-LocalGroup -SID $Using:SID | Select-Object $Using:props
+                    Get-LocalGroup -SID $Using:SID | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
         else {
             if($PSCmdlet.ParameterSetName  -eq "ByName"){
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-LocalGroup -Name $Using:Name | Select-Object $Using:props
+                    Get-LocalGroup -Name $Using:Name | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
             else {
                 $Script:output = Invoke-Command -ComputerName $ComputerName -Credential $AccessAccount -ScriptBlock{
-                    Get-LocalGroup -SID $Using:SID | Select-Object $Using:props
+                    Get-LocalGroup -SID $Using:SID | Select-Object $Using:Properties
                 } -ErrorAction Stop
             }
         }
     }          
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

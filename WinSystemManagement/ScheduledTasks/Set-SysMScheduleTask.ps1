@@ -77,13 +77,13 @@ Param(
 $Script:Cim=$null
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
-        $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
+        $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          
     if($null -eq $AccessAccount){
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -ErrorAction Stop
     }
     else {
-        $Script:Cim =New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
+        $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }
     $Script:task = Get-ScheduledTask -CimSession $Script:Cim -TaskName $TaskName -ErrorAction Stop
     $Script:setts = $Script:task | Select-Object -ExpandProperty Settings
@@ -169,6 +169,7 @@ try{
         }
     }    
     $null = Set-ScheduledTask -CimSession $Script:Cim -TaskName $Script:task.TaskName -TaskPath $Script:task.TaskPath -Settings $Script:setts -ErrorAction Stop
+    
     $Script:task = Get-ScheduledTask -CimSession $Script:Cim -TaskName $Script:task.TaskName -TaskPath $Script:task.TaskPath -ErrorAction Stop
     $output = $Script:task | Select-Object -ExpandProperty Settings
     if($SRXEnv) {

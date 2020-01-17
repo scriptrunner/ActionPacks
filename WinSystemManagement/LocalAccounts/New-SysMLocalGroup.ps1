@@ -43,7 +43,7 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("Name","Description","SID")    
+    [string[]]$Properties = @('Name','Description','SID')    
     if([System.String]::IsNullOrWhiteSpace($Description)){
         $Description = ' '
     }

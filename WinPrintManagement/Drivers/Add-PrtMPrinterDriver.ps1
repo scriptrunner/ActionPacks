@@ -47,7 +47,7 @@ Import-Module PrintManagement
 
 $Script:Cim = $null
 try{
-    [string[]]$Properties = @("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor") 
+    [string[]]$Properties = @('Name','Description','InfPath','ConfigFile','MajorVersion','PrinterEnvironment','PrintProcessor') 
     if([System.string]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = [System.Net.DNS]::GetHostByName('').HostName
     }          

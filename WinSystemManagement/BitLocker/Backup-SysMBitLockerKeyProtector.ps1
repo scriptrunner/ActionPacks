@@ -44,7 +44,7 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("MountPoint","KeyProtector","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
+    [string[]]$Properties = @('MountPoint','KeyProtector','EncryptionMethod','VolumeStatus','ProtectionStatus','EncryptionPercentage','VolumeType','CapacityGB')
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){        
         $null = Backup-BitLockerKeyProtector -MountPoint $DriveLetter -KeyProtectorId $ProtectorID -Confirm:$false -ErrorAction Stop

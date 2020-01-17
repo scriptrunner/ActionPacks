@@ -72,7 +72,7 @@ Param(
 
 $Script:Cim = $null
 $Script:output = @()
-[string[]]$Properties = @("Name","Description","Path","ShareState","ScopeName","CurrentUsers","ShareType","AvailabilityType","EncryptData")
+[string[]]$Properties = @('Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType','EncryptData')
 try{
     if([System.String]::IsNullOrWhiteSpace($ScopeName)){
         $ScopeName = '*'

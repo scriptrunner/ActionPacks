@@ -34,7 +34,7 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("MountPoint","EncryptionMethod","VolumeStatus","ProtectionStatus","EncryptionPercentage","VolumeType","CapacityGB")
+    [string[]]$Properties = @('MountPoint','EncryptionMethod','VolumeStatus','ProtectionStatus','EncryptionPercentage','VolumeType','CapacityGB')
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $null = Clear-BitLockerAutoUnlock -ErrorAction Stop

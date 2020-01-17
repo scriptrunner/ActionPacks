@@ -54,7 +54,7 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("Name","SID")
+    [string[]]$Properties = @('Name','SID')
     [string[]]$tmpMembers = $Members.Split(",")
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){

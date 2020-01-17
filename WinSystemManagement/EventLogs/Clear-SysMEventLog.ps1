@@ -42,7 +42,7 @@ Param(
 )
 
 try{
-    [string[]]$Properties = @("Log","LogDisplayName","MaximumKilobytes","OverflowAction","MinimumRetentionDays")
+    [string[]]$Properties = @('Log','LogDisplayName','MaximumKilobytes','OverflowAction','MinimumRetentionDays')
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     } 

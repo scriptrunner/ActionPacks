@@ -77,7 +77,7 @@ Param(
 )
 
 try{
-    [string[]]$Properties = @("EventID","Index","EntryType","InstanceId","TimeGenerated","UserName")
+    [string[]]$Properties = @('EventID','Index','EntryType','InstanceId','TimeGenerated','UserName')
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     } 

@@ -50,7 +50,7 @@ Param(
 
 $Script:Cim = $null
 $Script:output = @()
-[string[]]$Properties = @("AccessControlType","AccessRight","AccountName")
+[string[]]$Properties = @('AccessControlType','AccessRight','AccountName')
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName

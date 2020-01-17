@@ -58,7 +58,7 @@ Param(
 Import-Module SQLServer
 
 try{
-    [string[]]$Properties = @("Date","Source","Text","ServerInstance")
+    [string[]]$Properties = @('Date','Source','Text','ServerInstance')
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

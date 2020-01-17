@@ -61,7 +61,7 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("Name","Description","SID")
+    [string[]]$Properties = @('Name','Description','SID')
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){

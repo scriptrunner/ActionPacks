@@ -71,7 +71,7 @@ try{
     if([System.String]::IsNullOrWhiteSpace($Description) -eq $false){
         $Description = " "
     }
-    [string[]]$Properties = @("Name","Description","SID","Enabled","LastLogon")
+    [string[]]$Properties = @('Name','Description','SID','Enabled','LastLogon')
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if([System.String]::IsNullOrWhiteSpace($Password) -eq $true){

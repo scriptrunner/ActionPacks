@@ -39,7 +39,7 @@ Param(
 
 try{
     if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
-            $Properties += "Name"
+            $Properties += 'Name'
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){

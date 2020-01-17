@@ -56,7 +56,7 @@ Param(
 )
 
 try{
-    [string[]]$Properties = @("Name","ID","FileVersion","UserName","PagedMemorySize","PrivateMemorySize","VirtualMemorySize","TotalProcessorTime","Path","CPU","StartTime")
+    [string[]]$Properties = @('Name','ID','FileVersion','UserName','PagedMemorySize','PrivateMemorySize','VirtualMemorySize','TotalProcessorTime','Path','CPU','StartTime')
 
     if([System.String]::IsNullOrWhiteSpace($ArgumentList) -eq $true){
         $ArgumentList = " "

@@ -88,7 +88,7 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    [string[]]$Properties = @("Name","Id","PowerState","NumCpu","Notes","Guest","GuestId","MemoryMB","UsedSpaceGB","ProvisionedSpaceGB","Folder")
+    [string[]]$Properties = @('Name','Id','PowerState','NumCpu','Notes','Guest','GuestId','MemoryMB','UsedSpaceGB','ProvisionedSpaceGB','Folder')
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     $Script:machine = Get-VM -Server $Script:vmServer -Name $VMName -ErrorAction Stop

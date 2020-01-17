@@ -41,7 +41,7 @@ Param(
     [string]$ComputerName,
     [PSCredential]$AccessAccount,
     [ValidateSet('*','Name','Description','InfPath','ConfigFile', 'MajorVersion','PrinterEnvironment','PrintProcessor')]
-    [string[]]$Properties = @("Name","Description","InfPath","ConfigFile", "MajorVersion","PrinterEnvironment","PrintProcessor")
+    [string[]]$Properties = @('Name','Description','InfPath','ConfigFile','MajorVersion','PrinterEnvironment','PrintProcessor')
 )
 
 Import-Module PrintManagement

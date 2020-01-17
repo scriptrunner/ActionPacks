@@ -92,7 +92,7 @@ param(
 Import-Module Az
 
 try{
-    [string[]]$Properties = @("ResourceGroupName","ServerName","DatabaseName","Location","DatabaseId","Edition","CollationName","Status","CreationDate","Tags")
+    [string[]]$Properties = @('ResourceGroupName','ServerName','DatabaseName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')
     
  #   ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     

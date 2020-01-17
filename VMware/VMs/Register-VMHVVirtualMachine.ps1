@@ -98,7 +98,7 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    [string[]]$Properties = @("Name","Id","NumCpu","CoresPerSocket","Notes","GuestId","MemoryGB","VMSwapfilePolicy","ProvisionedSpaceGB","Folder")
+    [string[]]$Properties = @('Name','Id','NumCpu','CoresPerSocket','Notes','GuestId','MemoryGB','VMSwapfilePolicy','ProvisionedSpaceGB','Folder')
     if([System.String]::IsNullOrWhiteSpace($Notes) -eq $true){
         $Notes = " "
     }

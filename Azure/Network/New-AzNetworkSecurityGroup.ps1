@@ -53,7 +53,7 @@ param(
 Import-Module Az
 
 try{
-    [string[]]$Properties = @("Name","Location","ResourceGroupName","Id","Tags","Etag","ProvisioningState","Subnets","ResourceGuid")
+    [string[]]$Properties = @('Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid')
 
 #    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
 

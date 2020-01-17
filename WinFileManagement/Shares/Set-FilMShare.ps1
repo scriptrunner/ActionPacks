@@ -47,7 +47,7 @@ Param(
 )
 
 $Script:Cim = $null
-[string[]]$Properties = @("Name","Description","Path","ShareState","ScopeName","CurrentUsers","ShareType","AvailabilityType","EncryptData")
+[string[]]$Properties = @('Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType','EncryptData')
 try{    
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName

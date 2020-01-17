@@ -44,7 +44,7 @@ Param(
 
 try{
     $Script:output
-    [string[]]$Properties = @("SequenceNumber","Description")
+    [string[]]$Properties = @('SequenceNumber','Description')
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $null = Checkpoint-Computer -Description $Description -RestorePointType $RestorePointType -ErrorAction Stop

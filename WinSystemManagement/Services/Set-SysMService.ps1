@@ -52,7 +52,7 @@ Param(
 )
 
 try{
-    [string[]]$Properties = @("Name","DisplayName","Status","RequiredServices","DependentServices","CanStop","CanShutdown","CanPauseAndContinue")
+    [string[]]$Properties = @('Name','DisplayName','Status','RequiredServices','DependentServices','CanStop','CanShutdown','CanPauseAndContinue')
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $ComputerName = "."

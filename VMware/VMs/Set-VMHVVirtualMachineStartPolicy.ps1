@@ -120,7 +120,7 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    [string[]]$Properties = @("VirtualMachineName","StartAction","StartDelay","StopAction","StopDelay","IsStartDelayInherited","IsStopActionInherited","IsStopDelayInherited","IsWaitForHeartbeatInherited")
+    [string[]]$Properties = @('VirtualMachineName','StartAction','StartDelay','StopAction','StopDelay','IsStartDelayInherited','IsStopActionInherited','IsStopDelayInherited','IsWaitForHeartbeatInherited')
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     if($PSCmdlet.ParameterSetName  -eq "byID"){

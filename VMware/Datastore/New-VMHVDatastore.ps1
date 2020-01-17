@@ -111,7 +111,7 @@ try{
         $cmdArgs.Add('ReadOnly',$ReadOnly)
     }
     New-Datastore @cmdArgs
-    [string[]]$Properties = @("Name","State","CapacityGB","FreeSpaceGB","Datacenter")
+    [string[]]$Properties = @('Name','State','CapacityGB','FreeSpaceGB','Datacenter')
     $Script:Output = Get-Datastore -Server $Script:vmServer -Refresh:$RefreshFirst -Name $StoreName -ErrorAction Stop | Select-Object $Properties
 
     if($SRXEnv) {

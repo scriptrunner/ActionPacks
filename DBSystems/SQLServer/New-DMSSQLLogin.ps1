@@ -92,7 +92,7 @@ Param(
 Import-Module SQLServer
 
 try{
-    [string[]]$Properties = @("Name","Status","LoginType","Language","IsLocked","IsDisabled","IsPasswordExpired","MustChangePassword","PasswordExpirationEnabled","HasAccess","State")
+    [string[]]$Properties = @('Name','Status','LoginType','Language','IsLocked','IsDisabled','IsPasswordExpired','MustChangePassword','PasswordExpirationEnabled','HasAccess','State')
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

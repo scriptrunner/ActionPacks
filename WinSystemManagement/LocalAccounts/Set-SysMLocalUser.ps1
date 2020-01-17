@@ -93,7 +93,7 @@ Param(
 try{
     $Script:output
     $Script:user
-    [string[]]$Properties = @("Name","Description","SID","Enabled","LastLogon")
+    [string[]]$Properties = @('Name','Description','SID','Enabled','LastLogon')
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){
             $Script:user = Get-LocalUser -Name $Name -ErrorAction Stop

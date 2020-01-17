@@ -31,7 +31,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$MailboxId,
     [ValidateSet('*','DisplayName','FirstName','LastName','Office', 'Phone','WindowsEmailAddress','AccountDisabled','DistinguishedName','Alias','Guid','ResetPasswordOnNextLogon','UserPrincipalName')]
-    [string[]]$Properties=@("DisplayName","FirstName","LastName","Office", "Phone","WindowsEmailAddress","AccountDisabled","DistinguishedName","Alias","Guid","ResetPasswordOnNextLogon","UserPrincipalName")
+    [string[]]$Properties=@('DisplayName','FirstName','LastName','Office','Phone','WindowsEmailAddress','AccountDisabled','DistinguishedName','Alias','Guid','ResetPasswordOnNextLogon','UserPrincipalName')
 )
 
 try{

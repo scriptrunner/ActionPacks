@@ -76,7 +76,7 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    [string[]]$Properties = @("Name","Id","PowerState","ConnectionState","IsStandalone","LicenseKey")
+    [string[]]$Properties = @('Name','Id','PowerState','ConnectionState','IsStandalone','LicenseKey')
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Server' = $Script:vmServer

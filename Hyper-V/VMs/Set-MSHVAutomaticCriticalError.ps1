@@ -66,7 +66,7 @@ try {
     }        
     if($null -ne $Script:VM){
         Set-VM -VM $Script:VM -AutomaticCriticalErrorAction $Action -AutomaticCriticalErrorActionTimeout $Timeout -ErrorAction Stop
-        [string[]]$Properties = @('utomaticCriticalErrorAction','AutomaticCriticalErrorActionTimeout','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
+        [string[]]$Properties = @('AutomaticCriticalErrorAction','AutomaticCriticalErrorActionTimeout','VMName','VMID','State','PrimaryOperationalStatus','PrimaryStatusDescription','CPUUsage','MemoryDemand','SizeOfSystemFiles','IntegrationServicesVersion')
         if($null -eq $AccessAccount){
             $Script:output = Get-VM -ComputerName $HostName -Name $Script:VM.VMName | Select-Object $Properties
         }

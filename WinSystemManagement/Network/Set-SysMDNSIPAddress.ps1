@@ -41,7 +41,7 @@ Param(
     [string]$IPAddresses
 )
 
-[string[]]$Properties = @("ServerAddresses","ElementName","Name","InterfaceAlias","InterfaceIndex","Address","EnabledState")
+[string[]]$Properties = @('ServerAddresses','ElementName','Name','InterfaceAlias','InterfaceIndex','Address','EnabledState')
 $Script:Cim
 try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){

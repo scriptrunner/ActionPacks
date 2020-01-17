@@ -69,7 +69,7 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
-    [string[]]$Properties = @("Name","Created","PowerState","SizeGB","Description","IsCurrent","Id")
+    [string[]]$Properties = @('Name','Created','PowerState','SizeGB','Description','IsCurrent','Id')
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
 
     if($PSCmdlet.ParameterSetName  -eq "byID"){

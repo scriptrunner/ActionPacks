@@ -38,7 +38,7 @@ Param(
     [string]$ServiceName,
     [string]$ServiceDisplayName ,
     [ValidateSet('*','Name','DisplayName','Status','RequiredServices','DependentServices','CanStop','CanShutdown','CanPauseAndContinue')]
-    [string]$Properties = @('Name','DisplayName','Status','RequiredServices','DependentServices','CanStop','CanShutdown','CanPauseAndContinue')
+    [string[]]$Properties = @('Name','DisplayName','Status','RequiredServices','DependentServices','CanStop','CanShutdown','CanPauseAndContinue')
 )
 
 try{

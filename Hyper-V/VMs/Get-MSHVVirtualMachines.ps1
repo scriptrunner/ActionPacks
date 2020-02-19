@@ -76,7 +76,7 @@ try {
         }
         else {
             $Script:output = Get-VM -ComputerName $HostName -ErrorAction Stop | Where-Object {$_.State -eq $VMState} `
-                | Select-Object $Properties.Split(',')
+                | Select-Object $Properties
         }
     }
     else {

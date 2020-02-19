@@ -22,7 +22,7 @@
 .Parameter StartObjectName
     Specifies the start folder or drive
 
-.Parameter ObjectClass
+.Parameter ObjectType
     Specifies the type of the objects
 
 .Parameter ShowSizes
@@ -40,7 +40,7 @@ Param(
     [Parameter(Mandatory = $true)]
     [string]$StartObjectName,
     [ValidateSet("All","Folders","Files")]
-    [string]$ObjectType="All",
+    [string]$ObjectType = "All",
     [switch]$ShowSizes,
     [switch]$ObjectsCumulated 
 )

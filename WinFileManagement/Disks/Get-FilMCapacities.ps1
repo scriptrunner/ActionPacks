@@ -25,6 +25,9 @@
     
 .Parameter AccessAccount
     Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+
+.Parameter OnlyLocalDisks
+    Local drives only 
 #>
 
 [CmdLetBinding()]
@@ -47,14 +50,13 @@ try{
         $Script:Cim = New-CimSession -ComputerName $ComputerName -Credential $AccessAccount -ErrorAction Stop
     }    
     Get-CimInstance -ClassName Win32_LogicalDisk -CimSession $Script:Cim | Foreach-Object {
-        if($OnlyLocalDisks -eq $true -and $_.DriveType -ne "3"){
-            continue        
+        if($OnlyLocalDisks -eq $false -or $_.DriveType -eq "3"){  
+            $Script:output += "Drive $($_.DeviceID) free bytes $($_.FreeSpace) from $($_.Size)"
         }
-        $Script:output += "Drive $($_.DeviceID) free bytes $($_.FreeSpace) from $($_.Size)"
     }
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage =$Script:output
+        $SRXEnv.ResultMessage = $Script:output
     }
     else{
         Write-Output $Script:output

@@ -77,5 +77,5 @@ catch{
     throw
 }
 finally{
-    CloseConnection -ConnectionName $ConnectionName
+    CloseConnection 
 }

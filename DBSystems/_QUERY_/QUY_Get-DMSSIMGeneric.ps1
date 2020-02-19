@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Returns the specified columns from the specified table
+    Returns the specified columns from the specified table 
 
 .DESCRIPTION
 
@@ -44,7 +44,7 @@
     Where section of the SQL Command
 
 .Example
-    QUY_Get-DMSGeneric -ServerName MyServer - DatabaseName SR_Report -IDColumn Id -DisplayColumn DisplayName -Table BaseEntities_JobControlSet -WhereSection Id=300
+    QUY_Get-DMSSIMGeneric -ServerName MyServer - DatabaseName SR_Report -IDColumn Id -DisplayColumn DisplayName -Table BaseEntities_JobControlSet -WhereSection Id=300
 #>
 
 [CmdLetBinding()]
@@ -89,5 +89,5 @@ catch{
     throw
 }
 finally{
-    CloseConnection -ConnectionName $ConnectionName
+    CloseConnection 
 }

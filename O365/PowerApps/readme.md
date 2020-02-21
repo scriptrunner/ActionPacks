@@ -72,6 +72,8 @@ Use cases for managing Microsoft PowerApps/Flow
 ## [Queries](./_QUERY_)
 
 + Get all currencies, languages, locations
++ Get apps, flows, environments
++ Get principal object ids (AzureAD)
 
 ## [Library](./_LIB_)
 

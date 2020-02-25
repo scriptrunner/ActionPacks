@@ -1,7 +1,7 @@
 #Requires -Module ReportHtml, ActiveDirectory
 
 <#
-.SYNOPSIS
+.SYNOPSIS 
 	Generate graphed report for all Active Directory objects.
 
 .DESCRIPTION

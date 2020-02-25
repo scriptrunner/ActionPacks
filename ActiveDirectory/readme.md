@@ -30,9 +30,17 @@ Use cases for managing users, groups and computers in on prem AD
 + Remove Active Directory service account
 + List of Active Directory users whose account has expired, inactive, disabled or locked
 
+## [Reports](./_REPORTS_)
++ Generate report with users or computers with defined status
++ Generate report with user, computer or group properties
++ Generate report with group members
++ Generate report with user memberships
+
 ## [Queries](./_QUERY_)
 
 + Search users whose account has expired, inactive, disabled or locked
 + Search users
 
 ## [Library](./_LIB_)
+
++ Get domain object

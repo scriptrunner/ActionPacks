@@ -27,6 +27,12 @@ Also managing storages, disks, partitions and volumes
 + List of share sizes
 + List of share permissions
 
+## [Reports](./_REPORTS_)
++ Generate report with shares, share sizes, share permissions
++ Generate report with objects, object permissions
++ Generate report with volume infos, drive capacities, disk infos, partition objects
++ Generate a report with the largest sub folders below the start folder
+
 ## [Queries](./_QUERY_)
 
 + Search a list of objects

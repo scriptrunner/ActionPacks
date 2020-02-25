@@ -39,4 +39,8 @@ Windows Server 2012 introduced the Print Management Cmdlets in Windows PowerShel
 + Search printer on a computer
 + Search print jobs for a printer optionally with a specific status
 
+## [Reports](./_REPORTS_)
++ Generate reports for drivers, ports, printers, print jobs
++ Generate reports of printer permissions, errors and status
+
 ## [Library](./_LIB_)

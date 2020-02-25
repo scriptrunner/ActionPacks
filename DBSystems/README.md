@@ -53,3 +53,6 @@
 + Enable, disable the Always On availability groups feature
 + Encrypt, decrypt, or re-encrypt specified columns in the database
 + Generate In-Memory OLTP Migration Checklist
+
+## [Reports](./_REPORTS_)
++ Generate report with databases, database roles, instance roles, agent jobs

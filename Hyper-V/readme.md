@@ -43,6 +43,9 @@ Use cases for managing the Hyper-V virtualization platform
 
 + Enter a virtual machine and retrieve the computer name
 
+## [Reports](./_REPORTS_)
++ Generate report with the network adapters, switches, snapshots, virtual machines
+
 ## [Queries](./_QUERY_)
 
 + Get virtual machines

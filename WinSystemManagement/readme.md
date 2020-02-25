@@ -127,6 +127,13 @@ Use cases for managing systems settings in Windows server and Windows 10 client.
 + Start backup, file recovery, volume recovery
 + Stop backup job
 
+## [Reports](./_REPORTS_)
++ Generate report with services, processes, event log entries, firewall rules, hot fixes, installed programms
++ Generate report with restore points, scheduled tasks, user profiles 
++ Generate report with app last errors, app logs, app packages
++ Generate report with local groups, local users, user memberships, group members 
++ Generate report with BitLocker volumes, Defender threat detection, Defender threat catalog
+
 ## [Queries](./_QUERY_)
 
 + Search firewall rules on a client computer
@@ -142,5 +149,5 @@ Use cases for managing systems settings in Windows server and Windows 10 client.
 
 ## [Library](./_LIB_)
 
-+ Remove computer or server profile
++ Remove computer or server profile 
 + Remove old profiles

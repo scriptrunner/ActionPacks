@@ -35,3 +35,6 @@ ScriptRunner Version 4.x or higher
 + List of all resources
 + List of the databases
 + List of the Active Sync Policies
+
+## [Reports](./_REPORTS_)
++ Generate report with the mailboxes, resources, databases, address lists, distribution groups, distribution group mailboxes, active sync mailbox policies

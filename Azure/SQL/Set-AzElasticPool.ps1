@@ -82,7 +82,7 @@ param(
 Import-Module Az
 
 try{
-    [string[]]$Properties = @'ElasticPoolName','ResourceGroupName','ServerName','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags')
+    [string[]]$Properties = @('ElasticPoolName','ResourceGroupName','ServerName','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags')
 
  #   ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     

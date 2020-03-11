@@ -1,5 +1,5 @@
 #Requires -Version 5.0
-#Requires -Modules microsoftteams
+#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.4"}
 
 <#
 .SYNOPSIS
@@ -99,6 +99,9 @@
 .Parameter ShowInTeamsSearchAndSuggestions
     Determines whether or not private teams should be searchable from Teams clients for users who do not belong to that team
 
+.Parameter RetainCreatedGroup 
+    Allow toggle of group cleanup if team creation fails
+
 .Parameter TenantID
     Specifies the ID of a tenant
 #>
@@ -136,12 +139,14 @@ Param(
     [string]$Channels,    
     [ValidateSet('Strict','Moderate')]
     [string]$GiphyContentRating,
+    [switch]$RetainCreatedGroup,
     [string]$TenantID
 )
 
 Import-Module microsoftteams
 
 try{
+    [string]$version = (Get-Module microsoftteams | Select-Object Version).Version
     [string[]]$Global:Properties = @('DisplayName','GroupId')
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
@@ -171,7 +176,9 @@ try{
     
     FillParameters -BoundParameters $PSBoundParameters
     $result = @()
+    $cmdArgs.Add('RetainCreatedGroup',$RetainCreatedGroup)
     $team = New-Team @Global:cmdArgs | Select-Object $Global:Properties
+    
     $result += $team
     $result += ' '
 

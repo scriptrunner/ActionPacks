@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-        Connect to Exchange Online and enable or disable Automatic Replies for a specified mailbox
+        Connect to Exchange Online and enable or disable Automatic Replies for one or more specified mailboxes
     
     .DESCRIPTION  
 
@@ -20,8 +20,8 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
 
-    .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set out of office
+    .Parameter MailboxIds
+        Specifies the Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
 
     .Parameter InternalText
         Specifies the Automatic Replies message that's sent to internal senders or senders within the organization
@@ -32,42 +32,20 @@
     .Parameter ExternalText 
         Specifies the Automatic Replies message that's sent to external senders or senders outside the organization
 
-    .Parameter StartDay
-        Specifies the start day that Automatic Replies are sent for the specified mailbox. (1-31)
+    .Parameter StartDate
+        Specifies the start date that Automatic Replies are sent for the specified mailbox
+        The text StartDate will be replaced by the defined start date
 
-    .Parameter StartMonth
-        Specifies the start month that Automatic Replies are sent for the specified mailbox. (1-12)
-
-    .Parameter StartYear
-        Specifies the start year that Automatic Replies are sent for the specified mailbox. (2017-2020)
-
-    .Parameter StartHour
-        Specifies the start hour that Automatic Replies are sent for the specified mailbox. (0-23)
-
-    .Parameter StartMinute
-        Specifies the start minute that Automatic Replies are sent for the specified mailbox. (0-59)
-
-    .Parameter EndDay
-        Specifies the end day that Automatic Replies are sent for the specified mailbox. (1-31)
-
-    .Parameter EndMonth
-        Specifies the end month that Automatic Replies are sent for the specified mailbox. (1-12)
-
-    .Parameter EndYear
-        Specifies the end year that Automatic Replies are sent for the specified mailbox. (2017-2020)
-
-    .Parameter EndHour
-        Specifies the end hour that Automatic Replies are sent for the specified mailbox. (0-23)
-
-    .Parameter EndMinute
-        Specifies the end minute that Automatic Replies are sent for the specified mailbox. (0-59)
+    .Parameter EndDate
+        Specifies the end date that Automatic Replies are sent for the specified mailbox
+        The text EndDate will be replaced by the defined end date
 #>
 
 param(
     [Parameter(Mandatory = $true,ParameterSetName="Disable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [string]$MailboxId ,
+    [string[]]$MailboxIds ,
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [string]$InternalText,
@@ -77,97 +55,93 @@ param(
     [string]$AutoReplyType="All",
     [Parameter(ParameterSetName="Enable Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [Parameter(ParameterSetName="Schedule Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
-    [string]$ExternalText ,
+    [string]$ExternalText ,    
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,31)]
-    [int]$StartDay=1,
+    [datetime]$StartDate,
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,12)]
-    [int]$StartMonth=1,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(2017,2030)]
-    [int]$StartYear=2017,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,23)]
-    [int]$StartHour=0,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,59)]
-    [int]$StartMinute=0,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,31)]
-    [int]$EndDay=1,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(1,12)]
-    [int]$EndMonth=1,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(2017,2030)]
-    [int]$EndYear=2017,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,23)]
-    [int]$EndHour=0,
-    [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [ValidateRange(0,59)]
-    [int]$EndMinute=0 
+    [datetime]$EndDate
 )
 
 try{
-    $box = Get-Mailbox -Identity $MailboxId
-    if($null -ne $box){
-        $resultMessage = @()
-        if($PSCmdlet.ParameterSetName  -eq "Disable Auto Reply"){
-            $null = Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState Disabled -Confirm:$false
-            $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
-            $resultMessage += "Mailbox $($box.UserPrincipalName) disabled"
+    [string[]]$resultMessage = @()
+    [string]$msg = "Mailbox {0} "
+    [string]$replyType = 'All'
+
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Confirm' = $false
+                            }
+
+    if($PSCmdlet.ParameterSetName  -eq "Disable Auto Reply"){
+        $cmdArgs.add('AutoReplyState' , 'Disabled')
+        $msg += "disabled"
+    }
+    else{               
+        if($AutoReplyType -eq 'Only contact list members'){
+            $replyType = 'Known'
         }
-        else {
-            $type = 'All'
-            if($AutoReplyType -eq 'Only contact list members'){
-                $type = 'Known'
-            }
-            if($AutoReplyType -eq 'Internal only'){
-                $type = 'None'
-            }
-            if(($type -eq 'All') -or ($type -eq 'Known')){
-               if([System.String]::IsNullOrWhiteSpace($ExternalText)){
-                   $ExternalText=$InternalText
-               }
-            }
-            if($PSCmdlet.ParameterSetName  -eq "Schedule Auto Reply"){
-                [datetime]$start = New-Object DateTime $StartYear, $StartMonth, $StartDay, $StartHour, $StartMinute, 0
-                if($start.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                    $start =[DateTime]::Now
-                }
-                [datetime]$end = $start
-                if($EndYear -gt 0){
-                    $end = New-Object DateTime $EndYear, $EndMonth, $EndDay, $EndHour, $EndMinute, 0
-                }
-                if($end.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                    $end =$start.AddDays(1)
-                }
-                $null = Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Scheduled' -Confirm:$false -ExternalAudience $type `
-                    -InternalMessage $InternalText -ExternalMessage $ExternalText -EndTime $end -StartTime $start
-                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
-                $resultMessage += "Mailbox $($box.UserPrincipalName) scheduled"
-            }
-            else {
-                $null = Set-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName -AutoReplyState 'Enabled' -Confirm:$false -ExternalAudience $type `
-                    -InternalMessage $InternalText -ExternalMessage $ExternalText 
-                $resultMessage += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-object * | Format-List
-                $resultMessage += "Mailbox $($box.UserPrincipalName) enabled"
-            }          
+        if($AutoReplyType -eq 'Internal only'){
+            $replyType = 'None'
         }
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = $resultMessage 
-        } 
+        if($PSCmdlet.ParameterSetName -eq "Schedule Auto Reply"){
+            if([System.String]::IsNullOrWhiteSpace($InternalText) -eq $false){
+                $InternalText = $InternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
+            }
+            if($replyType -ne 'None'){
+                if([System.String]::IsNullOrWhiteSpace($ExternalText) -eq $false){
+                    $ExternalText = $ExternalText.Replace("StartDate",$StartDate.ToShortDateString()).Replace("EndDate",$EndDate.ToShortDateString())                
+                }
+            }
+            if($StartDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+                $StartDate =[DateTime]::Now
+            }
+            if(($null -eq $EndDate) -or ($EndDate.Year -lt 2020)){
+                $EndDate = $StartDate           
+            }
+            if($EndDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+                $EndDate =$StartDate.AddDays(1)
+            }
+        }
+        if([System.String]::IsNullOrWhiteSpace($ExternalText) -eq $true){
+            $ExternalText = $InternalText
+        }
+        $cmdArgs.Add('ExternalAudience', $replyType)
+        $cmdArgs.Add('InternalMessage', $InternalText )
+        $cmdArgs.Add('ExternalMessage', $ExternalText )
+        if($PSCmdlet.ParameterSetName  -eq "Schedule Auto Reply"){
+            $cmdArgs.Add('AutoReplyState', 'Scheduled')                
+            $cmdArgs.Add('EndTime', $EndDate)
+            $cmdArgs.Add('StartTime', $StartDate)
+            $msg += "scheduled"
+        }
         else{
-            Write-Output $resultMessage 
+            $cmdArgs.Add('AutoReplyState', 'Enabled')
+            $msg += "enabled"
+        }
+    }    
+
+    foreach($item in $MailboxIds){
+        try{
+            $box = Get-Mailbox -Identity $item -ErrorAction Stop
+            if($null -ne $box){
+                try{
+                    $null = Set-MailboxAutoReplyConfiguration @cmdArgs -Identity $box.UserPrincipalName
+                    $resultMessage += [System.String]::Format($msg,$box.UserPrincipalName)
+                }
+                catch{
+                    Write-Output "Error occurred at set Mailbox $($item)"
+                }
+            }
+        }
+        catch{
+            Write-Output "Error occurred at get Mailbox $($item)"
         }
     }
+
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $resultMessage 
+    } 
     else{
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "Mailbox $($MailboxId) not found"
-        } 
-        Throw "Mailbox $($MailboxId) not found"
+        Write-Output $resultMessage 
     }
 }
 catch{

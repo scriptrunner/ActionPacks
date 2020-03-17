@@ -39,6 +39,10 @@
     .Parameter EndDate
         Specifies the end date that Automatic Replies are sent for the specified mailbox
         The text EndDate will be replaced by the defined end date
+
+    .Parameter GenerateReport
+        Generates a report with the current mailbox settings.        
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 #>
 
 param(
@@ -59,10 +63,15 @@ param(
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
     [datetime]$StartDate,
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [datetime]$EndDate
+    [datetime]$EndDate,
+    [Parameter(ParameterSetName="Disable Auto Reply")]
+    [Parameter(ParameterSetName="Enable Auto Reply")]
+    [Parameter(ParameterSetName="Schedule Auto Reply")]
+    [switch]$GenerateReport
 )
 
 try{
+    [string[]]$Properties = @('Identity','AutoReplyState','StartTime','EndTime','ExternalAudience','IsValid')
     [string[]]$resultMessage = @()
     [string]$msg = "Mailbox {0} "
     [string]$replyType = 'All'
@@ -119,6 +128,7 @@ try{
         }
     }    
 
+    $Script:resHtml = @()
     foreach($item in $MailboxIds){
         try{
             $box = Get-Mailbox -Identity $item -ErrorAction Stop
@@ -126,6 +136,9 @@ try{
                 try{
                     $null = Set-MailboxAutoReplyConfiguration @cmdArgs -Identity $box.UserPrincipalName
                     $resultMessage += [System.String]::Format($msg,$box.UserPrincipalName)
+                    if($GenerateReport -eq $true){
+                        $Script:resHtml += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-Object $Properties
+                    }
                 }
                 catch{
                     Write-Output "Error occurred at set Mailbox $($item)"
@@ -137,6 +150,9 @@ try{
         }
     }
 
+    if($GenerateReport -eq $true){
+        ShowResultConvertToHtml -Result $Script:resHtml
+    }
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $resultMessage 
     } 

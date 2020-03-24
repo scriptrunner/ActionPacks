@@ -135,10 +135,10 @@ try{
             if($null -ne $box){
                 try{
                     $null = Set-MailboxAutoReplyConfiguration @cmdArgs -Identity $box.UserPrincipalName
-                    $resultMessage += [System.String]::Format($msg,$box.UserPrincipalName)
                     if($GenerateReport -eq $true){
                         $Script:resHtml += Get-MailboxAutoReplyConfiguration -Identity $box.UserPrincipalName | Select-Object $Properties
                     }
+                    $resultMessage += [System.String]::Format($msg,$box.UserPrincipalName)
                 }
                 catch{
                     Write-Output "Error occurred at set Mailbox $($item)"

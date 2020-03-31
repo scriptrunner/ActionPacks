@@ -6,6 +6,10 @@ Requirements: ScriptRunner Version 4.x or higher
 + [Export-ExMailbox.ps1](./Export-ExMailbox.ps1)
 
 	Exporting contents of a primary mailbox or archive to a .pst file
+
++ [Get-ExMailboxActiveSync.ps1](./Get-ExMailboxActiveSync.ps1)
+
+  Connect to Microsoft Exchange Server and gets the mailbox ActiveSync setting
     
 + [Get-ExMailboxes.ps1](./Get-ExMailboxes.ps1)
 

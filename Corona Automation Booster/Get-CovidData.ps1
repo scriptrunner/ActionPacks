@@ -35,7 +35,7 @@
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$RapidApiKey = '9a045350bamsh3cc8fb9a95cc21ep1d0d5cjsnccfee0f95df9',
+    [string]$RapidApiKey ,
     [Parameter(Mandatory = $true)]
     [ValidateSet('Show All','Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 
                 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 

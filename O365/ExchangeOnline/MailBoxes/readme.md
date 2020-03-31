@@ -2,7 +2,7 @@
 The use of the scripts requires a remote PowerShell session to Exchange Online
 > Note: The use of the scripts requires ScriptRunner Version 4.x or higher.
 
-+ [Get-ExMailboxActiveSync.ps1](./Get-ExMailboxActiveSync.ps1)
++ [Get-EOMailboxActiveSync.ps1](./Get-EOMailboxActiveSync.ps1)
 
   Connect to Microsoft Exchange Server and gets the mailbox ActiveSync setting
 

@@ -30,7 +30,7 @@ param(
 )
 
 try{
-    $resultMessage = Get-CASMailbox -Identity $MailboxId -ErroorAction Stop | Select-Object ActiveSyncEnabled,PrimarySmtpAddress,DisplayName
+    $resultMessage = Get-CASMailbox -Identity $MailboxId -ErrorAction Stop | Select-Object ActiveSyncEnabled,PrimarySmtpAddress,DisplayName
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $resultMessage | Format-List
     } 

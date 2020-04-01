@@ -23,7 +23,8 @@
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
         
     .Parameter RapidApiKey
-        X-RapidAPI-Key
+        X-RapidAPI-Key. 
+        Register for an API Key at https://rapidapi.com
         
     .Parameter Countries
         Names of the countries.

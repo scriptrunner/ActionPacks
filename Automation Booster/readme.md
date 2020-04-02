@@ -3,7 +3,8 @@
 + [Get-CovidData.ps1](./Get-CovidData.ps1)
 
   The hourly updated statistic about Coronavirus. 
-  Stats by country are collected from several reliable sources
+  Stats by country are collected from several reliable sources<br>
+  Watch our video at https://www.youtube.com/watch?v=VqlxbyWilf0 to learn how to configure the ScriptRunner Action
 
 + [Exchange Set-ExOutOfOffice.ps1](../Exchange/MailBoxes/Set-ExOutOfOffice.ps1)
 

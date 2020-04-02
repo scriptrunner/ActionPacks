@@ -21,7 +21,8 @@
 
     .LINK
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
-        
+        Watch our video at https://www.youtube.com/watch?v=VqlxbyWilf0 to learn how to configure the ScriptRunner Action
+
     .Parameter RapidApiKey
         X-RapidAPI-Key. 
         Register for an API Key at https://rapidapi.com

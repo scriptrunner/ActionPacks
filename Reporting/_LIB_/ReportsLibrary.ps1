@@ -1,7 +1,7 @@
 function ShowResultConvertToHtml(){
     <#
     .SYNOPSIS
-        Generates a report with the hotfixes that have been applied to the local and remote computer
+        Generates a ScriptRunner report via ConvertTo-Html
 
     .DESCRIPTION
 

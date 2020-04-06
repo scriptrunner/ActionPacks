@@ -49,7 +49,7 @@ param(
     [Parameter(Mandatory = $true,ParameterSetName="Disable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [string[]]$MailboxIds ,
+    [string[]]$MailboxIds =@('Eva.test','adam.test') ,
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [string]$InternalText,
@@ -128,6 +128,7 @@ try{
         }
     }    
 
+    $Script:resHtml = @()
     foreach($item in $MailboxIds){
         try{
             $box = Get-Mailbox -Identity $item -ErrorAction Stop

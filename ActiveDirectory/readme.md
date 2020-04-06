@@ -31,6 +31,7 @@ Use cases for managing users, groups and computers in on prem AD
 + List of Active Directory users whose account has expired, inactive, disabled or locked
 
 ## [Reports](./_REPORTS_)
+
 + Generate report with users or computers with defined status
 + Generate report with user, computer or group properties
 + Generate report with group members

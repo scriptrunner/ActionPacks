@@ -25,3 +25,7 @@
 + [Grant-MSTUser​Policy​Package.ps1](./Grant-MSTUserPolicy​Package.ps1)
 
   Applying a policy package to users in a tenant
+
++ [New-MSTBatchPolicyAssignmentOperation.ps1](./New-MSTBatchPolicyAssignmentOperation.ps1)
+
+  Submits an operation that applies a policy package to a batch of users in a tenant

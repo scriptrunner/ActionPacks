@@ -24,7 +24,7 @@ Use cases for managing Microsoft Teams
 + Get policy package
 + Grant/get user policy package
 + Get user policy assignment, user policy recommendation
-+ Get batch policy assignment operation
++ New/get batch policy assignment operation
 
 ## [Teams](./Teams)
 

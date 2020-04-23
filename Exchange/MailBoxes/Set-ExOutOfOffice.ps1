@@ -49,7 +49,7 @@ param(
     [Parameter(Mandatory = $true,ParameterSetName="Disable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply")]
-    [string[]]$MailboxIds =@('Eva.test','adam.test') ,
+    [string[]]$MailboxIds ,
     [Parameter(Mandatory = $true,ParameterSetName="Enable Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [Parameter(Mandatory = $true,ParameterSetName="Schedule Auto Reply",HelpMessage="ASRDisplay(Multiline)")]
     [string]$InternalText,

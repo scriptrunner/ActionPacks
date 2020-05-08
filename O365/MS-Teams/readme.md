@@ -14,6 +14,7 @@ Use cases for managing Microsoft Teams
 
 ## [Common](./Common)
 
++ Clear Teams cache
 
 ## [Members](./Members)
 

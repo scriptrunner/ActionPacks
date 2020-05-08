@@ -37,3 +37,7 @@
 + [MS-Teams - Get-MSTTeamsStatistic_Html.ps1](../O365/MS-Teams/_REPORTS_/Get-MSTTeamsStatistic_html.ps1)
 
   Retrieving teams informations
+
++ [MS-Teams - Clear-MSTCache.ps1](../O365/MS-Teams/Common/Clear-MSTCache.ps1)
+
+  Clears the Microsoft Teams client cache

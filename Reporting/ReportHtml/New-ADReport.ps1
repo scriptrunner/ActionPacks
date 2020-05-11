@@ -1,4 +1,4 @@
-#Requires -Module ReportHtml, ActiveDirectory
+﻿#Requires -Module ReportHtml, ActiveDirectory, GroupPolicy
 
 <#
 .SYNOPSIS 
@@ -33,6 +33,10 @@
 .PARAMETER ADModNumber
 	Active Directory Objects that have been modified within [X] amount of days.
 	Default: 3
+
+.Parameter ADRegion
+	Region of active Directory operating system
+	Default: English
 
 .NOTES
 	Version: 1.1.0
@@ -107,11 +111,18 @@ param (
 
 	#Get AD Objects that have been modified in X days and newer
 	[ValidateRange(1,30)]
-	[int]$ADModNumber = 3
+	[int]$ADModNumber = 3,
+
+	[ValidateSet('English','Deutsch')]
+	[string]$ADRegion = 'English' 
 	
 	#CSS template located C:\Program Files\WindowsPowerShell\Modules\ReportHTML\1.4.1.1\
 	#Default template is orange and named "Sample"
 )
+
+Import-Module ReportHtml
+Import-Module ActiveDirectory
+Import-Module GroupPolicy
 
 "Gathering Report Customization..."
 "__________________________________"
@@ -192,6 +203,56 @@ $DefaultSGs = @(
 	"Windows Authorization Access Group"
 	"WinRMRemoteWMIUsers"
 )
+if($ADRegion -eq 'Deutsch'){
+	$DefaultSGs = @(
+		'Zugriffssteuerungs-Unterstützungsoperatoren'
+		'Konten-Operatoren'
+		'Administratoren'
+		'Zulässige RODC-Kennwortreplikationsgruppe'
+		'Sicherungs-Operatoren'
+		'Zertifikatdienst-DCOM-Zugriff'                                          
+		'Zertifikatherausgeber'
+		'Klonbare Domänencontroller'
+		'Kryptografie-Operatoren'
+		'Abgelehnte RODC-Kennwortreplikationsgruppe'
+		'Distributed COM-Benutzer'
+		'DnsAdmins'
+		'Domänen-Admins'
+		'Domänencomputer'
+		'Domänencontroller'
+		'Domänen-Gäste'
+		'Domänen-Benutzer'  
+		'Organisations-Admins'
+		'Schreibgeschützte Unternehmens Domänen Controller' 
+		'Ereignisprotokollleser'
+		'Gruppenrichtlinienersteller-Besitzer'
+		'Gäste'
+		'Hyper-V-Administratoren'
+		'IIS_IUSRS'
+		'Schlüsseladministratoren'
+		'Netzwerkkonfigurations-Operatoren'
+		'Leistungsprotokollbenutzer'
+		'Leistungsüberwachungsbenutzer'
+		'Druck-Operatoren'
+		'Prä-Windows 2000 kompatibler Zugriff'
+		'Protected Users'
+		'RAS- und IAS-Server'
+		'RDS-Endpunktserver'
+		'RDS-Verwaltungsserver'
+		'RDS-Remotezugriffsserver'                                       
+		'Schreibgeschützte Domänencontroller der Organisation'
+		'Remotedesktopbenutzer'
+		'Remoteverwaltungsbenutzer'
+		'Replikations-Operator'
+		'Schema-Admins'
+		'Server-Operatoren'
+		'Storage Repl. Admin'
+		'System Managed Accounts Group'
+		'Terminalserver-Lizenzserver'
+		'Benutzer'
+		'Windows-Autorisierungszugriffsgruppe'
+	)
+}
 
 $Table = New-Object 'System.Collections.Generic.List[System.Object]'
 $OUTable = New-Object 'System.Collections.Generic.List[System.Object]'
@@ -326,7 +387,11 @@ if (($NewCreatedUsersTable).Count -eq 0)
 }
 
 #Get Domain Admins
-$DomainAdminMembers = Get-ADGroupMember "Domain Admins"
+[string]$grpName = "Domain Admins"
+if($ADRegion -eq 'Deutsch'){
+	$grpName = 'Domänen-Admins'
+}
+$DomainAdminMembers = Get-ADGroupMember $grpName
 foreach ($DomainAdminMember in $DomainAdminMembers)
 {
 	$Name = $DomainAdminMember.Name
@@ -350,7 +415,11 @@ if (($DomainAdminTable).Count -eq 0)
 
 
 #Get Enterprise Admins
-$EnterpriseAdminsMembers = Get-ADGroupMember "Enterprise Admins" -Server $SchemaMaster
+$grpName = "Enterprise Admins"
+if($ADRegion -eq 'Deutsch'){
+	$grpName = 'Organisations-Admins'
+}
+$EnterpriseAdminsMembers = Get-ADGroupMember $grpName -Server $SchemaMaster
 foreach ($EnterpriseAdminsMember in $EnterpriseAdminsMembers)
 {
 	$Name = $EnterpriseAdminsMember.Name
@@ -445,7 +514,11 @@ if (($ExpiringAccountsTable).Count -eq 0)
 
 
 #Security Logs
-$SecurityLogs = Get-EventLog -Newest 7 -LogName "Security" | Where-Object { $_.Message -like "*An account*" }
+$grpName = "*An account*"
+if($ADRegion -eq 'Deutsch'){
+	$grpName = $grpName = "*Ein Konto*"
+}
+$SecurityLogs = Get-EventLog -Newest 7 -LogName "Security" | Where-Object { $_.Message -like $grpName }
 foreach ($SecurityLog in $SecurityLogs)
 {
 	$TimeGenerated = $SecurityLog.TimeGenerated
@@ -491,7 +564,10 @@ if (($DomainTable).Count -eq 0)
 			Groups
 ############################>
 "Working on Groups Report..."
-
+$grpName = "Domain Users"
+if($ADRegion -eq 'Deutsch'){
+	$grpName = $grpName = "Domänen-Benutzer"
+}
 #Get groups and sort in alphabetical order
 $Groups = Get-ADGroup -Filter * -Properties *
 $SecurityCount = 0
@@ -545,7 +621,7 @@ foreach ($Group in $Groups)
 	{
 		$Type = "Mail-Enabled Security Group"
 	}
-	if ($Group.Name -ne "Domain Users")
+	if ($Group.Name -ne $grpName)
 	{
 		$Users = (Get-ADGroupMember -Identity $Group | Sort-Object DisplayName | Select-Object -ExpandProperty Name) -join ", "
 		if (!($Users))
@@ -1006,7 +1082,7 @@ foreach ($GPO in $GPOs)
 if (($GPOTable).Count -eq 0)
 {
 	$Obj = [PSCustomObject]@{
-		Information = 'Information: No Group Policy Obejects were found'
+		Information = 'Information: No Group Policy Objects were found'
 	}
 	$GPOTable.Add($obj)
 }

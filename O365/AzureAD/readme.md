@@ -1,6 +1,10 @@
 # Action Pack for Azure Active Directory v2
 Use cases to manage groups, users and roles with Azure Active Directory Powershell Module v2
-> Note: The use of the scripts requires the Azure Active Directory Powershell Module v2.<br>Requirements: ScriptRunner Version 4.x or higher
+> Note: The use of the scripts requires the Azure Active Directory Powershell Module v2.
+
+## [Common](./Common)
+
++ Get licenses
 
 ## [Manage Groups](./Groups)
 
@@ -16,9 +20,14 @@ Use cases to manage groups, users and roles with Azure Active Directory Powershe
 
 ## [Manage Users](./Users)
 
-+ Get/Set properties of the Active Directory user
++ Get/set properties of the Active Directory user
++ Get/set/remove licenses to user
 + Create/remove Active Directory user
 + Create/remove role memberships for Active Directory user
 + Reset password for Active Directory user 
 + Enable/Disable Active Directory user
 + List of all Active Directory users
+
+## [_QUERY_](./_QUERY_)
+
++ Search group users, licenses

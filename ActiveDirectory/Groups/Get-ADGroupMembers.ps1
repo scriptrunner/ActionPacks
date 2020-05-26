@@ -131,8 +131,6 @@ try{
                 'Server' = $Script:Domain.PDCEmulator
                 'AuthType' = $AuthType
                 'Identity' =  $GroupName
-                'SearchBase' = $OUPath 
-                'SearchScope' = $SearchScope
                 }
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)

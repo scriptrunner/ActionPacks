@@ -1,0 +1,10 @@
+UserName;Delete;Disable;MoveTo;DisableMailbox;RemoveMailbox;RemovePermanentMailbox,ForwardToMailbox
+John.Doe;0;1;;0;0;0;
+;Jane.Doe;1;0;;0;0;1;
+
+
+;MoveTo					optional	Moves the user to a other OU, if the value 1
+;DisableMailbox			optional	Disables Mailbox in Exchange on premise, if the value 1
+;RemoveMailbox			optional	Removes Mailbox in Exchange on premise, if the value 1
+;RemovePermanentMailbox	optional	Removes Mailbox permanent in Exchange on premise, if the value 1
+;ForwardToMailbox		optional	Forwards messages to this Exchange on premise mailbox

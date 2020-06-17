@@ -19,9 +19,10 @@
     .COMPONENT
         Components needed to execute the script, e.g. Requires Module ActiveDirectory
 
-    .LINK
+    .LINK    
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
         Watch our video at https://www.youtube.com/watch?v=VqlxbyWilf0 to learn how to configure the ScriptRunner Action
+        https://github.com/scriptrunner/ActionPacks/tree/master/Automation%20Booster
 
     .Parameter RapidApiKey
         X-RapidAPI-Key. 

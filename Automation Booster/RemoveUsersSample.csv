@@ -1,6 +1,6 @@
 UserName;Delete;Disable;MoveTo;DisableMailbox;RemoveMailbox;RemovePermanentMailbox,ForwardToMailbox
 John.Doe;0;1;;0;0;0;
-;Jane.Doe;1;0;;0;0;1;
+Jane.Doe;1;0;;0;0;1;
 
 
 ;MoveTo					optional	Moves the user to a other OU, if the value 1

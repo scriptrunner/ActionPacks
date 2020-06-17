@@ -1,10 +1,26 @@
 # Action Pack for Automation Booster
 
++ [AddUsersSample.csv](./AddUsersSample.csv)
+
+  Sample file to create users in Active Directory and Exchange on premise
+
++ [AddUsersSampleO365.csv](./AddUsersSampleO365.csv)
+
+  Sample file to create users in Azure Active Directory and Exchange online
+
 + [Get-CovidData.ps1](./Get-CovidData.ps1)
 
   The hourly updated statistic about Coronavirus. 
   Stats by country are collected from several reliable sources<br>
   Watch our video at https://www.youtube.com/watch?v=VqlxbyWilf0 to learn how to configure the ScriptRunner Action
+
++ [Invoke-ABOffBoarding.ps1](./Invoke-ABOffBoarding.ps1)
+
+  Sample script of a offboarding process
+
++ [Invoke-ABOnBoarding.ps1](./Invoke-ABOnBoarding.ps1)
+
+  Sample script of a onboarding process
 
 + [Exchange Set-ExOutOfOffice.ps1](../Exchange/MailBoxes/Set-ExOutOfOffice.ps1)
 
@@ -41,3 +57,11 @@
 + [MS-Teams - Clear-MSTCache.ps1](../O365/MS-Teams/Common/Clear-MSTCache.ps1)
 
   Clears the Microsoft Teams client cache
+
++ [RemoveUsersSample.csv](./RemoveUsersSample.csv)
+
+  Sample file to remove users in Active Directory and Exchange on premise
+
++ [RemoveUsersSampleO365.csv](./RemoveUsersSampleO365.csv)
+
+  Sample file to remove users in Azure Active Directory and Exchange online

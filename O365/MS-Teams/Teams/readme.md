@@ -29,3 +29,7 @@
 + [Set-MSTTeamArchivedState.ps1](./Set-MSTTeamArchivedState.ps1)
 
   Set the archived state of a team
+
++ [Set-MSTTeamPicture.ps1](./Set-MSTTeamPicture.ps1)
+
+  Update the team picture

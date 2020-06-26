@@ -66,7 +66,10 @@ Import-Module microsoftteams
 
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
+    
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'Archived' = $Archived
                             }  
@@ -84,7 +87,7 @@ try{
         $getArgs.Add('Visibility',$Visibility)
     }
 
-    $result = Get-Team @getArgs | Select-Object $Properties.Split(',')  
+    $result = Get-Team @getArgs | Select-Object $Properties 
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

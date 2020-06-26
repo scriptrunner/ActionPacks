@@ -88,7 +88,7 @@ param(
     [bool]$ForceChangePasswordNextLogin,
     [bool]$ShowInAddressList,
     [ValidateSet('Member','Guest')]
-    [string]$UserType='Member'
+    [string]$UserType = 'Member'
 )
 
 try{

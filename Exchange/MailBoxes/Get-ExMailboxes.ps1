@@ -38,6 +38,9 @@ param(
 )
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if($EnabledMailboxOnly -eq $true){
         $boxes = Get-Mailbox -SortBy DisplayName | Where-Object -Property IsMailboxEnabled -eq $true | `
                 Select-Object $Properties

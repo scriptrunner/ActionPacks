@@ -35,6 +35,9 @@ param(
 )
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     $res = Get-DistributionGroup -Identity $GroupName  | Select-Object $Properties
     
     if($null -ne $res){        

@@ -35,6 +35,9 @@ param(
 )
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     $res = Get-Mailbox -Identity $MailboxId | Select-Object $Properties 
     if($null -ne $res){        
         if($SRXEnv) {

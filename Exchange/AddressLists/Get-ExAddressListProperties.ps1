@@ -35,6 +35,9 @@ param(
 )
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     $res = Get-AddressList -Identity $ListName  | Select-Object $Properties
     
     if($null -ne $res){        

@@ -58,7 +58,7 @@ try{
                             'ResourceGroupName' = $ResourceGroupName
                             }
     
-    $vm = Get-AzVM @cmdArgs | Select-Object $Properties
+    $vm = Get-AzVM @cmdArgs | Select-Object *
     
     $cmdArgs = @{'ErrorAction' = 'Stop'
                 'Confirm' = $false 

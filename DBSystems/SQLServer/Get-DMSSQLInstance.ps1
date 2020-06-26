@@ -48,6 +48,9 @@ Param(
 Import-Module SQLServer
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'ServerInstance' = $ServerInstance

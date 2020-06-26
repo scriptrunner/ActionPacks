@@ -68,12 +68,15 @@ Param(
     [string]$LoginType = "All",
     [int]$ConnectionTimeout = 30,
     [ValidateSet('*','Name','Status','LoginType','Language','IsLocked','IsDisabled','IsPasswordExpired','MustChangePassword','PasswordExpirationEnabled','HasAccess','State')]
-    [string[]]$Properties = ('Name','Status','LoginType','Language','IsLocked','IsDisabled','IsPasswordExpired','MustChangePassword','PasswordExpirationEnabled','HasAccess','State')
+    [string[]]$Properties = @('Name','Status','LoginType','Language','IsLocked','IsDisabled','IsPasswordExpired','MustChangePassword','PasswordExpirationEnabled','HasAccess','State')
 )
 
 Import-Module SQLServer
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     $instance = GetSQLServerInstance -ServerInstance $ServerInstance -ServerCredential $ServerCredential -ConnectionTimeout $ConnectionTimeout
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

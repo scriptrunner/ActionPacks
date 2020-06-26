@@ -88,7 +88,7 @@ try{
         $null = Remove-NetIPAddress -InputObject $old -Confirm:$false -ErrorAction Stop
     }
 
-    $result = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ErrorAction Stop | Select-Object $Properties
+    $result = Get-NetIPAddress -CimSession $Script:Cim -InterfaceAlias $AdapterName -ErrorAction Stop | Select-Object $Script:Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

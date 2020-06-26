@@ -210,7 +210,7 @@ try{
         elseif($Module -eq $true){
             $cmdArgs.Add('Module',$null)
         }
-        $Script:output = Get-Process @cmdArgs | Select-Object $Script:Properties
+        $Script:output = Get-Process @cmdArgs | Select-Object $Properties
     }
     
     if($SRXEnv) {

@@ -73,6 +73,9 @@ Import-Module ActiveDirectory
 
 try{
     $Script:Grp 
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AuthType' = $AuthType
                             }
@@ -109,7 +112,7 @@ try{
             }
         }
         else {
-            foreach($itm in $Properties.Split(',')){
+            foreach($itm in $Properties){
                 $resultMessage.Add($itm,$Script:Grp[$itm.Trim()].Value)
             }
         }

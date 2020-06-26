@@ -72,6 +72,9 @@ param(
 Import-Module ActiveDirectory
 
 try{    
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [string]$Script:sam = $Computername
     if(-not $Script:sam.EndsWith('$')){
         $Script:sam += '$'
@@ -113,7 +116,7 @@ try{
             }
         }
         else {
-            foreach($itm in $Properties.Split(',')){
+            foreach($itm in $Properties){
                 $resultMessage.Add($itm,$Script:Cmp[$itm.Trim()].Value)
             }
         }

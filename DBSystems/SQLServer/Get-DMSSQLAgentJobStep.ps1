@@ -57,6 +57,9 @@ Param(
 Import-Module SQLServer
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'ServerInstance' = $ServerInstance
                             'ConnectionTimeout' = $ConnectionTimeout

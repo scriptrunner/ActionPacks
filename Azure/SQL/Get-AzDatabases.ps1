@@ -58,7 +58,9 @@ Import-Module Az
 
 try{
  #   ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'ServerName' = $ServerName
                             'ResourceGroupName' = $ResourceGroupName}

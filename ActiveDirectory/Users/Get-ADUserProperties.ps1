@@ -72,6 +72,9 @@ param(
 Import-Module ActiveDirectory
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AuthType' = $AuthType
                             }
@@ -109,7 +112,7 @@ try{
             }
         }
         else {
-            foreach($itm in $Properties.Split(',')){
+            foreach($itm in $Properties){
                 $resultMessage.Add($itm,$Script:User[$itm.Trim()].Value)
             }
         }

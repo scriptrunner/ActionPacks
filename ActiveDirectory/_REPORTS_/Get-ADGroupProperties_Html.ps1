@@ -71,6 +71,9 @@ param(
 Import-Module ActiveDirectory
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AuthType' = $AuthType
                             }

@@ -20,7 +20,7 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Billing        
 
     .Parameter AzureCredential
         The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials

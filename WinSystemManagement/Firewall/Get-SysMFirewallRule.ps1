@@ -59,8 +59,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($RuleName)){
         $RuleName= "*"
     }
-    if($null -eq ($Properties | Where-Object {$_ -like 'DisplayName'})){
-        $Properties += "DisplayName"
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -like 'DisplayName'})){
+            $Properties += "DisplayName"
+        }
     }
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){

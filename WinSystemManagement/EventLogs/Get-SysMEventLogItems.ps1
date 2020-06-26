@@ -73,8 +73,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     }  
-    if($null -eq ($Properties | Where-Object {$_ -like 'TimeWritten'})){
-        $Properties += "TimeWritten"
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -like 'TimeWritten'})){
+            $Properties += "TimeWritten"
+        }
     }
 
     if($PSCmdlet.ParameterSetName  -eq "Classic event logs"){

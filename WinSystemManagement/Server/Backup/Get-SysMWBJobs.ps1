@@ -43,6 +43,9 @@ Param(
 
 try{
     $Script:output
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){

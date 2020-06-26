@@ -82,8 +82,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ProcessName) -eq $true){
         $ProcessName = '*'
     }
-    if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
-        $Properties += "Name"
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
+            $Properties += "Name"
+        }
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){

@@ -73,6 +73,9 @@ try{
     if([System.String]::IsNullOrWhiteSpace($Publisher) -eq $true){
         $Publisher = '*'
     }    
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

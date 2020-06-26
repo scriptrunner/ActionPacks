@@ -47,7 +47,10 @@ Param(
 
 try{
     $Script:output
-
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
         if($LastStatus -eq $true){

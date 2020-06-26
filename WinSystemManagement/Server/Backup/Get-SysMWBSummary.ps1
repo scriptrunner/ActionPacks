@@ -39,6 +39,9 @@ Param(
 
 try{
     $Script:output
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $false){
         if($null -eq $AccessAccount){
@@ -53,7 +56,7 @@ try{
         }
     }
     else {
-        $Script:output = Get-WBSummary -ErrorAction Stop | Select-Object $Properties
+        $Script:output = Get-WBSummary -ErrorAction Stop | Select-Object 
     }
     
     if($SRXEnv) {

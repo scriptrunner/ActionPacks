@@ -58,6 +58,9 @@ try{
     if([System.String]::IsNullOrWhiteSpace($Name)){
         $Name = '*'
     }
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         if($PSCmdlet.ParameterSetName  -eq "ByName"){

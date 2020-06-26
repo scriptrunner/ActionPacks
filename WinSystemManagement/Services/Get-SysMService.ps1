@@ -46,8 +46,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $ComputerName = "."
     }
-    if($null -eq ($Properties | Where-Object {$_ -like 'DisplayName'})){
-        $Properties += "DisplayName"
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -like 'DisplayName'})){
+            $Properties += "DisplayName"
+        }
     }
     
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

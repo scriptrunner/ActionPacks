@@ -53,8 +53,13 @@ try{
     if([System.String]::IsNullOrWhiteSpace($TaskPath)){
         $TaskPath= "*"
     }
-    if($null -eq ($Properties | Where-Object {$_ -like 'TaskName'})){
-        $Properties += "TaskName"
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -like 'TaskName'})){
+            $Properties += "TaskName"
+        }
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){

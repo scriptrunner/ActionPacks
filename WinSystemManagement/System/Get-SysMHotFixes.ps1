@@ -42,7 +42,10 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName = "."
     }
-      
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    
     if($null -eq $AccessAccount){
         $Script:output = Get-HotFix -ComputerName $ComputerName -ErrorAction Stop | Select-Object $Properties
     }

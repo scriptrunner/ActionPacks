@@ -51,7 +51,7 @@ try{
     }
 
     $objShare = Get-SmbShareAccess -Name $ShareName -CimSession $Script:Cim -ErrorAction Stop `
-                        | Select-Object $Properties | Sort-Object AccessControlType,AccountName | Format-List    
+                        | Select-Object $script:Properties | Sort-Object AccessControlType,AccountName | Format-List    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $objShare
     }

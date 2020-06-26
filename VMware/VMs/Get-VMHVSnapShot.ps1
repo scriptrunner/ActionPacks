@@ -64,6 +64,9 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if([System.String]::IsNullOrWhiteSpace($Name) -eq $true){
         $Name = "*"
     }

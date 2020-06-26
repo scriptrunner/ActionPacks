@@ -43,7 +43,7 @@ Param(
 
 $Script:Cim=$null
 try{ 
-    [string[]]$Properties = @('Number','FriendlyName','Size','AllocatedSize','IsBoot','IsSystem')
+    [string[]]$Script:Properties = @('Number','FriendlyName','Size','AllocatedSize','IsBoot','IsSystem')
     if([System.String]::IsNullOrWhiteSpace($FriendlyName)){
         $FriendlyName= "*"
     }
@@ -66,7 +66,7 @@ try{
         $cmdArgs.Add('Number' ,$Number)
     }
     $Script:output = @()
-    Get-Disk @cmdArgs | Select-Object $Properties | ForEach-Object{
+    Get-Disk @cmdArgs | Select-Object $Script:Properties | ForEach-Object{
         $Script:output += New-Object PSObject -Property (([ordered] @{ 
             Number = $_.Number
             FriendlyName = $_.FriendlyName

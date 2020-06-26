@@ -68,7 +68,7 @@ try{
             $null = Set-SmbShare -Name $ShareName -CimSession $Script:Cim -EncryptData $EncryptData -Force -ErrorAction Stop
         }
         $Script:Share = Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop `
-                        | Select-Object @($Properties)
+                        | Select-Object $Properties
     }  
       
     if($SRXEnv) {

@@ -56,7 +56,7 @@ try{
     if([System.String]::IsNullOrWhiteSpace($ShareName) -eq $false){
         $cmdArgs.Add('Name',$ShareName)
     }
-    $objShare = Get-SmbShare @cmdArgs | Get-SmbShareAccess |  Sort-Object Name,AccountName | Select-Object $Properties 
+    $objShare = Get-SmbShare @cmdArgs | Get-SmbShareAccess |  Sort-Object Name,AccountName | Select-Object $Script:Properties 
 
     ShowResultConvertToHtml -Result $objShare
 }

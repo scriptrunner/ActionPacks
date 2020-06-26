@@ -74,6 +74,9 @@ $Script:Cim = $null
 $Script:output = @()
 [string[]]$Properties = @('Name','Description','Path','ShareState','ScopeName','CurrentUsers','ShareType','AvailabilityType','EncryptData')
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if([System.String]::IsNullOrWhiteSpace($ScopeName)){
         $ScopeName = '*'
     }
@@ -134,7 +137,7 @@ try{
     } 
 
     $Script:output += Get-SmbShare -Name $ShareName -CimSession $Script:Cim -IncludeHidden -ErrorAction Stop `
-                    | Select-Object @($Properties)
+                    | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $Script:output
     }

@@ -64,7 +64,7 @@ try{
     Dismount-Tools -VM $Script:machine -Server $Script:vmServer -ErrorAction Stop
     
     $result = Get-VMGuest -VM $Script:machine -Server $Script:vmServer -ErrorAction Stop `
-                    | Select-Object $Properties.Split(",")
+                    | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result 

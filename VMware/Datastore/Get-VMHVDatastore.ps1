@@ -52,6 +52,9 @@ Param(
 Import-Module VMware.PowerCLI
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
     
     if([System.String]::IsNullOrWhiteSpace($Datastore) -eq $true){

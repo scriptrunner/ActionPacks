@@ -56,6 +56,9 @@ Param(
 $Script:Cim=$null
 $Script:output = @()
 try{ 
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){
         $ComputerName=[System.Net.DNS]::GetHostByName('').HostName
     }          

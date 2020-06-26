@@ -45,6 +45,9 @@ $Script:Cim=$null
 $Script:output = @()
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if($DriveLetter.Length -gt 0){
         $DriveLetter = $DriveLetter.Substring(0,1)
         if(-not [System.Char]::IsLetter($DriveLetter)){

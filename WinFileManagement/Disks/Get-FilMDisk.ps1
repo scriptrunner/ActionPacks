@@ -48,6 +48,9 @@ Param(
 $Script:Cim=$null
 $Script:output = @()
 try{ 
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if([System.String]::IsNullOrWhiteSpace($FriendlyName)){
         $FriendlyName= "*"
     }

@@ -44,8 +44,13 @@ Param(
 
 $Script:Cim = $null
 try{
-    if($null -eq ($Properties | Where-Object {$_ -eq 'Name'})){
-        $Properties += "Name"
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -eq 'Name'})){
+            $Properties += "Name"
+        }
     }
     
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){

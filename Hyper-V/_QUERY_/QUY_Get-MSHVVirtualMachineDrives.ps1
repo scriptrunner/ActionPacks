@@ -60,8 +60,8 @@ try {
     }        
     if($null -ne $Script:VM){
         if(($DriveType -eq 'All') -or ($DriveType -eq "DVD") ){
-            $Properties = "Name,DvdMediaType,Path,ControllerNumber,ControllerType,VMId,VMName"
-            $Script:result = Get-VMDvdDrive -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",") 
+            [string[]]$Properties = @("Name","DvdMediaType","Path","ControllerNumber","ControllerType","VMId","VMName")
+            $Script:result = Get-VMDvdDrive -VM $Script:VM -ErrorAction Stop | Select-Object $Properties
             foreach($item in $Script:result){
                 $SRXEnv.ResultList2 += "DVD-Drive Name: $($item.Name) - ControllerNumber: $($item.ControllerNumber) - ControllerType: $($item.ControllerType)" # DisplayValue            
                 $SRXEnv.ResultList += $item.ControllerNumber # Value

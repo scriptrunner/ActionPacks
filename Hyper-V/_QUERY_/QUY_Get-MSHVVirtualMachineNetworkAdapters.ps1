@@ -54,7 +54,7 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }             
     if($null -ne $Script:VM){
-        $Properties = @('Name','VMName','MacAddress','DynamicMacAddressEnabled','IPAddresses','Connected','SwitchName','AdapterId','Status','StatusDescription','IsManagementOs','IsExternalAdapter')
+        [string[]]$Properties = @('Name','VMName','MacAddress','DynamicMacAddressEnabled','IPAddresses','Connected','SwitchName','AdapterId','Status','StatusDescription','IsManagementOs','IsExternalAdapter')
         $Script:result = Get-VMNetworkAdapter -VM $Script:VM | Select-Object $Properties | Where-Object {$_.Connected -eq $true} | Sort-Object Name
         
         foreach($item in $Script:result){

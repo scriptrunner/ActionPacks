@@ -59,12 +59,12 @@ try {
         $Script:VM = Get-VM -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.VMName -eq $VMName -or $_.VMID -eq $VMName}
     }        
     if($null -ne $Script:VM){
-        $Properties = "Name,Id,SnapshotType,Path,ParentCheckpointName,SizeOfSystemFiles,CreationTime"
+        [string[]]$Properties = @("Name","Id","SnapshotType","Path","ParentCheckpointName","SizeOfSystemFiles","CreationTime")
         if($SnapshotType -eq 'All'){
-            $Script:result = Get-VMSnapshot -VM $Script:VM -ErrorAction Stop | Select-Object $Properties.Split(",")  | Sort-Object Name
+            $Script:result = Get-VMSnapshot -VM $Script:VM -ErrorAction Stop | Select-Object $Properties  | Sort-Object Name
         }
         else {
-            $Script:result = Get-VMSnapshot -VM $Script:VM -SnapshotType $SnapshotType -ErrorAction Stop | Select-Object $Properties.Split(",")  | Sort-Object Name
+            $Script:result = Get-VMSnapshot -VM $Script:VM -SnapshotType $SnapshotType -ErrorAction Stop | Select-Object $Properties  | Sort-Object Name
         }
         
         foreach($item in $Script:result){

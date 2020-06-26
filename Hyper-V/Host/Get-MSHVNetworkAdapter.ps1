@@ -71,6 +71,9 @@ Import-Module Hyper-V
 
 try {
     $Script:output=@()
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
         $HostName=$VMHostName
     }   

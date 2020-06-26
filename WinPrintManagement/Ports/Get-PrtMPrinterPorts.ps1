@@ -43,8 +43,13 @@ Import-Module PrintManagement
 
 $Script:Cim = $null
 try{
-    if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
-        $Properties += 'Name'
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
+    else{
+        if($null -eq ($Properties | Where-Object {$_ -like 'Name'})){
+            $Properties += 'Name'
+        }
     }
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName)){

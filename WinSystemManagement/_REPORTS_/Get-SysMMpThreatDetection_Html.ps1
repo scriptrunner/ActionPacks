@@ -46,7 +46,7 @@ try{
     }
     $threat = Get-MpThreatDetection -CimSession $Script:Cim -ErrorAction Stop       
     
-    ShowResultConvertToHtml -Result $threat
+    ConvertTo-ResultHtml -Result $threat
 }
 catch{
     throw

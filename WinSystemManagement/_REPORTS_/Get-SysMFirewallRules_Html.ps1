@@ -54,7 +54,7 @@ try{
     $Rules = Get-NetFirewallRule -CimSession $Script:Cim -ErrorAction Stop | Where-Object {$_.Name -like "*$($RuleName)*" -or $_.DisplayName -like "*$($RuleName)*"} `
                     | Select-Object $Properties | Sort-Object DisplayName   
     
-    ShowResultConvertToHtml -Result $Rules                
+    ConvertTo-ResultHtml -Result $Rules                
 }
 catch{
     throw

@@ -71,7 +71,7 @@ try{
         $Script:output += "Print server $($ComputerName) not found"
     }
     
-    ShowResultConvertToHtml -Result $Script:output
+    ConvertTo-ResultHtml -Result $Script:output
 }
 catch{
     throw

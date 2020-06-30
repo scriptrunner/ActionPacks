@@ -105,7 +105,7 @@ try{
     }
 
     $Grps = Get-ADGroup @cmdArgs | Sort-Object -Property SAMAccountName | Select-Object $Properties
-    ShowResultConvertToHtml -Result $Grps
+    ConvertTo-ResultHtml -Result $Grps
 }
 catch{
     throw

@@ -1,4 +1,4 @@
-function ShowResultConvertToHtml(){
+function ConvertTo-ResultHtml (){
     <#
     .SYNOPSIS
         Generates a ScriptRunner report via ConvertTo-Html

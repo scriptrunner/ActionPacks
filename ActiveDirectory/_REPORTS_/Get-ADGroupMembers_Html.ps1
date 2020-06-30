@@ -144,7 +144,7 @@ try{
     $Script:Grp = Get-ADGroup @cmdArgs
 
     Get-NestedGroupMember $Script:Grp
-    ShowResultConvertToHtml -Result $Script:resultMessage
+    ConvertTo-ResultHtml -Result $Script:resultMessage
 }
 catch{
     throw

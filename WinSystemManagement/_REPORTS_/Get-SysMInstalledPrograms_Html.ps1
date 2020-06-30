@@ -48,7 +48,7 @@ try{
     $result = Get-CimInstance -ClassName "Win32_Product" -CimSession $Script:Cim -ErrorAction Stop | `
                     Select-Object $Properties | Sort-Object -Property Name
         
-    ShowResultConvertToHtml -Result $result
+    ConvertTo-ResultHtml -Result $result
 }
 catch{
     throw

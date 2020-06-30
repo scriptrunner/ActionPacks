@@ -67,7 +67,7 @@ try{
         }
     }    
 
-    ShowResultConvertToHtml -Result $Script:result
+    ConvertTo-ResultHtml -Result $Script:result
 }
 catch{
     throw

@@ -60,7 +60,7 @@ try{
         })
     }
 
-    ShowResultConvertToHtml -Result $output -CreateHttpLinks
+    ConvertTo-ResultHtml -Result $output -CreateHttpLinks
 }
 catch{
     throw

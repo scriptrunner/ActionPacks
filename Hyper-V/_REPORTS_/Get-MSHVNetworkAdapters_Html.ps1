@@ -103,7 +103,7 @@ try {
         }      
     }
     
-    ShowResultConvertToHtml -Result $Script:output
+    ConvertTo-ResultHtml -Result $Script:output
 }
 catch {
     throw

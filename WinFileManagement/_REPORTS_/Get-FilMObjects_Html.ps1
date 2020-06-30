@@ -80,7 +80,7 @@ try{
             $Script:output += New-Object PSObject -Property $tmp 
         }
     }
-    ShowResultConvertToHtml -Result $Script:output
+    ConvertTo-ResultHtml -Result $Script:output
 }
 catch{
     throw

@@ -65,7 +65,7 @@ try {
     }
     $output = Get-VMSnapshot @cmdArgs | Select-Object $Properties
     
-    ShowResultConvertToHtml -Result $output
+    ConvertTo-ResultHtml -Result $output
 }
 catch {
     throw

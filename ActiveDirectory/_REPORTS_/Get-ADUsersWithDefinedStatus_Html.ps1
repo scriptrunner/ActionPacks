@@ -135,7 +135,7 @@ try{
         $resultMessage += $users
     } 
     
-    ShowResultConvertToHtml -Result $resultMessage
+    ConvertTo-ResultHtml -Result $resultMessage
 }
 catch{
     throw

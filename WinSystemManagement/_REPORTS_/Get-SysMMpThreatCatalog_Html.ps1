@@ -50,7 +50,7 @@ try{
     }
     $threat = Get-MpThreatCatalog -CimSession $Script:Cim -ErrorAction Stop | Select-Object -Last $ItemCount
         
-    ShowResultConvertToHtml -Result $threat
+    ConvertTo-ResultHtml -Result $threat
 }
 catch{
     throw

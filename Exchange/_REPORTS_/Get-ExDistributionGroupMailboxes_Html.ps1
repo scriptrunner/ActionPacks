@@ -76,7 +76,7 @@ try{
     $Grp = Get-DistributionGroup -Identity $GroupName -ErrorAction Stop
     Get-NestedGroupMember $Grp    
     
-    ShowResultConvertToHtml -Result $Script:Members
+    ConvertTo-ResultHtml -Result $Script:Members
 }
 catch{
     throw

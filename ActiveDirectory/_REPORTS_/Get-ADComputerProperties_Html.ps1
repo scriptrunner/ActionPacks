@@ -109,7 +109,7 @@ try{
     }
     
     $cmp = Get-ADComputer @cmdArgs | Sort-Object Name | Select-Object $Properties
-    ShowResultConvertToHtml -result $cmp     
+    ConvertTo-ResultHtml -result $cmp     
 }
 catch{
     throw

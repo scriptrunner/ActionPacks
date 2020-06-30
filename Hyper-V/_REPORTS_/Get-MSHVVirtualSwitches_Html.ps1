@@ -62,7 +62,7 @@ try {
     }    
     $output = Get-VMSwitch @cmdArgs | Select-Object $Properties
 
-    ShowResultConvertToHtml -Result $output
+    ConvertTo-ResultHtml -Result $output
 }
 catch {
     throw

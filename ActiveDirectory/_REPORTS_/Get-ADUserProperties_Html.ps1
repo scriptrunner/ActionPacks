@@ -106,7 +106,7 @@ try{
     }
     $user= Get-ADUser @cmdArgs | Sort-Object SAMAccountName | Select-Object $Properties
     
-    ShowResultConvertToHtml -Result $user
+    ConvertTo-ResultHtml -Result $user
 }
 catch{
     throw

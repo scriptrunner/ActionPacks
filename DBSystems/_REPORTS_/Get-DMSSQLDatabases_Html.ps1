@@ -55,7 +55,7 @@ try{
     
     $result = Get-SqlDatabase @cmdArgs | Select-Object $Properties
     
-    ShowResultConvertToHtml -Result $result
+    ConvertTo-ResultHtml -Result $result
 }
 catch{
     throw

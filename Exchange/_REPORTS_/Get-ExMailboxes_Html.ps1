@@ -46,7 +46,7 @@ try{
         $boxes = Get-Mailbox -SortBy DisplayName | Select-Object $Properties
     }
     
-    ShowResultConvertToHtml -Result $boxes
+    ConvertTo-ResultHtml -Result $boxes
 }
 catch{
     throw

@@ -80,7 +80,7 @@ try{
     }
     $objShares = Get-SmbShare @cmdArgs | Select-Object $Properties | Where-Object {$_.ShareType -eq 'FileSystemDirectory'} | Sort-Object Name
                                 
-    ShowResultConvertToHtml -Result $objShares
+    ConvertTo-ResultHtml -Result $objShares
 }
 catch{
     throw

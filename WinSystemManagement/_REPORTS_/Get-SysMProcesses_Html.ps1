@@ -43,7 +43,7 @@ try{
                                     'Description' = $_.Description
                                 }
                             } 	
-    ShowResultConvertToHtml -Result $output                            
+    ConvertTo-ResultHtml -Result $output                            
 }
 catch{
     throw

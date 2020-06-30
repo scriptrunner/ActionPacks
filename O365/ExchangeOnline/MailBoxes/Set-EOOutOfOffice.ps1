@@ -151,7 +151,7 @@ try{
     }
 
     if($GenerateReport -eq $true){
-        ShowResultConvertToHtml -Result $Script:resHtml
+        ConvertTo-ResultHtml -Result $Script:resHtml
     }
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $resultMessage 

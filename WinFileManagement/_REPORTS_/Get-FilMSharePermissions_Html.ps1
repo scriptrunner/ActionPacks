@@ -58,7 +58,7 @@ try{
     }
     $objShare = Get-SmbShare @cmdArgs | Get-SmbShareAccess |  Sort-Object Name,AccountName | Select-Object $Script:Properties 
 
-    ShowResultConvertToHtml -Result $objShare
+    ConvertTo-ResultHtml -Result $objShare
 }
 catch{
     throw

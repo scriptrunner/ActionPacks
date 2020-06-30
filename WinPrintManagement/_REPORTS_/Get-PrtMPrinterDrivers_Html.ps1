@@ -68,7 +68,7 @@ try{
         $cmdArgs.Add("Name",$DriverName)
     }
     $drivers = Get-PrinterDriver @cmdArgs | Select-Object $Properties | Sort-Object Name    
-    ShowResultConvertToHtml -Result $drivers
+    ConvertTo-ResultHtml -Result $drivers
 }
 catch{
     throw

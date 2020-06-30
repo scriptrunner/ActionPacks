@@ -51,7 +51,7 @@ try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
     $result = Get-SqlAgent -InputObject $instance -ErrorAction Stop | Get-SqlAgentJob @cmdArgs | Select-Object $Properties | Sort-Object DateLastModified
     
-    ShowResultConvertToHtml -Result $result}
+    ConvertTo-ResultHtml -Result $result}
 catch{
     throw
 }

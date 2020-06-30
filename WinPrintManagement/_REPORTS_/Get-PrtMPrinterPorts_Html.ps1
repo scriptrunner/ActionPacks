@@ -75,7 +75,7 @@ try{
     }
 
     $ports = Get-PrinterPort @cmdArgs | Select-Object $Properties | Sort-Object Name
-    ShowResultConvertToHtml -Result $ports
+    ConvertTo-ResultHtml -Result $ports
 }
 catch{
     throw

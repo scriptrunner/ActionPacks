@@ -101,7 +101,7 @@ try{
         $Script:Csv += New-Object PSObject -Property $tmp 
     }
 
-    ShowResultConvertToHtml -Result $Script:Csv
+    ConvertTo-ResultHtml -Result $Script:Csv
 }
 catch{
     throw

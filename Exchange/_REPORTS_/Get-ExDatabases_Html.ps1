@@ -29,7 +29,7 @@ try{
     [string[]]$Properties = @('Name', 'IndexEnabled','ProhibitSendReceiveQuota','ProhibitSendQuota','RecoverableItemsQuota','RecoverableItemsWarningQuota','CalendarLoggingQuota')
     $res = Get-MailboxDatabase -ErrorAction Stop | Select-Object $Properties | Sort-Object Name
     
-    ShowResultConvertToHtml -Result $res
+    ConvertTo-ResultHtml -Result $res
 }
 catch{
     throw

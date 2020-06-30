@@ -28,7 +28,7 @@ try{
     [string[]]$Properties = @('Name','IsMailboxEnabled','ProhibitSendQuota','RecipientLimits','IsShared','Database','ExchangeUserAccountControl','ExternalOofOptions')
     $res = Get-Mailbox -SortBy DisplayName -ErrorAction Stop | Where-Object -Property IsResource -eq $true  | Select-Object $Properties
     
-    ShowResultConvertToHtml -Result $res
+    ConvertTo-ResultHtml -Result $res
 }
 catch{
     throw

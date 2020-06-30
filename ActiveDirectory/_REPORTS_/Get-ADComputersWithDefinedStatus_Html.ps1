@@ -110,7 +110,7 @@ try{
         $resultMessage += $computers 
     } 
     
-    ShowResultConvertToHtml -Result $resultMessage
+    ConvertTo-ResultHtml -Result $resultMessage
 }
 catch{
     throw

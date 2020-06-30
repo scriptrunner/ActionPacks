@@ -28,7 +28,7 @@ try{
     [string[]]$Properties = @('Name','DisplayName','Alias','GroupType','OrganizationalUnit','SamAccountName','AddressListMembership')
     $res = Get-DistributionGroup -ErrorAction Stop | Select-Object $Properties | Sort-Object Name
    
-    ShowResultConvertToHtml -Result $res
+    ConvertTo-ResultHtml -Result $res
 }
 catch{
     throw

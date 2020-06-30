@@ -94,7 +94,7 @@ try{
     $groups= Get-ADUser @cmdArgs | Select-Object -ExpandProperty MemberOf | Get-ADGroup | `
                 Select-Object @(@{Label ='Group'; Expression = {$_.Name}},'SAMAccountName','SID','DistinguishedName')
 
-    ShowResultConvertToHtml -Result $groups
+    ConvertTo-ResultHtml -Result $groups
 }
 catch{
     throw

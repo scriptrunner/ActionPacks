@@ -28,7 +28,7 @@ try{
     [string[]]$Properties = @('Name','IsDefaultPolicy','AllowSimpleDevicePassword','AlphanumericDevicePasswordRequired','MinDevicePasswordLength','MinDevicePasswordComplexCharacters','PasswordRecoveryEnabled')
     $res = Get-ActiveSyncMailboxPolicy -ErrorAction Stop | Select-Object $Properties | Sort-Object Name
 
-    ShowResultConvertToHtml -Result $res
+    ConvertTo-ResultHtml -Result $res
 }
 catch{
     throw

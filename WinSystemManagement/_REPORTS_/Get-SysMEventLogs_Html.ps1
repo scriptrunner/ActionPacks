@@ -46,7 +46,7 @@ try{
 
     $output = Get-EventLog  -ComputerName $ComputerName -LogName $LogName -Newest $MaxItems -EntryType $LogType -ErrorAction Stop  | Select-Object $Properties
     
-    ShowResultConvertToHtml -Result $output
+    ConvertTo-ResultHtml -Result $output
 }
 catch{
     throw

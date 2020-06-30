@@ -81,7 +81,7 @@ try{
     }
 
     $jobs = Get-PrintJob @cmdArgs | Select-Object $Properties | Sort-Object ID
-    ShowResultConvertToHtml -Result $jobs
+    ConvertTo-ResultHtml -Result $jobs
 }
 catch{
     throw

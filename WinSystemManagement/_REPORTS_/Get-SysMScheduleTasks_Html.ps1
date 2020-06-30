@@ -75,7 +75,7 @@ try{
                             }
                     }
     
-    ShowResultConvertToHtml -Result $tasks
+    ConvertTo-ResultHtml -Result $tasks
 }
 catch{
     throw

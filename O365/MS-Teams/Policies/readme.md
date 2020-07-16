@@ -6,6 +6,10 @@
 
   Retrieve the status of batch policy assignment operations
 
++ [Get-MSTGroupPolicyAssignment.ps1](./Get-MSTGroupPolicyAssignment.ps1)
+
+  Returns group policy assignments
+
 + [Get-MST​Policy​Package.ps1](./Get-MSTPolicy​Package.ps1)
 
   Retrieving all the policy packages available on a tenant
@@ -29,3 +33,11 @@
 + [New-MSTBatchPolicyAssignmentOperation.ps1](./New-MSTBatchPolicyAssignmentOperation.ps1)
 
   Submits an operation that applies a policy package to a batch of users in a tenant
+
++ [New-MSTGroupPolicyAssignment.ps1](./New-MSTGroupPolicyAssignment.ps1)
+
+  Assign a policy to a security group or distribution list
+
++ [Remove-MSTGroupPolicyAssignment.ps1](./Remove-MSTGroupPolicyAssignment.ps1)
+
+  Remove a group policy assignment

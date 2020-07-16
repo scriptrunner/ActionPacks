@@ -24,6 +24,7 @@ Use cases for managing Microsoft Teams
 
 + Get policy package
 + Grant/get user policy package
++ New/get/remove group policy assignment
 + Get user policy assignment, user policy recommendation
 + New/get batch policy assignment operation
 

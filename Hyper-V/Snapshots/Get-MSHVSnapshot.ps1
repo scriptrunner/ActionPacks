@@ -4,10 +4,6 @@
 <#
     .SYNOPSIS
         Get the snapshot associated with the virtual machine
-    
-    .DESCRIPTION  
-        Use "Win2K12R2 or Win8.x" for execution on Windows Server 2012 R2 or on Windows 8.1,
-        when execute on Windows Server 2016 / Windows 10 or newer, use "Newer Systems"
 
     .NOTES
         This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
@@ -22,9 +18,6 @@
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
-
-    .Parameter VMHostName
-        Specifies the name of the Hyper-V host
 
     .Parameter HostName
         Specifies the name of the Hyper-V host
@@ -43,20 +36,12 @@
 #>
 
 param(
-    [Parameter(Mandatory = $true,ParameterSetName = "Win2K12R2 or Win8.x")]
-    [string]$VMHostName,
-    [Parameter(Mandatory = $true, ParameterSetName = "Win2K12R2 or Win8.x")]
-    [Parameter(Mandatory = $true, ParameterSetName = "Newer Systems")]
+    [Parameter(Mandatory = $true)]
     [string]$VMName,
-    [Parameter(Mandatory = $true, ParameterSetName = "Win2K12R2 or Win8.x")]
-    [Parameter(Mandatory = $true, ParameterSetName = "Newer Systems")]
+    [Parameter(Mandatory = $true)]
     [string]$SnapshotName,
-    [Parameter(ParameterSetName = "Newer Systems")]
     [string]$HostName,
-    [Parameter(ParameterSetName = "Newer Systems")]
     [PSCredential]$AccessAccount,
-    [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
-    [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('*','Name','Id','SnapshotType','Path','ParentCheckpointName','SizeOfSystemFiles','CreationTime')]
     [string[]]$Properties = @('Name','Id','SnapshotType','Path','ParentCheckpointName','SizeOfSystemFiles','CreationTime')
 )
@@ -67,9 +52,7 @@ try {
     if($Properties -contains '*'){
         $Properties = @('*')
     }
-    if($PSCmdlet.ParameterSetName  -eq "Win2K12R2 or Win8.x"){
-        $HostName=$VMHostName
-    }      
+      
     if([System.String]::IsNullOrWhiteSpace($HostName)){
         $HostName = "."
     }   

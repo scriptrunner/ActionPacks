@@ -6,6 +6,7 @@
         Removes a virtual machine from Azure
     
     .DESCRIPTION  
+        This script is inspired by the article "Delete an Azure VM with objects using PowerShell" by Adam Bertram published by 4sysops.
         
     .NOTES
         This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
@@ -20,7 +21,10 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure 
+        
+        https://4sysops.com/archives/delete-an-azure-vm-with-objects-using-powershell/       
+        https://github.com/adbertram/Random-PowerShell-Work/blob/master/Azure/Remove-AzrVirtualMachine.ps1
 
     .Parameter AzureCredential
         The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials

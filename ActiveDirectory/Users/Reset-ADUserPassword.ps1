@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-         Resets the password of the Active Directory account
+        Resets the password of the Active Directory account
     
     .DESCRIPTION  
 

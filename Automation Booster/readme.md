@@ -10,7 +10,15 @@
   Stats by country are collected from several reliable sources<br>
   Watch our video at https://www.youtube.com/watch?v=VqlxbyWilf0 to learn how to configure the ScriptRunner Action
 
-+ [Exchange Set-ExOutOfOffice.ps1](../Exchange/MailBoxes/Set-ExOutOfOffice.ps1)
++ [Active Directory - Reset-ADUserPassword.ps1](../ActiveDirectory/Users/Reset-ADUserPassword.ps1)
+
+  Resets the password of the Active Directory account
+
++ [Azure AD - Reset-AADUserPassword.ps1](../O365/AzureAD/Users/Reset-AADUserPassword.ps1)
+
+  Connect to Azure Active Directory and resets the password from the user
+
++ [Exchange - Set-ExOutOfOffice.ps1](../Exchange/MailBoxes/Set-ExOutOfOffice.ps1)
 
   Connect to Microsoft Exchange Server and enable or disable Automatic Replies for one or more specified mailboxes
 

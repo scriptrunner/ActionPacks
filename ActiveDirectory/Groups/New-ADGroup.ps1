@@ -23,33 +23,43 @@
         
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter GroupName
         Specifies the name of the new group
+        [sr-de] Name der Gruppe
     
     .Parameter DomainAccount
         Active Directory Credential for remote execution on jumphost without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter SAMAccountName
         Specifies the Security Account Manager (SAM) account name of the group
+        [sr-de] SAMAccountName der Gruppe
 
     .Parameter Description
         Specifies a description of the group
+        [sr-de] Beschreibung der Gruppe
 
     .Parameter DisplayName
         Specifies the display name of the group
+        [sr-de] Anzeigename der Gruppe
 
     .Parameter Scope
         Specifies the group scope of the group
+        [sr-de] Gruppenbereich der Gruppe
 
     .Parameter Category
         Specifies the category of the group
+        [sr-de] Kategorie der Gruppe
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
     
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

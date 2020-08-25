@@ -23,27 +23,35 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter Username
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
+        [sr-de] Anzeigename, SAMAccountName, Distinguished-Name oder UPN des Benutzerkontos
 
-    .Parameter DomainAccount
+    .Parameter DomainAccount    
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter EnableStatus
         Enables or disables the Active Directory account
+        [sr-de] Konto de-/aktivieren
         
     .Parameter UnLock
         Unlock the Active Directory account
+        [sr-de] Konto entsperren
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
     
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(    

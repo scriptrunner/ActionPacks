@@ -23,33 +23,36 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter Username
         Display name, SAMAccountName, DistinguishedName or user principal name of an Active Directory account
+        [sr-de] Anzeigename, SAMAccountName, Distinguished-Name oder UPN des Benutzerkontos
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
-    .Parameter Day
-        Specifies the day of the expiration date for an Active Directory account
-
-    .Parameter Month
-        Specifies the month of the expiration date for an Active Directory account
-
-    .Parameter Year
-        Specifies the year of the expiration date for an Active Directory account
+    .Parameter ExpirationDate
+        Specifies the expiration date for an Active Directory account
+        [sr-de] Gibt das Ablaufdatum des Active Directory-Kontos an
         
     .Parameter NeverExpires
-        Specifies the Active Directory account never expires        
+        Specifies the Active Directory account never expires  
+        [sr-de] Gibt an, dass das Active Directory-Konto nie abläuft
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
     
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
+
 #>
 
 param(    
@@ -63,16 +66,7 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateRange(1,31)]
-    [int]$Day=1,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateRange(1,12)]
-    [int]$Month=1,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateRange(2017,2030)]
-    [int]$Year,
+    [datetime]$ExpirationDate,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [switch]$NeverExpires,
@@ -132,11 +126,10 @@ try{
            Set-ADUser @cmdArgs -AccountExpirationDate $null        
         }
         else{
-            [datetime]$start = New-Object DateTime $Year, $Month, $Day
-            if($start.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
+            if($ExpirationDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
                 Throw "Expiration date is in the past"
             }
-            Set-ADUser @cmdArgs -AccountExpirationDate $start
+            Set-ADUser @cmdArgs -AccountExpirationDate $ExpirationDate
         }
         Start-Sleep -Seconds 5 # wait
         $Script:User = Get-ADUser @cmdArgs -Properties *

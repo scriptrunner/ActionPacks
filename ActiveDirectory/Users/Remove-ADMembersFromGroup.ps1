@@ -23,24 +23,31 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter GroupName
         Name of the group from which the users are removed
+        [sr-de] Name der Gruppe aus der die Benutzer gelöscht werden
 
     .Parameter UserNames
         Comma separated display name, SAMAccountName, DistinguishedName or user principal name of the users removed from the group
+        [sr-de] Kommagetrennte Anzeigenamen, SamAccountNamen, Distinguished Namen oder UPNs der Benutzer die aus der Gruppe gelöscht werden
        
-    .Parameter DomainAccount
+    .Parameter DomainAccount    
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
     
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

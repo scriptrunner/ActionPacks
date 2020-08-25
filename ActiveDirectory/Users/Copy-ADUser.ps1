@@ -22,53 +22,69 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
 
-    .Parameter OUPath
+   .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter SourceUsername
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory user
+        [sr-de] Anzeigename, SAMAccountName, Distinguished-Name oder UPN des zu kopierenden Benutzerkontos
     
     .Parameter GivenName
         Specifies the new user's given name
+        [sr-de] Gibt den Vornamen des neuen Benutzers an
 
     .Parameter Surname
         Specifies the new user's last name or surname
+        [sr-de] Gibt den Nachnamen des neuen Benutzers an
 
     .Parameter Password
         Specifies the password value for the new account
+        [sr-de] Gibt das Passwort des neuen Benutzers an
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter SamAccountName
         Specifies the Security Account Manager (SAM) account name of the new user
+        [sr-de] Gibt den SamAccountNamen des neuen Benutzers an
 
     .Parameter UserPrincipalName
-        Specifies the user principal name (UPN) in the format <user>@<DNS-domain-name>.
+        Specifies the user principal name (UPN) in the format <user>@<DNS-domain-name>.        
+        [sr-de] Gibt den UPN des neuen Benutzers an
 
     .Parameter NewUserName
         Specifies the name of the new user 
+        [sr-de] Gibt den Namen des neuen Benutzers an
     
     .Parameter DisplayName
         Specifies the new user's display name
+        [sr-de] Gibt den Anzeigenamen des neuen Benutzers an
 
     .Parameter EmailAddress
         Specifies the user's e-mail address
+        [sr-de] Gibt die Mailadresse des neuen Benutzers an
 
     .Parameter CopyGroupMemberships
         Copies the group memberships too
+        [sr-de] Kopiert die Gruppenmitgliedschaften
 
     .Parameter ChangePasswordAtLogon
         Specifies whether a password must be changed during the next logon attempt
+        [sr-de] Gibt an, ob der neue Benutzer das Passwort bei der ersten Anmeldung ändern muss
     
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
-
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
+    
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

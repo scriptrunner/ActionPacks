@@ -24,12 +24,15 @@ function GetDomain(){
 
         .Parameter DomainName
             Name of Active Directory Domain
-
-        .Parameter DomainAccount
-            Active Directory Credential for remote execution on jumphost without CredSSP
-
+            [sr-de] Name der Active Directory Domäne
+            
+        .Parameter SearchScope
+            Specifies the scope of an Active Directory search
+            [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
+        
         .Parameter AuthType
             Specifies the authentication method to use
+            [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
         #>
 
         [CmdLetBinding()]

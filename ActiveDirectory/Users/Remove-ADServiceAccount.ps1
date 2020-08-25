@@ -23,18 +23,23 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter AccountName
         SAMAccountName or DistinguishedName name of Active Directory service account
+        [sr-de] Anzeigename, oder Distinguished-Name Dienstkontos
 
-    .Parameter DomainAccount
+    .Parameter DomainAccount    
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
-
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
+    
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

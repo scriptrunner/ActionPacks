@@ -24,51 +24,67 @@
     
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter Computername
         DistinguishedName, DNSHostName or SamAccountName of the Active Directory computer
+        [sr-de] DNSHost-Name, SAMAccountName, Distinguished-Name des Computers
 
     .Parameter DNSHostName
         Specifies the fully qualified domain name (FQDN) of the computer
+        [sr-de] Gibt den fully qualified domain name (FQDN) des Computers an
         
     .Parameter Location
         Specifies the location of the computer
+        [sr-de] Ort des Computers
 
     .Parameter Description
         Specifies a description of the computer
+        [sr-de] Beschreibung des Computers
 
     .Parameter OperatingSystem
         Specifies an operating system name
+        [sr-de] Betriebssystem des Computers        
 
     .Parameter OSServicePack
         Specifies the name of an operating system service pack
+        [sr-de] Service Pack des Computer-Betriebesystems 
 
     .Parameter OSVersion
         Specifies an operating system version
+        [sr-de] Version des Computer-Betriebesystems 
 
     .Parameter TrustedForDelegation
         Specifies whether an account is trusted for Kerberos delegation
+        [sr-de] Gibt an, ob ein Konto für die Kerberos-Delegierung vertrauenswürdig ist.
     
     .Parameter AllowDialin
         Specifies the network access permission
+        [sr-de] Aktiviert die Netzwerkzugriffsberechtigung
 
     .Parameter EnableCallback
         Specifies the Callback options
+        [sr-de] Aktiviert die Rückrufoption
 
     .Parameter CallbackNumber
         Specifies the Callback number
+        [sr-de] Gibt die Nummer für den Rückruf an
 
     .Parameter NewSAMAccountName
         The new SAMAccountName of Active Directory computer
+        [sr-de] Neuer SamAccountName des Computers
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
-
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
+    
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an#>
 #>
 
 param(

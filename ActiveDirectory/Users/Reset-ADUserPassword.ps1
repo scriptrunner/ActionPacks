@@ -24,27 +24,35 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter Username
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
+        [sr-de] Anzeigename, SAMAccountName, Distinguished-Name oder UPN des Benutzerkontos
 
     .Parameter NewPassword
         The new password for the Active Directory account
+        [sr-de] Gibt das neue Passwort für den Benutzer an
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter UserMustChangePasswordAtLogon
         The user must change the password on the next logon
+        [sr-de] Gibt an, ob der Benutzer das Passwort bei der ersten Anmeldung ändern muss
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
-
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
+    
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

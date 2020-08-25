@@ -23,27 +23,35 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter GroupName
         DistinguishedName or SamAccountName of the Active Directory group
+        [sr-de] SAMAccountName oder Distinguished-Name der Gruppe
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution on jumphost without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter Nested
         Shows group members nested 
+        [sr-de] Gruppenmitglieder rekursiv anzeigen
         
     .Parameter ShowOnlyGroups
         Shows only Active Directory groups
+        [sr-de] Nur Gruppen anzeigen
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
         
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
-
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
+    
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an#>
 #>
 
 param(

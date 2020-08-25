@@ -24,72 +24,95 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter Username
         Display name, SAMAccountName, DistinguishedName or user principal name of Active Directory account
+        [sr-de] Anzeigename, SAMAccountName, Distinguished-Name oder UPN des Benutzerkontos
 
     .Parameter DomainAccount
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP
 
     .Parameter GivenName
         Specifies the user's given name
+        [sr-de] Gibt den Vornamen des Benutzers an
 
     .Parameter Surname
         Specifies the user's last name or surname
+        [sr-de] Gibt den Nachnamen des Benutzers an
 
     .Parameter DisplayName
-        Specifies the display name of the user
+        Specifies the display name of the user        
+        [sr-de] Gibt den Anzeigenamen des Benutzers an
 
     .Parameter Description
         Specifies a description of the user
-
-    .Parameter ChangePasswordAtLogon
-        Specifies whether a password must be changed during the next logon attempt
+        [sr-de] Gibt die Beschreibung des Benutzers an
 
     .Parameter CannotChangePassword
         Specifies whether the account password can be changed
+        [sr-de] Gibt an, ob der Benutzer das Passwort ändern kann
 
     .Parameter PasswordNeverExpires
         Specifies whether the password of an account can expire
+        [sr-de] Gibt an, ob das Passwort nie abläuft
 
-    .Parameter Office
-        Specifies the location of the user's office or place of business
-    
-    .Parameter EmailAddress
-        Specifies the user's e-mail address
-
-    .Parameter Phone
-        Specifies the user's office telephone number
-
-    .Parameter Title
-        Specifies the user's title
-
-    .Parameter Department
-        Specifies the user's department
-
-    .Parameter Company
-        Specifies the user's company
-
-    .Parameter Street
-        Specifies the user's street address
-
-    .Parameter PostalCode
-        Specifies the user's postal code or zip code
-
-    .Parameter City
-        Specifies the user's town or city
+    .Parameter ChangePasswordAtLogon
+        Specifies whether a password must be changed during the next logon attempt
+        [sr-de] Gibt an, ob der Benutzer das Passwort bei der ersten Anmeldung ändern muss
 
     .Parameter NewSAMAccountName
         The new SAMAccountName of Active Directory account
+        [sr-de] Neuer SAMAccountName des Benutzers
+
+    .Parameter Office
+        Specifies the location of the user's office or place of business
+        [sr-de] Gibt das Büro des Benutzers an
+    
+    .Parameter EmailAddress
+        Specifies the user's e-mail address
+        [sr-de] Gibt die Mailadresse des Benutzers an
+
+    .Parameter Phone
+        Specifies the user's office telephone number
+        [sr-de] Gibt die Telefonnummer des Benutzers an
+
+    .Parameter Title
+        Specifies the user's title
+        [sr-de] Gibt die Position des Benutzers an
+
+    .Parameter Department
+        Specifies the user's department
+        [sr-de] Gibt die Abteilung des Benutzers an
+
+    .Parameter Company
+        Specifies the user's company
+        [sr-de] Gibt die Firma des Benutzers an
+
+    .Parameter Street
+        Specifies the user's street address
+        [sr-de] Gibt die Strasse des Benutzers an
+
+    .Parameter PostalCode
+        Specifies the user's postal code or zip code
+        [sr-de] Gibt die Postleitzahl des Benutzers an
+
+    .Parameter City
+        Specifies the user's town or city
+        [sr-de] Gibt den Ort des Benutzers an
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
 
     .Parameter SearchScope
         Specifies the scope of an Active Directory search
+        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
 
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

@@ -24,66 +24,87 @@
 
     .Parameter OUPath
         Specifies the AD path
+        [sr-de] Active Directory Pfad
 
     .Parameter GivenName
         Specifies the user's given name
+        [sr-de] Gibt den Vornamen des Benutzers an
 
     .Parameter Surname
         Specifies the user's last name or surname
+        [sr-de] Gibt den Nachnamen des Benutzers an
 
     .Parameter Password
         Specifies a new password value for an account
+        [sr-de] Gibt das initiale Passwort des Benutzers an
 
-    .Parameter DomainAccount
+    .Parameter DomainAccount    
         Active Directory Credential for remote execution without CredSSP
+        [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
     .Parameter SAMAccountName
         Specifies the Security Account Manager (SAM) account name of the user
+        [sr-de] Gibt der SAMAccountName des Benutzers an
 
     .Parameter UserPrincipalname
         Specifies the user principal name (UPN) in the format <user>@<DNS-domain-name>
+        [sr-de] Gibt den UPN des Benutzers an
         
     .Parameter UserName
         Specifies the name of the new user
+        [sr-de] Gibt den Namen des Benutzers an
 
     .Parameter DisplayName
         Specifies the display name of the user
+        [sr-de] Gibt den Anzeigenamen des Benutzers an
     
     .Parameter Description
         Specifies a description of the user
+        [sr-de] Gibt die Beschreibung des Benutzers an
 
     .Parameter EmailAddress
         Specifies the user's e-mail address
-
-    .Parameter ChangePasswordAtLogon
-        Specifies whether a password must be changed during the next logon attempt
+        [sr-de] Gibt die Mailadresse des Benutzers an
 
     .Parameter CannotChangePassword
         Specifies whether the account password can be changed
+        [sr-de] Gibt an, ob der Benutzer das Passwort ändern kann
 
     .Parameter PasswordNeverExpires
         Specifies whether the password of an account can expire
+        [sr-de] Gibt an, ob das Passwort nie abläuft
+
+    .Parameter ChangePasswordAtLogon
+        Specifies whether a password must be changed during the next logon attempt
+        [sr-de] Gibt an, ob der Benutzer das Passwort bei der ersten Anmeldung ändern muss
 
     .Parameter Department
         Specifies the user's department
+        [sr-de] Gibt die Abteilung des Benutzers an
 
     .Parameter Company
         Specifies the user's company
+        [sr-de] Gibt die Firma des Benutzers an
 
     .Parameter PostalCode
         Specifies the user's postal code or zip code
+        [sr-de] Gibt die Postleitzahl des Benutzers an
 
     .Parameter City
         Specifies the user's town or city
+        [sr-de] Gibt den Ort des Benutzers an
 
     .Parameter Street
         Specifies the user's street address
+        [sr-de] Gibt die Strasse des Benutzers an
 
     .Parameter DomainName
         Name of Active Directory Domain
+        [sr-de] Name der Active Directory Domäne
     
     .Parameter AuthType
         Specifies the authentication method to use
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(    

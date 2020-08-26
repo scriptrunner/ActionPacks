@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Connect to Azure Active Directory and gets a list of users
+        Generates a user users report
     
     .DESCRIPTION  
 

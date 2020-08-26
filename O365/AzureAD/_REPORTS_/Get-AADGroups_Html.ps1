@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Connect to Azure Active Directory and gets all groups
+        Generates a report with the groups
     
     .DESCRIPTION  
 

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Generates a report with the properties of one or all the Azure Active Directory accounts
+        Generates a report with the properties of the users
     
     .DESCRIPTION  
 

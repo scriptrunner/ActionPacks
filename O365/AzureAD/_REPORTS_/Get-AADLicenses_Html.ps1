@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets a list of licenses
+        Generates a licenses report
     
     .DESCRIPTION  
 

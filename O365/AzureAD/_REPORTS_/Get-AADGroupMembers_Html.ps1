@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Connect to Azure Active Directory and gets the members from the group
+        Generates a report with the properties of the members from the group
     
     .DESCRIPTION  
 

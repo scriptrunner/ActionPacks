@@ -8,6 +8,9 @@ Use cases to manage groups, users and roles with Azure Active Directory Powershe
 ## [Exchange Online](./ExchangeOnline)
 Use cases to manage distribution groups, mailboxes, resources and services
 
+## [Exchange Online v2 (Preview)](./ExchangeOnlinev2)
+Use cases to manage mailboxes, recipients and briefing Emails
+
 ## [Microsoft Teams](./MS-Teams)
 Use cases for managing Microsoft Teams
 

@@ -28,6 +28,12 @@ Use cases to manage groups, users and roles with Azure Active Directory Powershe
 + Enable/Disable Active Directory user
 + List of all Active Directory users
 
+## [Reports](./_REPORTS_)
+
++ Generate report with users, user licenses
++ Generate report with groups, group members
++ Generate report with licenses
+
 ## [_QUERY_](./_QUERY_)
 
 + Search group users, licenses

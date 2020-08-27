@@ -110,12 +110,6 @@ try{
     }
     
     ConvertTo-ResultHtml -Result $output
-    if($SRXEnv -and ($result.Length -gt 0)){
-        $SRXEnv.ResultMessage += $result
-    }
-    else{
-        Write-Output $result
-    }
 }
 catch{
     throw

@@ -2,7 +2,7 @@
 
 <#
     .SYNOPSIS
-        Connect to Exchange Online and gets the Mailboxes from the Universal distribution group
+        Generates a report with the Mailboxes from the Universal distribution group
     
     .DESCRIPTION  
 
@@ -14,20 +14,22 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
         © ScriptRunner Software GmbH
 
-    .COMPONENT       
-        ScriptRunner Version 4.x or higher
+    .COMPONENT      
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/DistributionGroups
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/_REPORTS_
 
     .Parameter GroupId
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group from which to get mailboxes
-    
+        [sr-en] Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group from which to get mailboxes
+        [sr-de] Gibt den Alias, Anzeigenamen, Distinguished-Name, Guid oder die Mailadresse der Verteilergruppe oder der e-Mail-aktivierte Sicherheitsgruppe an
+
     .Parameter Nested
-        Shows group members nested 
+        [sr-en] Shows group members nested 
+        [sr-de] Gruppenmitglieder rekursiv anzeigen
     
     .Parameter MemberObjectTypes
-        Specifies the member object types
+        [sr-en] Specifies the member object types
+        [sr-de] Gruppen, Benutzer oder alle anzeigen
 #>
 
 param(
@@ -41,11 +43,16 @@ param(
 try{
     $Script:Members=@()
     function Get-NestedGroupMember($group) { 
-        $Script:Members += "Group: $($group.DisplayName), $($group.PrimarySmtpAddress)" 
+        $Script:Members += [PSCustomObject] @{Type = 'Group'
+                                            DisplayName=$group.DisplayName
+                                            'Smtp address' = $group.PrimarySmtpAddress}
+                                            
         if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Users')){
             Get-DistributionGroupMember -Identity $group.Name  | Where-Object {$_.RecipientType -EQ 'MailUser'} | `
-                Sort-Object -Property DisplayName | ForEach-Object{
-                    $Script:Members += "Mailbox: $($_.DisplayName), $($_.PrimarySmtpAddress)"
+                Sort-Object -Property DisplayName | ForEach-Object{                    
+                    $Script:Members += [PSCustomObject] @{Type = 'Mailbox'
+                                                DisplayName = $_.DisplayName
+                                                'Smtp address' = $_.PrimarySmtpAddress}
                 }
         }
         if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Groups')){
@@ -55,7 +62,9 @@ try{
                         Get-NestedGroupMember $_
                     }
                     else {
-                        $Script:Members += "Group: $($_.DisplayName), $($_.PrimarySmtpAddress)"
+                        $Script:Members += [PSCustomObject] @{Type = 'Group'
+                                                DisplayName = $_.DisplayName
+                                                'Smtp address' = $_.PrimarySmtpAddress}
                     }                
                 }
         }
@@ -66,19 +75,11 @@ try{
         Get-NestedGroupMember $Grp
     }
     else {
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "Universal distribution group not found"
-        } 
         Throw "Universal distribution group not found"
     }
 
     if($null -ne $Script:Members){
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = $Script:Members
-        } 
-        else{
-            Write-Output $Script:Members 
-        }
+        ConvertTo-ResultHtml -Result $Script:Members 
     }
     else {
         if($SRXEnv) {

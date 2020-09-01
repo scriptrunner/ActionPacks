@@ -25,9 +25,6 @@
 
     .Parameter ExcludeResources
         Specifies whether to exclude resource mailboxes in the results
-
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
 #>
 
 param(

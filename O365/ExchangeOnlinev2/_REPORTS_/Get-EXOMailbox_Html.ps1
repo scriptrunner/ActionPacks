@@ -20,7 +20,7 @@
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_Reports_
 
     .Parameter Identity
         Specifies name, Guid or UPN of the mailbox

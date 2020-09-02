@@ -22,29 +22,29 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
 
     .Parameter Identity
-        Specifies name, Guid or UPN of the mailbox
+        [sr-en] Specifies name, Guid or UPN of the mailbox
         [sr-de] Name, Guid oder UPN des Postfachs
     
     .Parameter AnrSearch
-        Specifies a partial string for search objects with an attribute that matches that string. 
+        [sr-en] Specifies a partial string for search objects with an attribute that matches that string. 
         The default attributes searched are: CommonName, DisplayName, FirstName, LastName, Alias
         [sr-de] Teilzeichenfolge für die Suche in einem Attribut. 
         Die standardmäßig durchsuchten Attribute sind CommonName, DisplayName, Vorname, Nachname, Alias        
 
     .Parameter ProtocolSettings
-        Returns the server names, TCP ports and encryption methods
+        [sr-en] Returns the server names, TCP ports and encryption methods
         [sr-de] Gibt die Servernamen, TCP-Ports und Verschlüsselungsmethoden für die Einstellungen zurück
 
     .Parameter ResultSize
-        Specifies the maximum number of results to return
+        [sr-en] Specifies the maximum number of results to return
         [sr-de] Gibt die maximale Anzahl der zurückzugegebenen Ergebnisse an
 
-    .Parameter PropertySets
-        Specifies a logical grouping of properties
+    .Parameter PropertySet
+        [sr-en] Specifies a logical grouping of properties
         [sr-de] Gibt eine logische Gruppierung von Eigenschaften an
 
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
         [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 

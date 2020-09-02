@@ -23,43 +23,43 @@ function ConnectExchangeOnline(){
             https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline_v2/_LIB_
 
         .Parameter ExOCredential
-            Credential object containing the Exchange Online user/password
+            [sr-en] Credential object containing the Exchange Online user/password
             [sr-de] Gibt den Benutzernamen und das Kennwort an, zum Anmelden an Exchange Online an
 
         .Parameter CertificateThumbprint
-            Thumbprint off a certificate stored within certification store
+            [sr-en] Thumbprint off a certificate stored within certification store
             [sr-de] Fingerabdruck eines Zertifikats, das im Zertifizierungsspeicher gespeichert ist
 
         .Parameter CertificateFilePath
-            Path and file name of the certificate file
+            [sr-en] Path and file name of the certificate file
             [sr-de] Pfad und Dateiname der Zertifikatsdatei 
 
         .Parameter CertificatePassword
-            Password of the certificate file
+            [sr-en] Password of the certificate file
             [sr-de] Passwort der Zertifikatsdatei
 
         .Parameter ApplicationID
-            ID of the registered application (Exchange manage as app)
+            [sr-en] ID of the registered application (Exchange manage as app)
             [sr-de] ID der registrierten Anwendung (Exchange manage per App)
 
         .Parameter ExchangeEnvironmentName
-            Specifies the Exchange Online environment
+            [sr-en] Specifies the Exchange Online environment
             [sr-de] Gibt die Exchange Online Umgebung an
 
         .Parameter DelegateOrganization
-            Specifies the customer organization that you want to manage (for example, DevStar.onmicrosoft.com)
+            [sr-en] Specifies the customer organization that you want to manage (for example, DevStar.onmicrosoft.com)
             [sr-de] Gibt die Kundenorganisation an (z.B DevStar.onmicrosoft.com)
 
         .Parameter Organization
-            Specifies the customer organization that you want to manage (for example, DevStar.onmicrosoft.com)
+            [sr-en] Specifies the customer organization that you want to manage (for example, DevStar.onmicrosoft.com)
             [sr-de] Gibt die Kundenorganisation an (z.B DevStar.onmicrosoft.com)
 
         .Parameter LogLevel
-            Specifies the log level
+            [sr-en] Specifies the log level
             [sr-de] Gibt die Protokollierungsstufe an
 
         .Parameter ConnectionEndpoint
-            Specifies the connection endpoint for the remote PowerShell session
+            [sr-en] Specifies the connection endpoint for the remote PowerShell session
             [sr-de] Gibt den connection endpoint für die Remote-PowerShell-Sitzung an
         #>
 
@@ -172,11 +172,11 @@ function ConnectExchangeOnlineIPSession(){
             https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_LIB_
 
         .Parameter ExOCredential
-            Credential object containing the Exchange Online user/password
+            [sr-en] Credential object containing the Exchange Online user/password
             [sr-de] Gibt den Benutzernamen und das Kennwort an zum Anmelden an Exchange Online an
 
         .Parameter ConnectionEndpoint
-            Specifies the connection endpoint for the remote PowerShell session
+            [sr-en] Specifies the connection endpoint for the remote PowerShell session
             [sr-de] Gibt den connection endpoint für die Remote-PowerShell-Sitzung an
         #>
 

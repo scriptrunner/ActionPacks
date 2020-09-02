@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets the informations about SendAs permissions that are configured for users in a cloud-based organization
+        Generates a report with the informations about SendAs permissions that are configured for users in a cloud-based organization
     
     .DESCRIPTION  
 
@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/Recipients
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_Reports_
 
     .Parameter Identity
         [sr-en] Specifies name, Alias or SamAccountName of the target recipient
@@ -53,13 +53,18 @@ try{
     if($PSBoundParameters.ContainsKey('Trustee') -eq $true){
         $cmdArgs.Add('Trustee',$Trustee)
     }
-    $box = Get-EXORecipientPermission @cmdArgs
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $box
-    } 
-    else{
-        Write-Output $box 
+    $result = @()
+    $null = Get-EXORecipientPermission @cmdArgs | ForEach-Object{
+            $result += [pscustomobject]@{
+                        Identity = $_.Identity
+                        Trustee = $_.Trustee
+                        AccessControlType  = $_.AccessControlType
+                        AccessRights = ($_.AccessRights -join ';')
+                        IsInherited  = $_.IsInherited
+                        InheritanceType = $_.InheritanceType
+            }
     }
+    ConvertTo-ResultHtml -Result $result
 }
 catch{
     throw

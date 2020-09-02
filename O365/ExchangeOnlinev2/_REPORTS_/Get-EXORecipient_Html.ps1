@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets the recipient objects in your organization
+        Generates a report with the recipient objects in your organization
     
     .DESCRIPTION  
 
@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/Recipients
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_Reports_
 
     .Parameter Identity
         [sr-en] Specifies name, Guid or UPN of the recipient object
@@ -111,13 +111,8 @@ try{
         $cmdArgs.Add('RecipientTypeDetails',$RecipientTypeDetails)
     }
 
-    $result = Get-EXORecipient @cmdArgs | Select-Object $Properties   
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    } 
-    else{
-        Write-Output $result 
-    }
+    $result = Get-EXORecipient @cmdArgs | Select-Object $Properties  
+    ConvertTo-ResultHtml -Result $result
 }
 catch{
     throw

@@ -22,25 +22,25 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
 
     .Parameter Mailbox
-        Filters the results by the user mailbox that's associated with the mobile device
+        [sr-en] Filters the results by the user mailbox that's associated with the mobile device
         GUID, User ID or user principal name
         [sr-de] Filtert die Ergebnisse nach dem Benutzerpostfach, das dem mobilen Gerät zugeordnet ist
         GUID, User ID oder UPN
 
     .Parameter ActiveSync
-        Filters the results by Exchange ActiveSync devices
+        [sr-en] Filters the results by Exchange ActiveSync devices
         [sr-de] Filtert die Ergebnisse nach Exchange ActiveSync-Geräten
 
     .Parameter OWAforDevices
-        Filters the results by devices where Outlook on the web for devices is enabled
+        [sr-en] Filters the results by devices where Outlook on the web for devices is enabled
         [sr-de] Filtert die Ergebnisse nach Geräten, bei denen Outlook im Internet für Geräte aktiviert ist
 
     .Parameter RestApi
-        Filters the results by REST API devices
+        [sr-en] Filters the results by REST API devices
         [sr-de] Filtert die Ergebnisse nach REST-API-Geräten
     
     .Parameter UniversalOutlook
-        Filters the results by Mail and Calendar devices
+        [sr-en] Filters the results by Mail and Calendar devices
         [sr-de] Filtert die Ergebnisse nach e-Mail-und Kalender Geräten
 #>
 

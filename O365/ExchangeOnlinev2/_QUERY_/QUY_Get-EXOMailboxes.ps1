@@ -22,19 +22,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_QUERY_
 
     .Parameter Archive
-        Returns only mailboxes that have an archive mailbox
+        [sr-en] Returns only mailboxes that have an archive mailbox
         [sr-de] Gibt an, das nur Postfächern, für die ein Archiv aktiv ist, zurückgegeben werden
 
     .Parameter InactiveMailboxOnly
-        Returns only inactive mailboxes
+        [sr-en] Returns only inactive mailboxes
         [sr-de] Gibt an, das nur inaktive Postfächer in den Ergebnissen zurückgegeben werden
 
     .Parameter IncludeInactiveMailbox
-        Include inactive mailboxes in the result
+        [sr-en] Include inactive mailboxes in the result
         [sr-de] Gibt an, das inaktive Postfächer in den Ergebnissen zurückgegeben werden
 
     .Parameter SoftDeletedMailbox
-        Inculde soft-deleted mailboxes in the result
+        [sr-en] Inculde soft-deleted mailboxes in the result
         [sr-de] Gibt an, das vorläufig gelöschte Postfächer in den Ergebnissen zurückgegeben werden
 #>
 

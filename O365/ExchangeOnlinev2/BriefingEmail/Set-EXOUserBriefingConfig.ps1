@@ -22,11 +22,11 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/BriefingEmail
 
     .Parameter Identity
-        Specifies the user that you want to modify(for example, Jeff.Skywalker@DevStar.com)
+        [sr-en] Specifies the user that you want to modify(for example, Jeff.Skywalker@DevStar.com)
         [sr-de] Gibt den Benutzer an, der geändert werden soll (z.B., Jeff.Skywalker@DevStar.com)
 
     .Parameter Enabled
-        Specifies whether the briefing e-mail should be enabled or disabled
+        [sr-en] Specifies whether the briefing e-mail should be enabled or disabled
         [sr-de] Gibt an ob die Briefing-e-Mail für das Postfach aktiviert oder deaktiviert werden soll
 #>
 

@@ -22,19 +22,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
 
     .Parameter Identity
-        Specifies name, Alias or SamAccountName of the mailbox
+        [sr-en] Specifies name, Alias or SamAccountName of the mailbox
         [sr-de] Name, Guid oder UPN des Postfachs
 
     .Parameter Owner
-        Returns the owner information for the mailbox
+        [sr-en] Returns the owner information for the mailbox
         [sr-de] Gibt Informationen zu dem Benutzer zurück, der über die Berechtigungen des angegebenen Postfachs verfügt
 
     .Parameter SoftDeletedMailbox
-        Return soft-deleted mailboxes in the results
+        [sr-en] Return soft-deleted mailboxes in the results
         [sr-de] Vorläufig gelöschte Postfächer in den Ergebnissen zurückgeben
 
     .Parameter ResultSize
-        Specifies the maximum number of results to return
+        [sr-en] Specifies the maximum number of results to return
         [sr-de] Gibt die maximale Anzahl der zurückzugegebenen Ergebnisse an
 #>
 

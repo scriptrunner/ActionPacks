@@ -22,19 +22,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
 
     .Parameter Identity
-        Specifies name, Alias or SamAccountName of the mailbox
+        [sr-en] Specifies name, Alias or SamAccountName of the mailbox
         [sr-de] Name, Guid oder UPN des Postfachs
     
     .Parameter FolderName
-        Specifies the mailbox folder that you want to view
+        [sr-en] Specifies the mailbox folder that you want to view
         [sr-de] Gibt den Ordnernamen an, dessen Berechtigungen zurückgegeben werden
 
     .Parameter GroupMailbox
-        Is required to return Microsoft 365 Groups in the results
+        [sr-en] Is required to return Microsoft 365 Groups in the results
         [sr-de] Gibt an, ob Microsoft 365-Gruppen in den Ergebnissen zurückzugeben werden
 
     .Parameter User
-        Filters the results by the user, that's granted permission to the mailbox folder. (Name, Alias or Guid)
+        [sr-en] Filters the results by the user, that's granted permission to the mailbox folder. (Name, Alias or Guid)
         [sr-de] Filtert die Ergebnisse nach dem dem E-Mail-Benutzer, der eine Berechtigung für den Postfachordner erteilt hat
         (Name, Alias oder Guid)
 #>

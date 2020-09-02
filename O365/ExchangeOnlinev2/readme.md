@@ -20,7 +20,8 @@
 
 ## [Reports](./_REPORTS_)
 
-+ Generate report with mailboxes
++ Generate report with mailboxes, CAS mailboxes, mailbox statistics, mailbox folder statistics
++ Generate report with recipients, recipient permissions
 
 ## [Queries](./_QUERY_)
 

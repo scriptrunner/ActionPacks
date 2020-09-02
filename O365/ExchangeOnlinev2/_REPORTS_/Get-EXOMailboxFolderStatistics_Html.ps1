@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets the information about the folders in a specified mailbox
+        Generates a report with the information about the folders in a specified mailbox
     
     .DESCRIPTION  
 
@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_Reports_
 
     .Parameter Identity
         [sr-en] Specifies name, Alias or SamAccountName of the mailbox
@@ -73,13 +73,8 @@ try{
                     'IncludeSoftDeletedRecipients' = $IncludeSoftDeletedRecipients
     }
 
-    $result = Get-EXOMailboxFolderStatistics @cmdArgs | Select-Object $Properties
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    } 
-    else{
-        Write-Output $result 
-    }
+    $result = Get-EXOMailboxFolderStatistics @cmdArgs | Select-Object $Properties 
+    ConvertTo-ResultHtml -Result $result    
 }
 catch{
     throw

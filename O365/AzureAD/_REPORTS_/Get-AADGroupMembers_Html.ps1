@@ -17,7 +17,7 @@
 
     .COMPONENT       
         Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups

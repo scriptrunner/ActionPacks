@@ -14,7 +14,8 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
         © ScriptRunner Software GmbH
 
-    .COMPONENT      
+    .COMPONENT 
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_     
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/_REPORTS_

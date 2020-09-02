@@ -1,9 +1,9 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
 
 <#
 .SYNOPSIS
-    Return the policy assignments for a user
+    Generates a report with the policy assignments for a user
 
 .DESCRIPTION
 
@@ -18,21 +18,26 @@
 .COMPONENT
     Requires Module microsoftteams 1.0.5 or greater
     Requires Library script MSTLibrary.ps1
+    Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/_REPORTS_
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter Identity
-    The user that will get their assigned policies
+    [sr-en] The user that will get their assigned policy package
+    [sr-de] Benutzer ID dessen Policies-Pakete angezeigt werden
     
 .Parameter PolicyType
-    The type of the policy package
+    [sr-en] The type of the policy package
+    [sr-de] Typ des Ploiciy Pakets    
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
@@ -59,14 +64,16 @@ try{
         $getArgs.Add('PolicyType',$PolicyType)
     }
 
-    $result = Get-CsUserPolicyAssignment @getArgs | Select-Object *
+    $result = @()
+    $null = Get-CsUserPolicyAssignment @getArgs | Select-Object *  | ForEach-Object{
+        $result += [pscustomobject]@{
+                PolicyName = $_.PolicyName
+                PolicyType  = $_.PolicyType
+                AssignmentType = $_.PolicySource.AssignmentType
+        }   
+    }
     
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    }
-    else{
-        Write-Output $result
-    }
+    ConvertTo-ResultHtml -Result $result
 }
 catch{
     throw

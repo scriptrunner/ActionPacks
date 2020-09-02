@@ -35,6 +35,13 @@ Use cases for managing Microsoft Teams
 + Check the owner's number
 + Set the picture of a team 
 
+## [Reports](./_Report_)
+
++ Generate report with teams, team channels, team apps, team user, team statistic
++ Generate report with user policy assignments, user policy packages, user policy package recommendation
++ Generate report with group policy assignments
++ Generate report with policy packages
+
 ## [Queries](./_QUERY_)
 
 + Search group ids

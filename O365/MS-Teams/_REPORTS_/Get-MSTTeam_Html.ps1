@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Generates a report with the teams informations
+    Generates a report with the teams with particular properties/information
 
 .DESCRIPTION
 
@@ -31,17 +31,25 @@
     [sr-en] Specify the specific GroupId of the team to be returned
     [sr-de] Gibt die Gruppen-Id des zurückzugebenden Teams an
 
-.Parameter ExtendedReport
-    [sr-en] Extended output with the team users and their roles
-    [sr-de] Erweiterte Ausgabe mit den Team-Benutzern und ihren Rollen
-
 .Parameter Archived
     [sr-en] Filters to return teams that have been archived or not
     [sr-de] Teams zurückgeben, die archiviert wurden oder nicht
 
+.Parameter DisplayName
+    [sr-en] Filters to return teams with a full match to the provided displayname
+    [sr-de] Teams mit einer vollständigen Übereinstimmung des angegebenen Anzeigenamen
+
+.Parameter MailNickName
+    [sr-en] Specify the mailnickname of the team that is being returned
+    [sr-de] Gibt den Mail-Kurznamen des Teams an
+
 .Parameter Visibility
-    [sr-en] Filters to return teams with a set "visibility" value  
+    [sr-en] Filters to return teams with a set "visibility" value 
     [sr-de] Teams mit einem festgelegten "Sichtbarkeits"-Wert
+    
+.Parameter Properties
+    [sr-en] List of properties to expand. Use * for all properties
+    [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 
 .Parameter TenantID
     [sr-en] Specifies the ID of a tenant
@@ -53,10 +61,13 @@ Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
     [string]$GroupId,
-    [switch]$ExtendedReport,
     [bool]$Archived,
+    [string]$DisplayName,
+    [string]$MailNickName,
     [ValidateSet('Public','Private')]
     [string]$Visibility,
+    [ValidateSet('*','GroupId','DisplayName','Description','Visibility','MailNickName','Archived')]
+    [string[]]$Properties = @('GroupId','DisplayName','Description','Visibility','MailNickName','Archived'),
     [string]$TenantID
 )
 
@@ -64,7 +75,10 @@ Import-Module microsoftteams
 
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
+    
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'Archived' = $Archived
                             }  
@@ -72,50 +86,19 @@ try{
     if([System.String]::IsNullOrWhiteSpace($GroupId) -eq $false){
         $getArgs.Add('GroupId',$GroupId)
     }
+    if([System.String]::IsNullOrWhiteSpace($DisplayName) -eq $false){
+        $getArgs.Add('DisplayName',$DisplayName)
+    }
+    if([System.String]::IsNullOrWhiteSpace($MailNickName) -eq $false){
+        $getArgs.Add('MailNickName',$MailNickName)
+    }
     if([System.String]::IsNullOrWhiteSpace($Visibility) -eq $false){
         $getArgs.Add('Visibility',$Visibility)
     }
 
-    $result = @()
-    $output = @()
-    $teams = Get-Team @getArgs | Select-Object @('DisplayName', 'Alias','GroupID','MailNickName') | Sort-Object DisplayName
-    [int]$owners,$members,$guests
-
-    foreach($item in $teams){
-        try{
-            $users = Get-TeamUser -GroupId $item.GroupId 
-            if($ExtendedReport -eq $true){
-                foreach ($usr in ($users | Sort-Object -Property Name | Sort-Object -Property Role -Descending)){
-                    $output += [PSCustomObject] @{
-                        'Team' = $item.DisplayName
-                        'GroupID' =  $item.GroupId
-                        'Alias' = $item.MailNickName
-                        "User name" =  $usr.Name
-                        "Role" =  $usr.Role
-                    }
-                }
-            }
-            else{
-                $owners = @($users | Where-Object {$_.Role -eq "owner"}).Length
-                $members = @($users | Where-Object {$_.Role -eq "member"}).Length
-                $guests = @($users | Where-Object {$_.Role -eq "guest"}).Length
-                $output += [PSCustomObject] @{
-                    'Team' = $item.DisplayName
-                    'GroupID' =  $item.GroupId
-                    'Alias' = $item.MailNickName
-                    "Number of Owners" =  $owners
-                    "Number of Members" =  $members
-                    "Number of Guests" =  $guests
-                }                
-            }
-
-        }
-        catch{
-            $result += "Error read team $($item.GroupId) - $($_.Exception.Message)"
-        }
-    }
+    $result = Get-Team @getArgs | Select-Object $Properties 
     
-    ConvertTo-ResultHtml -Result $output
+    ConvertTo-ResultHtml -Result $result    
 }
 catch{
     throw

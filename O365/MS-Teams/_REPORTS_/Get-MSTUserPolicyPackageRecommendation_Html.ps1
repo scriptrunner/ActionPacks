@@ -1,9 +1,9 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
 
 <#
 .SYNOPSIS
-    Return the policy assignments for a user
+    Generates a report with all the policy packages available on a tenant
 
 .DESCRIPTION
 
@@ -18,21 +18,22 @@
 .COMPONENT
     Requires Module microsoftteams 1.0.5 or greater
     Requires Library script MSTLibrary.ps1
+    Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/_REPORTS_
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter Identity
-    The user that will get their assigned policies
-    
-.Parameter PolicyType
-    The type of the policy package
+    [sr-en] The user that will receive policy package recommendations
+    [sr-de] Benutzer ID dessen Policies-Vorschläge angezeigt werden
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
@@ -41,8 +42,6 @@ Param(
     [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true)]   
     [string]$Identity,
-    [ValidateSet('CallingLineIdentity', 'OnlineVoiceRoutingPolicy', 'TeamsAppSetupPolicy', 'TeamsAppPermissionPolicy', 'TeamsCallingPolicy', 'TeamsCallParkPolicy', 'TeamsChannelsPolicy', 'TeamsEducationAssignmentsAppPolicy','TeamsEmergencyCallingPolicy', 'TeamsMeetingBroadcastPolicy', 'TeamsEmergencyCallRoutingPolicy', 'TeamsMeetingPolicy', 'TeamsMessagingPolicy', 'TeamsUpdateManagementPolicy', 'TeamsUpgradePolicy', 'TeamsVerticalPackagePolicy', 'TeamsVideoInteropServicePolicy', 'TenantDialPlan')]  
-    [string]$PolicyType,
     [string]$TenantID
 )
 
@@ -53,20 +52,20 @@ try{
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'Identity' = $Identity
-                            }  
-                            
-    if([System.String]::IsNullOrWhiteSpace($PolicyType) -eq $false){
-        $getArgs.Add('PolicyType',$PolicyType)
-    }
+                            }        
 
-    $result = Get-CsUserPolicyAssignment @getArgs | Select-Object *
+    $result = @()
+    $null = Get-CsUserPolicyPackageRecommendation @getArgs | Select-Object * | ForEach-Object{
+        $result += [pscustomobject]@{
+            Name = $_.Name
+            Description  = $_.Description
+            PackageType = $_.PackageType
+            RecommendationType = $_.RecommendationType
+            Policies = ($_.Policies.Keys -join ';')
+        }
+    }
     
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    }
-    else{
-        Write-Output $result
-    }
+    ConvertTo-ResultHtml -Result $result
 }
 catch{
     throw

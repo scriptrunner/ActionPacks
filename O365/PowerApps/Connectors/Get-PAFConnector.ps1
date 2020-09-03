@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules Microsoft.PowerApps.Administration.PowerShell
 
 <#
@@ -80,6 +80,9 @@ Param(
 Import-Module Microsoft.PowerApps.Administration.PowerShell
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     ConnectPowerApps -PAFCredential $PACredential
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  

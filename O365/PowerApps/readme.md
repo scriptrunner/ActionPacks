@@ -69,6 +69,12 @@ Use cases for managing Microsoft PowerApps/Flow
 + Get/remove flow user details
 + Remove flow approvals
 
+## [Reports](./_REPORTS_)
+
++ Generate a report with currencies, languages, locations, connections, connectors, environments, flows, apps
++ Generate reports with role assignments of connections, connectors, environments
++ Generate reports with tenant settings, tenant graph details, flow user details
+
 ## [Queries](./_QUERY_)
 
 + Get all currencies, languages, locations

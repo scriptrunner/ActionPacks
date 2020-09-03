@@ -1,9 +1,9 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules Microsoft.PowerApps.Administration.PowerShell
 
 <#
 .SYNOPSIS
-    Retrieves api policy objects and provides the option to print out the connectors in each data group
+    Generates a report with the api policy objects and provides the option to print out the connectors in each data group
 
 .DESCRIPTION
 
@@ -18,27 +18,34 @@
 .COMPONENT
     Requires Module Microsoft.PowerApps.Administration.PowerShell
     Requires Library script PAFLibrary.ps1
+    Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/Common
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/_REPORTS_
  
 .Parameter PACredential
-    Provides the user ID and password for PowerApps credentials
+    [sr-en] Provides the user ID and password for PowerApps credentials
+    [sr-de] Benutzername und Passwort für die Anmeldung
 
 .Parameter PolicyName
-    Retrieves the policy with the input name (identifier)
+    [sr-en] Retrieves the policy with the input name (identifier)
+    [sr-de] Name der Policy
 
 .Parameter CreatedBy
-    Created by the specified user
+    [sr-en] Created by the specified user
+    [sr-de] Nur Policies dieses Benutzers
 
 .Parameter Filter
-    Specifies the filter
+    [sr-en] Specifies the filter
+    [sr-de] Filter
 
 .Parameter ApiVersion
-    The api version to call with
+    [sr-en] The api version to call with
+    [sr-de] Verwendete API Version
     
 .Parameter Properties
-    List of properties to expand. Use * for all properties
+    [sr-en] List of properties to expand. Use * for all properties
+    [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]
@@ -79,7 +86,7 @@ try{
     $result = Get-AdminDlpPolicy @getArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else{
         Write-Output $result

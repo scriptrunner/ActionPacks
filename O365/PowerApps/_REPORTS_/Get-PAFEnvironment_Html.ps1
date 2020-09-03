@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Returns all supported locations to create an environment in PowerApps
+    Generates a report with the information about one or more PowerApps environments
 
 .DESCRIPTION
 
@@ -18,31 +18,26 @@
 .COMPONENT
     Requires Module Microsoft.PowerApps.Administration.PowerShell
     Requires Library script PAFLibrary.ps1
+    Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/Environments
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/_REPORTS_
  
 .Parameter PACredential
-    Provides the user ID and password for PowerApps credentials
-
-.Parameter Filter
-    Finds locations matching the specified filter (wildcards supported)
-
-.Parameter ApiVersion
-    The api version to call with
+    [sr-en] The objectId of a user or group, if specified, this function will only return role assignments for that user or group
+    [sr-de] Id eines Benutzers oder einer Gruppe, falls angegeben, gibt diese Funktion nur Rollenzuordnungen für diesen Benutzer oder diese Gruppe zurück
     
 .Parameter Properties
-    List of properties to expand. Use * for all properties
+    [sr-en] List of properties to expand. Use * for all properties
+    [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$PACredential,
-    [string]$Filter,
-    [string]$ApiVersion,
-    [ValidateSet('*','LocationDisplayName','LocationName','Internal')]
-    [string[]]$Properties = @('LocationDisplayName','LocationName')
+    [ValidateSet('*','DisplayName','EnvironmentType','EnvironmentName','Location','CreatedTime','CreatedBy','IsDefault','LastModifiedTime','LastModifiedBy','CreationType','CommonDataServiceDatabaseProvisioningState','CommonDataServiceDatabaseType')]
+    [string[]]$Properties = @('DisplayName','EnvironmentType','EnvironmentName','Location','CreatedTime','CreatedBy')
 )
 
 Import-Module Microsoft.PowerApps.Administration.PowerShell
@@ -55,17 +50,12 @@ try{
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
                             
-    if([System.String]::IsNullOrWhiteSpace($Filter) -eq $false){
-        $getArgs.Add('Filter',$Filter)
-    }
-    if([System.String]::IsNullOrWhiteSpace($ApiVersion) -eq $false){
-        $getArgs.Add('ApiVersion',$ApiVersion)
-    }
+    $getArgs.Add('Default',$Default)
 
-    $result = Get-AdminPowerAppEnvironmentLocations @getArgs | Select-Object $Properties
+    $result = Get-AdminPowerAppEnvironment @getArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else{
         Write-Output $result

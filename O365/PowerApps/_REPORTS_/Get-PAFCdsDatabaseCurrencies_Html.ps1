@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Returns all supported CDS database languages
+    Generates a report with all currencies
 
 .DESCRIPTION
 
@@ -18,21 +18,26 @@
 .COMPONENT
     Requires Module Microsoft.PowerApps.Administration.PowerShell
     Requires Library script PAFLibrary.ps1
+    Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/Environments
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/_REPORTS_
  
 .Parameter PACredential
-    Provides the user ID and password for PowerApps credentials
+    [sr-en] Provides the user ID and password for PowerApps credentials
+    [sr-de] Benutzername und Passwort für die Anmeldung
 
 .Parameter LocationName
-    The location of the current environment
+    [sr-en] The location of the current environment
+    [sr-de] Standort der aktuellen Umgebung
 
 .Parameter Filter
-    Finds languages matching the specified filter (wildcards supported)
+    [sr-en] Finds currencies matching the specified filter (wildcards supported)
+    [sr-de] Währungen Filter (wildcards werden unterstützt)
 
 .Parameter ApiVersion
-    The api version to call with
+    [sr-en] The api version to call with
+    [sr-de] Verwendete API Version
 #>
 
 [CmdLetBinding()]
@@ -42,13 +47,14 @@ Param(
     [Parameter(Mandatory = $true)]   
     [string]$LocationName,
     [string]$Filter,
-    [string]$ApiVersion    
+    [string]$ApiVersion
 )
 
 Import-Module Microsoft.PowerApps.Administration.PowerShell
 
 try{
-    ConnectPowerApps -PAFCredential $PACredential
+    [string[]]$Properties = @('CurrencyName','CurrencyCode','IsTenantDefaultCurrency','CurrencySymbol')
+    ConnectPowerApps -PAFCredential $PACredential    
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'LocationName' = $LocationName
@@ -61,10 +67,10 @@ try{
         $getArgs.Add('ApiVersion',$ApiVersion)
     }
 
-    $result = Get-AdminPowerAppCdsDatabaseLanguages @getArgs | Select-Object *
+    $result = Get-AdminPowerAppCdsDatabaseCurrencies @getArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else{
         Write-Output $result

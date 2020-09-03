@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-    Returns information about one or more connection
+    Generates a report with the information about one or more connection
 
 .DESCRIPTION
 
@@ -18,61 +18,44 @@
 .COMPONENT
     Requires Module Microsoft.PowerApps.Administration.PowerShell
     Requires Library script PAFLibrary.ps1
+    Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/Connections
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/PowerApps/_REPORTS_
  
 .Parameter PACredential
-    Provides the user ID and password for PowerApps credentials
-
-.Parameter ConnectorName
-    Limit connections returned to those of a specified connector
+    [sr-en] Provides the user ID and password for PowerApps credentials
+    [sr-de] Benutzername und Passwort für die Anmeldung
 
 .Parameter EnvironmentName
-    Limit connections returned to those in a specified environment
+    [sr-en] Limit connections returned to those in a specified environment
+    [sr-de] Name der Umgebung
 
 .Parameter Filter
-    Finds apps matching the specified filter (wildcards supported)
-
-.Parameter UserName
-    Limit connections returned to those created by by the specified user (email or AAD object id)
+    [sr-en] Specifies the filter (wildcards supported)
+    [sr-de] Filter (wildcards werden unterstützt)
 
 .Parameter CreatedBy
-    Limit connections returned to those created by by the specified user (email or AAD object id)
+    [sr-en] Created by the specified user
+    [sr-de] Nur Connections dieses Benutzers
 
 .Parameter ApiVersion
-    The api version to call with
+    [sr-en] The api version to call with
+    [sr-de] Verwendete API Version
     
 .Parameter Properties
-    List of properties to expand. Use * for all properties
+    [sr-en] List of properties to expand. Use * for all properties
+    [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true, ParameterSetName = 'Filter')]   
-    [Parameter(Mandatory = $true, ParameterSetName = 'User')]   
-    [Parameter(Mandatory = $true, ParameterSetName = 'Connector')]   
+    [Parameter(Mandatory = $true)]   
     [pscredential]$PACredential,
-    [Parameter(Mandatory = $true, ParameterSetName = 'Connector')]  
-    [string]$ConnectorName,
-    [Parameter(Mandatory = $true, ParameterSetName = 'User')]
-    [string]$UserName,
-    [Parameter(ParameterSetName = 'Filter')]
     [string]$CreatedBy,
-    [Parameter(ParameterSetName = 'Filter')]
-    [Parameter(ParameterSetName = 'Connector')]
-    [Parameter(ParameterSetName = 'User')]
     [string]$ApiVersion,    
-    [Parameter(ParameterSetName = 'Filter')]
-    [Parameter(ParameterSetName = 'User')]
-    [Parameter(ParameterSetName = 'Connector')]
     [string]$EnvironmentName,
-    [Parameter(ParameterSetName = 'Filter')]
-    [Parameter(ParameterSetName = 'User')]
     [string]$Filter,
-    [Parameter(ParameterSetName = 'Filter')]
-    [Parameter(ParameterSetName = 'User')]
-    [Parameter(ParameterSetName = 'Connector')]
     [ValidateSet('*','DisplayName','ConnectionName','ConnectorName','EnvironmentName','CreatedTime','CreatedBy','LastModifiedTime','FullConnectorName','ConnectionId','Statuses','Internal')]
     [string[]]$Properties  = @('DisplayName','ConnectionName','ConnectorName','EnvironmentName','LastModifiedTime','ConnectionId')
 )
@@ -83,17 +66,11 @@ try{
     if($Properties -contains '*'){
         $Properties = @('*')
     }
-    
+
     ConnectPowerApps -PAFCredential $PACredential
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
-                            
-    if($PSCmdlet.ParameterSetName -eq 'Connector'){
-        $getArgs.Add('ConnectorName',$ConnectorName)
-    }
-    elseif($PSCmdlet.ParameterSetName -eq 'User'){
-        $getArgs.Add('CreatedBy',$UserName)
-    }   
+    
     if($PSBoundParameters.ContainsKey('CreatedBy')){
         $getArgs.Add('CreatedBy',$CreatedBy)
     }     
@@ -110,7 +87,7 @@ try{
     $result = Get-AdminPowerAppConnection @getArgs | Select-Object $Properties
     
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else{
         Write-Output $result

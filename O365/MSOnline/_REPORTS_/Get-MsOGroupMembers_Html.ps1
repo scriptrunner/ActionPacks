@@ -1,9 +1,9 @@
 ﻿#Requires -Version 4.0
-#Requires -Modules AzureAD
+#Requires -Modules MSOnline
 
 <#
     .SYNOPSIS
-        Generates a report with the properties of the members from the group
+        Generates a report with the members from the Azure Active Directory group
     
     .DESCRIPTION  
 
@@ -16,23 +16,31 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
+        Azure Active Directory Powershell Module v1
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/_REPORTS_
 
     .Parameter GroupObjectId
-        Specifies the unique ID of the group from which to get members
+        [sr-en] Specifies the unique ID of the group from which to get members
+        [sr-de] Gibt die eindeutige ID der Gruppe an
 
     .Parameter GroupName
-        Specifies the display name of the group from which to get members
+        [sr-en] Specifies the display name of the group from which to get members
+        [sr-de] Gibt den Namen der Gruppe an
 
     .Parameter Nested
-        Shows group members nested 
+        [sr-en] Shows group members nested 
+        [sr-de] Gruppenmitglieder rekursiv anzeigen
 
     .Parameter MemberObjectTypes
-        Specifies the member object types
+        [sr-en] Specifies the member object types
+        [sr-de] Gruppen, Benutzer oder alle anzeigen
+
+    .Parameter TenantId
+        [sr-en] Specifies the unique ID of a tenant
+        [sr-de] Die eindeutige ID eines Mandanten
 #>
 
 param(
@@ -46,38 +54,41 @@ param(
     [Parameter(ParameterSetName = "Group name")]
     [Parameter(ParameterSetName = "Group object id")]
     [ValidateSet('All','Users', 'Groups')]
-    [string]$MemberObjectTypes='All'
+    [string]$MemberObjectTypes='All',
+    [Parameter(ParameterSetName = "Group name")]
+    [Parameter(ParameterSetName = "Group object id")]
+    [guid]$TenantId
 )
 
 try{
     $Script:Members=@()
 
     function Get-NestedGroupMember($group) { 
-        $Script:Members += [PSCustomObject] @{Type = 'Group';DisplayName=$group.DisplayName}
+        $Script:Members += [PSCustomObject] @{Type = 'Group';DisplayName = $group.DisplayName }
         if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Users')){
-            Get-AzureADGroupMember -ObjectId $group.ObjectId | Where-Object {$_.ObjectType -eq 'User'} | `
+            Get-MsolGroupMember -GroupObjectId $group.ObjectId -MemberObjectTypes 'User' -TenantId $TenantId | `
                 Sort-Object -Property DisplayName | ForEach-Object{
-                    $Script:Members += [PSCustomObject] @{Type = 'User'; DisplayName=$_.DisplayName}
+                    $Script:Members += [PSCustomObject] @{Type = 'User';DisplayName = $_.DisplayName }
                 }
         }
         if(($MemberObjectTypes -eq 'All' ) -or ($MemberObjectTypes -eq 'Groups')){
-            Get-AzureADGroupMember -ObjectId $group.ObjectId | Where-Object {$_.ObjectType -eq 'Group'} | `
+            Get-MsolGroupMember -GroupObjectId $group.ObjectId -MemberObjectTypes 'Group' -TenantId $TenantId | `
                 Sort-Object -Property DisplayName | ForEach-Object{
                     if($Nested -eq $true){
                         Get-NestedGroupMember $_
                     }
                     else {
-                        $Script:Members += [PSCustomObject] @{Type = 'Group';DisplayName=$group.DisplayName}
+                        $Script:Members += [PSCustomObject] @{Type = 'Group';DisplayName = $_.DisplayName }
                     }                
                 }
         }
     }
 
     if($PSCmdlet.ParameterSetName  -eq "Group object id"){
-        $Script:Grp = Get-AzureADGroup -ObjectId $GroupObjectId
+        $Script:Grp = Get-MsolGroup -ObjectId $GroupObjectId -TenantId $TenantId  
     }
     else{
-        $Script:Grp = Get-AzureADGroup -All $true | Where-Object {$_.Displayname -eq $GroupName} 
+        $Script:Grp = Get-MsolGroup -TenantId $TenantId  | Where-Object {$_.Displayname -eq $GroupName} 
     }
     if($null -ne $Script:Grp){
         Get-NestedGroupMember $Script:Grp
@@ -101,6 +112,6 @@ try{
         }
     }
 }
-finally{
-
+catch{
+    throw
 }

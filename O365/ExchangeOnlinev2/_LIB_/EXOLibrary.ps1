@@ -76,11 +76,11 @@ function ConnectExchangeOnline(){
             [Parameter(Mandatory = $true,ParameterSetName = 'CertificatePath')]  
             [Parameter(Mandatory = $true,ParameterSetName = 'Thumbprint')]  
             [string]$ApplicationID, 
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificatePath')]  
+            [Parameter(Mandatory = $true,ParameterSetName = 'Thumbprint')] 
+            [string]$Organization,
             [Parameter(ParameterSetName = 'Credential')] 
             [string]$DelegateOrganization, 
-            [Parameter(ParameterSetName = 'CertificatePath')]  
-            [Parameter(ParameterSetName = 'Thumbprint')] 
-            [string]$Organization,
             [Parameter(ParameterSetName = 'CertificatePath')]  
             [Parameter(ParameterSetName = 'Thumbprint')]  
             [Parameter(ParameterSetName = 'Credential')]  
@@ -114,17 +114,16 @@ function ConnectExchangeOnline(){
             if($PSCmdlet.ParameterSetName -eq 'Thumbprint'){
                 $cmdArgs.Add('CertificateThumbprint', $CertificateThumbprint)
                 $cmdArgs.Add('AppID', $ApplicationID)
+                $cmdArgs.Add('Organization', $Organization)
             }
             if($PSCmdlet.ParameterSetName -eq 'CertificatePath'){
                 $cmdArgs.Add('CertificateFilePath', $CertificateFilePath)
                 $cmdArgs.Add('CertificatePassword', $CertificatePassword)
+                $cmdArgs.Add('Organization', $Organization)
                 $cmdArgs.Add('AppID', $ApplicationID)
             }
             if([System.String]::IsNullOrWhiteSpace($DelegateOrganization) -eq $false){
                 $cmdArgs.Add('DelegateOrganization', $DelegateOrganization)
-            }
-            if([System.String]::IsNullOrWhiteSpace($Organization) -eq $false){
-                $cmdArgs.Add('Organization', $Organization)
             }
 
             switch ($ConnectionEndpoint){

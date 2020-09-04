@@ -6,3 +6,5 @@
 ## [EXOLibrary](./EXOLibrary.ps1)
 
 + Connect/Disconnect Exchange Online
++ Connect to Security & Compliance Center PowerShell
++ Connect Exchange Online Modern Authentication

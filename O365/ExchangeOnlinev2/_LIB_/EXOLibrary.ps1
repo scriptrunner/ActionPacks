@@ -70,15 +70,15 @@ function ConnectExchangeOnline(){
             [Parameter(Mandatory = $true,ParameterSetName = 'Thumbprint')]  
             [string]$CertificateThumbprint,          
             [Parameter(Mandatory = $true,ParameterSetName = 'CertificatePath')]  
-            [string]$CertificateFilePath ,
-            [Parameter(Mandatory = $true,ParameterSetName = 'CertificatePath')]  
-            [securestring]$CertificatePassword,   
+            [string]$CertificateFilePath , 
             [Parameter(Mandatory = $true,ParameterSetName = 'CertificatePath')]  
             [Parameter(Mandatory = $true,ParameterSetName = 'Thumbprint')]  
             [string]$ApplicationID, 
             [Parameter(Mandatory = $true,ParameterSetName = 'CertificatePath')]  
             [Parameter(Mandatory = $true,ParameterSetName = 'Thumbprint')] 
             [string]$Organization,
+            [Parameter(ParameterSetName = 'CertificatePath')]  
+            [securestring]$CertificatePassword,  
             [Parameter(ParameterSetName = 'Credential')] 
             [string]$DelegateOrganization, 
             [Parameter(ParameterSetName = 'CertificatePath')]  
@@ -118,9 +118,11 @@ function ConnectExchangeOnline(){
             }
             if($PSCmdlet.ParameterSetName -eq 'CertificatePath'){
                 $cmdArgs.Add('CertificateFilePath', $CertificateFilePath)
-                $cmdArgs.Add('CertificatePassword', $CertificatePassword)
                 $cmdArgs.Add('Organization', $Organization)
                 $cmdArgs.Add('AppID', $ApplicationID)
+                if([System.String]::IsNullOrWhiteSpace($CertificatePassword) -eq $false){
+                    $cmdArgs.Add('CertificatePassword', $CertificatePassword)
+                }
             }
             if([System.String]::IsNullOrWhiteSpace($DelegateOrganization) -eq $false){
                 $cmdArgs.Add('DelegateOrganization', $DelegateOrganization)
@@ -243,7 +245,7 @@ function DisconnectExchangeOnline(){
         )
 
         try{
-            Disconnect-ExchangeOnline -Confirm:$false
+            $null = Disconnect-ExchangeOnline -Confirm:$false
         }
         catch{
             throw

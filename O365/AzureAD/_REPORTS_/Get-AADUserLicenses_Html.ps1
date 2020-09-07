@@ -23,7 +23,8 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/_REPORTS_
 
     .Parameter UserObjectId
-        Specifies the ID of a user (as a UPN or ObjectId) in Azure AD
+        [sr-en] Specifies the ID of a user (as a UPN or ObjectId) in Azure AD
+        [sr-en] ID oder UPN des Benutzers
 #>
 
 param(

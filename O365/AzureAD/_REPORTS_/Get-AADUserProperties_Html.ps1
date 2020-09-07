@@ -23,13 +23,16 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/_REPORTS_
 
     .Parameter UserObjectId
-        Specifies the unique ID of the user from which to get properties
+        [sr-en] Specifies the unique ID of the user from which to get properties
+        [sr-en] Eindeutige ID des Benutzers
 
     .Parameter UserName
-        Specifies the Display name or user principal name of the user from which to get properties
+        [sr-en] Specifies the Display name or user principal name of the user from which to get properties
+        [sr-en] Anzeigename oder UPN des Benutzers
     
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param(

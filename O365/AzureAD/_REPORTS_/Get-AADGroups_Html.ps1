@@ -23,7 +23,8 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/_REPORTS_
 
     .Parameter SearchString
-        Specifies a search string
+        [sr-en] Specifies a search string
+        [sr-de] Suchbegriff
 #>
 
 param(

@@ -44,7 +44,7 @@
 
 + [Get-PAFFlow_Html.ps1](./Get-PAFFlow_Html.ps1)
 
- Generates a report with information about one or more flows
+  Generates a report with information about one or more flows
 
 + [Get-PAFFlowUserDetails_Html.ps1](./Get-PAFFlowUserDetails_Html.ps1)
 
@@ -52,7 +52,7 @@
 
 + [Get-PAFPowerApp_Html.ps1](./Get-PAFPowerApp_Html.ps1)
 
- Generates a report with the information about one or more apps
+  Generates a report with the information about one or more apps
 
 + [Get-PAFTenantGraphDetails_Html.ps1](./Get-PAFTenantGraphDetails_Html.ps1)
   

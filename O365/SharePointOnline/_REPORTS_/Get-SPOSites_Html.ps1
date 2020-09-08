@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns one or more sites
+        Generates a report with one or more sites
     
     .DESCRIPTION  
 
@@ -17,45 +17,27 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
-
-    .Parameter Identity
-        Specifies the URL of the site collection
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_REPORTS_
 
     .Parameter Limit
-        Specifies the maximum number of site collections to return
+        [sr-en] Specifies the maximum number of site collections to return
+        [sr-de] Gibt die maximale Anzahl der zurückzugebenden Site Collections an
 
     .Parameter Detailed
-        Use this parameter to get additional property information on a site collection
-
-    .Parameter IncludePersonalSite
-        Displays personal sites when value is set to $true
-
-    .Parameter Template
-        Displays sites of a specific template
+        [sr-en] Use this parameter to get additional property information on a site collection
+        [sr-de] Zusätzliche Site Collection Properties 
 
     .Parameter Properties
-        List properties to expand. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
-param(        
-    [Parameter(Mandatory=$true,ParameterSetName="Set 2")]
-    [bool]$IncludePersonalSite,
-    [Parameter(ParameterSetName="Set 1")]
-    [string]$Identity,
-    [Parameter(ParameterSetName="Set 1")]
-    [Parameter(ParameterSetName="Set 2")]
+param(    
     [switch]$Detailed,
-    [Parameter(ParameterSetName="Set 2")]
-    [string]$Template,
-    [Parameter(ParameterSetName="Set 1")]
-    [Parameter(ParameterSetName="Set 2")]
-    [int]$Limit = 200,    
-    [Parameter(ParameterSetName="Set 1")]
-    [Parameter(ParameterSetName="Set 2")]
+    [int]$Limit = 200,
     [ValidateSet('*','Title','Status','Url','DisableFlows','AllowEditing','LastContentModifiedDate','CommentsOnSitePagesDisabled')]
     [string[]]$Properties = @('Title','Status','Url','DisableFlows','AllowEditing','LastContentModifiedDate','CommentsOnSitePagesDisabled')
 )
@@ -70,25 +52,14 @@ try{
                             'Detailed' = $Detailed
                             }      
     
-    If($PSCmdlet.ParameterSetName -eq 'Set 1'){
-        if([System.String]::IsNullOrWhiteSpace($Identity) -eq $false){
-            $cmdArgs.Add('Identity',$Identity)
-        }
-    }
-    else{       
-        $cmdArgs.Add('IncludePersonalSite',$IncludePersonalSite)     
-        if([System.String]::IsNullOrWhiteSpace($Template) -eq $false){
-            $cmdArgs.Add('Template',$Template)
-        } 
-    }
     if($Limit -gt 0){
         $cmdArgs.Add('Limit',$Limit)
     }
 
-    $result = Get-SPOSite @cmdArgs | Select-Object $Properties
+    $result = Get-SPOSite @cmdArgs | Select-Object $Properties | Sort-Object Title
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

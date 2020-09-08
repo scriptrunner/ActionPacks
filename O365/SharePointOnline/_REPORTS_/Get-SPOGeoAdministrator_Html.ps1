@@ -3,7 +3,8 @@
 
 <#
     .SYNOPSIS
-        Returns SharePoint Online organization properties
+        Generates a report with the SharePoint Online user or security group accounts 
+        with global administrative privileges in the current Multi-Geographics tenant
     
     .DESCRIPTION  
 
@@ -17,32 +18,22 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
-
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_REPORTS_
 #>
 
-param(         
-    [ValidateSet('*','AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')]   
-    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
+param(   
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
-    
-    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties
-      
+    $result = Get-SPOGeoAdministrator -ErrorAction Stop | Select-Object *
+
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

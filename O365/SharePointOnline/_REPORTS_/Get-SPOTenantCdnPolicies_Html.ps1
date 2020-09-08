@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns the SharePoint Online users in a multi-geo tenant that match the criteria
+        Generates a report with the public or private Policies applied on your SharePoint Online Tenant
     
     .DESCRIPTION  
 
@@ -17,28 +17,41 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_REPORTS_
 
-    .Parameter ValidDataLocation 
+    .Parameter CdnType
+        [sr-en] Specifies the CDN type
+        [sr-de] CDN Typ
 #>
 
 param(            
-    [bool]$ValidDataLocation
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('Public','Private')]
+    [string]$CdnType
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'ValidDataLocation' = $ValidDataLocation }   
+    [string[]]$Properties = @('Keys','Values','IsReadOnly','IsFixedSize','IsSynchronized','Count')
     
-    $result = Get-SPOCrossGeoUsers @cmdArgs | Select-Object *
+    $result = @()
+    $null = Get-SPOTenantCdnPolicies -CdnType $CdnType -ErrorAction Stop | Select-Object $Properties | ForEach-Object{
+        $result += [pscustomobject]@{
+            Keys = ($_.Keys -join ';')
+            Values = ($_.Values -join ';')
+            IsReadOnly  = $_.IsReadOnly
+            IsFixedSize = $_.IsFixedSize
+            IsSynchronized = $_.IsSynchronized
+            Count = $_.Count
+        }
+    }
       
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

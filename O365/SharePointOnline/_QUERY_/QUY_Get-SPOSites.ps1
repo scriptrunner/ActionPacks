@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns SharePoint Online organization properties
+        Gets site collections
     
     .DESCRIPTION  
 
@@ -17,36 +17,38 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_QUERY_
 
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
+    .Parameter Limit
+        [sr-en] Specifies the maximum number of site collections to return
+        [sr-de] Gibt die maximale Anzahl der zurückzugebenden Site Collections an
 #>
 
-param(         
-    [ValidateSet('*','AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')]   
-    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
+param(    
+    [int]$Limit = 200
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
-try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
+try{    
+    [string[]]$Properties = @('Title','Url')
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Detailed' = $Detailed
+                            }      
     
-    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties
-      
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+    if($Limit -gt 0){
+        $cmdArgs.Add('Limit',$Limit)
     }
-    else {
-        Write-Output $result 
-    }    
+
+    $result = Get-SPOSite @cmdArgs | Select-Object $Properties | Sort-Object Title
+
+    foreach($itm in $result)
+    {
+        $null = $SRXEnv.ResultList.Add($itm.Url) # Value
+        $null = $SRXEnv.ResultList2.Add($itm.Title) # Display
+    } 
 }
 catch{
     throw

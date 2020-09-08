@@ -55,6 +55,18 @@ Use cases for managing SharePoint Online
 + Check status of a user or site move across geo locations
 + Export user query logs, user profile, user info
 
+## [Reports](./_REPORTS_)
+
++ Generate report with app infos, errors
++ Generate report with cross geo users, moved users
++ Generate report with tenant infos, Cdn policies, log entries
++ Generate report with users, sites, site groups, hub sites, deleted sites, external users
++ Generate report with Public Cdn origins, Organizational news site, geo administrator, Geo storage quotas
+
+## [Queries](./_QUERY_)
+
++ Search site collections
+
 ## [Library](./_LIB_)
 
 + Connect/disconnect SharePoint Online

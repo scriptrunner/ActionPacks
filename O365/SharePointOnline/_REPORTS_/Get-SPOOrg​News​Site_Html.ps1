@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns SharePoint Online organization properties
+        Generates a report with URLs of all the configured organizational news sites. Requires Tenant administrator permissions
     
     .DESCRIPTION  
 
@@ -17,32 +17,23 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
-
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_REPORTS_
 #>
 
 param(         
-    [ValidateSet('*','AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')]   
-    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
-try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
-    
-    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties
+try{    
+    [string[]]$Properties = @('Capacity','Count','IsReadOnly','IsFixedSize','IsSynchronized')
+    $result = Get-SPOOrgNewsSite -ErrorAction Stop | Select-Object $Properties
       
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

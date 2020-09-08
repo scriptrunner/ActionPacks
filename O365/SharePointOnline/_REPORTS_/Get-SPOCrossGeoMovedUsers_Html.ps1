@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns SharePoint Online organization properties
+       Generates a report with the SharePoint Online user (or users) that had been moved
     
     .DESCRIPTION  
 
@@ -17,32 +17,31 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_REPORTS_
 
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
+    .Parameter Direction
 #>
 
-param(         
-    [ValidateSet('*','AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')]   
-    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
+param(            
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('MoveIn', 'MoveOut')]
+    [string]$Direction
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
-    
-    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Direction' = $Direction
+                            }      
+           
+    $result = Get-SPOCrossGeoMovedUsers @cmdArgs | Select-Object *
       
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

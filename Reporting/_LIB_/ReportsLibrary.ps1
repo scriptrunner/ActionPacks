@@ -1,4 +1,4 @@
-function ConvertTo-ResultHtml (){
+﻿function ConvertTo-ResultHtml (){
     <#
     .SYNOPSIS
         Generates a ScriptRunner report via ConvertTo-Html
@@ -50,8 +50,13 @@ function ConvertTo-ResultHtml (){
             </div>
         </div>"
         $SRXEnv.ResultMessage = $Result
+        [string]$head = @"
+                <meta http-equiv="content-type" content="text/html; charset=utf-8">
+                <title>$($SrxEnv.SRXDisplayName) $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $($SrxEnv.SRXStartedBy)</title>
+"@
         [string]$resHtml = ($Result | ConvertTo-Html -PreContent $preContent -CssUri './sr-table.css' `
-            -Title ("Result: $($SrxEnv.SRXDisplayName) $(Get-Date -Format 'MM/dd/yyy HH:mm:ss')-$($SrxEnv.SRXStartedBy)") -As Table)
+            -Head $head -As Table)
+             #- Title ("Result: $($SrxEnv.SRXDisplayName) $(Get-Date -Format 'MM/dd/yyy HH:mm:ss')-$($SrxEnv.SRXStartedBy)") -As Table)
         
         if($CreateHttpLinks -eq $true){
             [string]$inplace

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns SharePoint Online organization properties
+        Generates a report with the SharePoint Online users in a multi-geo tenant that match the criteria
     
     .DESCRIPTION  
 
@@ -17,32 +17,28 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/_REPORTS_
 
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
+    .Parameter ValidDataLocation 
 #>
 
-param(         
-    [ValidateSet('*','AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')]   
-    [string[]]$Properties = @('AllowEditing','PublicCdnAllowedFileTypes','ExternalServicesEnabled','StorageQuotaAllocated','ResourceQuotaAllocated','OneDriveStorageQuota')
+param(            
+    [bool]$ValidDataLocation
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
-    
-    $result = Get-SPOTenant @cmdArgs | Select-Object $Properties
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'ValidDataLocation' = $ValidDataLocation }      
+                         
+    $result = Get-SPOCrossGeoUsers @cmdArgs | Select-Object *
       
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

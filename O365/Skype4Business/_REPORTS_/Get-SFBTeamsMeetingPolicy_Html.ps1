@@ -1,9 +1,9 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
     .SYNOPSIS
-        Returns information about online voicemail user settings of a specific user
+        Generates a report with information about all the meeting policies that have been configured for use in your organization
     
     .DESCRIPTION  
 
@@ -18,46 +18,56 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/_REPORTS_
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
+        [sr-de] Benutzername und Passwort für die Anmeldung
 
-    .Parameter Identity
-        The Identity parameter represents the ID of the specific user in your organization; 
-        this can be either a SIP URI or an Object ID
+    .Parameter Identity 
+        [sr-en] Unique identifier of the policy to be returned
+        [sr-de] Eindeutige ID der Policy
+
+    .Parameter LocalStore
+        [sr-en] Retrieves the client policy data from the local replica
+        [sr-de] Policy von der lokalen Replikation
 
     .Parameter TenantID
-        Unique identifier for the tenant
+        [sr-en] Unique identifier for the tenant
+        [sr-de] Eindeutige ID des Mandanten
 #>
 
 param(    
     [Parameter(Mandatory = $true)]
-    [PSCredential]$SFBCredential, 
-    [Parameter(Mandatory = $true)]
+    [PSCredential]$SFBCredential,  
     [string]$Identity,
+    [switch]$LocalStore,
     [string]$TenantID
 )
 
 Import-Module SkypeOnlineConnector
 
 try{
+    [string[]]$Properties = @('Identity','Description','AllowChannelMeetingScheduling','AllowMeetNow','AllowPrivateMeetNow','AllowOutlookAddIn')
     ConnectS4B -S4BCredential $SFBCredential
 
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}  
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'LocalStore' =$LocalStore
+                            }      
     if([System.String]::IsNullOrWhiteSpace($Identity) -eq $false){
         $cmdArgs.Add('Identity',$Identity)
-    }     
+    } 
     if([System.String]::IsNullOrWhiteSpace($TenantID) -eq $false){
-        $cmdArgs.Add('TenantID',$TenantID)
-    }      
-    $result = Get-CsOnlineVoicemailUserSettings @cmdArgs | Select-Object *
+        $cmdArgs.Add('Tenant',$TenantID)
+    }    
+
+    $result = Get-CsTeamsMeetingPolicy @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

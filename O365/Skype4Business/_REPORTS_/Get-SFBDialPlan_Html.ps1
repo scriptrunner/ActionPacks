@@ -1,9 +1,9 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
     .SYNOPSIS
-        Returns information about users who have accounts homed on Skype for Business Online
+        Generates a report with information about the dial plans used in your organization
     
     .DESCRIPTION  
 
@@ -18,45 +18,48 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Tenants
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/_REPORTS_
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
+        [sr-de] Benutzername und Passwort für die Anmeldung
+
+    .Parameter LocalStore
+        [sr-en] Retrieves the dial plan information from the local replica
+        [sr-de] Informationen von der lokalen Replikation
 
     .Parameter TenantID
-        Unique identifier for the tenant
-    
-    .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] Unique identifier for the tenant
+        [sr-de] Eindeutige ID des Mandanten
 #>
 
 param(    
     [Parameter(Mandatory = $true)]
-    [PSCredential]$SFBCredential,  
-    [string]$TenantID,
-    [ValidateSet('*','DisplayName','Domains','IsValid','TenantId')]
-    [string[]]$Properties = @('DisplayName','Domains','IsValid','TenantId')
+    [PSCredential]$SFBCredential, 
+    [switch]$LocalStore,
+    [string]$TenantID
 )
 
 Import-Module SkypeOnlineConnector
 
 try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
+    [string[]]$Properties = @('SimpleName','Identity','Description','DataSource','ScopeClass','CountryCode')
     ConnectS4B -S4BCredential $SFBCredential
     
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}      
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'LocalStore' =$LocalStore
+                            }      
     if([System.String]::IsNullOrWhiteSpace($TenantID) -eq $false){
         $cmdArgs.Add('Tenant',$TenantID)
     }    
-    $result = Get-CsTenant @cmdArgs | Select-Object $Properties
+
+    $result = Get-CsDialPlan @cmdArgs | Sort-Object SimpleName | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

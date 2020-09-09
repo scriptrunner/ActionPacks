@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Retrieve Retrieve the telephone number inventory types that are defined
+        Retrieve the telephone number inventory types that are defined
     
     .DESCRIPTION  
 

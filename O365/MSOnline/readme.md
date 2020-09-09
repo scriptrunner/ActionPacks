@@ -19,3 +19,7 @@ Use cases to manage groups and users with Azure Active Directory Powershell Modu
 + Enable/Disable user can log on Azure Active Directory
 + Restore Active Directory user
 + List of all Active Directory users
+
+## [Reports](./_REPORTS_)
+
++ Generate report with groups, users, group members, user properties

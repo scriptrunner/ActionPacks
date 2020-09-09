@@ -48,6 +48,17 @@ Use cases for managing Skype for Business
 + Get tenant dial plan, public provider, update time window
 + Get configuration of federation, licensing, hybrid, migration
 
+## [Reports](./_REPORTS_)
+
++ Generate report with Auto Attendants, Auto Attendants supported languages, Auto Attendants time zones, Auto Attendants tenant informations
++ Generate report with dial plan, online dial in conferencing languages and user infos
++ Generate report with online sip domains, online users, online telephone number inventory types
++ Generate report with teams calling policy, teams channels policy, teams client configuration, teams IP phone policy, teams meeting broadcast policy
++ Generate report with teams meeting configuration, teams meeting policy, teams messaging policy
++ Generate report with teams upgrade policy, teams video interop service policy
++ Generate report with tenants, tenant federation configuration, tenant public provider
++ Generate report with users, users Acps, voice normalization rule 
+
 ## [Queries](./_QUERY_)
 
 + Get group ids of the teams

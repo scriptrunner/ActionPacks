@@ -1,9 +1,9 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
     .SYNOPSIS
-        Returns information about users who have accounts homed on Skype for Business Online
+        Generates a report with information about users who have accounts homed on Skype for Business Online
     
     .DESCRIPTION  
 
@@ -18,27 +18,30 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
+        Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Tenants
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/_REPORTS_
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
+        [sr-de] Benutzername und Passwort für die Anmeldung
 
     .Parameter TenantID
-        Unique identifier for the tenant
+        [sr-en] Unique identifier for the tenant
+        [sr-de] Eindeutige ID des Mandanten
     
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param(    
     [Parameter(Mandatory = $true)]
     [PSCredential]$SFBCredential,  
     [string]$TenantID,
-    [ValidateSet('*','DisplayName','Domains','IsValid','TenantId')]
-    [string[]]$Properties = @('DisplayName','Domains','IsValid','TenantId')
+    [ValidateSet('*','DisplayName','Domains','IsValid','TenantId','PreferredLanguage','CountryAbbreviation','ID')]
+    [string[]]$Properties = @('DisplayName','Domains','IsValid','PreferredLanguage','CountryAbbreviation','TenantId')
 )
 
 Import-Module SkypeOnlineConnector
@@ -56,7 +59,7 @@ try{
     $result = Get-CsTenant @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        ConvertTo-ResultHtml -Result $result    
     }
     else {
         Write-Output $result 

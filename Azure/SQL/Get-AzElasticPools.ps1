@@ -20,44 +20,38 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL 
 
     .Parameter PoolName
-        Specifies the name of the elastic pool
+        [sr-en] Specifies the name of the elastic pool
+        [sr-de] Name des elastic pools
 
     .Parameter ServerName
-        Specifies the name of the server that contains the elastic pool
+        [sr-en] Specifies the name of the server that contains the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
 
     .Parameter ResourceGroupName
-        Specifies the name of the resource group that contains the elastic pool 
+        [sr-en] Specifies the name of the resource group that contains the elastic pool 
+        [sr-de] Name der resource group die den elastic pool enthält
         
     .Parameter Properties
-        List of properties to expand, comma separated e.g. ElasticPoolName,Location. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
-param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,    
+param(    
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
     [string]$ServerName,
     [string]$PoolName,
     [ValidateSet('*','ElasticPoolName','ResourceGroupName','ServerName','ResourceID','Location','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags')]
-    [string[]]$Properties = @('ElasticPoolName','ResourceGroupName','ServerName','ResourceID','Location','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags'),
-    [string]$Tenant
+    [string[]]$Properties = @('ElasticPoolName','ResourceGroupName','ServerName','ResourceID','Location','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags')
 )
 
 Import-Module Az
 
 try{
-  #  ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     if($Properties -contains '*'){
         $Properties = @('*')
     }
@@ -82,5 +76,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

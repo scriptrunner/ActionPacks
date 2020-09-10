@@ -20,39 +20,28 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Resources 
 
     .Parameter Name
-        Specifies the name of the resource group to remove. Wildcard characters are not permitted
+        [sr-en] Specifies the name of the resource group to remove. Wildcard characters are not permitted
+        [sr-de] Name der Resource Group
 
     .Parameter Identifier
-        Specifies the ID of the resource group to remove. Wildcard characters are not permitted
+        [sr-en] Specifies the ID of the resource group to remove. Wildcard characters are not permitted
+        [sr-de] ID der Resource Group
+
 #>
 
 param( 
-    [Parameter(Mandatory = $true, ParameterSetName="byName")]
-    [Parameter(Mandatory = $true, ParameterSetName="byID")]
-    [pscredential]$AzureCredential,
     [Parameter(Mandatory = $true,ParameterSetName="byName")]
     [string]$Name,
     [Parameter(Mandatory = $true,ParameterSetName="byID")]
-    [string]$Identifier,
-    [Parameter(ParameterSetName="byName")]
-    [Parameter(ParameterSetName="byID")]
-    [string]$Tenant
+    [string]$Identifier
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'Force' = $null}
@@ -80,5 +69,4 @@ catch{
     throw
 }
 finally{
-#    DisconnectAzure -Tenant $Tenant
 }

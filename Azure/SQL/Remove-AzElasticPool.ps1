@@ -20,41 +20,34 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL 
 
     .Parameter PoolName
-        Specifies the name of the elastic pool to remove
+        [sr-en] Specifies the name of the elastic pool to remove
+        [sr-de] Name des elastic pools
 
     .Parameter ServerName
-        Specifies the name of the server that hosts the elastic pool
+        [sr-en] Specifies the name of the server that hosts the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
 
     .Parameter ResourceGroupName
-        Specifies the name of the resource group to which the elastic pool is assigned
+        [sr-en] Specifies the name of the resource group to which the elastic pool is assigned
+        [sr-de] Name der resource group die den elastic pool enthält
+
 #>
 
-param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,    
+param(  
     [Parameter(Mandatory = $true)]
     [string]$PoolName,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
-    [string]$ServerName,
-    [string]$Tenant
+    [string]$ServerName
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Force' = $null
                             'Confirm' = $false
@@ -76,5 +69,4 @@ catch{
     throw
 }
 finally{
-#    DisconnectAzure -Tenant $Tenant
 }

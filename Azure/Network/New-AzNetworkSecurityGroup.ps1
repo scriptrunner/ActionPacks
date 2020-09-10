@@ -20,42 +20,34 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Network
 
     .Parameter Name
-        Specifies the name of the network security group to create   
+        [sr-en] Specifies the name of the network security group to create
+        [sr-de] Namen der zu erstellenden Network Security Group   
 
     .Parameter ResourceGroupName
-        Specifies the name of a resource group
+        [sr-en] Specifies the name of a resource group
+        [sr-de] Name der Resource Group
 
     .Parameter Location
-        Specifies the region for which to create a network security group
+        [sr-en] Specifies the region for which to create a network security group
+        [sr-de] Gibt die Location an, für die eine Network Security Group erstellt wird
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
     [Parameter(Mandatory = $true)]
     [string]$Name,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,    
     [Parameter(Mandatory = $true)]
-    [string]$Location,
-    [string]$Tenant
+    [string]$Location
 )
 
 Import-Module Az
 
 try{
     [string[]]$Properties = @('Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid')
-
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
@@ -78,5 +70,4 @@ catch{
     throw
 }
 finally{
-  #  DisconnectAzure -Tenant $Tenant
 }

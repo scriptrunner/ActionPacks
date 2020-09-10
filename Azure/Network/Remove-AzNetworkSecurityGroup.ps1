@@ -20,19 +20,15 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Network
 
     .Parameter Name
-        Specifies the name of the network security group to remove
+        [sr-en] Specifies the name of the network security group to remove
+        [sr-de] Namen der zu löschenden Network Security Group
 
-    .Parameter ResourceGroupName
-        Specifies the name of a resource group that removes the network security group from
+    .Parameter ResourceGroupName        
+        [sr-en] Specifies the name of a resource group that removes the network security group from
+        [sr-de] Name der Resource Group
 #>
 
 param( 
@@ -48,8 +44,6 @@ param(
 Import-Module Az
 
 try{
- #   ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'Force' = $null
@@ -71,5 +65,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

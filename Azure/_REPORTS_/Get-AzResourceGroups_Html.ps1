@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Creates an Azure resource group
+        Generates a report with resource groups
     
     .DESCRIPTION  
         
@@ -20,38 +20,36 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Resources 
-
-    .Parameter Name        
-        [sr-en] Specifies a name for the resource group
-        [sr-de] Name der Resource Group
-
-
-    .Parameter Location
-        [sr-en] Specifies the location of the resource group
-        [sr-de] Location der Resource Group
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_REPORTS_
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [string]$Name,
-    [Parameter(Mandatory = $true)]
-    [string]$Location
 )
 
 Import-Module Az
 
 try{
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'Confirm' = $false
-                            'Force' = $null
-                            'Name' = $Name
-                            'Location' = $Location}
+    [string[]]$Properties = @('ResourceGroupName','Location','ProvisioningState','Tags','ResourceId')
 
-    $ret = New-AzResourceGroup @cmdArgs
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
+    
+    if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
+        $cmdArgs.Add('Name',$Name)
+    }
+    if($PSCmdlet.ParameterSetName -eq "byID"){
+        $cmdArgs.Add('ID',$Identifier)
+    }
+    if([System.String]::IsNullOrWhiteSpace($Tag) -eq $false){
+        $cmdArgs.Add('Tag',$Tag)
+    }
+    if([System.String]::IsNullOrWhiteSpace($Location) -eq $false){
+        $cmdArgs.Add('Location',$Location)
+    }
+
+    $ret = Get-AzResourceGroup @cmdArgs | Sort-Object ResourceGroupName | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
+        ConvertTo-ResultHtml -Result $ret
     }
     else{
         Write-Output $ret

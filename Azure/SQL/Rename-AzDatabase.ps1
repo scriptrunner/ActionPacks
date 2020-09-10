@@ -20,30 +20,26 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL
 
     .Parameter DBName
-        Specifies the name of the database
+        [sr-en] Specifies the name of the database
+        [sr-de] Name der Datenbank
 
     .Parameter ServerName
-        Specifies the name of the server that hosts the database
+        [sr-en] Specifies the name of the server that hosts the database
+        [sr-de] Name des Servers auf dem sich die Datenbank befindet
 
     .Parameter ResourceGroupName
-        Specifies the name of resource group to which the server is assigned
+        [sr-en] Specifies the name of resource group to which the server is assigned
+        [sr-de] Name der resource group die die Datenbank enthält
         
     .Parameter NewDBName
-        The new name to rename the database to
+        [sr-en] The new name to rename the database to
+        [sr-de] Neuer Datenbankname
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
     [Parameter(Mandatory = $true)]    
     [string]$DBName,
     [Parameter(Mandatory = $true)]    

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets available virtual machine sizes
+        Generates a report with the properties of virtual machines
     
     .DESCRIPTION  
         
@@ -22,47 +22,53 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute  
 
-    .Parameter VMName        
-        [sr-en] Specifies the name of the virtual machine that this cmdlet gets the available virtual machine sizes for resizing
+    .Parameter Name        
+        [sr-en] Specifies the name of the virtual machine to get
         [sr-de] Name der virtuellen Maschine
 
     .Parameter Location        
-        [sr-en] Specifies the location for which this cmdlet gets the available virtual machine sizes
-        [sr-de] Location der virtuellen Maschine
+        [sr-en] Specifies a location for the virtual machines to list
+        [sr-de] Location die die virtuelle Maschine enthält
 
     .Parameter ResourceGroupName
         [sr-en] Specifies the name of the resource group of the virtual machine
+        Mandatory when parameter name is set!
         [sr-de] Name der resource group die die virtuelle Maschine enthält
+        Mandatory, wenn der Parameter Name angegeben wird
+        
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
-    [Parameter(Mandatory = $true,ParameterSetName = "Resource group")]
+    [string]$Name,
     [string]$ResourceGroupName,
-    [Parameter(Mandatory = $true,ParameterSetName = "Resource group")]
-    [string]$VMName,
-    [Parameter(Mandatory = $true,ParameterSetName = "Location")]
-    [string]$Location
+    [string]$Location,
+    [ValidateSet('*','Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')]
+    [string[]]$Properties = @('Name', 'Location', 'ResourceGroupName', 'VmId', 'StatusCode', 'ID')
 )
 
 Import-Module Az
 
 try{
+    if($Properties -contains '*'){
+        $Properties = @('*')
+    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
-    if($PSCmdlet.ParameterSetName -eq "Resource group"){
+    if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
+        $cmdArgs.Add('Name',$Name)
         $cmdArgs.Add('ResourceGroupName',$ResourceGroupName)
-        if([System.String]::IsNullOrWhiteSpace($VMName) -eq $false){
-            $cmdArgs.Add('VMName',$VMName)
-        }
     }
-    else{
+    if([System.String]::IsNullOrWhiteSpace($Location) -eq $false){
         $cmdArgs.Add('Location',$Location)
     }
 
-    $ret = Get-AzVMSize @cmdArgs | Select-Object *
+    $ret = Get-AzVM @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
+        ConvertTo-ResultHtml -Result $ret
     }
     else{
         Write-Output $ret

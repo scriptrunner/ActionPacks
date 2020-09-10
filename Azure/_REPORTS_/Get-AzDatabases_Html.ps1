@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets one or more databases
+        Generates a report with one or more databases
     
     .DESCRIPTION  
         
@@ -20,7 +20,7 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL     
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_REPORTS_  
 
     .Parameter DBName
         [sr-en] Specifies the name of the database to retrieve
@@ -39,14 +39,14 @@
         [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
-param(   
+param( 
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
     [string]$ServerName,
     [string]$DBName,
     [ValidateSet('*','ResourceGroupName','ServerName','DatabaseName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')]
-    [string[]]$Properties = @('ResourceGroupName','ServerName','DatabaseName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')
+    [string[]]$Properties = @('ResourceGroupName','ServerName','DatabaseName','Location','DatabaseId','Edition','CollationName','Status','CreationDate')
 )
 
 Import-Module Az
@@ -66,7 +66,7 @@ try{
     $ret = Get-AzSqlDatabase @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
+        ConvertTo-ResultHtml -Result $ret
     }
     else{
         Write-Output $ret

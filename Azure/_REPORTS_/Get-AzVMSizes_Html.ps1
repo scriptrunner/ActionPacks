@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets available virtual machine sizes
+        Generates a report with available virtual machine sizes
     
     .DESCRIPTION  
         
@@ -20,43 +20,56 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_QUERY_ 
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute  
 
-    .Parameter VMName
+    .Parameter VMName        
         [sr-en] Specifies the name of the virtual machine that this cmdlet gets the available virtual machine sizes for resizing
         [sr-de] Name der virtuellen Maschine
 
+    .Parameter Location        
+        [sr-en] Specifies the location for which this cmdlet gets the available virtual machine sizes
+        [sr-de] Location der virtuellen Maschine
+
     .Parameter ResourceGroupName
         [sr-en] Specifies the name of the resource group of the virtual machine
-        [sr-de] Name der resource group der virtuellen Maschine
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true,ParameterSetName = "Resource group")]
     [string]$ResourceGroupName,
-    [Parameter(Mandatory = $true)]
-    [string]$VMName
+    [Parameter(Mandatory = $true,ParameterSetName = "Resource group")]
+    [string]$VMName,
+    [Parameter(Mandatory = $true,ParameterSetName = "Location")]
+    [string]$Location
 )
 
 Import-Module Az
 
-$VerbosePreference = 'SilentlyContinue'
-
 try{
-    $result = Get-AzVMSize -ResourceGroupName $ResourceGroupName -VMName $VMName -ErrorAction Stop | Sort-Object Name
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
+    
+    if($PSCmdlet.ParameterSetName -eq "Resource group"){
+        $cmdArgs.Add('ResourceGroupName',$ResourceGroupName)
+        if([System.String]::IsNullOrWhiteSpace($VMName) -eq $false){
+            $cmdArgs.Add('VMName',$VMName)
+        }
+    }
+    else{
+        $cmdArgs.Add('Location',$Location)
+    }
 
-    foreach($item in $result){
-        if($SRXEnv) {
-            $null = $SRXEnv.ResultList.Add($item.Name)
-            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
-        }
-        else{
-            Write-Output $item.Name
-        }
+    $ret = Get-AzVMSize @cmdArgs | Select-Object *
+
+    if($SRXEnv) {
+        ConvertTo-ResultHtml -Result $ret
+    }
+    else{
+        Write-Output $ret
     }
 }
 catch{
     throw
 }
-finally{    
+finally{
 }

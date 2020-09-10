@@ -6,3 +6,4 @@
 ## [AzureAzLibrary](./AzureAzLibrary.ps1)
 
 + Open/close Connection
++ Get a storage account

@@ -20,39 +20,33 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Network
 
     .Parameter Name
-        Specifies the name of the network security group   
+        [sr-en] Specifies the name of the network security group   
+        [sr-de] Namen der Network Security Group
 
     .Parameter ResourceGroupName
-        Specifies the name of the resource group that the network security group belongs to. 
+        [sr-en] Specifies the name of the resource group that the network security group belongs to. 
         Mandatory when parameter name is set!
+        [sr-de] Name der Resource Group
+        Mandatory, wenn der Parameter Name angegeben wird
         
     .Parameter Properties
-        List of properties to expand, comma separated e.g. Name,Location. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
     [string]$Name,
     [string]$ResourceGroupName,
     [ValidateSet('*','Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid')]
-    [string[]]$Properties = @('Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid'),
-    [string]$Tenant
+    [string[]]$Properties = @('Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid')
 )
 
 Import-Module Az
 
 try{
-  #  ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     if($Properties -contains '*'){
         $Properties = @('*')
     }
@@ -78,5 +72,4 @@ catch{
     throw
 }
 finally{
-  #  DisconnectAzure -Tenant $Tenant
 }

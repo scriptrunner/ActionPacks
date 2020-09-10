@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules Az.Compute
+#Requires -Modules Az.Sql
 
 <#
     .SYNOPSIS
-        Gets available virtual machine sizes
+        Gets elastic pools and their property values in an Azure SQL Database
     
     .DESCRIPTION  
         
@@ -22,41 +22,44 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_QUERY_ 
 
-    .Parameter VMName
-        [sr-en] Specifies the name of the virtual machine that this cmdlet gets the available virtual machine sizes for resizing
-        [sr-de] Name der virtuellen Maschine
+    .Parameter ServerName
+        [sr-en] Specifies the name of the server that contains the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
 
     .Parameter ResourceGroupName
-        [sr-en] Specifies the name of the resource group of the virtual machine
-        [sr-de] Name der resource group der virtuellen Maschine
+        [sr-en] Specifies the name of the resource group that contains the elastic pool 
+        [sr-de] Name der resource group die den elastic pool enthält
 #>
 
-param( 
+param(    
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
-    [string]$VMName
+    [string]$ServerName
 )
 
 Import-Module Az
 
-$VerbosePreference = 'SilentlyContinue'
-
 try{
-    $result = Get-AzVMSize -ResourceGroupName $ResourceGroupName -VMName $VMName -ErrorAction Stop | Sort-Object Name
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'ServerName' = $ServerName
+                            'ResourceGroupName' = $ResourceGroupName}
+    
+    $result = Get-AzSqlElasticPool @cmdArgs | Select-Object ElasticPoolName
 
-    foreach($item in $result){
+    foreach($itm in $result){
         if($SRXEnv) {
-            $null = $SRXEnv.ResultList.Add($item.Name)
-            $null = $SRXEnv.ResultList2.Add($item.Name) # Display
+            $null = $SRXEnv.ResultList.Add($itm.ElasticPoolName)
+            
+            $null = $SRXEnv.ResultList2.Add($itm.ElasticPoolName) # Display
         }
         else{
-            Write-Output $item.Name
+            Write-Output $itm.ElasticPoolName
         }
     }
 }
 catch{
     throw
 }
-finally{    
+finally{
 }

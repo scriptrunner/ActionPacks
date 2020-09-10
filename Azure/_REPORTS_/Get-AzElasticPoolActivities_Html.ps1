@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules Az.Resources
+#Requires -Modules Az.Sql
 
 <#
     .SYNOPSIS
-        Creates an Azure resource group
+        Generates a report with the status of operations on an elastic pool
     
     .DESCRIPTION  
         
@@ -20,23 +20,28 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Resources 
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_REPORTS_
 
-    .Parameter Name        
-        [sr-en] Specifies a name for the resource group
-        [sr-de] Name der Resource Group
+    .Parameter PoolName
+        [sr-en] Specifies the name of the elastic pool
+        [sr-de] Name des elastic pools
 
+    .Parameter ServerName
+        [sr-en] Specifies the name of the server that contains the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
 
-    .Parameter Location
-        [sr-en] Specifies the location of the resource group
-        [sr-de] Location der Resource Group
+    .Parameter ResourceGroupName
+        [sr-en] Specifies the name of the resource group that contains the elastic pool 
+        [sr-de] Name der resource group die den elastic pool enthält
 #>
 
-param( 
+param(     
     [Parameter(Mandatory = $true)]
-    [string]$Name,
+    [string]$PoolName,
     [Parameter(Mandatory = $true)]
-    [string]$Location
+    [string]$ResourceGroupName,
+    [Parameter(Mandatory = $true)]
+    [string]$ServerName
 )
 
 Import-Module Az
@@ -44,14 +49,14 @@ Import-Module Az
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
-                            'Force' = $null
-                            'Name' = $Name
-                            'Location' = $Location}
-
-    $ret = New-AzResourceGroup @cmdArgs
+                            'ElasticPoolName' = $PoolName
+                            'ServerName' = $ServerName
+                            'ResourceGroupName' = $ResourceGroupName}
+    
+    $ret = Get-AzSqlElasticPoolActivity @cmdArgs
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
+        ConvertTo-ResultHtml -Result $ret
     }
     else{
         Write-Output $ret

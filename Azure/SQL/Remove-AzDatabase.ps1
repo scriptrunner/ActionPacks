@@ -20,41 +20,34 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL   
 
     .Parameter DBName
-        Specifies the name of the database to remove
+        [sr-en] Specifies the name of the database to remove
+        [sr-de] Name der Datenbank
 
     .Parameter ServerName
-        Specifies the name of the server that hosts the database
+        [sr-en] Specifies the name of the server that hosts the database
+        [sr-de] Name des Servers auf dem sich die Datenbank befindet
 
     .Parameter ResourceGroupName
-        Specifies the name of the resource group to which the database server is assigned
+        [sr-en] Specifies the name of the resource group to which the database server is assigned
+        [sr-de] Name der resource group die die Datenbank enthält
+
 #>
 
-param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,    
+param(   
     [Parameter(Mandatory = $true)]
     [string]$DBName,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
-    [string]$ServerName,
-    [string]$Tenant
+    [string]$ServerName
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Force' = $null
                             'Confirm' = $false
@@ -76,5 +69,4 @@ catch{
     throw
 }
 finally{
-#    DisconnectAzure -Tenant $Tenant
 }

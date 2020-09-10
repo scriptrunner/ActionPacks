@@ -19,19 +19,10 @@
         Requires Module Az
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_QUERY_
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [string]$Tenant
 )
 
 Import-Module Az
@@ -39,13 +30,6 @@ Import-Module Az
 $VerbosePreference = 'SilentlyContinue'
 
 try{
- <#   if([System.String]::IsNullOrWhiteSpace($Tenant) -eq $true){
-        $null = Connect-AzAccount -Credential $AzureCredential -Force -Confirm:$false -ErrorAction Stop
-    }
-    else{
-        $null = Connect-AzAccount -Credential $AzureCredential -Tenant $Tenant -Force -Confirm:$false -ErrorAction Stop
-    }
-#>
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
     $vms = Get-AzVM @cmdArgs | Sort-Object Name
@@ -59,7 +43,6 @@ try{
             Write-Output $grp.ResourceGroupName
         }
     }
- #   Disconnect-AzAccount -Confirm:$false -ErrorAction Stop
 }
 catch{
     throw

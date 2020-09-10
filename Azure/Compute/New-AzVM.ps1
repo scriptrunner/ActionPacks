@@ -20,54 +20,60 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute
 
     .Parameter Name
-        Specifies a name for the virtual machine        
+        [sr-en] Specifies a name for the virtual machine
+        [sr-de] Name der virtuellen Maschine
 
     .Parameter ResourceGroupName
-        Specifies the name of a resource group       
+        [sr-en] Specifies the name of a resource group
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
 
     .Parameter Location
-        Specifies the location for the virtual machine
+        [sr-en] Specifies the location for the virtual machine
+        [sr-de] Location der virtuellen Maschine
 
     .Parameter AdminCredential
-        The administrator credentials for the VM
+        [sr-en] The administrator credentials for the VM
+        [sr-de] Administratoranmeldeinformationen für die VM
 
     .Parameter DataDiskSizeInGb
-        Specifies the sizes of data disks in GB
+        [sr-en] Specifies the sizes of data disks in GB
+        [sr-de] Größe von Datenträgern in GB
 
     .Parameter EnableUltraSSD
-        Use UltraSSD disks for the vm
+        [sr-en] Use UltraSSD disks for the vm
+        [sr-de] UltraSSD-Datenträger verwenden für die virtuelle Maschine
 
     .Parameter Image
-        The friendly image name upon which the VM will be built
+        [sr-en] The friendly image name upon which the VM will be built
+        [sr-de] Imagename, auf dem die VM erstellt wird
 
     .Parameter AllocationMethod
-        The IP allocation method for the public IP which will be created for the VM
+        [sr-en] The IP allocation method for the public IP which will be created for the VM
+        [sr-de] IP-Zuweisungsmethode für die öffentliche IP-Adresse
 
     .Parameter SecurityGroupName
-        The name of a new (or existing) network security group (NSG) for the created VM to use. 
+        [sr-en] The name of a new (or existing) network security group (NSG) for the created VM to use. 
         If not specified, a name will be generated
+        [sr-de] Name einer neuen (oder vorhandenen) Netzwerksicherheitsgruppe (NSG) für die erstellte VM. 
+        Wenn nicht angegeben, wird ein Name generiert
 
     .Parameter SubnetName
-        The name of a new (or existing) subnet for the created VM to use. 
+        [sr-en] The name of a new (or existing) subnet for the created VM to use. 
         If not specified, a name will be generated
+        [sr-de] Name eines neuen (oder vorhandenen) Subnetzes
+        Wenn nicht angegeben, wird ein Name generiert
 
     .Parameter VirtualNetworkName
-        The name of a new (or existing) virtual network for the created VM to use. 
+        [sr-en] The name of a new (or existing) virtual network for the created VM to use. 
         If not specified, a name will be generated
+        [sr-de] Name eines neuen (oder vorhandenen) virtuellen Netzwerks
+        Wenn nicht angegeben, wird ein Name generiert
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
     [Parameter(Mandatory = $true)]
     [string]$Name,
     [Parameter(Mandatory = $true)]
@@ -82,15 +88,12 @@ param(
     [string]$Location,
     [string]$SecurityGroupName,
     [string]$SubnetName,
-    [string]$VirtualNetworkName,
-    [string]$Tenant
+    [string]$VirtualNetworkName
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'Credential' = $AdminCredential
@@ -133,5 +136,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

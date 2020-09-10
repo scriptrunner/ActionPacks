@@ -20,39 +20,26 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute
 
     .Parameter Name
-        Specifies the name of the virtual machine
+        [sr-en] Specifies the name of the virtual machine
+        [sr-de] Name der virtuellen Maschine
 
-    .Parameter ResourceGroupName
-        Specifies the name of the resource group of the virtual machine
-
-    .Parameter Identifier
-        Specifies the resource ID of the virtual machine
+    .Parameter ResourceGroupName        
+        [sr-en] Specifies the name of the resource group of the virtual machine
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
 #>
 
-param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [Parameter(Mandatory = $true)]
+param( [Parameter(Mandatory = $true)]
     [string]$Name,
     [Parameter(Mandatory = $true)]
-    [string]$ResourceGroupName,
-    [string]$Tenant
+    [string]$ResourceGroupName
 )
 
 Import-Module Az
 
-try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
+try{  
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Name' = $Name 
                             'ResourceGroupName' = $ResourceGroupName
@@ -79,5 +66,4 @@ catch{
     throw
 }
 finally{
-   # DisconnectAzure -Tenant $Tenant
 }

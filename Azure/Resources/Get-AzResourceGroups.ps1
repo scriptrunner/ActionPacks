@@ -20,32 +20,28 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Resources 
 
     .Parameter Name
-        Specifies the name of the resource group to get. 
-        This parameter supports wildcards at the beginning and/or the end of the string   
+        [sr-en] Specifies the name of the resource group to get. 
+        This parameter supports wildcards at the beginning and/or the end of the string 
+        [sr-de] Name der Resource Group. 
+        Dieser Parameter unterstützt Wildcards am Anfang und/oder am Ende des Namens  
         
     .Parameter Tag
-        The tag to filter resource groups 
+        [sr-en] The tag to filter resource groups 
+        [sr-de] Tag, nach dem Resource Groups gefiltert werden sollen
 
     .Parameter Identifier
-        Specifies the ID of the resource group to get. Wildcard characters are not permitted
+        [sr-en] Specifies the ID of the resource group to get. Wildcard characters are not permitted
+        [sr-de] ID der Resource Group
 
     .Parameter Location
-        Specifies the location of the resource group to get
+        [sr-en] Specifies the location of the resource group to get
+        [sr-de] Location der Resource Group
 #>
 
 param( 
-    [Parameter(Mandatory = $true, ParameterSetName="byName")]
-    [Parameter(Mandatory = $true, ParameterSetName="byID")]
-    [pscredential]$AzureCredential,
     [Parameter(ParameterSetName="byName")]
     [string]$Name,
     [Parameter(Mandatory = $true,ParameterSetName="byID")]
@@ -55,17 +51,12 @@ param(
     [string]$Tag,
     [Parameter(ParameterSetName="byName")]
     [Parameter(ParameterSetName="byID")]
-    [string]$Location,
-    [Parameter(ParameterSetName="byName")]
-    [Parameter(ParameterSetName="byID")]
-    [string]$Tenant
+    [string]$Location
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
     if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
@@ -94,5 +85,4 @@ catch{
     throw
 }
 finally{
-#    DisconnectAzure -Tenant $Tenant
 }

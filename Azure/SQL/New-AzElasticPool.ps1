@@ -20,48 +20,53 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL 
 
     .Parameter PoolName
-        Specifies the name of the elastic pool
+        [sr-en] Specifies the name of the elastic pool
+        [sr-de] Name des elastic pools
 
     .Parameter ServerName
-        Specifies the name of the server that hosts the elastic pool
+        [sr-en] Specifies the name of the server that contains the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
+
+    .Parameter ResourceGroupName
+        [sr-en] Specifies the name of the resource group that contains the elastic pool 
+        [sr-de] Name der resource group die den elastic pool enthält
 
     .Parameter ResourceGroupName
         Specifies the name of the resource group to which assigns the elastic pool
 
     .Parameter Edition
-        Specifies the edition of the Azure SQL Database used for the elastic pool
+        [sr-en] Specifies the edition of the Azure SQL Database used for the elastic pool 
+        [sr-de] Edition der Azure SQL-Datenbank
 
     .Parameter LicenseType
-        The license type for the Azure Sql database
+        [sr-en] The license type for the Azure Sql database 
+        [sr-de] Lizenz Type der Datenbank
 
     .Parameter StorageMB
-        Specifies the storage limit, in megabytes, for the elastic pool
+        [sr-en] Specifies the storage limit, in megabytes, for the elastic pool 
+        [sr-de] Speichergrenzwert in Megabyte
 
     .Parameter Dtu
-        Specifies the total number of shared DTUs for the elastic pool
+        [sr-en] Specifies the total number of shared DTUs for the elastic pool 
+        [sr-de] Gesamtzahl der freigegebenen DTUs
 
     .Parameter DatabaseDtuMax
-        Specifies the maximum number of Database Throughput Units (DTUs) that any single database in the pool can consume
+        [sr-en] Specifies the maximum number of Database Throughput Units (DTUs) that any single database in the pool can consume 
+        [sr-de] Maximale Anzahl von DTUs 
 
     .Parameter DatabaseDtuMin
-        Specifies the minimum number of DTUs that the elastic pool guarantees to all the databases in the pool
+        [sr-en] Specifies the minimum number of DTUs that the elastic pool guarantees to all the databases in the pool 
+        [sr-de] Mindestanzahl von DTUs 
 
     .Parameter ZoneRedundant
-        The zone redundancy to associate with the Azure Sql Elastic Pool
+        [sr-en] The zone redundancy to associate with the Azure Sql Elastic Pool 
+        [sr-de] Zonenredundanz, die dem Azure Sql Elastic Pool zugeordnet werden soll
 #>
 
-param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,    
+param(   
     [Parameter(Mandatory = $true)]
     [string]$PoolName,
     [Parameter(Mandatory = $true)]
@@ -75,15 +80,12 @@ param(
     [int]$Dtu,
     [int]$DatabaseDtuMax,
     [int]$DatabaseDtuMin,
-    [switch]$ZoneRedundant,
-    [string]$Tenant
+    [switch]$ZoneRedundant
 )
 
 Import-Module Az
 
 try{
- #   ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'ServerName' = $ServerName
@@ -123,5 +125,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

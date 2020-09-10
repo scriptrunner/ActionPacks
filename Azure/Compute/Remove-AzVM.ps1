@@ -21,45 +21,35 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure 
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute 
         
         https://4sysops.com/archives/delete-an-azure-vm-with-objects-using-powershell/       
         https://github.com/adbertram/Random-PowerShell-Work/blob/master/Azure/Remove-AzrVirtualMachine.ps1
 
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
-
     .Parameter Name
-        Specifies the name of the virtual machine to remove
-
-    .Parameter Name
-        Remove also the associated resources
+        [sr-en] Specifies the name of the virtual machine
+        [sr-de] Name der virtuellen Maschine
 
     .Parameter ResourceGroupName
-        Specifies the name of a resource group
+        [sr-en] Specifies the name of the resource group of the virtual machine
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
 
     .Parameter RemoveAssociatedResources
-        Remove all associated resources
+        [sr-en] Remove all associated resources
+        [sr-de] Löschen aller verwendeter Ressourcen der virtuellen Maschine 
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [Parameter(Mandatory = $true)]
     [string]$Name,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
-    [switch]$RemoveAssociatedResources,
-    [string]$Tenant
+    [switch]$RemoveAssociatedResources
 )
 
 Import-Module Az.Compute
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     $Script:VM = Get-AzVM -ResourceGroupName $ResourceGroupName -Name $Name -ErrorAction Stop
     $Script:Disks = Get-AzDisk | Where-Object { $_.ManagedBy -eq $Script:VM.Id }
     function RemoveResourcesAfterDelete(){
@@ -168,5 +158,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

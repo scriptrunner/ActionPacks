@@ -20,42 +20,38 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute  
 
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
+    .Parameter Name        
+        [sr-en] Specifies the name of the virtual machine to get
+        [sr-de] Name der virtuellen Maschine
 
-    .Parameter Tenant
-        Tenant name or ID
-
-    .Parameter Name
-        Specifies the name of the virtual machine to get
-
-    .Parameter Location
-        Specifies a location for the virtual machines to list
+    .Parameter Location        
+        [sr-en] Specifies a location for the virtual machines to list
+        [sr-de] Location die die virtuelle Maschine enthält
 
     .Parameter ResourceGroupName
-        Specifies the name of a resource group. Mandatory when parameter name is set!
+        [sr-en] Specifies the name of the resource group of the virtual machine
+        Mandatory when parameter name is set!
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
+        Mandatory, wenn der Parameter Name angegeben wird
         
     .Parameter Properties
-        List of properties to expand, comma separated e.g. Name,Location. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
     [string]$Name,
     [string]$ResourceGroupName,
     [string]$Location,
     [ValidateSet('*','Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')]
-    [string[]]$Properties = @('Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID'),
-    [string]$Tenant
+    [string[]]$Properties = @('Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     if($Properties -contains '*'){
         $Properties = @('*')
     }
@@ -82,5 +78,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

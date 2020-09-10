@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules Az.Resources
+#Requires -Modules Az.Network
 
 <#
     .SYNOPSIS
-        Creates an Azure resource group
+        Generates a report with network security groups
     
     .DESCRIPTION  
         
@@ -20,38 +20,29 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Resources 
-
-    .Parameter Name        
-        [sr-en] Specifies a name for the resource group
-        [sr-de] Name der Resource Group
-
-
-    .Parameter Location
-        [sr-en] Specifies the location of the resource group
-        [sr-de] Location der Resource Group
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_REPORTS_
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [string]$Name,
-    [Parameter(Mandatory = $true)]
-    [string]$Location
 )
 
 Import-Module Az
 
 try{
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'Confirm' = $false
-                            'Force' = $null
-                            'Name' = $Name
-                            'Location' = $Location}
+    [string[]]$Properties = @('Name','Location','ResourceGroupName','ProvisioningState','Subnets','ResourceGuid','Etag','Id')
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
+    
+    if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
+        $cmdArgs.Add('Name',$Name)
+    }    
+    if([System.String]::IsNullOrWhiteSpace($ResourceGroupName) -eq $false){
+        $cmdArgs.Add('ResourceGroupName',$ResourceGroupName)
+    }
 
-    $ret = New-AzResourceGroup @cmdArgs
+    $ret = Get-AzNetworkSecurityGroup @cmdArgs | Sort-Object Name | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
+        ConvertTo-ResultHtml -Result $ret
     }
     else{
         Write-Output $ret
@@ -61,4 +52,5 @@ catch{
     throw
 }
 finally{
+  #  DisconnectAzure -Tenant $Tenant
 }

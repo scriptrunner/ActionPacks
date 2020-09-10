@@ -20,48 +20,50 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL 
 
     .Parameter DBName
-        Specifies the name of the database
+        [sr-en] Specifies the name of the database to retrieve
+        [sr-de] Name der Datenbank
 
     .Parameter ServerName
-        Specifies the name of the server that hosts the database
+        [sr-en] Specifies the name of the server to which the database is assigned
+        [sr-de] Name des Servers auf dem sich die Datenbank befindet
 
     .Parameter ResourceGroupName
-        Specifies the name of resource group to which the server is assigned
+        [sr-en] Specifies the name of the resource group to which the database server is assigned 
+        [sr-de] Name der resource group die die Datenbank enthält
 
     .Parameter Edition
-        Specifies the edition for the database
+        [sr-en] Specifies the edition for the database
+        [sr-de] Edition der Datenbank
 
     .Parameter ElasticPoolName
-        Specifies name of the elastic pool in which to move the database
+        [sr-en] Specifies name of the elastic pool in which to move the database
+        [sr-de] Namen des Pools für elastische Datenbanken
 
     .Parameter LicenseType
-        The license type for the Azure Sql database
+        [sr-en] The license type for the Azure Sql database
+        [sr-de] Lizenztyp für die Azure Sql-Datenbank
 
     .Parameter MaxSizeBytes
-        The maximum size of the Azure SQL Database in bytes
+        [sr-en] The maximum size of the Azure SQL Database in bytes
+        [sr-de] Maximale Größe der Azure SQL-Datenbank in Bytes
 
     .Parameter ReadScale
-        The read scale option to assign to the Azure SQL Database
+        [sr-en] The read scale option to assign to the Azure SQL Database
+        [sr-de] Verbindungen, deren Anwendungsabsicht in ihrer Verbindungszeichenfolge schreibgeschützt ist, an ein schreibgeschütztes sekundäres Replikat weiterleiten
 
     .Parameter RequestedServiceObjectiveName
-        Specifies the name of the service objective to assign to the database
+        [sr-en] Specifies the name of the service objective to assign to the database
+        [sr-de] Namen des Dienstobjekts, dem der Datenbank zugewiesen werden soll
 
     .Parameter ZoneRedundant
-        The zone redundancy to associate with the Azure Sql Database
+        [sr-en] The zone redundancy to associate with the Azure Sql Database
+        [sr-de] Zonenredundanz, die der Azure Sql-Datenbank zugeordnet werden soll
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,    
     [Parameter(Mandatory = $true)]
     [string]$DBName,
     [Parameter(Mandatory = $true)]
@@ -77,16 +79,13 @@ param(
     [ValidateSet('Enabled','Disabled')]
     [string]$ReadScale,
     [string]$RequestedServiceObjectiveName,
-    [switch]$ZoneRedundant,
-    [string]$Tenant
+    [switch]$ZoneRedundant
 )
 
 Import-Module Az
 
 try{
     [string[]]$Properties = @('DatabaseName','ResourceGroupName','ServerName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')
-    
-    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
     
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
@@ -127,5 +126,4 @@ catch{
     throw
 }
 finally{
-    DisconnectAzure -Tenant $Tenant
 }

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets one or more databases
+        Generates a report with elastic databases in an elastic pool and their property values
     
     .DESCRIPTION  
         
@@ -20,42 +20,41 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL     
-
-    .Parameter DBName
-        [sr-en] Specifies the name of the database to retrieve
-        [sr-de] Name der Datenbank
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_REPORTS_   
 
     .Parameter ServerName
-        [sr-en] Specifies the name of the server to which the database is assigned
-        [sr-de] Name des Servers auf dem sich die Datenbank befindet
+        [sr-en] Specifies the name of the server that contains the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
 
     .Parameter ResourceGroupName
-        [sr-en] Specifies the name of the resource group to which the database server is assigned 
-        [sr-de] Name der resource group die die Datenbank enthält
-        
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+        [sr-en] Specifies the name of the resource group that contains the elastic pool 
+        [sr-de] Name der resource group die dem elastic pool zugewiesen wurde
+
+    .Parameter PoolName
+        [sr-en] Specifies the name of the elastic pool
+        [sr-de] Name des elastic pools
+
+    .Parameter DBName
+        [sr-en] Specifies the name of the SQL Database to retrieve
+        [sr-de] Name der Datenbank
 #>
 
-param(   
+param( 
+    [Parameter(Mandatory = $true)]
+    [string]$PoolName,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
     [string]$ServerName,
-    [string]$DBName,
-    [ValidateSet('*','ResourceGroupName','ServerName','DatabaseName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')]
-    [string[]]$Properties = @('ResourceGroupName','ServerName','DatabaseName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')
+    [string]$DBName
 )
 
 Import-Module Az
 
 try{
-    if($Properties -contains '*'){
-        $Properties = @('*')
-    }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Confirm' = $false
+                            'ElasticPoolName' = $PoolName
                             'ServerName' = $ServerName
                             'ResourceGroupName' = $ResourceGroupName}
     
@@ -63,10 +62,10 @@ try{
         $cmdArgs.Add('DatabaseName',$DBName)
     }
 
-    $ret = Get-AzSqlDatabase @cmdArgs | Select-Object $Properties
+    $ret = Get-AzSqlElasticPoolDatabase @cmdArgs
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
+        ConvertTo-ResultHtml -Result $ret    
     }
     else{
         Write-Output $ret

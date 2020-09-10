@@ -20,42 +20,34 @@
     Requires Module Az
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/blob/master/Azure
-
-.Parameter AzureCredential
-    The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-.Parameter Tenant
-    Tenant name or ID
+    https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute
 
 .Parameter Name
-    Specifies the name of the Azure virtual machine
+    [sr-en] Specifies the name of the virtual machine
+    [sr-de] Name der virtuellen Maschine
 
 .Parameter ResourceGroupName
-    Specifies the name of a resource group
+    [sr-en] Specifies the name of the resource group of the virtual machine
+    [sr-de] Name der resource group die die virtuelle Maschine enthält
 
 .Parameter Command
-    Specifies the command that executed on the Azure virtual machine
+    [sr-en] Specifies the command that executed on the Azure virtual machine
+    [sr-de] Kommando das für die virtuelle Maschine ausgeführt werden soll
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [Parameter(Mandatory = $true)]
     [string]$Name,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [ValidateSet('Stop','Start','Restart')]
-    [string]$Command,
-    [string]$Tenant
+    [string]$Command
 )
 
 Import-Module Az
 
 try{
- #   ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false 
                             'Name' = $Name
@@ -85,5 +77,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

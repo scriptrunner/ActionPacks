@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Gets resource groups
+        Gets storage resource groups
     
     .DESCRIPTION  
         
@@ -16,23 +16,14 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Resources
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/_QUERY_ 
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [string]$Tenant,
-    [switch]$GetIDs
+    [bool]$GetIDs
 )
 
 Import-Module Az
@@ -40,16 +31,7 @@ Import-Module Az
 $VerbosePreference = 'SilentlyContinue'
 
 try{
- <#   if([System.String]::IsNullOrWhiteSpace($Tenant) -eq $true){
-        $null = Connect-AzAccount -Credential $AzureCredential -Force -Confirm:$false -ErrorAction Stop
-    }
-    else{
-        $null = Connect-AzAccount -Credential $AzureCredential -Tenant $Tenant -Force -Confirm:$false -ErrorAction Stop
-    }
-
-    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
-  #>  
-    $result = Get-AzResourceGroup @cmdArgs | Sort-Object ResourceGroupName
+    $result = Get-AzResourceGroup -ErrorAction Stop | Sort-Object ResourceGroupName
 
     foreach($grp in $result){
         if($SRXEnv) {
@@ -66,7 +48,6 @@ try{
             Write-Output $grp.ResourceGroupName
         }
     }
-   # Disconnect-AzAccount -Confirm:$false -ErrorAction Stop
 }
 catch{
     throw

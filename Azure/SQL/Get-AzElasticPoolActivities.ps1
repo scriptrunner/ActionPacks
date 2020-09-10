@@ -20,45 +20,38 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL 
 
     .Parameter PoolName
-        Specifies the name of the elastic pool
+        [sr-en] Specifies the name of the elastic pool
+        [sr-de] Name des elastic pools
 
     .Parameter ServerName
-        Specifies the name of a server that contains an elastic pool
+        [sr-en] Specifies the name of the server that contains the elastic pool
+        [sr-de] Name des Servers auf dem sich der elastic pool befindet
 
     .Parameter ResourceGroupName
-        Specifies the name of a resource group to which the elastic pool is assigned
+        [sr-en] Specifies the name of the resource group that contains the elastic pool 
+        [sr-de] Name der resource group die den elastic pool enthält
 
     .Parameter OperationId
-        The ID of the operation to retrieve
+        [sr-en] The ID of the operation to retrieve
+        [sr-de] ID der Operation
 #>
 
-param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,    
+param(  
     [Parameter(Mandatory = $true)]
     [string]$PoolName,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
     [string]$ServerName,
-    [guid]$OperationId = [guid]::Empty,
-    [string]$Tenant
+    [guid]$OperationId = [guid]::Empty
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'ElasticPoolName' = $PoolName
@@ -81,5 +74,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

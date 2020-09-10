@@ -20,42 +20,34 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
-
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute  
 
     .Parameter Name
-        Specifies the name of the virtual machine
+        [sr-en] Specifies the name of the virtual machine
+        [sr-de] Name der virtuellen Maschine
 
     .Parameter Size
-        Specifies the new size of the virtual machine
+        [sr-en] Specifies the new size of the virtual machine
+        [sr-de] Neue Größe der virtuellen Maschine
 
     .Parameter ResourceGroupName
-        Specifies the name of the resource group of the virtual machine
+        [sr-en] Specifies the name of the resource group of the virtual machine
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
     [string]$Name,
     [Parameter(Mandatory = $true)]
     [ValidateSet('Standard_DS1_v2','Standard_DS2_v2','Standard_DS3_v2','Standard_DS4_v2','Standard_DS5_v2')]
-    [string]$Size,
-    [string]$Tenant
+    [string]$Size
 )
 
 Import-Module Az
 
 try{
-#    ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-
     $vm = Get-AzVM -ResourceGroupName $ResourceGroupName -Name $Name -ErrorAction Stop
     $vm.HardwareProfile.VmSize = $Size
 
@@ -76,5 +68,4 @@ catch{
     throw
 }
 finally{
-#    DisconnectAzure -Tenant $Tenant
 }

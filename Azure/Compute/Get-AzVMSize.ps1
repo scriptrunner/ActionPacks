@@ -20,36 +20,27 @@
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure        
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute 
 
-    .Parameter AzureCredential
-        The PSCredential object provides the user ID and password for organizational ID credentials, or the application ID and secret for service principal credentials
-
-    .Parameter Tenant
-        Tenant name or ID
-
-    .Parameter VMName
-        Specifies the name of the virtual machine that this cmdlet gets the available virtual machine sizes for resizing
+    .Parameter VMName        
+        [sr-en] Specifies the name of the virtual machine that this cmdlet gets the available virtual machine sizes for resizing
+        [sr-de] Name der virtuellen Maschine
 
     .Parameter ResourceGroupName
-        Specifies the name of the resource group of the virtual machine
+        [sr-en] Specifies the name of the resource group of the virtual machine
+        [sr-de] Name der resource group die die virtuelle Maschine enthält
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
     [Parameter(Mandatory = $true)]
-    [string]$VMName,
-    [string]$Tenant
+    [string]$VMName
 )
 
 Import-Module Az
 
 try{
-   # ConnectAzure -AzureCredential $AzureCredential -Tenant $Tenant
-    
     $vm = Get-AzVM -ResourceGroupName $ResourceGroupName -Name $VMName -ErrorAction Stop
     $ret = $vm.HardwareProfile.VmSize
 
@@ -64,5 +55,4 @@ catch{
     throw
 }
 finally{
- #   DisconnectAzure -Tenant $Tenant
 }

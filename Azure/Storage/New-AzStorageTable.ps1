@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules Az.Network
+#Requires -Modules Az.Storage
 
 <#
     .SYNOPSIS
-        Removes a network security group
+        Creates a storage table
     
     .DESCRIPTION  
         
@@ -16,43 +16,45 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
-        Requires Library script AzureAzLibrary.ps1
+        Requires Module Az.Storage
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Network
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Storage   
+
+    .Parameter StorageAccountName 
+        [sr-en] Specifies the name of the Storage account
+        [sr-de] Name des Storage Accounts
+        
+    .Parameter ResourceGroupName
+        [sr-en] Specifies the name of the resource group
+        [sr-de] Name der resource group
 
     .Parameter Name
-        [sr-en] Specifies the name of the network security group to remove
-        [sr-de] Namen der zu löschenden Network Security Group
-
-    .Parameter ResourceGroupName        
-        [sr-en] Specifies the name of a resource group that removes the network security group from
-        [sr-de] Name der Resource Group
+        [sr-en] Specifies the name of the new table name
+        [sr-de] Name der neuen Tabelle
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [Parameter(Mandatory = $true)]
-    [string]$Name,
+    [string]$StorageAccountName,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
-    [string]$Tenant
+    [Parameter(Mandatory = $true)]
+    [string]$Name
 )
 
-Import-Module Az.Network
+Import-Module Az.Storage
 
 try{
+    [string[]]$Properties = @('Name','CloudTable','Uri')
+    $azAccount = $null
+    GetAzureStorageAccount -AccountName $StorageAccountName -ResourceGroupName $ResourceGroupName -StorageAccount ([ref]$azAccount)
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'Confirm' = $false
-                            'Force' = $null
-                            'Name' = $Name
-                            'ResourceGroupName' = $ResourceGroupName
-                            }
-
-    $null = Remove-AzNetworkSecurityGroup @cmdArgs 
-    $ret = "Network security group $($Name) removed"
+                            'Context' = $azAccount.Context
+                            'Name' =$Name
+    }
+    
+    $ret = New-AzStorageTable @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret 

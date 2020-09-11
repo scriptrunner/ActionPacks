@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules Az.Network
+#Requires -Modules Az.Storage
 
 <#
     .SYNOPSIS
-        Removes a network security group
+        Gets or lists object replication policy of a Storage account
     
     .DESCRIPTION  
         
@@ -16,43 +16,43 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
-        Requires Library script AzureAzLibrary.ps1
+        Requires Module Az.Storage
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Network
+        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Storage   
 
-    .Parameter Name
-        [sr-en] Specifies the name of the network security group to remove
-        [sr-de] Namen der zu löschenden Network Security Group
+    .Parameter StorageAccountName 
+        [sr-en] Specifies the name of the Storage account
+        [sr-de] Name des Storage Accounts
+        
+    .Parameter ResourceGroupName
+        [sr-en] Specifies the name of the resource group
+        [sr-de] Name der resource group
 
-    .Parameter ResourceGroupName        
-        [sr-en] Specifies the name of a resource group that removes the network security group from
-        [sr-de] Name der Resource Group
+    .Parameter PolicyId
+        [sr-en] Object Replication Policy Id
+        [sr-de] Replication Policy ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [pscredential]$AzureCredential,
-    [Parameter(Mandatory = $true)]
-    [string]$Name,
+    [string]$StorageAccountName,
     [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName,
-    [string]$Tenant
+    [string]$PolicyId
 )
 
-Import-Module Az.Network
+Import-Module Az.Storage
 
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'Confirm' = $false
-                            'Force' = $null
-                            'Name' = $Name
+                            'StorageAccountName' = $StorageAccountName
                             'ResourceGroupName' = $ResourceGroupName
-                            }
-
-    $null = Remove-AzNetworkSecurityGroup @cmdArgs 
-    $ret = "Network security group $($Name) removed"
+    }
+    if([System.String]::IsNullOrWhiteSpace($PolicyId) -eq $false){
+        $cmdArgs.Add('PolicyId',$PolicyId)
+    }
+    $ret = Get-AzStorageObjectReplicationPolicy @cmdArgs | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret 

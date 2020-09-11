@@ -1,5 +1,5 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules Az
+#Requires -Modules Az.Sql
 
 <#
     .SYNOPSIS

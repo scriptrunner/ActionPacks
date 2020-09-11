@@ -44,7 +44,7 @@ param(
     [string]$Location
 )
 
-Import-Module Az
+Import-Module Az.Network
 
 try{
     [string[]]$Properties = @('Name','Location','ResourceGroupName','Id','Tags','Etag','ProvisioningState','Subnets','ResourceGuid')

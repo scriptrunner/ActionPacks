@@ -1,84 +1,104 @@
-#Requires -Version 4.0
+#Requires -Version 5.0
 # Requires -Modules VMware.PowerCLI
 
 <#
-.SYNOPSIS
-    Creates a new virtual machine
+    .SYNOPSIS
+        Creates a new virtual machine
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.PowerCLI
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des VSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] Specifies a PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of the host on which you want to create the new virtual machine
+    .Parameter HostName
+        [sr-en] Specifies the name of the host on which you want to create the new virtual machine
+        [sr-de] Host in dem die neue virtuellen Maschine erstellt wird 
 
-.Parameter VMName
-    Specifies a name for the new virtual machine
+    .Parameter VMName
+        [sr-en] Specifies a name for the new virtual machine
+        [sr-de] Name der virtuellen Maschine
 
-.Parameter Notes
-    Provides a description of the new virtual machine
+    .Parameter Notes
+        [sr-en] Provides a description of the new virtual machine
+        [sr-de] Beschreibung
 
-.Parameter Cpus
-    Specifies the number of the virtual CPUs of the new virtual machine
+    .Parameter Cpus
+        [sr-en] Specifies the number of the virtual CPUs of the new virtual machine
+        [sr-de] Anzahl der virtuellen CPUs
 
-.Parameter CoresPerSocket
-    Specifies the number of virtual CPU cores per socket
+    .Parameter CoresPerSocket
+        [sr-en] Specifies the number of virtual CPU cores per socket
+        [sr-de] Anzahl der virtuellen CPUs pro Socket
 
-.Parameter MemoryGB
-    Specifies the memory size in gigabytes (GB) of the new virtual machine
+    .Parameter MemoryGB
+        [sr-en] Specifies the memory size in gigabytes (GB) of the new virtual machine 
+        [sr-de] Größe des Arbeitsspeichers in Gigabyte (GB)
 
-.Parameter DiskGB
-    Specifies the size in gigabytes (GB) of the disks that you want to create and add to the new virtual machine
+    .Parameter DiskGB
+        [sr-en] Specifies the size in gigabytes (GB) of the disks that you want to create and add to the new virtual machine
+        [sr-de] Größe der Festplatte in Gigabyte (GB)
 
-.Parameter DiskStorageFormat
-    Specifies the storage format of the disks of the virtual machine
+    .Parameter DiskStorageFormat
+        [sr-en] Specifies the storage format of the disks of the virtual machine 
+        [sr-de] Dateisystem der Festplatte
 
-.Parameter CD
-    Indicates that you want to add a CD drive to the new virtual machine
+    .Parameter CD
+        [sr-en] Indicates that you want to add a CD drive to the new virtual machine 
+        [sr-de] CD-Laufwerk zur neuen virtuellen Maschine hinzufügen
 
-.Parameter Floppy
-    Indicates that you want to add a floppy drive to the new virtual machine
+    .Parameter Floppy
+        [sr-en] Indicates that you want to add a floppy drive to the new virtual machine 
+        [sr-de] Diskettenlaufwerk zur neuen virtuellen Maschine hinzufügen
 
-.Parameter Network 
-    Specifies the network to which you want to connect the new virtual machine
+    .Parameter Network 
+        [sr-en] Specifies the network to which you want to connect the new virtual machine 
+        [sr-de] Netzwerk der neuen virtuellen Maschine
 
-.Parameter GuestId
-    Specifies the guest operating system of the new virtual machine
+    .Parameter GuestId
+        [sr-en] Specifies the guest operating system of the new virtual machine 
+        [sr-de] Identifier des Betriebssystems der neuen virtuellen Maschine
 
-.Parameter OSCustomizationSpec
-    Specifies a customization specification that is to be applied to the new virtual machine. 
-    This works only in 32-bit mode
+    .Parameter OSCustomizationSpec
+        [sr-en] Specifies a customization specification that is to be applied to the new virtual machine. 
+        This works only in 32-bit mode 
+        [sr-de] Benutzerdefinierte Einstellungen der neuen virtuellen Maschine
+        Nur für 32Bit
 
-.Parameter HardwareVersion
-    Specifies the version of the new virtual machine. 
-    By default, the new virtual machine is created with the latest available version
+    .Parameter HardwareVersion
+        [sr-en] Specifies the version of the new virtual machine. 
+        By default, the new virtual machine is created with the latest available version 
+        [sr-de] Hardware Version der neuen virtuellen Maschine
 
-.Parameter Location
-    Specifies the folder where you want to place the new virtual machine
+    .Parameter Location
+        [sr-en] Specifies the folder where you want to place the new virtual machine 
+        [sr-de] Ordner der neuen virtuellen Maschine
 
-.Parameter Datastore
-    Specifies the datastore where you want to place the new virtual machine    
+    .Parameter Datastore
+        [sr-en] Specifies the datastore where you want to place the new virtual machine 
+        [sr-de] Datastore der neuen virtuellen Maschine   
 
-.Parameter VMSwapfilePolicy
-    Specifies the swapfile placement policy
+    .Parameter VMSwapfilePolicy
+        [sr-en] Specifies the swapfile placement policy
+        [sr-de] Swapfile Placement Policy
 #>
 
 [CmdLetBinding()]

@@ -21,28 +21,38 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
 
     .Parameter MailboxIds
-        Specifies the Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
+        [sr-en] Specifies the Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
+        [sr-de] Alias, Anzeigename, Distinguished-Namen, SamAccount-Namen, Guids oder UPN der Mailboxen
 
     .Parameter InternalText
-        Specifies the Automatic Replies message that's sent to internal senders or senders within the organization
+        [sr-en] Specifies the Automatic Replies message that's sent to internal senders or senders within the organization
+        [sr-de] Text der automatischen Antwort an interne Absender
 
     .Parameter AutoReplyType 
-        Specifies whether Automatic Replies are sent to external senders.
+        [sr-en] Specifies whether Automatic Replies are sent to external senders
+        [sr-de] Automatische Antworten an externe Absender senden
 
     .Parameter ExternalText 
-        Specifies the Automatic Replies message that's sent to external senders or senders outside the organization
+        [sr-en] Specifies the Automatic Replies message that's sent to external senders or senders outside the organization
+        [sr-de] Text der automatischen Antwort an externe Absender
 
     .Parameter StartDate
-        Specifies the start date that Automatic Replies are sent for the specified mailbox
+        [sr-en] Specifies the start date that Automatic Replies are sent for the specified mailbox
         The text StartDate will be replaced by the defined start date
+        [sr-de] Datum ab wann automatische Antworten verschickt werden.
+        StartDate wird im Text der Antwort durch dieses Datum ersetzt
 
     .Parameter EndDate
-        Specifies the end date that Automatic Replies are sent for the specified mailbox
+        [sr-en] Specifies the end date that Automatic Replies are sent for the specified mailbox
         The text EndDate will be replaced by the defined end date
+        [sr-de] Datum bis wann automatische Antworten verschickt werden.
+        EndDate wird im Text der Antwort durch dieses Datum ersetzt
 
     .Parameter GenerateReport
-        Generates a report with the current mailbox settings.        
+        [sr-en] Generates a report with the current mailbox settings.        
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
+        [sr-de] Erstellt einen Report mit den aktuellen Einstellungen der Mailbox.        
+        Erfordert das Library Script ReportLibrary aus dem Action Pack Reporting\_LIB_
 #>
 
 param(

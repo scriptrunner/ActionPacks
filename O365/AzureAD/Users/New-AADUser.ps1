@@ -23,49 +23,64 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
 
     .Parameter UserPrincipalName
-        Specifies the user ID for this user
+        [sr-en] Specifies the user ID for this user
+        [sr-de] UPN des neuen Benutzers
 
     .Parameter Password
-        Specifies the new password for the user
+        [sr-en] Specifies the new password for the user
+        [sr-de] Initiales Passwort 
 
     .Parameter DisplayName
-        Specifies the display name of the user
+        [sr-en] Specifies the display name of the user
+        [sr-de] Anzeigename
 
     .Parameter Enabled
-        Specifies whether the user is able to log on using their user ID
+        [sr-en] Specifies whether the user is able to log on using their user ID
+        [sr-de] Aktiviere Log On 
 
     .Parameter FirstName
-        Specifies the first name of the user
+        [sr-en] Specifies the first name of the user
+        [sr-de] Vorname
 
     .Parameter LastName
-        Specifies the last name of the user
+        [sr-en] Specifies the last name of the user
+        [sr-de] Nachname
 
     .Parameter PostalCode
-        Specifies the postal code of the user
+        [sr-en] Specifies the postal code of the user
+        [sr-de] Postleitzahl
 
     .Parameter City
-        Specifies the city of the user
+        [sr-en] Specifies the city of the user
+        [sr-de] Ort
 
     .Parameter Street
-        Specifies the street address of the user
+        [sr-en] Specifies the street address of the user
+        [sr-de] Strasse
 
     .Parameter PhoneNumber
-        Specifies the phone number of the user
+        [sr-en] Specifies the phone number of the user
+        [sr-de] Telefonnummer
 
     .Parameter MobilePhone
-        Specifies the mobile phone number of the user
+        [sr-en] Specifies the mobile phone number of the user
+        [sr-de] Telefonnummer mobil
 
     .Parameter Department
-        Specifies the department of the user
+        [sr-en] Specifies the department of the user
+        [sr-de] Abteilung
 
     .Parameter ForceChangePasswordNextLogin
-        Forces a user to change their password during their next logon
+        [sr-en] Forces a user to change their password during their next logon
+        [sr-de] Benutzer muss das Passwort beim nächsten LogIn ändern
 
     .Parameter ShowInAddressList 
-        Specifies show this user in the address list
+        [sr-en] Specifies show this user in the address list
+        [sr-de] Benutzer in der Adresslisten anzeigen
 
     .Parameter UserType 
-        Type of the user
+        [sr-en] Type of the user
+        [sr-de] Benutzertyp
 #>
 
 param(

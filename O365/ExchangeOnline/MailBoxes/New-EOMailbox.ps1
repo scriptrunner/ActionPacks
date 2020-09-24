@@ -22,40 +22,52 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
 
     .Parameter Name
-        Specifies the unique name of the mailbox. The maximum length is 64 characters.
+        [sr-en] Specifies the unique name of the mailbox. The maximum length is 64 characters.
+        [sr-de] Eindeutiger Name der Mailbox, max. 64 Zeichen
     
     .Parameter UserPrincipalName
-        Specifies the logon name for the user account
+        [sr-en] Specifies the logon name for the user account
+        [sr-de] UPN des Benutzers
 
     .Parameter Password
-        Specifies the password for the mailbox 
+        [sr-en] Specifies the password for the mailbox 
+        [sr-de] Passwort der Mailbox
 
     .Parameter Alias
-        Specifies the alias name of the resource
+        [sr-en] Specifies the alias name of the resource
+        [sr-de] Aliasname
 
     .Parameter DisplayName
-        Specifies the display name of the resource
+        [sr-en] Specifies the display name of the resource
+        [sr-de] Anzeigename
 
     .Parameter WindowsEmailAddress
-        Specifies the windows mail address of the mailbox
+        [sr-en] Specifies the windows mail address of the mailbox
+        [sr-de] Windows Mailadresse
 
     .Parameter FirstName
-        Specifies the user's first name
+        [sr-en] Specifies the user's first name
+        [sr-de] Vorname
 
     .Parameter LastName
-        Specifies the user's last name
+        [sr-en] Specifies the user's last name
+        [sr-de] Nachname
 
     .Parameter Office
-        Specifies the user's physical office name or number
+        [sr-en] Specifies the user's physical office name or number
+        [sr-de] Büro
 
     .Parameter Phone
-        Specifies the user's telephone number
+        [sr-en] Specifies the user's telephone number
+        [sr-de] Telefonnummer
 
     .Parameter ResetPasswordOnNextLogon
-        Specifies whether the user is required to change their password the next time they log on to their mailbox    
+        [sr-en] Specifies whether the user is required to change their password the next time they log on to their mailbox    
+        [sr-de] Benutzer muss bei der nächsten Anmeldung das Passwort ändern
 
     .Parameter AccountDisabled
-        Specifies whether to disable the account that's associated with the resource 
+        [sr-en] Specifies whether to disable the account that's associated with the resource 
+        [sr-de] Konto sperren
 #>
 
 param(

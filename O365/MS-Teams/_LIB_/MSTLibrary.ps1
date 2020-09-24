@@ -287,3 +287,57 @@ function SendMessage2Channel{
     finally{
     }
 }
+
+function ConnectS4B(){
+    <#
+        .SYNOPSIS
+            Open a Skype for Business online session
+
+        .DESCRIPTION
+
+        .NOTES
+            This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+            The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+            The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+            the use and the consequences of the use of this freely available script.
+            PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+            © ScriptRunner Software GmbH
+
+        .COMPONENT
+            Requires Module microsoftteams v 1.1.6 or higher
+
+        .LINK
+            https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/_LIB_
+
+        .Parameter MSTCredential
+            Credential object containing the Skype for Business user/password
+
+        .Parameter OverrideAdminDomain
+            Specifies the domain of the tenant to be managed
+        #>
+
+        [CmdLetBinding()]
+        Param(
+            [Parameter(Mandatory = $true)]  
+            [PSCredential]$MSTCredential,
+            [string]$OverrideAdminDomain
+        )
+
+        try{
+            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                        'Credential' = $MSTCredential
+                        }
+
+            if($[System.String]::IsNullOrWhiteSpace($OverrideAdminDomain)-eq $false){
+                $cmdArgs.Add('OverrideAdminDomain',$OverrideAdminDomain)
+            }
+            
+            $Global:session = New-CsOnlineSession @cmdArgs
+            Import-PSSession -Session $Global:session -ErrorAction Stop         
+        }
+        catch{
+            throw
+        }
+        finally{
+        }
+}

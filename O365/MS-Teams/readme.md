@@ -50,3 +50,4 @@ Use cases for managing Microsoft Teams
 
 + Connect/disconnect Microsoft Teams 
 + Publish a message in a Microsoft Teams channel
++ Open a Skype for Business online session

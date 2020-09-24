@@ -7,3 +7,4 @@
 
 + Connect/Disconnect Microsoft Teams
 + Publish a message in a Microsoft Teams channel
++ Open a Skype for Business online session

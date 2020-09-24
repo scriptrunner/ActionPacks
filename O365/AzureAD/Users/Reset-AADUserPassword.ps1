@@ -23,16 +23,20 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
 
     .Parameter UserObjectId
-        Specifies the unique ID of the user for which to set the password
+        [sr-en] Specifies the unique ID of the user for which to set the password
+        [sr-de] Die eindeutige ID des Benutzers dessen Passwort gesetzt werden soll
 
     .Parameter UserName
-        Specifies the Display name or user principal name of the user for which to set the password
+        [sr-en] Specifies the Display name or user principal name of the user for which to set the password
+        [sr-de] Anzeigename oder UPN des Benutzers dessen Passwort gesetzt werden soll
 
     .Parameter NewPassword
-        Specifies a new password for the user
+        [sr-en] Specifies a new password for the user
+        [sr-de] Das neue Passwort
 
     .Parameter ForceChangePasswordNextLogin
-        Forces a user to change their password during their next log in
+        [sr-en] Forces a user to change their password during their next log in
+        [sr-de] Benutzer muss beim nächsten Anmelden das Passwort ändern
 #>
 
 param(

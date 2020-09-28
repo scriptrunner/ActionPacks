@@ -44,9 +44,7 @@
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]
     [datetime]$StartDate,
-    [Parameter(Mandatory = $true)]
     [datetime]$EndDate,
     [string]$ActionName,
     [string]$TargetName,
@@ -100,6 +98,13 @@ try{
 
     OpenSqlConnection -SqlCon ([ref]$con)
 
+    if($null -eq $StartDate){
+        $StartDate = Get-Date -Year 2019 -Month 1 -Day 1
+    }
+    if($null -eq $EndDate){
+        $EndDate = Get-Date
+    }
+
     $rep.Add((Open-REPDocument -Language $ReportLanguage)) # Get Html Code open document 
     [hashtable]$cmdArgs = @{
                         'ActionName' = $SRXEnv.SRXDisplayName
@@ -121,8 +126,8 @@ try{
     $sqlAdapter = New-Object System.Data.SqlClient.SqlDataAdapter
     $sqlCmd.CommandText = 'GetExecutions'
     $sqlCmd.CommandType = [System.Data.CommandType]::StoredProcedure
-    $null = $sqlCmd.Parameters.AddWithValue('StartDate',$StartDate.ToFileTimeUtc())
-    $null = $sqlCmd.Parameters.AddWithValue('EndDate',$EndDate.ToFileTimeUtc())
+    $null = $sqlCmd.Parameters.AddWithValue('StartDate',$StartDate.Date.ToFileTimeUtc())
+    $null = $sqlCmd.Parameters.AddWithValue('EndDate',$EndDate.AddDays(1).Date.ToFileTimeUtc())
     if($PSBoundParameters.ContainsKey('ActionName') -eq $true){
         $null = $sqlCmd.Parameters.AddWithValue('Action',$ActionName)
     }

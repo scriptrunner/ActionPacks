@@ -44,9 +44,7 @@
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]
     [datetime]$StartDate,
-    [Parameter(Mandatory = $true)]
     [datetime]$EndDate,
     [string]$ActionName,
     [string]$TargetName,
@@ -62,6 +60,13 @@ try{
     $Script:rep = New-Object 'System.Collections.Generic.List[System.Object]'
     
     OpenSqlConnection -SqlCon ([ref]$con)
+
+    if($null -eq $StartDate){
+        $StartDate = Get-Date -Year 2019 -Month 1 -Day 1
+    }
+    if($null -eq $EndDate){
+        $EndDate = Get-Date
+    }
 
     $rep.Add((Open-REPDocument -Language $ReportLanguage)) # Get document Html code 
     [hashtable]$cmdArgs = @{
@@ -84,8 +89,8 @@ try{
     $sqlAdapter = New-Object System.Data.SqlClient.SqlDataAdapter
     $sqlCmd.CommandText = 'GetExecutions'
     $sqlCmd.CommandType = [System.Data.CommandType]::StoredProcedure
-    $null = $sqlCmd.Parameters.AddWithValue('StartDate',$StartDate.ToFileTimeUtc())
-    $null = $sqlCmd.Parameters.AddWithValue('EndDate',$EndDate.ToFileTimeUtc())
+    $null = $sqlCmd.Parameters.AddWithValue('StartDate',$StartDate.Date.ToFileTimeUtc())
+    $null = $sqlCmd.Parameters.AddWithValue('EndDate',$EndDate.AddDays(1).Date.ToFileTimeUtc())
     if($PSBoundParameters.ContainsKey('ActionName') -eq $true){
         $null = $sqlCmd.Parameters.AddWithValue('Action',$ActionName)
     }
@@ -103,7 +108,7 @@ try{
         foreach($item in $acGrouped){
             $acObj = $sqlDS.Tables[0].rows | Where-Object {$_.Action -eq $item.Name}
             $bars.Enqueue(([BarChartProperties]::New( ($acObj | Select-Object -ExpandProperty ActionName -Unique),
-                                                                ([math]::Round(($acObj | Measure-Object -Property CostReduction -Sum).Sum,0)),
+                                                                ([math]::Round((($acObj | Measure-Object -Property CostReduction -Sum).Sum /60),0)),
                                                                 $Script:ReductionColor,$Script:ReductionBorderColor)))
         }
         # get bar chart Html

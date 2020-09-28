@@ -91,7 +91,7 @@ try{
     $Script:resultMessage = @()
 
     function Get-NestedGroupMember($group) { 
-        $Script:resultMessage += [PSCustomObject] @{Type = 'Group'; SAMAcccountName=$group.SamAccountName;DistinguishedName=$group.DistinguishedName}
+        $Script:resultMessage += [ct] @{Type = 'Group'; SAMAcccountName=$group.SamAccountName;DistinguishedName=$group.DistinguishedName}
         [hashtable]$searchArgs = @{'ErrorAction' = 'Stop'
                                     'Server' = $Script:Domain.PDCEmulator
                                     'AuthType' = $AuthType

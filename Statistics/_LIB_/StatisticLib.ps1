@@ -107,7 +107,7 @@ function LogExecution(){
             https://github.com/scriptrunner/ActionPacks/tree/master/Statistics/_LIB_
 
         .Parameter SQLServer
-            name of the sql server
+            Name of the sql server
 
         .Parameter DBName
             Name of database
@@ -121,7 +121,8 @@ function LogExecution(){
 
         [CmdLetBinding()]
         Param(     
-            [string]$SQLServer,
+            [Parameter(Mandatory = $true)]
+            [string]$SQLServer = 'Your-SqlServer-Name',
             [string]$DBName = 'SRStatistics',
             [int]$CostSavingsSeconds = 300,
             [int]$DeleteExecutionsDays = 0

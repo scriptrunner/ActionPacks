@@ -20,6 +20,9 @@ Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online
 ## [Reporting](./Reporting)
 Report examples
 
+## [Statistics](./Statistics)
+Scripts for analysing the usage and time savings of ScriptRunner Actions
+
 ## [Hyper-V](./Hyper-V)
 Use cases for managing the Hyper-V virtualization platform
 

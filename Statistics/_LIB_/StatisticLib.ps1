@@ -31,7 +31,7 @@ function OpenSqlConnection(){
     param(
         [Parameter(Mandatory = $true)]
         [ref]$SqlCon,     
-        [string]$SqlServer,
+        [string]$SqlServer = 'YOUR SQL Server Name',
         [string]$DBName = 'SRStatistics'
     )
 
@@ -106,12 +106,6 @@ function LogExecution(){
         .LINK
             https://github.com/scriptrunner/ActionPacks/tree/master/Statistics/_LIB_
 
-        .Parameter SQLServer
-            Name of the sql server
-
-        .Parameter DBName
-            Name of database
-
         .Parameter CostSavingsSeconds
             Cost savings in seconds 
 
@@ -121,9 +115,6 @@ function LogExecution(){
 
         [CmdLetBinding()]
         Param(     
-            [Parameter(Mandatory = $true)]
-            [string]$SQLServer = 'Your-SqlServer-Name',
-            [string]$DBName = 'SRStatistics',
             [int]$CostSavingsSeconds = 300,
             [int]$DeleteExecutionsDays = 0
         )
@@ -134,7 +125,7 @@ function LogExecution(){
             [Datetime]$end = [System.DateTime]::Now
             [int]$runs = $end.Subtract($start).Seconds
 
-            OpenSqlConnection -SqlCon ([ref]$con) -SqlServer $SQLServer -DBName $DBName 
+            OpenSqlConnection -SqlCon ([ref]$con)  
             $scmd = New-Object System.Data.SqlClient.SqlCommand
             $scmd.CommandType = [System.Data.CommandType]::StoredProcedure
             $scmd.CommandText = 'RegisterExecution'

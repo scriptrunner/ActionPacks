@@ -23,5 +23,6 @@
 
 ## [Library](./_LIB_)
 
-+ Open, close sql connection
-+ Log action execution, enter the name of your sql server here
++ Open sql connection, enter the name of your sql server here
++ Close sql connection
++ Log action execution

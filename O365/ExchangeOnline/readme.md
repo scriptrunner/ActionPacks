@@ -16,6 +16,7 @@ Use cases to manage distribution groups, mailboxes, resources and services
 + Enable/Disable the mailbox Archive setting
 + Get mailbox statistics
 + List of all mailboxes
++ Remove mails
 
 ## [Manage Resources](./Resources)
 + Get/Set properties of the resource

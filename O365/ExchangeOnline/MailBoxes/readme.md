@@ -26,6 +26,10 @@ The use of the scripts requires a remote PowerShell session to Exchange Online
 
 	Connect to Exchange Online and removes the mailbox
 
++ [Remove-EOMails.ps1](./Remove-EOMails.ps1)
+
+	Connect to Exchange Online and removes mails from mailbox
+
 + [Set-EOMailboxActiveSync.ps1](./Set-EOMailboxActiveSync.ps1)
 
 	Connect to Exchange Online and sets the mailbox ActiveSync setting to mailbox

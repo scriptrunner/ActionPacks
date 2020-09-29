@@ -37,7 +37,7 @@
 
     .Parameter PurgeType
         [sr-en] Specifies how to remove items
-        [sr-de] Gibt an, wie Elemente entfernt werden 
+        [sr-de] Gibt an, ob Mails endgültig gelöscht werden 
 #>
 
 param(

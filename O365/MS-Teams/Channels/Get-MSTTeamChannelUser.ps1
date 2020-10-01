@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
+#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.1.5"}
 
 <#
 .SYNOPSIS
-    Retrieving all the policy packages available on a tenant
+    Gets users of a channel
 
 .DESCRIPTION
 
@@ -16,20 +16,28 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.0.5 or greater
+    Requires Module microsoftteams
     Requires Library script MSTLibrary.ps1
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Channels
  
 .Parameter MSTCredential
     [sr-en] Provides the user ID and password for organizational ID credentials
     [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
-    
-.Parameter Policy
-    [sr-en] The name of a specific policy package
-    [sr-de] Name des Policiy Packages
-    
+
+.Parameter GroupId
+    [sr-en] GroupId of the parent team
+    [sr-de] Gruppen ID des Teams
+
+.Parameter DisplayName
+    [sr-en] Display name of the private channel
+    [sr-de] Anzeigename des Channels
+
+.Parameter Role
+    [sr-en] Filter the results to only users with the given role
+    [sr-de] Filtert nach der Benutzer-Rolle
+
 .Parameter TenantID
     [sr-en] Specifies the ID of a tenant
     [sr-de] ID eines Mandanten
@@ -39,22 +47,30 @@
 Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
-    [string]$Policy,
+    [Parameter(Mandatory = $true)]   
+    [string]$GroupId,
+    [Parameter(Mandatory = $true)]   
+    [string]$Displayname,
+    [ValidateSet('Member','Owner','Guest')]
+    [string]$Role,
     [string]$TenantID
 )
 
 Import-Module microsoftteams
 
 try{
+    [string[]]$Properties = @('Name','User','Role','UserID')
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
-    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
-                            
-    if([System.String]::IsNullOrWhiteSpace($Policy) -eq $false){
-        $getArgs.Add('Identity',$Policy)
-    }
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'GroupId' = $GroupId
+                            'DisplayName' = $Displayname
+                            }  
 
-    $result = Get-CsPolicyPackage @getArgs | Select-Object *
+    if([System.String]::IsNullOrWhiteSpace($Role) -eq $false){
+        $cmdArgs.Add('Role',$Role)
+    }
+    $result = Get-TeamChannelUser @cmdArgs | Sort-Object Name | Select-Object $Properties
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

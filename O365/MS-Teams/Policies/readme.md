@@ -41,3 +41,7 @@
 + [Remove-MSTGroupPolicyAssignment.ps1](./Remove-MSTGroupPolicyAssignment.ps1)
 
   Remove a group policy assignment
+
++ [Set-MSTGroupPolicyAssignment.ps1](./Set-MSTGroupPolicyAssignment.ps1)
+
+  Update a group policy assignment

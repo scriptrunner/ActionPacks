@@ -20,13 +20,17 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Common
              
     .Parameter ComputerName
-        Specifies the computer on which the cache are cleared 
+        [sr-en] Specifies the computer on which the cache are cleared 
+        [sr-de] Computer auf dem der Cache geleert wird 
                 
     .Parameter AccessAccount
-        Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
+        [sr-en] Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
+        [sr-de] Benutzerkonto, das die Berechtigung hat, diese Aktion auszuführen. 
+        Wenn nicht angegeben, wird das aktuelle Benutzerkonto verwendet
 
     .Parameter StopTeamsProcess
-        Stop Microsoft Teams process before clean the cache
+        [sr-en] Stop Microsoft Teams process before clean the cache
+        [sr-de] Hält den Teams Prozess zuvor an
 #>
 
 param( 

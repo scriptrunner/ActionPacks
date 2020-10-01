@@ -1,9 +1,9 @@
-#Requires -Version 5.0
-#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.1.4"}
+﻿#Requires -Version 5.0
+#Requires -Modules microsoftteams
 
 <#
 .SYNOPSIS
-    Returns group policy assignments
+    
 
 .DESCRIPTION
 
@@ -16,32 +16,25 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.1.4 or greater
+    Requires Module microsoftteams
     Requires Library script MSTLibrary.ps1
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
-    
-.Parameter GroupId 
-    Specifies the object id of the group
-    
-.Parameter PolicyType
-    The type of the policy package
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
-    [string]$GroupId,
-    [ValidateSet('TeamsAppSetupPolicy', 'TeamsCallingPolicy', 'TeamsCallParkPolicy', 'TeamsChannelsPolicy', 'TeamsComplianceRecordingPolicy', 'TeamsEducationAssignmentsAppPolicy', 'TeamsMeetingBroadcastPolicy', 'TeamsMeetingPolicy', 'TeamsMessagingPolicy')]
-    [string]$PolicyType,
     [string]$TenantID
 )
 
@@ -49,17 +42,10 @@ Import-Module microsoftteams
 
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
+    
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
                             
-    if([System.String]::IsNullOrWhiteSpace($PolicyType) -eq $false){
-        $getArgs.Add('PolicyType',$PolicyType)
-    }
-    if([System.String]::IsNullOrWhiteSpace($GroupId) -eq $false){
-        $getArgs.Add('GroupId', $GroupId)
-    }
-
-    $result = Get-CsGroupPolicyAssignment @getArgs | Select-Object *
+    $result = Remove-TeamTargetingHierarchy @getArgs
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

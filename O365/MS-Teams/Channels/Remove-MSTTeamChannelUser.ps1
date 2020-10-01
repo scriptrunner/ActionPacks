@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
+#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.1.5"}
 
 <#
 .SYNOPSIS
-    Applying a policy package to users in a tenant
+    Removes an user from the private channel
 
 .DESCRIPTION
 
@@ -16,23 +16,31 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.0.5 or greater
+    Requires Module microsoftteams
     Requires Library script MSTLibrary.ps1
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Channels
  
 .Parameter MSTCredential
     [sr-en] Provides the user ID and password for organizational ID credentials
     [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
-    
-.Parameter Users
-    [sr-en] A list of one or more users in the tenant
-    [sr-de] Benutzer-Liste 
 
-.Parameter PackageName 
-    [sr-en] The name of a specific policy package to apply
-    [sr-de] Name des Policy Pakets
+.Parameter GroupId
+    [sr-en] GroupId of the parent team
+    [sr-de] Gruppen ID des Teams
+
+.Parameter DisplayName
+    [sr-en] Display name of the private channel
+    [sr-de] Anzeigename des Channels
+
+.Parameter User
+    [sr-en] User's UPN
+    [sr-de] UPN
+
+.Parameter Role
+    [sr-en] Use this to demote a user from owner to member of the team
+    [sr-de] Benutzer zurückstufen von Eigentümer zu Benutzer
 
 .Parameter TenantID
     [sr-en] Specifies the ID of a tenant
@@ -44,28 +52,33 @@ Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true)]   
-    [string[]]$Users,
+    [string]$GroupId,
     [Parameter(Mandatory = $true)]   
-    [string]$PackageName,
+    [string]$Displayname,
+    [Parameter(Mandatory = $true)]   
+    [string]$User,
+    [ValidateSet('Owner')]
+    [string]$Role,
     [string]$TenantID
 )
 
 Import-Module microsoftteams
 
 try{
+    [string[]]$Properties = @('Name','User','Role','UserID')
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                            'PackageName' = $PackageName
-                            'Identity' = $Users
-                            }        
-    $null = Grant-CsUserPolicyPackage @cmdArgs
+                            'GroupId' = $GroupId
+                            'User' = $User
+                            'DisplayName' = $Displayname
+                            }  
 
-    $result = @()    
-    foreach($usr in $Users){
-        $result += $usr
-        $result += Get-CsUserPolicyPackage -Identity $usr -ErrorAction Stop | Select-Object *
-    }    
+    if([System.String]::IsNullOrWhiteSpace($Role) -eq $false){
+        $cmdArgs.Add('Role',$Role)
+    }
+    $null = Remove-TeamChannelUser @cmdArgs
+    $result = Get-TeamChannelUser -GroupId $GroupId -DisplayName $Displayname -ErrorAction Stop | Sort-Object Name | Select-Object $Properties
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

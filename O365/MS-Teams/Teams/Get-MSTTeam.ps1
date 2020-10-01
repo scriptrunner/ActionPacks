@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules microsoftteams
 
 <#
@@ -23,28 +23,36 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Benutzerkonto für die Ausführung
     
 .Parameter GroupId
-    Specify the specific GroupId of the team to be returned
+    [sr-en] GroupId of the team
+    [sr-de] Gruppen ID des Teams
 
 .Parameter Archived
-    Filters to return teams that have been archived or not
+    [sr-en] Filters to return teams that have been archived or not
+    [sr-de] Archivierte Teams anzeigen
 
 .Parameter DisplayName
-    Filters to return teams with a full match to the provided displayname
+    [sr-en] Filters to return teams with a full match to the provided displayname
+    [sr-de] Anzeigename des Teams
 
 .Parameter MailNickName
-    Specify the mailnickname of the team that is being returned
+    [sr-en] Specify the mailnickname of the team that is being returned
+    [sr-de] Mail-Nickname des Teams
 
 .Parameter Visibility
-    Filters to return teams with a set "visibility" value
+    [sr-en] Filters to return teams with a set "visibility" value
+    [sr-de] Nur sichtbare Teams
     
 .Parameter Properties
-    List of properties to expand. Use * for all properties
+    [sr-en] List of properties to expand. Use * for all properties
+    [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
@@ -87,7 +95,7 @@ try{
         $getArgs.Add('Visibility',$Visibility)
     }
 
-    $result = Get-Team @getArgs | Select-Object $Properties 
+    $result = Get-Team @getArgs | Sort-Object DisplayName | Select-Object $Properties 
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

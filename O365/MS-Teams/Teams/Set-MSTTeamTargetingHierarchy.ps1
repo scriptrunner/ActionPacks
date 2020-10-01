@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
+#Requires -Modules microsoftteams
 
 <#
 .SYNOPSIS
-    Retrieving all the policy packages available on a tenant
+    
 
 .DESCRIPTION
 
@@ -16,20 +16,19 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.0.5 or greater
+    Requires Module microsoftteams
     Requires Library script MSTLibrary.ps1
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
+    https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
     [sr-en] Provides the user ID and password for organizational ID credentials
     [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
-.Parameter Policy
-    [sr-en] The name of a specific policy package
-    [sr-de] Name des Policiy Packages
-    
+.Parameter FilePath
+    Specify the specific GroupId of the team to be returned
+
 .Parameter TenantID
     [sr-en] Specifies the ID of a tenant
     [sr-de] ID eines Mandanten
@@ -39,7 +38,8 @@
 Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
-    [string]$Policy,
+    [Parameter(Mandatory = $true)]  
+    [string]$FilePath,
     [string]$TenantID
 )
 
@@ -47,14 +47,12 @@ Import-Module microsoftteams
 
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
-    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
+    
+    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
+                            'FilePath' = $FilePath
+                            }  
                             
-    if([System.String]::IsNullOrWhiteSpace($Policy) -eq $false){
-        $getArgs.Add('Identity',$Policy)
-    }
-
-    $result = Get-CsPolicyPackage @getArgs | Select-Object *
+    $result = Set-TeamTargetingHierarchy @getArgs | Select-Object *
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules microsoftteams
 
 <#
@@ -23,67 +23,88 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
-.Parameter GroupId
-    Specify a GroupId to convert to a Team
+.Parameter GroupId    
+    [sr-en] Specify a GroupId to convert to a Team
+    [sr-de] ID der Gruppe die zu einem Team konvertiert wird
 
 .Parameter AllowAddRemoveApps
-    Determines whether or not members (not only owners) are allowed to add apps to the team
+    [sr-en] Determines whether or not members (not only owners) are allowed to add apps to the team
+    [sr-de] Mitglieder (nicht nur Besitzer) dürfen Apps zum Team hinzufügen 
 
 .Parameter AllowChannelMentions
-    Determines whether or not channels in the team can be @ mentioned so that all users who follow the channel are notified
+    [sr-en] Determines whether or not channels in the team can be @ mentioned so that all users who follow the channel are notified
+    [sr-de] Kanäle können im Team erwähnt werden 
 
 .Parameter AllowCreateUpdateChannels
-    Determines whether or not members (and not just owners) are allowed to create channels
+    [sr-en] Determines whether or not members (and not just owners) are allowed to create channels
+    [sr-de] Mitglieder (und nicht nur Besitzer) dürfen Kanäle erstellen 
 
 .Parameter AllowCreateUpdateRemoveConnectors
-    Determines whether or not members (and not only owners) can manage connectors in the team
+    [sr-en] Determines whether or not members (and not only owners) can manage connectors in the team
+    [sr-de] Mitglieder (und nicht nur Besitzer) können Connectors im Team verwalten
 
 .Parameter AllowCreateUpdateRemoveTabs
-    Determines whether or not members (and not only owners) can manage tabs in channels
+    [sr-en] Determines whether or not members (and not only owners) can manage tabs in channels
+    [sr-de] Mitglieder (und nicht nur Besitzer) können Registerkarten in Kanälen verwalten
 
 .Parameter AllowCustomMemes
-    Determines whether or not members can use the custom memes functionality in teams
+    [sr-en] Determines whether or not members can use the custom memes functionality in teams
+    [sr-de] Mitglieder können die benutzerdefinierte Meme-Funktionalität in Teams verwenden
 
 .Parameter AllowDeleteChannels
-    Determines whether or not members (and not only owners) can delete channels in the team
+    [sr-en] Determines whether or not members (and not only owners) can delete channels in the team
+    [sr-de] Mitglieder (und nicht nur Besitzer) können Kanäle im Team löschen
 
 .Parameter AllowGiphy
-    Determines whether or not giphy can be used in the team
+    [sr-en] Determines whether or not giphy can be used in the team
+    [sr-de] Giphy kann im Team verwendet werden 
 
 .Parameter AllowGuestCreateUpdateChannels
-    Determines whether or not guests can create channels in the team
+    [sr-en] Determines whether or not guests can create channels in the team
+    [sr-de] Gäste können Kanäle im Team erstellen
 
 .Parameter AllowGuestDeleteChannels
-    Determines whether or not guests can delete in the team
+    [sr-en] Determines whether or not guests can delete in the team
+    [sr-de] Gäste können im Team gelöscht werden 
 
 .Parameter AllowOwnerDeleteMessages
-    Determines whether or not owners can delete messages that they or other members of the team have posted
+    [sr-en] Determines whether or not owners can delete messages that they or other members of the team have posted
+    [sr-de] Besitzer können Nachrichten löschen 
 
 .Parameter AllowStickersAndMemes
-    Determines whether stickers and memes usage is allowed in the team
+    [sr-en] Determines whether stickers and memes usage is allowed in the team
+    [sr-de] Verwendung von Aufklebern und Memes im Team ist zulässig 
 
 .Parameter AllowTeamMentions
-    Determines whether the entire team can be @ mentioned (which means that all users will be notified)    
+    [sr-en] Determines whether the entire team can be @ mentioned (which means that all users will be notified)    
+    [sr-de] Das gesamte Team kann erwähnt werden kann
 
 .Parameter AllowUserDeleteMessages
-    Determines whether or not members can delete messages that they have posted   
+    [sr-en] Determines whether or not members can delete messages that they have posted   
+    [sr-de] Benutzer können Nachrichten löschen
     
 .Parameter AllowUserEditMessages
-    Determines whether or not users can edit messages that they have posted
+    [sr-en] Determines whether or not users can edit messages that they have posted
+    [sr-de] Benutzer können Nachrichten bearbeiten
 
 .Parameter GiphyContentRating
-    Determines the level of sensitivity of giphy usage that is allowed in the team
+    [sr-en] Determines the level of sensitivity of giphy usage that is allowed in the team
+    [sr-de] Zulässiger Sensitivitätsgrad der Giphy-Nutzung
 
 .Parameter Owner
-    An admin who is allowed to create on behalf of another user should use this flag to specify the desired owner of the group
+    [sr-en] An admin who is allowed to create on behalf of another user should use this flag to specify the desired owner of the group
+    [sr-de] Benutzer wird sowohl als Mitglied als auch Besitzer hinzugefügt
 
 .Parameter ShowInTeamsSearchAndSuggestions
-    Determines whether or not private teams should be searchable from Teams clients for users who do not belong to that team
+    [sr-en] Determines whether or not private teams should be searchable from Teams clients for users who do not belong to that team
+    [sr-de] Private Teams können von Teams-Clients nach Benutzern durchsucht werden
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]

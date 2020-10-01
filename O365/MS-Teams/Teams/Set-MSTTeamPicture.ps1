@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.7"}
 
 <#
@@ -24,16 +24,20 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
 .Parameter GroupId
-    GroupId of the team
+    [sr-en] GroupId of the team
+    [sr-de] Gruppen ID des Teams
     
 .Parameter ImagePath
-    File path and image ( .png, .gif, .jpg, or .jpeg)
+    [sr-en] File path and image (.png, .gif, .jpg, or .jpeg)
+    [sr-de] Pfad und Name der Bilddatei (.png, .gif, .jpg, oder .jpeg) 
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]

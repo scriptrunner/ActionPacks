@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules microsoftteams
 
 <#
@@ -23,16 +23,20 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter ThresholdValue
-    Minimum number of owners
+    [sr-en] Minimum number of owners
+    [sr-de] Mindestanzahl der Besitzer
 
 .Parameter Archived
-    Filters to return teams that have been archived or not
+    [sr-en] Filters to return teams that have been archived or not
+    [sr-de] Archivierte Teams anzeigen
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]

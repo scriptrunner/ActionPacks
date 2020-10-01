@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
 
 <#
@@ -23,13 +23,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter Identity
-    The user that will get their assigned policy package
+    [sr-en] The user that will get their assigned policy package
+    [sr-de] Benutzer, der das ihm zugewiesene Richtlinienpaket erhält
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]

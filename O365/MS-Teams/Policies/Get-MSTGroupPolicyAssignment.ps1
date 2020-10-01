@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.5"}
+#Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.1.4"}
 
 <#
 .SYNOPSIS
-    Retrieving all the policy packages available on a tenant
+    Returns group policy assignments
 
 .DESCRIPTION
 
@@ -16,7 +16,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.0.5 or greater
+    Requires Module microsoftteams 1.1.4 or greater
     Requires Library script MSTLibrary.ps1
 
 .LINK
@@ -26,10 +26,14 @@
     [sr-en] Provides the user ID and password for organizational ID credentials
     [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
-.Parameter Policy
-    [sr-en] The name of a specific policy package
-    [sr-de] Name des Policiy Packages
+.Parameter GroupId 
+    [sr-en] Specifies the object id of the group
+    [sr-de] ID der Gruppe
     
+.Parameter PolicyType
+    [sr-en] The type of the policy package
+    [sr-de] Typ der Policy
+
 .Parameter TenantID
     [sr-en] Specifies the ID of a tenant
     [sr-de] ID eines Mandanten
@@ -39,7 +43,9 @@
 Param(
     [Parameter(Mandatory = $true)]   
     [pscredential]$MSTCredential,
-    [string]$Policy,
+    [string]$GroupId,
+    [ValidateSet('TeamsAppSetupPolicy', 'TeamsCallingPolicy', 'TeamsCallParkPolicy', 'TeamsChannelsPolicy', 'TeamsComplianceRecordingPolicy', 'TeamsEducationAssignmentsAppPolicy', 'TeamsMeetingBroadcastPolicy', 'TeamsMeetingPolicy', 'TeamsMessagingPolicy')]
+    [string]$PolicyType,
     [string]$TenantID
 )
 
@@ -50,11 +56,14 @@ try{
 
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
                             
-    if([System.String]::IsNullOrWhiteSpace($Policy) -eq $false){
-        $getArgs.Add('Identity',$Policy)
+    if([System.String]::IsNullOrWhiteSpace($PolicyType) -eq $false){
+        $getArgs.Add('PolicyType',$PolicyType)
+    }
+    if([System.String]::IsNullOrWhiteSpace($GroupId) -eq $false){
+        $getArgs.Add('GroupId', $GroupId)
     }
 
-    $result = Get-CsPolicyPackage @getArgs | Select-Object *
+    $result = Get-CsGroupPolicyAssignment @getArgs | Select-Object *
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

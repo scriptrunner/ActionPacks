@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules microsoftteams
 
 <#
@@ -23,25 +23,32 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Channels
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials 
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter GroupId
-    GroupId of the team
+    [sr-en] GroupId of the team
+    [sr-de] Gruppen ID des Teams
 
 .Parameter CurrentDisplayName
-    Current Channel name
+    [sr-en] Current Channel name
+    [sr-de] Aktueller Channel Name
     
 .Parameter DisplayName
-    Channel display name
+    [sr-en] Channel display name
+    [sr-de] Anzeigename des Channels
 
 .Parameter Description
-    Updated Channel description
+    [sr-en] Updated Channel description
+    [sr-de] Channel Beschreibung
 
 .Parameter NewDisplayName
-    New Channel display name
+    [sr-en] New Channel display name
+    [sr-de] Neuer Anzeigename des Channels
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]

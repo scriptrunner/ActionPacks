@@ -96,7 +96,7 @@ try{
         $getArgs.Add('Visibility',$Visibility)
     }
 
-    $result = Get-Team @getArgs | Select-Object $Properties 
+    $result = Get-Team @getArgs | Sort-Object DisplayName | Select-Object $Properties 
     
     ConvertTo-ResultHtml -Result $result    
 }

@@ -2,9 +2,17 @@
 
 > Note: The use of the scripts requires the PowerShell Module microsoftteams.
 
++ [Add-MSTTeamChannelUser.ps1](./Add-MSTTeamChannelUser.ps1)
+
+  Adds an owner or member to the private channel
+
 + [Get-MSTTeamChannel.ps1](./Get-MSTTeamChannel.ps1)
 
   Get all the channels for a team
+
++ [Get-MSTTeamChannelUser.ps1](./Get-MSTTeamChannelUser.ps1)
+
+  Gets users of a channel
 
 + [New-MSTTeamChannel.ps1](./New-MSTTeamChannel.ps1)
 
@@ -13,6 +21,10 @@
 + [Remove-MSTTeamChannel.ps1](./Remove-MSTTeamChannel.ps1)
 
   Delete a channel
+
++ [Remove-MSTTeamChannelUser.ps1](./Remove-MSTTeamChannelUser.ps1)
+
+  Removes an user from the private channel
 
 + [Send-MSTTeamMessage.ps1](./Send-MSTTeamMessage.ps1)
 

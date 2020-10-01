@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -22,22 +22,28 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Channels
 
 .Parameter WebhookURL
-    The URL of your Webhook, it must be match with "https://outlook.office.com/webhook/"
+    [sr-en] The URL of your Webhook, it must be match with "https://outlook.office.com/webhook/"
+    [sr-de] URL des Webhook, muss mit "https://outlook.office.com/webhook/" beginnen
     
 .Parameter Message
-    The body of the message to publish on Teams
+    [sr-en] The body of the message to publish on Teams
+    [sr-de] Bodytext der Mitteilung
 
 .Parameter Title
-    The Title of the message to publish on Teams
+    [sr-en] The Title of the message to publish on Teams
+    [sr-de] Titel der Mitteilung
 
 .Parameter MessageColor
-    The color theme for the message
+    [sr-en] The color theme for the message
+    [sr-de] Farbe der Mitteilung
 
 .Parameter ActivityTitle
-    The Activity title of the message to publish on Teams
+    [sr-en] The Activity title of the message to publish on Teams
+    [sr-de] Titel (Activity) der Mitteilung    
 
 .Parameter ActivitySubtitle
-    The Activity subtitle of the message to publish on Teams
+    [sr-en] The Activity subtitle of the message to publish on Teams
+    [sr-de] Unter-Titel (Activity) der Mitteilung    
 #>
 
 [CmdLetBinding()]

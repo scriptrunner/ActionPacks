@@ -23,22 +23,28 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Members
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials 
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter GroupId
-    GroupId of the team
+    [sr-en] GroupId of the team
+    [sr-de] Gruppen ID des Teams
     
 .Parameter User
-    User's UPN (user principal name)
+    [sr-en] User's UPN (user principal name)
+    [sr-de] UPN
     
 .Parameter Users
-    One or more User UPN's (user principal name)
+    [sr-en] One or more User UPN's (user principal name)
+    [sr-de] Ein oder mehrere UPNs
 
 .Parameter Role
-    User role
+    [sr-en] User role
+    [sr-de] Rolle der Benutzer
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]

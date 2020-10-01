@@ -2,7 +2,7 @@
 
 > Note: The use of the scripts requires the PowerShell Module microsoftteams and the library script ReportLibrary.
 
-+ [Get-MSTGroupPolicyAssignmen_Htmlt.ps1](./Get-MSTGroupPolicyAssignmen_Htmlt.ps1)
++ [Get-MSTGroupPolicyAssignment_Html.ps1](./Get-MSTGroupPolicyAssignment_Html.ps1)
 
   Generates a report with the group policy assignments
 
@@ -17,6 +17,10 @@
 + [Get-MSTTeamChannel_Html.ps1](./Get-MSTTeamChannel_Html.ps1)
 
   Generates a report with the channels for a team
+
++ [Get-MSTTeamChannelUser_Html.ps1](./Get-MSTTeamChannelUser_Html.ps1)
+  
+  Generates a report with users of a channel
 
 + [Get-MSTTeamsApp_Html.ps1](./Get-MSTTeamsApp_Html.ps1)
 

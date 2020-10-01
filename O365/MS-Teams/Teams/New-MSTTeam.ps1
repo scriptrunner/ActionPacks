@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.4"}
 
 <#
@@ -175,7 +175,6 @@ Param(
 Import-Module microsoftteams
 
 try{
-    [string]$version = (Get-Module microsoftteams | Select-Object Version).Version
     [string[]]$Global:Properties = @('DisplayName','GroupId')
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 

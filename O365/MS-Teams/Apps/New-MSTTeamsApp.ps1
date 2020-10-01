@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules @{ModuleName = "microsoftteams"; ModuleVersion = "1.0.3"}
 
 <#
@@ -24,16 +24,20 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Apps
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter AppPath
-    The local path of the app manifest zip file
+    [sr-en] The local path of the app manifest zip file
+    [sr-de] Lokaler Pfad der Anwendungs-Manifest-Zip-Datei
 
 .Parameter DistributionMethod    
-    The type of app in Teams. For LOB apps, use "organization" 
+    [sr-en] The type of app in Teams. For LOB apps, use "organization" 
+    [sr-de] Art der Anwendung in Teams. Für LOB-Apps verwenden Sie "Organisation". 
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]

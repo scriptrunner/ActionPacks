@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules microsoftteams
 
 <#
@@ -23,16 +23,20 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Channels
  
 .Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials 
+    [sr-en] Provides the user ID and password for organizational ID credentials
+    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter GroupId
-    GroupId of the team
+    [sr-en] Specifies the object id of the group
+    [sr-de] ID der Gruppe
     
 .Parameter DisplayName
-    Channel name to be deleted
+    [sr-en] Channel display name
+    [sr-de] Anzeigename des Channels
 
 .Parameter TenantID
-    Specifies the ID of a tenant
+    [sr-en] Specifies the ID of a tenant
+    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]

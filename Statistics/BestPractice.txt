@@ -1,0 +1,34 @@
+Specify the SQL Server name and the database name directly in the script _LIB_\StatisticLib.ps1.
+Use the integrated login
+ 
+
+Integrated Authentication
+-------------------------
+Create a local target in ScriptRunner with the option 'Impersonated Thread Mode'. 
+Assign a credential to this target that has sufficient permissions for the SQL database.
+
+ 
+Integrated Authentication with Jump Host
+----------------------------------------
+Create target as described for integrated authentication.
+For special targets, e.g. O365 targets, specify this target as a jump host
+
+ 
+Warning: Do not save the SQL Server user account data in the _LIB_\StatisticLib.ps1 script!
+
+----------------------------------------------------------------------------------------------------------------
+
+Falls möglich den SQL Server Namen und den Datenbanknamen direkt im Script _LIB_\StatisticLib.ps1 festlegen.
+Nutzen der integrierten Anmeldung, die Anmeldung mit einer SQL Server Authentifizierung aus Sicherheitsgründen nur mit einem Credential nutzen.
+
+Integrierte Anmeldung
+---------------------
+Im ScriptRunner ein lokales Zielsystem mit der Option 'Thread-Impersonierungs-Modus' anlegen. 
+Diesem Zielsystem ein Benutzerkonto zuordnen, das ausreichend für die Datenbank berechtigt ist.
+
+Integrierte Anmeldung mit Jump Host
+-----------------------------------
+Zielsystem anlegen, wie bei integrierter Anmeldung beschrieben.
+Bei speziellen Zielsystemen, z.B. O365 Zielsystemen, dieses Zielsystem als Jump Host angeben
+
+Warnung: Hinterlegen Sie nicht die Daten des SQL Server Benutzerkontos, fest im Script _LIB_\StatisticLib.ps1!

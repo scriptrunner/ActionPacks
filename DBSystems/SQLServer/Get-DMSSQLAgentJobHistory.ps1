@@ -64,7 +64,9 @@ Param(
     [pscredential]$ServerCredential,
     [string]$JobName,
     [guid]$JobID,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartRunDate,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndRunDate,
     [int]$MinimumRunDurationInSeconds,
     [switch]$OldestFirst,

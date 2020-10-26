@@ -40,7 +40,9 @@
 
 [CmdLetBinding()]
 Param(
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartDate,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndDate,
     [string]$ActionName,
     [string]$TargetName

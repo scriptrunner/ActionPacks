@@ -36,7 +36,9 @@
 #>
 
 param(   
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartTime,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndTime,
     [ValidateRange(1,5000)]
     [uint32]$MaxRows = 1000

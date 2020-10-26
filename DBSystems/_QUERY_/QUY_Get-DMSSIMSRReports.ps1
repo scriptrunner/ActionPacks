@@ -44,9 +44,9 @@ Param(
     [string]$ServerName, 
     [Parameter(Mandatory = $true)]   
     [string]$DatabaseName, 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true,HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartDate,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true,HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndDate,    
     [PSCredential]$SQLCredential
 )

@@ -271,6 +271,7 @@ function Get-REPHeader(){
         [string]$OpeningLine,
         [string]$ActionName,
         [string]$StartedBy,
+        [Parameter(HelpMessage="ASRDisplay(Date)")]
         [datetime]$TimeStamp,
         [string]$AdditionalLine1,
         [string]$AdditionalLine2,

@@ -101,13 +101,13 @@ try{
                 }
             }
             if($StartDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                $StartDate =[DateTime]::Now
+                $StartDate = [DateTime]::Now
             }
             if(($null -eq $EndDate) -or ($EndDate.Year -lt 2020)){
                 $EndDate = $StartDate           
             }
             if($EndDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                $EndDate =$StartDate.AddDays(1)
+                $EndDate = $StartDate.AddDays(1)
             }
         }
         if([System.String]::IsNullOrWhiteSpace($ExternalText) -eq $true){

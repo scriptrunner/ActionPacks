@@ -92,6 +92,7 @@ Param(
     [switch]$KeepReplication,
     [switch]$NoRecovery,
     [switch]$ReplaceDatabase,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$ToPointInTime,
     [int]$ConnectionTimeout = 30
 )

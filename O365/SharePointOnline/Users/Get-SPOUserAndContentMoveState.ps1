@@ -52,9 +52,9 @@ param(
     [Parameter(ParameterSetName = 'MoveReport')]
     [ValidateSet('All', 'NotStarted', 'Scheduled', 'InProgress', 'Stopped', 'Success', 'Failed')]
     [string]$MoveState,
-    [Parameter(ParameterSetName = 'MoveReport')]
+    [Parameter(ParameterSetName = 'MoveReport',HelpMessage="ASRDisplay(Date)")]
     [datetime]$MoveEndTime,
-    [Parameter(ParameterSetName = 'MoveReport')]
+    [Parameter(ParameterSetName = 'MoveReport',HelpMessage="ASRDisplay(Date)")]
     [datetime]$MoveStartTime
 )
 

@@ -35,7 +35,9 @@
 param(   
     [Parameter(Mandatory = $true)]  
     [string]$ProductID,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndTimeInUtc,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartTimeInUtc
 )
 

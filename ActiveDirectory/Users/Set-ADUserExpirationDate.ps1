@@ -64,8 +64,8 @@ param(
     [string]$Username,
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [PSCredential]$DomainAccount,
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [Parameter(ParameterSetName = "Local or Remote DC",HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = "Remote Jumphost",HelpMessage="ASRDisplay(Date)")]
     [datetime]$ExpirationDate,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]

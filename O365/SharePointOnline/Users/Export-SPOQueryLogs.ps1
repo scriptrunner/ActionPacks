@@ -37,6 +37,7 @@ param(
     [string]$LoginName,
     [Parameter(Mandatory = $true)]
     [string]$OutputFolder,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartTime
 )
 

@@ -42,7 +42,9 @@
 param( 
     [string]$BillingPeriodName,
     [int]$MaxCount = 100,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartDate,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndDate
 )
 

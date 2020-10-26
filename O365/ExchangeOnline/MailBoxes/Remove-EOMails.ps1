@@ -46,6 +46,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$MailboxId,
     [int]$RemoveOlderDay = 90,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$RemoveOlderThan,
     [ValidateSet('SoftDelete','HardDelete')]
     [string]$PurgeType = 'SoftDelete' 

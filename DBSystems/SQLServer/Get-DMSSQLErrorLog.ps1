@@ -53,7 +53,9 @@ Param(
     [Parameter(Mandatory = $true)]   
     [string]$ServerInstance,    
     [pscredential]$ServerCredential,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$After,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$Before,
     [switch]$Ascending,
     [ValidateSet('Midnight', 'Yesterday', 'LastWeek','LastMonth')]

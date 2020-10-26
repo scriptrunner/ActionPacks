@@ -65,7 +65,9 @@ Param(
     [ValidateSet('Database', 'Differential', 'Incremental', 'Log', 'FileOrFileGroup', 'FileOrFileGroupDifferential')]
     [string]$BackupType,
     [string]$DBName,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndTime,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartTime,
     [switch]$IgnoreProviderContext,
     [switch]$IncludeSnapshotBackups,

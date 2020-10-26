@@ -48,15 +48,15 @@ param(
     [int]$Source,
     [Parameter(Mandatory = $true,ParameterSetName = 'User')]
     [string]$User,
-    [Parameter(ParameterSetName = 'SiteSubscription')]
-    [Parameter(ParameterSetName = 'CorrelationId')]
-    [Parameter(ParameterSetName = 'Source')]
-    [Parameter(ParameterSetName = 'User')]
+    [Parameter(ParameterSetName = 'SiteSubscription',HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = 'CorrelationId',HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = 'Source',HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = 'User',HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartTime,
-    [Parameter(ParameterSetName = 'SiteSubscription')]
-    [Parameter(ParameterSetName = 'CorrelationId')]
-    [Parameter(ParameterSetName = 'Source')]
-    [Parameter(ParameterSetName = 'User')]
+    [Parameter(ParameterSetName = 'SiteSubscription',HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = 'CorrelationId',HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = 'Source',HelpMessage="ASRDisplay(Date)")]
+    [Parameter(ParameterSetName = 'User',HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndTime,
     [Parameter(ParameterSetName = 'SiteSubscription')]
     [Parameter(ParameterSetName = 'CorrelationId')]

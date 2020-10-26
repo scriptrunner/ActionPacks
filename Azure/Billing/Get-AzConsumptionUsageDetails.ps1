@@ -65,7 +65,9 @@ param(
     [switch]$IncludeAdditionalProperties,
     [int]$MaxCount,
     [string]$Tag,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$StartDate,
+    [Parameter(HelpMessage="ASRDisplay(Date)")]
     [datetime]$EndDate,
     [string]$InstanceName,
     [ValidateSet('*','UsageStart','UsageEnd','BillingPeriodName','InstanceName')]

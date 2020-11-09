@@ -6,6 +6,10 @@
 
   Retrieving teams with particular properties/information
 
++ [Get-TeamTargetingHierarchyStatus.ps1](./Get-TeamTargetingHierarchyStatus.ps1)
+
+  Get-TeamTargetingHierarchyStatus
+
 + [Measure-MSTTeamOwners.ps1](./Measure-MSTTeamOwners.ps1)
 
   Check the owner's number of the team

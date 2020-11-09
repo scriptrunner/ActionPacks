@@ -26,7 +26,9 @@ Use cases for managing Microsoft Teams
 
 + Get policy package
 + Grant/get user policy package
++ Grant group policy package assignment
 + New/get/update/remove group policy assignment
++ New/update/remove custom policy package 
 + Get user policy assignment, user policy recommendation
 + New/get batch policy assignment operation
 
@@ -36,7 +38,8 @@ Use cases for managing Microsoft Teams
 + Set team archived state
 + Check the owner's number
 + Set the picture of a team 
-+ set/remove Teams target hierarchy
++ Set/remove Teams target hierarchy
++ Get Team targeting hierarchy status
 
 ## [Reports](./_Report_)
 

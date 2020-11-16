@@ -7,6 +7,7 @@ Use cases for managing users, groups and computers in on prem AD
 + Get/Set properties of the computer
 + Remove computer
 + Enable/Disable Computer
++ Add/remove computers to groups
 + List of disabled computers
 + List of inactive computers
 
@@ -29,6 +30,10 @@ Use cases for managing users, groups and computers in on prem AD
 + Set the date when the Active Directory account expires
 + Remove Active Directory service account
 + List of Active Directory users whose account has expired, inactive, disabled or locked
+
+## [Common](./Common)
+
++ Move an object to a different container
 
 ## [Reports](./_REPORTS_)
 

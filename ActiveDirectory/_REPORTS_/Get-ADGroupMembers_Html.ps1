@@ -110,7 +110,7 @@ try{
                         Get-NestedGroupMember($itm)
                     }
                     else{ 
-                        $Script:resultMessage += [PSCustomObject] @{Type = 'Group'; SAMAcccountName=$itm.SamAccountName;DistinguishedName=$itm.DistinguishedName}
+                        $Script:resultMessage += [] @{Type = 'Group'; SAMAcccountName=$itm.SamAccountName;DistinguishedName=$itm.DistinguishedName}
                     }
                 }
                 elseif($itm.objectClass -eq "computer"){

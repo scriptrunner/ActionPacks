@@ -21,6 +21,11 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Computers
 
+
+    .Parameter OUPath
+        [sr-en] Specifies the AD path
+        [sr-de] Active Directory Pfad
+        
     .Parameter GroupName
         [sr-en] Name of the group from which the computers are removed
         [sr-de] Name der Gruppe aus der die Computer gelöscht werden
@@ -43,6 +48,9 @@
 #>
 
 param(
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string]$OUPath,
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string]$GroupName,

@@ -21,6 +21,10 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Computers
 
+    .Parameter OUPath
+        [sr-en] Specifies the AD path
+        [sr-de] Active Directory Pfad
+
     .Parameter ComputerNames
         [sr-en] Comma separated SAMAccountName, SID, DistinguishedName or GUID of the computers added to the groups
         [sr-de] Kommagetrennte SIDs, SamAccountNamen, Distinguished Namen oder GUIDs der Computer die zu den Gruppen hinzugefügt werden
@@ -45,7 +49,10 @@
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
-    [string]$ComputerNames,
+    [string]$OUPath,
+    [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
+    [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
+    [string[]]$ComputerNames,
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
     [Parameter(Mandatory = $true,ParameterSetName = "Remote Jumphost")]
     [string[]]$GroupNames,

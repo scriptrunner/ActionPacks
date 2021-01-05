@@ -61,6 +61,12 @@ Import-Module microsoftteams
 
 try{
     ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
+
+    $check = (Get-Command New-CsCustomPolicyPackage -ErrorAction SilentlyContinue)
+    if($null -eq $check){
+        throw "Command is not available in the current module version"
+    }
+
     [string[]]$list = $PolicyList.Split(';')
     [hashtable]$setArgs = @{'ErrorAction' = 'Stop'
                             'Identity' = $Identity

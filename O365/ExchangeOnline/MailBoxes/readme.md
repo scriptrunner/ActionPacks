@@ -1,10 +1,13 @@
 # Manage Mailboxes
 The use of the scripts requires a remote PowerShell session to Exchange Online
-> Note: The use of the scripts requires ScriptRunner Version 4.x or higher.
 
 + [Get-EOMailboxActiveSync.ps1](./Get-EOMailboxActiveSync.ps1)
 
-  Connect to Microsoft Exchange Server and gets the mailbox ActiveSync setting
+ 	Connect to Microsoft Exchange Server and gets the mailbox ActiveSync setting
+
++ [Get-EOMailboxDelegations.ps1](./Get-EOMailboxDelegations.ps1)
+
+  	Gets the mailbox delegations
 
 + [Get-EOMailboxes.ps1](./Get-EOMailboxes.ps1)
 
@@ -26,6 +29,10 @@ The use of the scripts requires a remote PowerShell session to Exchange Online
 
 	Connect to Exchange Online and removes the mailbox
 
++ [Remove-EOMailboxDelegations.ps1](./Remove-EOMailboxDelegations.ps1)
+
+  	Removes mailbox delegations
+
 + [Remove-EOMails.ps1](./Remove-EOMails.ps1)
 
 	Connect to Exchange Online and removes mails from mailbox
@@ -37,6 +44,10 @@ The use of the scripts requires a remote PowerShell session to Exchange Online
 + [Set-EOMailboxArchive.ps1](./Set-EOMailboxArchive.ps1)
 
 	Connect to Exchange Online and sets the mailbox Archive setting to mailbox
+
++ [Set-EOMailboxDelegations.ps1](./Set-EOMailboxDelegations.ps1)
+
+  	Sets mailbox delegations
 	
 + [Set-EOMailboxProperties.ps1](./Set-EOMailboxProperties.ps1)
 

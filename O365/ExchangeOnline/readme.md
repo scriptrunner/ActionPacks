@@ -1,6 +1,5 @@
 # Action Pack for Exchange Online
 Use cases to manage distribution groups, mailboxes, resources and services
-> Note: The use of the scripts requires ScriptRunner Version 4.x or higher
 
 ## [Manage Distribution groups](./DistributionGroups)
 + Create distribution group
@@ -9,16 +8,17 @@ Use cases to manage distribution groups, mailboxes, resources and services
 + List of all distribution groups
 
 ## [Manage Mailboxes](./MailBoxes)
-+ Get/Set properties of the mailbox
++ Get/set properties of the mailbox
 + Create/remove mailbox
-+ Enable/Disable Automatic Replies for a specified mailbox
-+ Enable/Disable the mailbox ActiveSync setting
-+ Enable/Disable the mailbox Archive setting
++ Get/set/remove delegations of the mailbox
++ Enable/disable Automatic Replies for a specified mailbox
++ Enable/disable the mailbox ActiveSync setting
++ Enable/disable the mailbox Archive setting
 + Get mailbox statistics
 + List of all mailboxes
 + Remove mails
 
 ## [Manage Resources](./Resources)
-+ Get/Set properties of the resource
++ Get/set properties of the resource
 + Create/remove resource
 + List of all resources

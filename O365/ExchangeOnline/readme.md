@@ -10,7 +10,7 @@ Use cases to manage distribution groups, mailboxes, resources and services
 ## [Manage Mailboxes](./MailBoxes)
 + Get/set properties of the mailbox
 + Create/remove mailbox
-+ Get/set/remove delegations of the mailbox
++ Add/get/remove delegations of the mailbox
 + Enable/disable Automatic Replies for a specified mailbox
 + Enable/disable the mailbox ActiveSync setting
 + Enable/disable the mailbox Archive setting

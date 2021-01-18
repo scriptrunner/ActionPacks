@@ -29,3 +29,11 @@
 + [Get-EXOMobileDeviceStatistics.ps1](./Get-EXOMobileDeviceStatistics.ps1)
 
 	Gets the list of mobile devices configured to synchronize with a specified user's mailbox
+
++ [Get-EXOMyAnalyticsFeatureConfig.ps1](./Get-EXOMyAnalyticsFeatureConfig.ps1)
+	
+    View the availability and feature status of MyAnalytics for the specified user
+
++ [Set-EXOMyAnalyticsFeatureConfig.ps1](./Set-EXOMyAnalyticsFeatureConfig.ps1)
+
+	Configure the availability and features of MyAnalytics for the specified user

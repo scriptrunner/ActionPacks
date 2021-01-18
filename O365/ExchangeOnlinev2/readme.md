@@ -10,6 +10,7 @@
 
 + Get properties of the mailbox
 + Get Client Access settings
++ Get/set MyAnalytics
 + Permissions from mailbox, folder
 + Statistics from mailbox, mailbox folder, mobile device
 

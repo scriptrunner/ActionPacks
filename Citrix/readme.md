@@ -92,8 +92,3 @@ Use cases for managing users, groups and computers in on prem AD
 + Get license location
 + Get license certificate
 + Start/stop logging
-
-
-
-https://github.com/citrix/ShareFile-PowerShell
-https://developer-docs.citrix.com/projects/citrix-virtual-apps-desktops-sdk/en/latest/?_ga=2.144952948.1361315142.1601456432-1528550946.1586181393

@@ -22,3 +22,7 @@ Use cases to manage distribution groups, mailboxes, resources and services
 + Get/set properties of the resource
 + Create/remove resource
 + List of all resources
+
+## [Queries](./_QUERY_)
++ Get mailsboxes
++ Get mailbox full access, send as and send on behalf permissions

@@ -41,6 +41,11 @@ Use cases for managing Microsoft Teams
 + Set/remove Teams target hierarchy
 + Get Team targeting hierarchy status
 
+## [Templates](./Templates)
+
++ Create/update/get/remove Team template
++ Get Team template list
+
 ## [Reports](./_Report_)
 
 + Generate report with teams, team channels, team apps, team user, team channel users, team statistic
@@ -51,6 +56,7 @@ Use cases for managing Microsoft Teams
 ## [Queries](./_QUERY_)
 
 + Search group ids
++ Search template OdataIds
 
 ## [Library](./_LIB_)
 

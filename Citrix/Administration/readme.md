@@ -10,9 +10,13 @@
 
   Grants a given right to the specified administrator
 
-+ [Add-CTXUsers.ps1](./Add-CTXUsers.ps1)
++ [Add-CTXTag.ps1](./Add-CTXTag.ps1)
 
-  Creates an association between users and another object
+  Associate a tag with another object in the site
+
++ [Add-CTXUser.ps1](./Add-CTXUser.ps1)
+  
+  Creates an association between user and another object
 
 + [Get-CTXAdministratorMetadata.ps1](./Get-CTXAdministratorMetadata.ps1)
 
@@ -86,6 +90,10 @@
 
   Gets the service record entries for the Delegated Admin Service
 
++ [Get-CTXTag.ps1](./Get-CTXTag.ps1)
+
+  Gets one or more tags
+
 + [Get-CTXUsers.ps1](./Get-CTXUsers.ps1)
 
   Gets users configured for this site
@@ -106,9 +114,13 @@
 
   Adds a new scope to the site
 
++ [New-CTXTag.ps1](./New-CTXTag.ps1)
+
+  Adds a new scope to the site
+
 + [New-CTXUser.ps1](./New-CTXUser.ps1)
   
-  Creates a new user object
+  Creates a new tag
 
 + [Remove-CTXAdministrator.ps1](./Remove-CTXAdministrator.ps1)
 
@@ -134,6 +146,10 @@
 
   Removes a role from the site
 
++ [Remove-CTXUser.ps1](./Remove-CTXUser.ps1)
+
+  Remove broker user object from another broker object
+
 + [Remove-CTXRoleMetaData.ps1](./Remove-CTXRoleMetaData.ps1)
 
   Removes metadata from the given Role
@@ -150,6 +166,14 @@
 
   Removes metadata from the given Service
 
++ [Remove-CTXTag.ps1](./Remove-CTXTag.ps1)
+
+  Removes tag to object associations or deletes tags from the site altogether
+
++ [Remove-CTXUser.ps1](./Remove-CTXUser.ps1)
+
+  Remove broker user object from another broker object
+
 + [Rename-CTXRole.ps1](./Rename-CTXRole.ps1)
 
   Rename a role
@@ -157,6 +181,10 @@
 + [Rename-CTXScope.ps1](./Rename-CTXScope.ps1)
 
   Rename a scope
+
++ [Rename-CTXTag.ps1](./Rename-CTXTag.ps1)
+
+  Renames a tag
 
 + [Reset-CTXEnabledFeatureList.ps1](./Reset-CTXEnabledFeatureList.ps1)
 
@@ -197,6 +225,10 @@
 + [Set-CTXServiceMetadata.ps1](./Set-CTXServiceMetadata.ps1)
 
   Adds or updates metadata on the given Service
+
++ [Set-CTXTag.ps1](./Set-CTXTag.ps1)
+
+  Sets the properties of a tag
 
 + [Test-CTXAccess.ps1](./Test-CTXAccess.ps1)
 

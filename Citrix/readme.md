@@ -13,6 +13,7 @@ Use cases for managing users, groups and computers in on prem AD
 + New, get, set, remove administrators
 + Get, create or update, remove administrators metadata  
 + Add, remove admin rights
++ Add, new, get, set, rename, remove tags
 + Get service, service status, service capabilities
 + Get, create or update, remove service metadata 
 + Get controller

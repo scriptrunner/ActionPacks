@@ -49,7 +49,7 @@ param(
     [string[]]$Properties = @('Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{
     if($Properties -contains '*'){

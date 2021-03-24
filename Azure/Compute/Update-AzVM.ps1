@@ -37,7 +37,7 @@ param( [Parameter(Mandatory = $true)]
     [string]$ResourceGroupName
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{  
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

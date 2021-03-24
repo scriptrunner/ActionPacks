@@ -45,7 +45,7 @@ param(
     [string]$Size
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{
     $vm = Get-AzVM -ResourceGroupName $ResourceGroupName -Name $Name -ErrorAction Stop

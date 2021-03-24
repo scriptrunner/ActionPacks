@@ -45,7 +45,7 @@ Param(
     [string]$Command
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

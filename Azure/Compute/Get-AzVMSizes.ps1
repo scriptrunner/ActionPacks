@@ -44,7 +44,7 @@ param(
     [string]$Location
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}

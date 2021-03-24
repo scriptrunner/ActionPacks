@@ -71,6 +71,10 @@
         If not specified, a name will be generated
         [sr-de] Name eines neuen (oder vorhandenen) virtuellen Netzwerks
         Wenn nicht angegeben, wird ein Name generiert
+
+    .Parameter Size
+        [sr-en] The Virtual Machine Size
+        [sr-de] Größe der virtuellen Maschine
 #>
 
 param( 
@@ -88,12 +92,14 @@ param(
     [string]$Location,
     [string]$SecurityGroupName,
     [string]$SubnetName,
-    [string]$VirtualNetworkName
+    [string]$VirtualNetworkName,
+    [string]$Size = 'Standard_DS1_v2'
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{
+    [string[]]$Properties = @('Name','StatusCode','ResourceGroupName','Id','VmId','Location','ProvisioningState','DisplayHint')
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'Credential' = $AdminCredential
@@ -119,12 +125,14 @@ try{
     if([System.String]::IsNullOrWhiteSpace($AllocationMethod) -eq $false){
         $cmdArgs.Add('AllocationMethod',$AllocationMethod)
     }
+    if($PSBoundParameters.ContainsKey('Size') -eq $true){
+        $cmdArgs.Add('Size',$Size)
+    }
     if($DataDiskSizeInGb -gt 0){
         $cmdArgs.Add('DataDiskSizeInGb',$DataDiskSizeInGb)
     }
                             
-    $ret = New-AzVM @cmdArgs
-
+    $ret = New-AzVM @cmdArgs | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret 
     }

@@ -14,6 +14,7 @@ Use cases for managing users, groups and computers in on prem AD
 + Get, create or update, remove administrators metadata  
 + Add, remove admin rights
 + Add, new, get, set, rename, remove tags
++ Get, disconnect, stop sessions
 + Get service, service status, service capabilities
 + Get, create or update, remove service metadata 
 + Get controller
@@ -81,11 +82,12 @@ Use cases for managing users, groups and computers in on prem AD
 
 ## [Queries](./_QUERY_)
 
-+ Gets catalogs, desktop groups, permission groups
-+ Gets applications, application groups
-+ Gets scopes, roles, service
-+ Gets zones, zone users
-+ Gets high level operation ids
++ Get catalogs, desktop groups, permission groups
++ Get applications, application groups
++ Get scopes, roles, service
++ Get zones, zone users
++ Get sessions
++ Get high level operation ids
 
 ## [Library](./_LIB_)
 

@@ -18,6 +18,10 @@
   
   Creates an association between user and another object
 
++ [Disconnect-CTXSession.ps1](./Disconnect-CTXSession.ps1)
+  
+  Disconnect a session
+
 + [Get-CTXAdministratorMetadata.ps1](./Get-CTXAdministratorMetadata.ps1)
 
   Gets the metadata from Administrator
@@ -89,6 +93,10 @@
 + [Get-CTXServiceStatus.ps1](./Get-CTXServiceStatus.ps1)
 
   Gets the service record entries for the Delegated Admin Service
+
++ [Get-CTXSessions.ps1](./Get-CTXSessions.ps1)
+  
+  Gets a list of sessions
 
 + [Get-CTXTag.ps1](./Get-CTXTag.ps1)
 
@@ -229,6 +237,10 @@
 + [Set-CTXTag.ps1](./Set-CTXTag.ps1)
 
   Sets the properties of a tag
+
++ [Stop-CTXSession.ps1](./Stop-CTXSession.ps1)
+
+  Stop or log off a session
 
 + [Test-CTXAccess.ps1](./Test-CTXAccess.ps1)
 

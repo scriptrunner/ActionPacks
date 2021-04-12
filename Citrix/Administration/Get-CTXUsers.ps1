@@ -92,6 +92,7 @@ param(
     [bool]$PrivateDesktopUid,
     [Parameter(ParameterSetName = 'Default')]
     [int]$MaxRecordCount = 250,
+    [Parameter(ParameterSetName = 'byId')]
     [Parameter(ParameterSetName = 'Default')]
     [string]$SiteServer,
     [Parameter(ParameterSetName = 'byId')]

@@ -47,9 +47,17 @@
 
   Returns the service record entries for the Delegated Admin Service
 
++ [QUY_Get-CTXSessions.ps1](./QUY_Get-CTXSessions.ps1)
+
+  Returns a list of sessions
+
 + [QUY_Get-CTXZones.ps1](./QUY_Get-CTXZones.ps1)
 
   Returns zones configured for this site
+
++ [QUY_Get-CTXSessions.ps1](./QUY_Get-CTXSessions.ps1)
+
+  Returns a list of sessions
 
 + [QUY_Get-CTXZoneUsers.ps1](./QUY_Get-CTXZoneUsers.ps1)
 

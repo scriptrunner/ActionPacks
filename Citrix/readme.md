@@ -1,6 +1,6 @@
 # Action Pack for Citrix
-Use cases for managing users, groups and computers in on prem AD
-> Note: The use of the scripts requires the PowerShell Module ActiveDirectory.
+Use cases for managing Citrix Systems and Solutions
+> Note: The use of the scripts requires the the Citrix PowerShell SnapIns.
 
 ## [Administration](./Administration)
 

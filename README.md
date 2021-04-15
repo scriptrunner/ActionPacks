@@ -7,11 +7,20 @@ Use cases for managing users, groups and computers in on prem AD
 ## [Azure](./Azure)
 Use cases for managing Microsoft Azure
 
+## [Automation Booster](./Automation&nbsp;Booster)
+Solutions and sample scripts for selected use cases
+
+## [Citrix](./Citrix)
+Use cases for managing Citrix Systems and Solutions
+
 ## [Database Management Systems](./DBSystems)
 Use cases for managing Database systems
 
 ## [Exchange Server](./Exchange)
 Use cases for managing mailboxes, distribution lists, resources, and services in on prem Exchange Server environments.
+
+## [Hyper-V](./Hyper-V)
+Use cases for managing the Hyper-V virtualization platform
 
 ## [Office 365](./O365)
 Use cases to manage users, groups, and services in O365.<br>
@@ -20,11 +29,11 @@ Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online
 ## [Reporting](./Reporting)
 Report examples
 
+## [ScriptRunner Tools](./ScriptRunner&nbsp;Tools)
+Collection of useful ScriptRunner AddOns
+
 ## [Statistics](./Statistics)
 Scripts for analysing the usage and time savings of ScriptRunner Actions
-
-## [Hyper-V](./Hyper-V)
-Use cases for managing the Hyper-V virtualization platform
 
 ## [VMware](./VMware)
 Use cases for managing the VMware virtualization platform

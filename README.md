@@ -7,7 +7,7 @@ Use cases for managing users, groups and computers in on prem AD
 ## [Azure](./Azure)
 Use cases for managing Microsoft Azure
 
-## [Automation Booster](./Automation&nbsp;Booster)
+## [Automation Booster](./Automation%20Booster)
 Solutions and sample scripts for selected use cases
 
 ## [Citrix](./Citrix)
@@ -29,7 +29,7 @@ Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online
 ## [Reporting](./Reporting)
 Report examples
 
-## [ScriptRunner Tools](./ScriptRunner&nbsp;Tools)
+## [ScriptRunner Tools](./ScriptRunner%20Tools)
 Collection of useful ScriptRunner AddOns
 
 ## [Statistics](./Statistics)

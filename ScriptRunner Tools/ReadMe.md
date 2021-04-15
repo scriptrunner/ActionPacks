@@ -9,6 +9,6 @@ Collection of useful ScriptRunner AddOns
 
 + Run shell commands and shell scripts with ScriptRunner using OpenSSH
 
-## [Script Synchronization](./Script Synchronization)
+## [Script Synchronization](./Script%20Synchronization)
 
 + Synchronize scripts to ScriptRunner script repository

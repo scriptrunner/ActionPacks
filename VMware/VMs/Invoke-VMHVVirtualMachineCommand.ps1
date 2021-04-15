@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+#Requires -Version 5.0
 # Requires -Modules VMware.PowerCLI
 
 <#
@@ -20,25 +20,30 @@
     Requires Module VMware.PowerCLI
 
 .LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
 .Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    [sr-en] Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    [sr-de] IP-Adresse oder der DNS-Name des vSphere-Servers
 
 .Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    [sr-en] Specifies a PSCredential object that contains credentials for authenticating with the server
+    [sr-de] Benutzerkonto für die Authentifizierung beim Server
 
 .Parameter VMId
-    Specifies the ID of the virtual machine you want to execute the command
+    [sr-en] Specifies the ID of the virtual machine you want to execute the command
+    [sr-de] ID der virtuellen Maschine
 
 .Parameter VMName
-    Specifies the name of the virtual machine you want to execute the command
+    [sr-en] Specifies the name of the virtual machine you want to execute the command
+    [sr-de] Name der virtuellen Maschine
 
 .Parameter Command
-    Specifies the command that executed on the virtual machine
+    [sr-en] Specifies the command that executed on the virtual machine
+    [sr-de] Befehl, der auf der virtuellen Maschine ausgeführt wird
 
 .Parameter Kill
-    Indicates that you want to stop the specified virtual machine by terminating the processes running on the ESX
+    [sr-en] Indicates that you want to stop the specified virtual machine by terminating the processes running on the ESX
+    [sr-de] Die auf dem ESX-System laufenden Prozesse beenden
 #>
 
 [CmdLetBinding()]
@@ -56,7 +61,7 @@ Param(
     [Parameter(Mandatory = $true,ParameterSetName = "byID")]
     [Parameter(Mandatory = $true,ParameterSetName = "byName")]
     [ValidateSet('Start','Stop','Suspend','Restart')]
-    [string]$Command,
+    [string]$Command = 'Restart',
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
     [switch]$Kill

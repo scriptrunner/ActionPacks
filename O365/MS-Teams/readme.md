@@ -21,6 +21,8 @@ Use cases for managing Microsoft Teams
 ## [Members](./Members)
 
 + Add/get/remove users from a team
++ Get Multi Geo Region
++ Get License report
 
 ## [Policies](./Policies)
 

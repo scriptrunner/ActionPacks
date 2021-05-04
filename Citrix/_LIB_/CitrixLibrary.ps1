@@ -125,7 +125,15 @@ function StartCitrixSessionAdv(){
 
         try{
             StartCitrixSession
-            CheckCitrixServer -ServerName ([ref]$ServerName)
+            [string]$srvName
+            if(($null -eq $ServerName) -or ($null -eq $ServerName.Value) -or ($ServerName.Value.Length -le 0)){
+                $srvname = ''
+            }
+            else{
+                $srvName = $ServerName.Value
+            }
+            CheckCitrixServer -ServerName ([ref]$srvName)
+            $ServerName.Value = $srvName
         }
         catch{
             throw
@@ -202,10 +210,13 @@ function StopLogging(){
     )
 
     try{
-        if($null -eq $LoggingID){
+        [guid]$LogId =[System.Guid]::NewGuid()
+        if([System.Guid]::TryParse($LoggingID,[ref]$LogId) -eq $false){
             return
         }
-        $null = Stop-LogHighLevelOperation -HighLevelOperationId $LoggingID -IsSuccessful $IsSuccessful  -AdminAddress $ServerAddress
+        if($LogId -ne [System.Guid]::NewGuid()){
+            $null = Stop-LogHighLevelOperation -HighLevelOperationId $LogId -IsSuccessful $IsSuccessful  -AdminAddress $ServerAddress
+        }
     }
     catch{
         throw

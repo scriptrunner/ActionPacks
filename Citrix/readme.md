@@ -7,13 +7,16 @@ Use cases for managing Citrix Systems and Solutions
 + New, add, get, remove users
 + New, get, set, rename, remove role
 + Get, create or update, remove role metadata 
++ New, add, get, group, set, remove machine
++ Get, create or update, remove machine metadata 
 + Add, get, remove role permissions
 + New, get, set, rename, remove scope
 + Get, create or update, remove scope metadata
 + New, get, set, remove administrators
 + Get, create or update, remove administrators metadata  
 + Add, remove admin rights
-+ Add, new, get, set, rename, remove tags
++ Add, new, get, set, rename, remove tag
++ Get, create or update, remove tag metadata 
 + Get, disconnect, stop sessions
 + Get service, service status, service capabilities
 + Get, create or update, remove service metadata 
@@ -22,7 +25,7 @@ Use cases for managing Citrix Systems and Solutions
 + Get, import role configuration
 + Get permission groups, admin effective rights, users effective administrator objects
 + Refresh enabled features
-+ Tests the operations is permitted
++ Tests the operations is permitted, machinename available
 
 ## [Applications](./Applications)
 
@@ -39,6 +42,11 @@ Use cases for managing Citrix Systems and Solutions
 + Get, create or update, remove application metadata 
 + Test application name available, desktop group name available, application group name available
 + Test Broker Database connection
+
+## [Configuration](./Configuration)
+
++ New, get, remove icon
++ Get, create or update, remove icon metadata 
 
 ## [Licenses](./Licenses)
 

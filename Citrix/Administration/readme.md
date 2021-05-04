@@ -2,6 +2,10 @@
 
 > Note: The use of the scripts requires the Citrix PowerShell SnapIns.
 
++ [Add-CTXMachine.ps1](./Add-CTXMachine.ps1)
+
+  Adds a machine to a desktop group
+
 + [Add-CTXPermission.ps1](./Add-CTXPermission.ps1)
 
   Add permissions to the set of permissions of a role
@@ -45,6 +49,14 @@
 + [Get-CTXEffectiveRight.ps1](./Get-CTXEffectiveRight.ps1)
 
   Gets the set of Right objects associated with the current user
+
++ [Get-CTXMachine.ps1](./Get-CTXMachine.ps1)
+
+  Gets machines belonging to this site
+
++ [Get-CTXMachineMetadata.ps1](./Get-CTXMachineMetadata.ps1)
+
+  Gets Machine Metadata
 
 + [Get-CTXPermissionGroups.ps1](./Get-CTXPermissionGroups.ps1)
 
@@ -106,6 +118,10 @@
 
   Gets users configured for this site
 
++ [Group-CTXMachines.ps1](./Group-CTXMachines.ps1)
+
+  Groups and counts machines with the same value for a specified property
+
 + [Import-CTXRoleConfiguration.ps1](./Import-CTXRoleConfiguration.ps1)
 
   Imports role configuration data into the Delegated Administration Service
@@ -113,6 +129,10 @@
 + [New-CTXAdministrator.ps1](./New-CTXAdministrator.ps1)
 
   Adds a new administrator to the site
+
++ [New-CTXMachine.ps1](./New-CTXMachine.ps1)
+
+  Adds a machine that can be used to run desktops and applications
 
 + [New-CTXRole.ps1](./New-CTXRole.ps1)
 
@@ -141,6 +161,14 @@
 + [Remove-CTXControllerMetadata.ps1](./Remove-CTXControllerMetadata.ps1)
 
   Removes metadata from the controller
+
++ [Remove-CTXMachine.ps1](./Remove-CTXMachine.ps1)
+
+  Removes the machine from its desktop group or catalog
+
++ [Remove-CTXMachineMetadata.ps1](./Remove-CTXMachineMetadata.ps1)
+
+  Removes metadata from the given machine
 
 + [Remove-CTXRight.ps1](./Remove-CTXRight.ps1)
 
@@ -214,6 +242,14 @@
 
   Adds or updates metadata for the Controller
 
++ [Set-CTXMachine.ps1](./Set-CTXMachine.ps1)
+
+  Sets properties on a machine
+
++ [Set-CTXMachineMetadata.ps1](./Set-CTXMachineMetadata.ps1)
+
+  Adds or updates metadata on the given machine
+
 + [Set-CTXRole.ps1](./Set-CTXRole.ps1)
 
   Set the properties of a role
@@ -245,3 +281,7 @@
 + [Test-CTXAccess.ps1](./Test-CTXAccess.ps1)
 
   Retrieves the scopes where the specified operation is permitted
+
++ [Test-CTXMachineNameAvailable.ps1](./Test-CTXMachineNameAvailable.ps1)
+
+  Determine whether the proposed Machine MachineName is available for use

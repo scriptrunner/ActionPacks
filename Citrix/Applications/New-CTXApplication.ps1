@@ -114,6 +114,9 @@
         [sr-en] Specifies whether a shortcut to the application should be placed in the user's start menu on their user device
         [sr-de] Verknüpfung zur Anwendung in das Startmenü des Benutzers auf seinem Endgerät legen
 
+    .Parameter StartMenuFolder
+        [sr-en] Name of the start menu folder
+
     .Parameter UserFilterEnabled	
         [sr-en] Specifies whether the application's user filter is enabled or disabled
         [sr-de] Benutzerfilter der Anwendung
@@ -194,6 +197,9 @@ param(
     [Parameter(ParameterSetName = 'ApplicationGroup')]
     [Parameter(ParameterSetName = 'DesktopGroup')]
     [bool]$ShortcutAddedToStartMenu,
+    [Parameter(ParameterSetName = 'ApplicationGroup')]
+    [Parameter(ParameterSetName = 'DesktopGroup')]
+    [string]$StartMenuFolder,
     [Parameter(ParameterSetName = 'ApplicationGroup')]
     [Parameter(ParameterSetName = 'DesktopGroup')]
     [bool]$UserFilterEnabled,
@@ -284,6 +290,9 @@ try{
     }
     if($PSBoundParameters.ContainsKey('ShortcutAddedToStartMenu') -eq $true){
         $cmdArgs.Add('ShortcutAddedToStartMenu',$ShortcutAddedToStartMenu)
+    }
+    if($PSBoundParameters.ContainsKey('StartMenuFolder') -eq $true){
+        $cmdArgs.Add('StartMenuFolder',$StartMenuFolder)
     }
     if($PSBoundParameters.ContainsKey('UserFilterEnabled') -eq $true){
         $cmdArgs.Add('UserFilterEnabled',$UserFilterEnabled)

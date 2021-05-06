@@ -92,7 +92,7 @@ Use cases for managing Citrix Systems and Solutions
 
 + Get catalogs, desktop groups, permission groups
 + Get applications, application groups
-+ Get scopes, roles, service
++ Get machines, scopes, roles, service
 + Get zones, zone users
 + Get sessions
 + Get high level operation ids

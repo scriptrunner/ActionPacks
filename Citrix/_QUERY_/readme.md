@@ -27,6 +27,10 @@
 
   Returns high level operations ids
 
++ [QUY_Get-CTXMachines.ps1](./QUY_Get-CTXMachines.ps1)
+
+  Returns machines belonging to this site 
+
 + [QUY_Get-CTXPermissionGroups.ps1](./QUY_Get-CTXPermissionGroups.ps1)
 
   Returns permission groups configured for the site

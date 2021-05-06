@@ -17,6 +17,7 @@
 
 .COMPONENT
     Requires Module microsoftteams
+    Requires a ScriptRunner Microsoft 365 target
     Requires Library script MSTLibrary.ps1
 
 .LINK
@@ -129,16 +130,10 @@
 .Parameter RetainCreatedGroup 
     [sr-en] Allow toggle of group cleanup if team creation fails
     [sr-de] Umschalten der Gruppenbereinigung, wenn die Teamerstellung fehlschlägt
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true)]   
     [ValidateLength(5,256)]
     [string]$DisplayName,
@@ -168,15 +163,13 @@ Param(
     [string]$Channels,    
     [ValidateSet('Strict','Moderate')]
     [string]$GiphyContentRating,
-    [switch]$RetainCreatedGroup,
-    [string]$TenantID
+    [switch]$RetainCreatedGroup
 )
 
 Import-Module microsoftteams
 
 try{
     [string[]]$Global:Properties = @('DisplayName','GroupId')
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     [hashtable]$Global:cmdArgs = @{'ErrorAction' = 'Stop'}  
     $cmdArgs.Add('DisplayName',$DisplayName)
@@ -247,5 +240,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

@@ -18,15 +18,11 @@
 
 .COMPONENT
     Requires Module microsoftteams
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Members
  
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
-
 .Parameter GroupId
     [sr-en] GroupId of the team
     [sr-de] Gruppen ID des Teams
@@ -42,17 +38,10 @@
 .Parameter UserIsOwner
     [sr-en] User is member of owner role
     [sr-de] Benutzer ist Besitzer
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
-    [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
-    [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
     [Parameter(Mandatory = $true, ParameterSetName = "Multi")]   
     [string]$GroupId,
@@ -61,17 +50,12 @@ Param(
     [Parameter(Mandatory = $true, ParameterSetName = "Single")]   
     [string]$User,    
     [Parameter(ParameterSetName = "Single")]
-    [switch]$UserIsOwner,
-    [Parameter(ParameterSetName = "Single")]
-    [Parameter(ParameterSetName = "Multi")]
-    [string]$TenantID
+    [switch]$UserIsOwner
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     $team = Get-Team -GroupId $GroupId -ErrorAction Stop | Select-Object -ExpandProperty DisplayName
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'GroupId' = $GroupId
@@ -108,5 +92,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

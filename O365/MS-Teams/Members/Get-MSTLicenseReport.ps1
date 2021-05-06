@@ -17,39 +17,26 @@
 
 .COMPONENT
     Requires Module microsoftteams 2.2.0 or greater
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Members
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter Period
     [sr-en] Period of notification events
     [sr-de] Zeitraum der Ereignisse
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
     [ValidateSet('7','30','90','180')]
-    [string]$Period,
-    [string]$TenantID
+    [string]$Period
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Period' = $Period
                             }  
@@ -66,5 +53,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

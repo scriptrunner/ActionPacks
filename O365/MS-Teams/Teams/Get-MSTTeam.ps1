@@ -17,14 +17,10 @@
 
 .COMPONENT
     Requires Module microsoftteams
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Benutzerkonto für die Ausführung
     
 .Parameter GroupId
     [sr-en] GroupId of the team
@@ -49,16 +45,10 @@
 .Parameter Properties
     [sr-en] List of properties to expand. Use * for all properties
     [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [string]$GroupId,
     [bool]$Archived,
     [string]$DisplayName,
@@ -66,15 +56,12 @@ Param(
     [ValidateSet('Public','Private')]
     [string]$Visibility,
     [ValidateSet('*','GroupId','DisplayName','Description','Visibility','MailNickName','Archived')]
-    [string[]]$Properties = @('GroupId','DisplayName','Description','Visibility','MailNickName','Archived'),
-    [string]$TenantID
+    [string[]]$Properties = @('GroupId','DisplayName','Description','Visibility','MailNickName','Archived')
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-    
     if($Properties -contains '*'){
         $Properties = @('*')
     }
@@ -108,5 +95,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

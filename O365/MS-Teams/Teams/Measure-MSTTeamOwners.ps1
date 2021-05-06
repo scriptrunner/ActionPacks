@@ -17,14 +17,10 @@
 
 .COMPONENT
     Requires Module microsoftteams
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter ThresholdValue
     [sr-en] Minimum number of owners
@@ -33,27 +29,18 @@
 .Parameter Archived
     [sr-en] Filters to return teams that have been archived or not
     [sr-de] Archivierte Teams anzeigen
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [ValidateRange(1,10)]
     [int]$ThresholdValue = 1,
-    [bool]$Archived,
-    [string]$TenantID
+    [bool]$Archived
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'Archived' = $Archived
                             }                              
@@ -84,5 +71,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

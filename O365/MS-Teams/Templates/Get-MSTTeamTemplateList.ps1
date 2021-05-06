@@ -18,38 +18,26 @@
     .COMPONENT
         Requires Module microsoftteams 1.1.1 or greater
         Requires .NET Framework Version 4.7.2.
-        Requires Library script MSTLibrary.ps1
+        Requires a ScriptRunner Microsoft 365 target
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Templates
     
-    .Parameter MSTCredential
-        [sr-en] Provides the user ID and password for organizational ID credentials
-        [sr-de] Benutzerkonto für die Ausführung
-
     .Parameter PublicTemplateLocale
         [sr-en] The language and country code of templates localization for Microsoft team templates
         [sr-de] Die Sprache und der Ländercode der Microsoft-Teamvorlagen
-
-    .Parameter TenantID
-        [sr-en] Specifies the ID of a tenant
-        [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [string]$PublicTemplateLocale,
     [ValidateSet('*','AppCount','Category','ChannelCount','Description','IconUri','Id','Locale','ModifiedBy','ModifiedOn','Name','OdataId','PublishedBy','Scope','ShortDescription','Visibility')]
-    [string[]]$Properties = @('Name','OdataId','ShortDescription','AppCount','ChannelCount','ModifiedBy','ModifiedOn','Scope', 'Visibility'),
-    [string]$TenantID
+    [string[]]$Properties = @('Name','OdataId','ShortDescription','AppCount','ChannelCount','ModifiedBy','ModifiedOn','Scope', 'Visibility')
 )
 
 Import-Module microsoftteams
 
 try{    
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
     if($Properties -contains '*'){
         $Properties = @('*')
     }
@@ -72,5 +60,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

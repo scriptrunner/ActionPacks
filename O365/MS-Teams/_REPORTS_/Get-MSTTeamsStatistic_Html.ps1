@@ -17,15 +17,11 @@
 
 .COMPONENT
     Requires Module microsoftteams
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
     Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/_REPORTS_
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter GroupId
     [sr-en] Specify the specific GroupId of the team to be returned
@@ -42,29 +38,20 @@
 .Parameter Visibility
     [sr-en] Filters to return teams with a set "visibility" value  
     [sr-de] Teams mit einem festgelegten "Sichtbarkeits"-Wert
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [string]$GroupId,
     [switch]$ExtendedReport,
     [bool]$Archived,
     [ValidateSet('Public','Private')]
-    [string]$Visibility,
-    [string]$TenantID
+    [string]$Visibility
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
                             'Archived' = $Archived
                             }  
@@ -121,5 +108,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

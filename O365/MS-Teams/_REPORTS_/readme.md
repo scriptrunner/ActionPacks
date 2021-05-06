@@ -18,9 +18,17 @@
 
   Generates a report with the channels for a team
 
++ [Get-MSTTeamChannels_Html.ps1](./Get-MSTTeamChannels_Html.ps1)
+
+    Generates a report with all or a specific channels for all teams
+
 + [Get-MSTTeamChannelUser_Html.ps1](./Get-MSTTeamChannelUser_Html.ps1)
   
   Generates a report with users of a channel
+
++ [Get-MSTTeamMemberByRole_Html.ps1](./Get-MSTTeamMemberByRole_Html.ps1)
+
+  Generates a report with the team members of the roles
 
 + [Get-MSTTeamsApp_Html.ps1](./Get-MSTTeamsApp_Html.ps1)
 

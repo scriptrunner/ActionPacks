@@ -17,15 +17,11 @@
 
 .COMPONENT
     Requires Module microsoftteams 1.1.4 or greater
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
     Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/_REPORTS_
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter GroupId 
     [sr-en] Specify the specific GroupId
@@ -34,27 +30,18 @@
 .Parameter PolicyType
     [sr-en] The type of the policy package
     [sr-de] Typ des Ploiciy Pakets    
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [string]$GroupId,
     [ValidateSet('TeamsAppSetupPolicy', 'TeamsCallingPolicy', 'TeamsCallParkPolicy', 'TeamsChannelsPolicy', 'TeamsComplianceRecordingPolicy', 'TeamsEducationAssignmentsAppPolicy', 'TeamsMeetingBroadcastPolicy', 'TeamsMeetingPolicy', 'TeamsMessagingPolicy')]
-    [string]$PolicyType,
-    [string]$TenantID
+    [string]$PolicyType
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
                             
     if([System.String]::IsNullOrWhiteSpace($PolicyType) -eq $false){
@@ -72,5 +59,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

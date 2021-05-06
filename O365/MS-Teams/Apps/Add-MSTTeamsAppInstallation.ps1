@@ -18,14 +18,10 @@
 .COMPONENT
     Requires Module microsoftteams 1.1.5 or greater
     Requires .NET Framework Version 4.7.2.
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Apps
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
 .Parameter AppId
     [sr-en] Teams App identifier in Microsoft Teams
@@ -42,17 +38,10 @@
 .Parameter Permissions     
     [sr-en] RSC permissions for the Teams App, e.g. "TeamSettings.Read.Group ChannelMessage.Read.Group"
     [sr-de] RSC-Berechtigungen für die Teams-App, z.B. "TeamSettings.Read.Group ChannelMessage.Read.Group"
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true,ParameterSetName ="byTeam")]   
-    [Parameter(Mandatory = $true,ParameterSetName ="byUser")]   
-    [pscredential]$MSTCredential,    
     [Parameter(Mandatory = $true,ParameterSetName ="byTeam")]   
     [string]$TeamID,
     [Parameter(Mandatory = $true,ParameterSetName ="byUser")]  
@@ -62,17 +51,13 @@ Param(
     [string]$AppId,   
     [Parameter(ParameterSetName ="byTeam")]   
     [Parameter(ParameterSetName ="byUser")]  
-    [string]$Permissions,
-    [Parameter(ParameterSetName ="byTeam")]   
-    [Parameter(ParameterSetName ="byUser")]  
-    [string]$TenantID
+    [string]$Permissions
 )
 
 Import-Module microsoftteams
 
 try{
     [string[]]$Properties = @('DisplayName','TeamsAppId','Version','TeamsAppDefinitionId')
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AppId' = $AppId
@@ -104,5 +89,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

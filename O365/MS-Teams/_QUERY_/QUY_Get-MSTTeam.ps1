@@ -17,36 +17,19 @@
 
 .COMPONENT
     Requires Module microsoftteams
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
- 
-.Parameter MSTCredential
-    Provides the user ID and password for organizational ID credentials
-
-.Parameter TenantID
-    Specifies the ID of a tenant
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
-    [string]$TenantID
 )
 
 Import-Module microsoftteams
 
 try{
-    [hashtable]$getArgs = @{'ErrorAction' = 'Stop'
-                        'Confirm' = $false
-                        'Credential' = $MSTCredential
-                        }
-    if([System.String]::IsNullOrWhiteSpace($TenantId) -eq $false){
-        $getArgs.Add('TenantId', $TenantId)
-    }
-    $null = Connect-MicrosoftTeams @getArgs
-
     $teams = Get-Team -ErrorAction Stop | Sort-Object -Property DisplayName    
     foreach($itm in  $teams){
         if($SRXEnv) {            
@@ -57,7 +40,6 @@ try{
             Write-Output $itm.DisplayName 
         }
     }
-    Disconnect-MicrosoftTeams -Confirm:$false
 }
 catch{
     throw

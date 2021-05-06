@@ -18,14 +18,10 @@
 .COMPONENT
     Requires Module microsoftteams 1.0.3 or greater
     Requires .NET Framework Version 4.7.2.
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Apps
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter AppPath
     [sr-en] The local path of the app manifest zip file
@@ -33,30 +29,21 @@
 
 .Parameter DistributionMethod    
     [sr-en] The type of app in Teams. For LOB apps, use "organization" 
-    [sr-de] Art der Anwendung in Teams. Für LOB-Apps verwenden Sie "Organisation". 
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] Identifier des Mandanten
+    [sr-de] Art der Anwendung in Teams. Für LOB-Apps verwenden Sie "Organisation"
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
     [string]$AppPath,
     [Parameter(Mandatory = $true)]   
     [ValidateSet('organization','global')]
-    [string]$DistributionMethod = 'organization',
-    [string]$TenantID
+    [string]$DistributionMethod = 'organization'
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Path' = $AppPath
                             'DistributionMethod' = $DistributionMethod
@@ -75,5 +62,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

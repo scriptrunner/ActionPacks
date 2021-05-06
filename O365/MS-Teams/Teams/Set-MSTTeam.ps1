@@ -17,14 +17,11 @@
 
 .COMPONENT
     Requires Module microsoftteams
+    Requires a ScriptRunner Microsoft 365 target
     Requires Library script MSTLibrary.ps1
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
 .Parameter GroupId
     [sr-en] GroupId of the team
@@ -117,10 +114,6 @@
 .Parameter ShowInTeamsSearchAndSuggestions
     [sr-en] Determines whether or not private teams should be searchable from Teams clients for users who do not belong to that team
     [sr-de] Private Teams können von Teams-Clients nach Benutzern durchsucht werden
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
@@ -161,7 +154,6 @@ Import-Module microsoftteams
 
 try{
     [string[]]$Global:Properties = @('DisplayName','GroupId')
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     [hashtable]$Global:cmdArgs = @{'ErrorAction' = 'Stop'
                                     'GroupId' = $GroupId
@@ -200,5 +192,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

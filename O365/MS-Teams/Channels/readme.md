@@ -2,6 +2,10 @@
 
 > Note: The use of the scripts requires the PowerShell Module microsoftteams.
 
++ [Add-MSTTeamChannelToAllTeams.ps1](./Add-MSTTeamChannelToAllTeams.ps1)
+
+  Add new channels to all teams
+
 + [Add-MSTTeamChannelUser.ps1](./Add-MSTTeamChannelUser.ps1)
 
   Adds an owner or member to the private channel
@@ -21,6 +25,10 @@
 + [Remove-MSTTeamChannel.ps1](./Remove-MSTTeamChannel.ps1)
 
   Delete a channel
+
++ [Remove-MSTTeamChannelFromAllTeams.ps1](./Remove-MSTTeamChannelFromAllTeams.ps1)
+
+  Removes channels from all teams
 
 + [Remove-MSTTeamChannelUser.ps1](./Remove-MSTTeamChannelUser.ps1)
 

@@ -18,14 +18,10 @@
     .COMPONENT
         Requires Module microsoftteams 1.1.1 or greater
         Requires .NET Framework Version 4.7.2.
-        Requires Library script MSTLibrary.ps1
+        Requires a ScriptRunner Microsoft 365 target
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Templates
-    
-    .Parameter MSTCredential
-        [sr-en] Provides the user ID and password for organizational ID credentials
-        [sr-de] Benutzerkonto für die Ausführung
 
     .Parameter ODataId
         [sr-en] Composite URI of the template
@@ -34,31 +30,20 @@
     .Parameter Name
         [sr-en] Name of the template
         [sr-de] Name der Vorlage
-
-    .Parameter TenantID
-        [sr-en] Specifies the ID of a tenant
-        [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true, ParameterSetName = 'ById')]   
-    [Parameter(Mandatory = $true, ParameterSetName = 'ByName')]
-    [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true, ParameterSetName = 'ById')]  
     [string]$ODataId,
     [Parameter(Mandatory = $true, ParameterSetName = 'ByName')]  
-    [string]$Name,
-    [Parameter(ParameterSetName = 'ById')]   
-    [Parameter(ParameterSetName = 'ByName')]
-    [string]$TenantID
+    [string]$Name
 )
 
 Import-Module microsoftteams
 
 try{
     [string[]]$Properties = @('Name','OdataId')
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     if($PSCmdlet.ParameterSetName -eq 'ById'){
         $null = Remove-CsTeamTemplate -OdataId $ODataId -ErrorAction Stop
@@ -79,5 +64,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

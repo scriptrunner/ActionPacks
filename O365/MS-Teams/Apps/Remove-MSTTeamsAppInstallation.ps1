@@ -18,14 +18,10 @@
 .COMPONENT
     Requires Module microsoftteams 1.1.5 or greater
     Requires .NET Framework Version 4.7.2.
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Apps
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
 .Parameter AppId
     [sr-en] Teams App identifier in Microsoft Teams
@@ -42,17 +38,10 @@
 .Parameter AppInstallationId     
     [sr-en] Installation identifier of the Teams App
     [sr-de] Installations ID der Teams App
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true,ParameterSetName ="byTeam")]   
-    [Parameter(Mandatory = $true,ParameterSetName ="byUser")]   
-    [pscredential]$MSTCredential,    
     [Parameter(Mandatory = $true,ParameterSetName ="byTeam")]   
     [string]$TeamID,
     [Parameter(Mandatory = $true,ParameterSetName ="byUser")]  
@@ -62,17 +51,13 @@ Param(
     [string]$AppId,   
     [Parameter(ParameterSetName ="byTeam")]   
     [Parameter(ParameterSetName ="byUser")]  
-    [string]$AppInstallationId,
-    [Parameter(ParameterSetName ="byTeam")]   
-    [Parameter(ParameterSetName ="byUser")]  
-    [string]$TenantID
+    [string]$AppInstallationId
 )
 
 Import-Module microsoftteams
 
 try{
     [string[]]$Properties = @('DisplayName','TeamsAppId','Version','TeamsAppDefinitionId')
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
 
@@ -105,5 +90,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

@@ -16,7 +16,7 @@
 
     .COMPONENT
         Requires Module microsoftteams 1.1.6 or greater
-        Requires Library script MSTLibrary.ps1
+        Requires a ScriptRunner Microsoft 365 target
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Common

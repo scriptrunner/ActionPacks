@@ -17,14 +17,10 @@
 
 .COMPONENT
     Requires Module microsoftteams 1.1.5 or greater
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter GroupId 
     [sr-en] Specifies the object id of the group
@@ -41,31 +37,22 @@
 .Parameter Rank
     [sr-en] The new rank of the policy assignment
     [sr-de] Die neue Position der Policy Zuweisung
- 
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true)]  
     [string]$GroupId,
     [Parameter(Mandatory = $true)]  
     [ValidateSet('TeamsAppSetupPolicy', 'TeamsCallingPolicy', 'TeamsCallParkPolicy', 'TeamsChannelsPolicy', 'TeamsComplianceRecordingPolicy', 'TeamsEducationAssignmentsAppPolicy', 'TeamsMeetingBroadcastPolicy', 'TeamsMeetingPolicy', 'TeamsMessagingPolicy')]
     [string]$PolicyType,
     [string]$PolicyName,
-    [int]$Rank,
-    [string]$TenantID
+    [int]$Rank
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$setArgs = @{'ErrorAction' = 'Stop'
                             'PolicyType' = $PolicyType
                             'GroupId' = $GroupId
@@ -94,5 +81,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

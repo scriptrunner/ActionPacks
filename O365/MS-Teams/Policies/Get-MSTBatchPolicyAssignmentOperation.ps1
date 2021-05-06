@@ -17,14 +17,10 @@
 
 .COMPONENT
     Requires Module microsoftteams 1.0.5 or greater
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
 
 .Parameter OperationID
     [sr-en] The ID of the operation
@@ -33,27 +29,18 @@
 .Parameter Status
     [sr-en] The status for the operation
     [sr-de] Status der Operation
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
     [string]$OperationID,
     [ValidateSet('NotStarted', 'InProgress', 'Completed')]
-    [string]$Status,
-    [string]$TenantID
+    [string]$Status
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$getArgs = @{'ErrorAction' = 'Stop'}  
     if([System.string]::IsNullOrWhiteSpace($OperationID) -eq $false){
         $getArgs.Add('OperationID',$OperationID)
@@ -74,5 +61,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

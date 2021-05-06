@@ -18,14 +18,10 @@
     .COMPONENT
         Requires Module microsoftteams 1.1.1 or greater
         Requires .NET Framework Version 4.7.2.
-        Requires Library script MSTLibrary.ps1
+        Requires a ScriptRunner Microsoft 365 target
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Templates
-    
-    .Parameter MSTCredential
-        [sr-en] Provides the user ID and password for organizational ID credentials
-        [sr-de] Benutzerkonto für die Ausführung
 
     .Parameter DisplayName
         [sr-en] Name of the template
@@ -74,16 +70,10 @@
     .Parameter Visibility
         [sr-en] Control the scope of users who can view a group/team and its members, and ability to join
         [sr-de] Anwendungsbereich von Benutzern, die eine Gruppe/ein Team und deren Mitglieder sehen können, sowie die Möglichkeit, ihnen beizutreten
-
-    .Parameter TenantID
-        [sr-en] Specifies the ID of a tenant
-        [sr-de] Identifier des Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]
-    [pscredential]$MSTCredential,
     [Parameter(Mandatory = $true)]  
     [string]$DisplayName,
     [Parameter(Mandatory = $true)]  
@@ -99,15 +89,12 @@ Param(
     [string]$PublishedBy,
     [string]$Uri,
     [ValidateSet('Private','Public')]
-    [string]$Visibility = 'Private',
-    [string]$TenantID
+    [string]$Visibility = 'Private'
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'Confirm' = $false
                             'Locale' = $Locale
@@ -156,5 +143,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

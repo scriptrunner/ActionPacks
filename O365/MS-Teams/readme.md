@@ -13,6 +13,7 @@ Use cases for managing Microsoft Teams
 + Create/set/get/remove Team channel
 + Add/get/remove users to a Team channel
 + Send a message to a Team Channel
++ Add/remove channels to all teams
 
 ## [Common](./Common)
 
@@ -21,6 +22,7 @@ Use cases for managing Microsoft Teams
 ## [Members](./Members)
 
 + Add/get/remove users from a team
++ Add/remove users to all teams
 + Get Multi Geo Region
 + Get License report
 
@@ -54,6 +56,8 @@ Use cases for managing Microsoft Teams
 + Generate report with user policy assignments, user policy packages, user policy package recommendation
 + Generate report with group policy assignments
 + Generate report with policy packages
++ Report with all team members, with role, from all teams
++ Report with all team channels, from all teams
 
 ## [Queries](./_QUERY_)
 

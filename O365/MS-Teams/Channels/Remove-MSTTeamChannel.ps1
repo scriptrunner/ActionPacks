@@ -17,14 +17,10 @@
 
 .COMPONENT
     Requires Module microsoftteams
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Channels
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Benutzerkonto für die Ausführung
 
 .Parameter GroupId
     [sr-en] Specifies the object id of the group
@@ -33,29 +29,20 @@
 .Parameter DisplayName
     [sr-en] Channel display name
     [sr-de] Anzeigename des Channels
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
     [string]$GroupId,
     [Parameter(Mandatory = $true)]   
     [ValidateLength(5,50)]
-    [string]$DisplayName,
-    [string]$TenantID
+    [string]$DisplayName
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'DisplayName' = $DisplayName
                             'GroupId' = $GroupId
@@ -74,5 +61,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

@@ -17,14 +17,10 @@
 
 .COMPONENT
     Requires Module microsoftteams 1.1.7 or greater
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Policies
- 
-.Parameter MSTCredential
-    [sr-en] Provides the user ID and password for organizational ID credentials
-    [sr-de] Enthält den Benutzernamen und das Passwort für die Anmeldung
     
 .Parameter Identity 
     [sr-en] Name of the custom package.
@@ -39,29 +35,20 @@
 .Parameter Description
     [sr-en] Description of the custom package
     [sr-de] Beschreibung des benutzerdefinierten Pakets
- 
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
     [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
-    [Parameter(Mandatory = $true)]   
     [string]$Identity,
     [Parameter(Mandatory = $true)]   
     [string]$PolicyList,
-    [string]$Description,
-    [string]$TenantID
+    [string]$Description
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-
     $check = (Get-Command Update-CsCustomPolicyPackage -ErrorAction SilentlyContinue)
     if($null -eq $check){
         throw "Command is not available in the current module version"
@@ -89,5 +76,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

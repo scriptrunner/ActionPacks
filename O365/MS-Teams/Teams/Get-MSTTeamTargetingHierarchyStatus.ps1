@@ -17,37 +17,24 @@
 
 .COMPONENT
     Requires Module microsoftteams
-    Requires Library script MSTLibrary.ps1
+    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Teams
- 
-.Parameter MSTCredential
-    [sr-en] GroupId of the parent team
-    [sr-de] Gruppen ID des Teams
 
 .Parameter RequestID
     [sr-en] 
     [sr-de] 
-
-.Parameter TenantID
-    [sr-en] Specifies the ID of a tenant
-    [sr-de] ID eines Mandanten
 #>
 
 [CmdLetBinding()]
 Param(
-    [Parameter(Mandatory = $true)]   
-    [pscredential]$MSTCredential,
-    [string]$RequestID,
-    [string]$TenantID
+    [string]$RequestID
 )
 
 Import-Module microsoftteams
 
 try{
-    ConnectMSTeams -MTCredential $MSTCredential -TenantID $TenantID
-    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}  
                             
     if([System.String]::IsNullOrWhiteSpace($RequestID) -eq $false){
@@ -67,5 +54,4 @@ catch{
     throw
 }
 finally{
-    DisconnectMSTeams
 }

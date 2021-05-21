@@ -35,6 +35,9 @@ Collection of useful ScriptRunner AddOns
 ## [Statistics](./Statistics)
 Scripts for analysing the usage and time savings of ScriptRunner Actions
 
+## [Templates](./Templates)
+Script development templates for use with scriptrunner
+
 ## [VMware](./VMware)
 Use cases for managing the VMware virtualization platform
 

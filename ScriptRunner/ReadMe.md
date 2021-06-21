@@ -12,3 +12,5 @@ Collection of useful ScriptRunner AddOns
 ## [Script Synchronization](./Script%20Synchronization)
 
 + Synchronize scripts to ScriptRunner script repository
+
+## [WebSvcConnector](./WebSvcConnector)

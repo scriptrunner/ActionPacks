@@ -29,14 +29,14 @@ Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online
 ## [Reporting](./Reporting)
 Report examples
 
-## [ScriptRunner Tools](./ScriptRunner%20Tools)
+## [ScriptRunner](./ScriptRunner)
 Collection of useful ScriptRunner AddOns
 
 ## [Statistics](./Statistics)
 Scripts for analysing the usage and time savings of ScriptRunner Actions
 
 ## [Templates](./Templates)
-Script development templates for use with scriptrunner
+Script development templates for use with ScriptRunner
 
 ## [VMware](./VMware)
 Use cases for managing the VMware virtualization platform

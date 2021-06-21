@@ -1,2 +1,2 @@
 # Templates
-Script development templates for use with scriptrunner
+Script development templates for use with ScriptRunner

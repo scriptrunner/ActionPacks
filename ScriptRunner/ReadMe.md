@@ -14,3 +14,5 @@ Collection of useful ScriptRunner AddOns
 + Synchronize scripts to ScriptRunner script repository
 
 ## [WebSvcConnector](./WebSvcConnector)
+
++ Sample PowerShell code to call into the WebService Connector

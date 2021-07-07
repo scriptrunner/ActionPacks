@@ -1,8 +1,30 @@
+﻿<#
+	.NOTES
+		Copyright (c) ScriptRunner Software GmbH.  All rights reserved.
+
+		THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES.
+		The customer or user is authorized to copy the script from the repository and use them for ScriptRunner. 
+		The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH 
+		assumes no liability for the function, the use and the consequences of the use of this freely available script.
+		PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+
+	.SYNOPSIS
+		This PowerShell script file contains example PowerShell code calling the ScriptRunner WebService Connector.
+	.DESCRIPTION  
+		Dot source the script in your PowerShell session to make the contained commands available,
+		and type "Get-help Start-AsrWeb*" for a contained function to see the detailed description
+		of the function and the parameters.
+	.LINK
+		https://github.com/scriptrunner/ActionPacks/blob/master/ScriptRunner/WebSvcConnector
+#>
+
 ''
 'This PowerShell script file contains example PowerShell code calling the ScriptRunner WebService Connector.'
+'Dot source the script in your PowerShell session to make the contained commands available.'
 ''
 # For conveniance you can set your ScriptRunner server here, and run the functions without the endpoint parameter.
-# The default is localhost:port, using the built-in local loopback connector on the ScriptRunner host.
+# The default is http://localhost:8091/, to e.g. use the built-in local loopback connector
+# directly on the ScriptRunner host.
 $defaultserver = 'localhost:8091'
 $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 
@@ -13,8 +35,8 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 ''
 'Use the Start-AsrWebSvcConnector, Start-AsrWebhook, and Start-AsrWebSvcConnector2 function respectively'
 'to give it a try. '
-'The built-in endpoint URI http://localhost:8091/ScriptRunner may work on the ScriptRunner host only.'
-
+'The built-in default endpoint URI http://localhost:8091/ScriptRunner will work on the ScriptRunner host only.'
+''
 
 #################################################################
 #################### Action Webhook API ####################
@@ -32,6 +54,8 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 
 	.PARAMETER BodyString
 	Arbitrary payload string to be transfered in the body of the POST request.
+	ScriptRunner will call your script with this string given as the $bodyString parameter value
+	(if your script has such a parameter).
 	To send structured data, like a Hashtable, send it as a JSON string, and decode it in your script
 	using ConvertFrom-Json.
 
@@ -53,10 +77,34 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 	and the ID of the Action.
 	You find the Webhook URI of an Action in the Admin App, on the first card of the Action Edit Wizard.
 
+	.PARAMETER WaitForResult
+	Optional: Do not only trigger the given Action in ScriptRunner, but also wait for the Action to 
+	finish, and fetch and output the results of the Action.
+
 	.PARAMETER BasicAuthCreds
 	Optional: Basic Auth credentials, to use Basic Authentication (on the ScriptRunner STS port).
 	Without this parameter, the call will use Windows Integrated Auth for the current user
 	(Invoke-WebRequest -UseDefaultCredentials).
+
+	.EXAMPLE
+		Start-AsrWebhook -BodyString 'somerawvalue' -ActionID 10 -WaitForResult
+
+		This command will start the Action with ID 10 in ScriptRunner, with a raw body value 'somerawvalue' (no JSON),
+		and will print the results after the respective script has finished.
+		This command assumes ScriptRunner to listen on the endpoint URI http://localhost:8091/ScriptRunner
+		(unless you did not change the default at the top of this script); which means you have to run
+		this example locally on the ScriptRunner host, and did not switch ScriptRunner to HTTPS or
+		to a port different than 8091.
+		Alternatively you can run Start-AsrWebhook (locally or from remote) and add the -Endpoint parameter with a
+		proper endpoint URI.
+
+	.EXAMPLE
+		Start-AsrWebhook -BodyString '{ "firstName": "John", "lastName": "Doe" }' -ActionID 10 -Endpoint 'https://host.domain.com:8092/ScriptRunner'
+
+		This command will start the Action with ID 10 in ScriptRunner, with a JSON body value you can decode
+		in your script with ConvertFrom-Json.
+		This command assumes ScriptRunner to listen on the endpoint URI https://host.domain.com:8092/ScriptRunner,
+		i.e. on a machine host.domain.com where a proper SSL certificate is installed and bound on port 8092.
 #>
 
 function Start-AsrWebhook {
@@ -71,7 +119,7 @@ function Start-AsrWebhook {
 		[string]$ActionID,
 		[Parameter(ParameterSetName="ID")]
 		[string]$Endpoint,
-		[switch]$waitForResult,
+		[switch]$WaitForResult,
 		[PSCredential]$BasicAuthCreds = $null
 	)
 
@@ -129,7 +177,7 @@ function Start-AsrWebhook {
 		if ($jcuri) {
 			# Poll this URI until the returned JobControl structure has Running=False, at which point the script has finished.
 			# Then the JobControl structure will contain the results along with the script execution report:
-			if ($waitForResult.IsPresent) {
+			if ($WaitForResult.IsPresent) {
 				$jc = $null
 				_WaitForResultFromUri -Uri $jcuri -basicAuthHeader $Headers -jc ([ref]$jc)
 				# if the job has finished, we can access the results.
@@ -155,7 +203,13 @@ function Start-AsrWebhook {
 
 	.DESCRIPTION
 	You can start a ScriptRunner Action by Action name or by Action ID. The OData API expects a POST body
-	containing JSON data in a specific structure. OData can transport an element ID in the request URI.
+	containing JSON data in a specific structure. OData transports the Action ID in the request URI.
+	Since PowerShell execution is asynchronous in ScriptRunner (and may take a long time, depending on the script),
+	the Action may not have finished when the WebService call returns; therefore, ScriptRunner responds
+	with a JobControl control structure containing the status that you can poll (on another URI)
+	until the Action completes.
+	Due to this asynchronous complexity, it may be preferable to explicitly respond, to the calling system,
+	from your script executing in ScriptRunner, using a respective API of the calling system.
 
 	.PARAMETER Endpoint
 	Optional: The ScriptRunner endpoint for the WebService connector, like 'http://server:port/ScriptRunner/' or
@@ -192,11 +246,15 @@ function Start-AsrWebhook {
 	Optional: String describing the root cause why the Action was executed
 
 	.PARAMETER WaitTime
-	Optional: Time (in seconds) to block the server waiting for the script to finish.
-	Use carefully! Alternatively, you can poll ScriptRunner for the results:
-	If the response (containing a JobControl in JSON) returns with Running=True, you
-	can poll this instance until Running=False; then the instance will contain the
-	complete results (report, result message, ...).
+	Optional: Time (in seconds) to block the server internally waiting for the script to finish.
+	Use with care, to avoid blowing up your ScriptRunner instance!
+	Alternatively, if you really need the results in your calling system, consider 
+	* explicitly calling back into the calling system with a new status, directly
+	  in your script executing in ScriptRunner, or
+	* poll ScriptRunner asynchronously for the results in your calling system (as shown in the code below):
+	  If the response (containing a JobControl in JSON) returns with Running=True, you
+	  can poll this instance until Running=False; then the instance will contain the
+	  complete results (report, result message, ...).
 #>
 function Start-AsrWebSvcConnector {
 	[CmdletBinding()]

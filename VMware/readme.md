@@ -83,6 +83,10 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get/set a resource pool
 + Add/remove a resource pool
 
+## [Specifications](./Specifications)
+
++ New, get, set, copy, remove OS customization specifications
+
 ## [Tasks](./Tasks)
 
 + Get history tasks

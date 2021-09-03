@@ -75,6 +75,10 @@
 
   Retrieves the virtual network adapters available on a vCenter Server system
 
++ [QUY_Get-VMHVOSCustomizationSpec.ps1](./QUY_Get-VMHVOSCustomizationSpec.ps1)
+
+  Retrieves the OS customization specifications available on a vCenter Server system
+
 + [QUY_Get-VMHVPortGroups.ps1](./QUY_Get-VMHVPortGroups.ps1)
 
   Retrieves distributed port groups

@@ -111,6 +111,10 @@
 
   Retrieves running or queued tasks
 
++ [QUY_Get-VMHVvDisk.ps1](./QUY_Get-VMHVvDisk.ps1)
+
+  Retrieves VDisk objects
+
 + [QUY_Get-VMHVVirtualMachineIDs.ps1](./QUY_Get-VMHVVirtualMachineIDs.ps1)
 
   Retrieves the IDs of the virtual machines on a vCenter Server system

@@ -18,11 +18,12 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get/set a datastore
 + Add/remove a datastore
 
-## [Hard disks](./Disks)
+## [Disks](./Disks)
 
 + Get/set a hard disk
 + Add/copy/move/remove a hard disk
 + Add/get/set a SCSI controller
++ Add, get, set, copy, move, remove VDisk
 
 ## [Drives](./Drives)
 
@@ -134,6 +135,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Search virtual switches IDs or names
 + Search virtual machine IDs or names
 + Search disk IDs, paths or names
++ Search VDisks
 + Search running or queued tasks
 + Search available folders
 + Search available network adapters

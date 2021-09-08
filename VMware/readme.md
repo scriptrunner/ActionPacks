@@ -3,7 +3,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 
 > Note: The use of the scripts requires the PowerShell Module VMware.PowerCLI.
 
-## [Cluster](./Datacenter)
+## [Cluster](./Cluster)
 
 + Get/set a cluster
 + Add/move/remove a cluster
@@ -74,6 +74,10 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get virtual port groups
 + Get distributed switches
 
+## [Patches](./Patches)
+
++ Copy, get, sync patches
+
 ## [PowerCLI](./PowerCLI)
 
 + Get/set a PowerCLI configuration
@@ -93,7 +97,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get history tasks
 + Get/Stop a task
 
-## [Templates](./Template)
+## [Templates](./Templates)
 
 + Create a new virtual machine template
 + Convert/clone/register/remove a virtual machine template
@@ -127,6 +131,10 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get server properties
 + Get statistical informations
 + Exposes the ESXCLI functionality
+
+## [Reports](./_REPORTS_)
+
++ Report all available patches
 
 ## [Queries](./_QUERY_)
 

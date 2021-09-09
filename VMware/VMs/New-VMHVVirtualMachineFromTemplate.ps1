@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 4.0
 # Requires -Modules VMware.PowerCLI
 
 <#
@@ -49,7 +49,10 @@
     Specifies the storage format of the disks of the virtual machine
 
 .Parameter OSCustomizationSpec
-    Specifies a customization specification that is to be applied to the new virtual machine
+    [sr-en] Specifies a customization specification that is to be applied to the new virtual machine. 
+    This works only in 32-bit mode 
+    [sr-de] Benutzerdefinierte Einstellungen der neuen virtuellen Maschine
+    Nur für 32Bit
 
 .Parameter Location
     Specifies the folder where you want to place the new virtual machine
@@ -94,7 +97,6 @@ Param(
     [string]$DiskStorageFormat = "Thick",
     [Parameter(ParameterSetName = "onDatastore")]
     [Parameter(ParameterSetName = "onCluster")]
-    [ValidateSet("NonPersistent","Persistent")]
     [string]$OSCustomizationSpec,
     [Parameter(ParameterSetName = "onDatastore")]
     [Parameter(ParameterSetName = "onCluster")]
@@ -140,11 +142,12 @@ try{
     if([System.String]::IsNullOrEmpty($Location) -eq $false){
          $cmdArgs.Add('Location', $folder)
     }
+    if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
+        $spec = Get-OSCustomizationSpec -Name $OSCustomizationSpec -Server $Script:vmServer
+        $cmdArgs.Add('OSCustomizationSpec' ,$spec)
+    }
     $Script:machine = New-VM @cmdArgs
     
-    if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
-        $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -OSCustomizationSpec $OSCustomizationSpec -Confirm:$False -ErrorAction Stop
-    }
     if($PSCmdlet.ParameterSetName  -eq "onCluster"){
         if($PSBoundParameters.ContainsKey('DrsAutomationLevel') -eq $true){
             $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -DrsAutomationLevel $DrsAutomationLevel -Confirm:$False -ErrorAction Stop

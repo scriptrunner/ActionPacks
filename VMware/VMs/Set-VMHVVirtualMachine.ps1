@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 4.0
 # Requires -Modules VMware.PowerCLI
 
 <#
@@ -52,7 +52,10 @@
     Specifies the guest operating system
 
 .Parameter OSCustomizationSpec
-    Specifies a customization specification that is to be applied to the virtual machine
+    [sr-en] Customization specification that is to be applied to the virtual machine. 
+    This works only in 32-bit mode 
+    [sr-de] Benutzerdefinierte Einstellungen der virtuellen Maschine
+    Nur für 32Bit
 
 .Parameter HardwareVersion
     Specifies the version to which you want to upgrade the virtual machine. 
@@ -97,7 +100,6 @@ Param(
     [string]$GuestId,
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
-    [ValidateSet("NonPersistent","Persistent")]
     [string]$OSCustomizationSpec,
     [Parameter(ParameterSetName = "byID")]
     [Parameter(ParameterSetName = "byName")]
@@ -140,7 +142,8 @@ try{
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -GuestId $GuestId -Confirm:$False -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
-        $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -OSCustomizationSpec $OSCustomizationSpec -Confirm:$False -ErrorAction Stop
+        $spec = Get-OSCustomizationSpec -Name $OSCustomizationSpec -Server $Script:vmServer
+        $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -OSCustomizationSpec $spec -Confirm:$False -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('HardwareVersion') -eq $true){
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -HardwareVersion $HardwareVersion -Confirm:$False -ErrorAction Stop

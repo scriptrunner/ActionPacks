@@ -66,6 +66,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get host disks
 + Get PCI devices
 + Get/add routes from the routing table
++ Get, install host patches
 
 ## [Network](./Network)
 
@@ -135,6 +136,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 ## [Reports](./_REPORTS_)
 
 + Report all available patches
++ Report all host patches
 
 ## [Queries](./_QUERY_)
 

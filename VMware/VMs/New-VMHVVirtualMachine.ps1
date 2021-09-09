@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 # Requires -Modules VMware.PowerCLI
 
 <#
@@ -124,7 +124,6 @@ Param(
     [ValidateSet("e1000","Flexible","Vmxnet","EnhancedVmxnet","Vmxnet3")]
     [string]$NetworkAdapterType = "e1000",
     [string]$GuestId,
-    [ValidateSet("NonPersistent","Persistent")]
     [string]$OSCustomizationSpec,
     [string]$HardwareVersion,
     [string]$Location,
@@ -167,12 +166,14 @@ try{
         $folder = Get-Folder -Server $Script:vmServer -Name $Location -ErrorAction Stop
         $cmdArgs.Add('Location' ,$Folder)
     }
+    if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
+        $spec = Get-OSCustomizationSpec -Name $OSCustomizationSpec -Server $Script:vmServer
+        $cmdArgs.Add('OSCustomizationSpec' ,$spec)
+    }
     $Script:machine = New-VM @cmdArgs
+
     if($PSBoundParameters.ContainsKey('GuestId') -eq $true){
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -GuestId $GuestId -Confirm:$False -ErrorAction Stop
-    }
-    if($PSBoundParameters.ContainsKey('OSCustomizationSpec') -eq $true){
-        $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -OSCustomizationSpec $OSCustomizationSpec -Confirm:$False -ErrorAction Stop
     }
     if($PSBoundParameters.ContainsKey('HardwareVersion') -eq $true){
         $null = Set-VM -Server $Script:vmServer -VM  $Script:machine -HardwareVersion $HardwareVersion -Confirm:$False -ErrorAction Stop

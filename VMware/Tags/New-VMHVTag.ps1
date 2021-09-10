@@ -1,0 +1,91 @@
+﻿#Requires -Version 5.0
+#Requires -Modules VMware.VimAutomation.Core
+
+<#
+    .SYNOPSIS
+        Creates a new tag
+
+    .DESCRIPTION
+
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
+
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Tags
+
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder Name des vSphere Servers
+
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto um diese Aktion durchzuführen
+
+    .Parameter Name
+        [sr-en] Name of the new tag
+        [sr-de] Name der neuen Tag
+
+    .Parameter Category
+        [sr-en] Category of the new tag
+        [sr-de] Kategorie des Tags
+
+    .Parameter Description
+        [sr-en] Description of the new tag
+        [sr-de] Beschreibung der Tag
+#>
+
+[CmdLetBinding()]
+Param(
+    [Parameter(Mandatory = $true)]
+    [string]$VIServer,
+    [Parameter(Mandatory = $true)]
+    [pscredential]$VICredential,
+    [Parameter(Mandatory = $true)]
+    [string]$Name,
+    [Parameter(Mandatory = $true)]
+    [string]$Category,
+    [string]$Description
+)
+
+Import-Module VMware.VimAutomation.Core
+
+try{
+    [string[]]$Properties = @('Name','Description','Category','Id')
+
+    $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop
+    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                            'Server' = $Script:vmServer
+                            'Name' = $Category
+    }
+    $cat = Get-TagCategory @cmdArgs
+    $cmdArgs.Add('Category', $cat)
+    $cmdArgs['Name'] = $Name
+    if($PSBoundParameters.ContainsKey('Description') -eq $true){
+        $cmdArgs.Add('Description', $Description)
+    }      
+
+    $result = New-Tag @cmdArgs | Select-Object $Properties
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $result
+    }
+    else{
+        Write-Output $result
+    }
+}
+catch{
+    throw
+}
+finally{    
+    if($null -ne $Script:vmServer){
+        Disconnect-VIServer -Server $Script:vmServer -Force -Confirm:$false
+    }
+}

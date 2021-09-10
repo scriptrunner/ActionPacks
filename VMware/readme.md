@@ -104,6 +104,12 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Convert/clone/register/remove a virtual machine template
 + Get/set a virtual machine template
 
+## [Tags](./Tags)
+
++ Get, set, new, remove tag category
++ Get, set, new, remove tag
++ Get, new, remove tag assignment
+
 ## [Virtual switches](./VirtualSwitch)
 
 + Get/set a virtual switch

@@ -3,10 +3,15 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 
 > Note: The use of the scripts requires the PowerShell Module VMware.PowerCLI.
 
+## [Administration](./Administration)
+
++ Import/export auto deploy state
+
 ## [Cluster](./Cluster)
 
 + Get/set a cluster
 + Add/move/remove a cluster
++ Add, get, set, move, remove datastore cluster
 
 ## [Datacenters](./Datacenter)
 
@@ -67,6 +72,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Get PCI devices
 + Get/add routes from the routing table
 + Get, install host patches
++ Get host profile required input
 
 ## [Network](./Network)
 
@@ -130,6 +136,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Start/suspend/restart/stop a guest system
 + Run a script in the guest OS of a virtual machine
 + Get/set resource configuration
++ Copies guest system files and folders 
 
 ## [VMware Server](./Server)
 
@@ -154,7 +161,7 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Search VDisks
 + Search running or queued tasks
 + Search available folders
-+ Search available network adapters
++ Search available network adapters, virtual networks
 + Search available host accounts
 + Search available host network adapters
 + Search available datastore IDs or names
@@ -165,5 +172,6 @@ Use cases for managing vCenter/ESXi Server, Virtual Machines and more
 + Search the names of then time zones available on the specified host
 + Search the names of the SCSI controllers
 + Search information about a host services
++ Search templates, clusters, datastore clusters
 
 ## [Library](./_LIB_)

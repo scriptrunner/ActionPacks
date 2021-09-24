@@ -86,6 +86,10 @@
 + [Get-VMHVHostStorage.ps1](./Get-VMHVHostStorage.ps1)
 
   Retrieves the host storages on a vCenter Server system
+  
++ [Get-VMHVHostProfileRequiredInput.ps1](./Get-VMHVHostProfileRequiredInput.ps1)
+
+  Check whether the available information is sufficient to apply a host profile, and returns missing values
 
 + [Import-VMHVHostProfile.ps1](./Import-VMHVHostProfile.ps1)
 

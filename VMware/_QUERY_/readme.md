@@ -7,6 +7,10 @@
 
   Retrieves the names of then time zones available on the specified host
 
++ [QUY_Get-VMHVCluster.ps1](./QUY_Get-VMHVCluster.ps1)
+
+  Retrieves names of the available clusters
+
 + [QUY_Get-VMHVDatacenterIDs.ps1](./QUY_Get-VMHVDatacenterIDs.ps1)
 
   Retrieves IDs of the available datacenters
@@ -14,6 +18,10 @@
 + [QUY_Get-VMHVDatacenters.ps1](./QUY_Get-VMHVDatacenters.ps1)
 
   Retrieves names of the available datacenters
+
++ [QUY_Get-VMHVDatastoreCluster.ps1](./QUY_Get-VMHVDatastoreCluster.ps1)
+
+  Retrieves names of the available datastore clusters
 
 + [QUY_Get-VMHVDatastoreIDs.ps1](./QUY_Get-VMHVDatastoreIDs.ps1)
 
@@ -111,6 +119,10 @@
 
   Retrieves running or queued tasks
 
++ [QUY_Get-VMHVTemplate.ps1](./QUY_Get-VMHVTemplate.ps1)
+
+  Retrieves names of the available templates
+
 + [QUY_Get-VMHVvDisk.ps1](./QUY_Get-VMHVvDisk.ps1)
 
   Retrieves VDisk objects
@@ -122,6 +134,10 @@
 + [QUY_Get-VMHVVirtualMachines.ps1](./QUY_Get-VMHVVirtualMachines.ps1)
 
   Retrieves the virtual machines on a vCenter Server system
+
++ [QUY_Get-VMHVVirtualNetwork.ps1](./QUY_Get-VMHVVirtualNetwork.ps1)
+
+  Retrieves names of the available networks
 
 + [QUY_Get-VMHVVirtualPortgroups.ps1](./QUY_Get-VMHVVirtualPortgroups.ps1)
 

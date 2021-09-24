@@ -6,6 +6,10 @@
 
   Creates a new virtual machine from a linked clone
 
++ [Copy-VMHVGuestFile.ps1](./Copy-VMHVGuestFile.ps1)
+
+  Copies files and folders from and to the guest OS
+
 + [Dismount-VMHVTools.ps1](./Dismount-VMHVTools.ps1)
 
   Dismounts the VMware Tools installer CD

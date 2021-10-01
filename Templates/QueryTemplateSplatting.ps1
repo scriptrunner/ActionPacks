@@ -31,7 +31,7 @@ param( # parameter block
 # Import the required modules, e.g. Import-Module ActiveDirectory
 
 try{ #error handling
-    $result = Get-ADUser # e.g. read Active Directory Users
+    $result = Get-ADUser -Filter * # e.g. read Active Directory Users
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
             $null = $SRXEnv.ResultList.Add(@{
@@ -40,10 +40,10 @@ try{ #error handling
                 FirstName = $itm.GivenName
                 LastName = $itm.Surname
             }) # Value
-            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
+            $null = $SRXEnv.ResultList2.Add($itm.Name) # DisplayValue            
         }
         else{
-            Write-Output $itm.DisplayName 
+            Write-Output $itm.Name 
         }
     }
 }

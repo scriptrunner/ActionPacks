@@ -1,11 +1,12 @@
-# Microsoft Teams
+# Microsoft Teams by Graph
 
-> Note: The use of the scripts requires the PowerShell Microsoft.Graph.Teams.
+> Note: The use of the scripts requires the PowerShell Microsoft.Graph.Teams,
+<br>serveral Microsoft.Graph.Groups.
 
-+ [Export-MSHVSnapshot.ps1](./Export-MSHVSnapshot.ps1)
++ [Get-MGTTeam.ps1](./Get-MGTTeam.ps1)
 
-  Exports a virtual machine snapshot to disk
+  Returns the Team
 
 ## [Queries](./_QUERY_)
 
-+ Search group ids
++ Search teams

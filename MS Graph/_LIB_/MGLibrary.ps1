@@ -1,8 +1,8 @@
 ﻿#Requires -Version 5.0
 #Requires -Modules Microsoft.Graph.Authentication
 
-
 Import-Module Microsoft.Graph.Authentication
+
 function ConnectMSGraph(){
     <#
         .SYNOPSIS
@@ -41,9 +41,9 @@ function ConnectMSGraph(){
             [Parameter(Mandatory = $true)]  
             [string]$TenantId,
             [Parameter(Mandatory = $true)]  
-            [string]$CertificateThumbprint 
+            [string]$CertificateThumbprint
         )
-
+        
         try{
             [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                         'ClientID' = $ClientID

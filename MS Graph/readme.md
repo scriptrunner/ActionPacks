@@ -8,7 +8,7 @@ Use cases for managing Citrix Systems and Solutions
 
 ## [Teams](./Teams)
 
-+ New, get, set, rename, remove catalog
++ New, get, set, rename, remove team
 
 ## [Library](./_LIB_)
 

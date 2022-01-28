@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Teams 
+#requires -Modules Microsoft.Graph.Teams,Microsoft.Graph.Groups
 
 <#
     .SYNOPSIS
-        Copies a Team
+        Removes a Team
     
     .DESCRIPTION          
 
@@ -17,41 +17,37 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Teams 
+        Requires Modules Microsoft.Graph.Teams, Microsoft.Graph.Groups 
 
     .LINK
         
     .Parameter TeamId
-        [sr-en] Source team identifier
-        [sr-de] Quell-Team ID
-
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+        [sr-en] Team identifier
+        [sr-de] Team ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [string]$TeamId
 )
 
-Import-Module Microsoft.Graph.Teams 
+Import-Module Microsoft.Graph.Teams
+Import-Module Microsoft.Graph.Groups 
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'TeamID' = $TeamId
-                        'Properties' = '*'
+                        'Confirm' = $false
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+  #  $result = Remove-MgTeam @cmdArgs erroneous in v1.9.2
+    $result = Remove-MgGroup -GroupId $TeamId -Confirm:$false -ErrorAction Stop
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $mgTeam
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $mgTeam
+        Write-Output $result
     }
 }
 catch{

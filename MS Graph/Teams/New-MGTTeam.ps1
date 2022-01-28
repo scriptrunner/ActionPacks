@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Copies a Team
+        Creates a Team
     
     .DESCRIPTION          
 
@@ -21,31 +21,46 @@
 
     .LINK
         
-    .Parameter TeamId
-        [sr-en] Source team identifier
-        [sr-de] Quell-Team ID
+    .Parameter DisplayName
+        [sr-en] Display name of the team
+        [sr-de] Team Anzeigename
+        
+    .Parameter Description
+        [sr-en] Description of the team
+        [sr-de] Team Beschreibung
 
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+    .Parameter Visibility
+        [sr-en] Team visibility type
+        [sr-de] Team Typ  
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [string]$DisplayName,
+    [string]$Description,    
+    [Validateset('Public','Private')]
+    [string]$Visibility = 'Public'
 )
 
 Import-Module Microsoft.Graph.Teams 
 
 try{
+    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'Properties' = '*'
+                        'DisplayName' = $DisplayName
+                        'Confirm' = $false
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    if($PSBoundParameters.ContainsKey('Description') -eq $true){
+        $cmdArgs.Add('Description',$Description)
+    }
+    if($PSBoundParameters.ContainsKey('Visibility') -eq $true){
+        $cmdArgs.Add('Visibility',$Visibility)
+    }
+    $cmdArgs.Add('AdditionalProperties', @{
+        "template@odata.bind" = "https://graph.microsoft.com/beta/teamsTemplates('standard')"
+    })
+    $mgTeam = New-MgTeam @cmdArgs | Select-Object $Properties # erroneous in v1.9.2
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $mgTeam

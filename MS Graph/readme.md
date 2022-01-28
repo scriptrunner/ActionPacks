@@ -1,6 +1,6 @@
-# Action Pack for Microsoft Graph
-Use cases for managing Citrix Systems and Solutions
-> Note: The use of the scripts requires the the Citrix PowerShell SnapIns.
+# Action Pack for Teams with Microsoft Graph
+Use cases for managing teams with Microsoft Graph
+> Note: The use of the scripts requires the Modules Microsoft.Graph.Groups,Microsoft.Graph.Teams .
 
 ## [Authentication](./Authentication)
 
@@ -8,8 +8,8 @@ Use cases for managing Citrix Systems and Solutions
 
 ## [Teams](./Teams)
 
-+ New, get, set, rename, remove team
++ New, get, set, copy, remove team
 
 ## [Library](./_LIB_)
 
-+ Start/close Citrix session
++ Connect/disconnect Azure Tenant

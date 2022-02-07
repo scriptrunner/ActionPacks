@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Teams 
+#requires -Modules Microsoft.Graph.Groups 
 
 <#
     .SYNOPSIS
-        Returns a Team
+        Add owner to a group
     
     .DESCRIPTION          
 
@@ -17,41 +17,44 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Teams 
+        Requires Modules Microsoft.Graph.Groups 
 
     .LINK
         
-    .Parameter TeamId
-        [sr-en] Source team identifier
-        [sr-de] Quell-Team ID
-
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+    .Parameter GroupId
+        [sr-en] Group identifier
+        [sr-de] Gruppen ID
+        
+    .Parameter OwnerId
+        [sr-en] Owner identifier
+        [sr-de] Benutzer Identifier
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [string]$GroupId,    
+    [Parameter(Mandatory = $true)]
+    [string]$OwnerId
 )
 
-Import-Module Microsoft.Graph.Teams 
+Import-Module Microsoft.Graph.Groups
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'Properties' = '*'
+                            'Confirm' = $false
+                            'GroupId' = $GroupId
+                            'AdditionalProperties' = @{"@odata.id"="https://graph.microsoft.com/v1.0/users/$($OwnerId)"}
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    $null = New-MgGroupOwnerByRef @cmdArgs
 
+    $result = $null
+    GetGroupOwners -GroupID $GroupId -Owners ([ref]$result)
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $mgTeam
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $mgTeam
+        Write-Output $result
     }
 }
 catch{

@@ -5,4 +5,8 @@
 
 + [QUY_Get-MGUUser.ps1](./QUY_Get-MGUUser.ps1)
 
-  Returns all users
+  Returns all users  
+
++ [QUY_Get-MGUUserOutlookMasterCategory.ps1](./QUY_Get-MGUUserOutlookMasterCategory.ps1)
+
+  Returns list of categories defined for the user

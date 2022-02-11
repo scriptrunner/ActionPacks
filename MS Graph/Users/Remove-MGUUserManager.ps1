@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Removes a user
+        Removes user or contact that is this user's manager
     
     .DESCRIPTION          
 
@@ -38,15 +38,16 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                             'Confirm' = $false
+                            'PassThru' = $null
                             'UserId' = $UserId
     }    
-    $null = Remove-MgUser @cmdArgs
+    $null = Remove-MgUserManagerByRef @cmdArgs
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User removed"
+        $SRXEnv.ResultMessage = "Users manager removed"
     }
     else{
-        Write-Output "User removed"
+        Write-Output "Users manager removed"
     }
 }
 catch{

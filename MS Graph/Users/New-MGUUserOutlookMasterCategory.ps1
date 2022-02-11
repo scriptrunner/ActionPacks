@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Users 
+#requires -Modules Microsoft.Graph.Users
 
 <#
     .SYNOPSIS
-        Removes a user
+        Define category for the user
     
     .DESCRIPTION          
 
@@ -17,37 +17,51 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
-        
+
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter Color
+        [sr-en] Color
+        [sr-de] Farbe
+
+    .Parameter DisplayName
+        [sr-en] Display name
+        [sr-de] Anzeigename
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,     
+    [Parameter(Mandatory = $true)]
+    [string]$Color, 
+    [Parameter(Mandatory = $true)]
+    [string]$DisplayName
 )
 
-Import-Module Microsoft.Graph.Users 
+Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'Confirm' = $false
-                            'UserId' = $UserId
-    }    
-    $null = Remove-MgUser @cmdArgs
-
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'UserId'= $UserId
+                        'Color' = $Color
+                        'DisplayName' = $DisplayName
+                        'Confirm' = $false
+    }
+    $result = New-MgUserOutlookMasterCategory @cmdArgs
+    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User removed"
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output "User removed"
-    }
+        Write-Output $result
+    }    
 }
 catch{
     throw 

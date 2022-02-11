@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Users 
+#requires -Modules Microsoft.Graph.Users
 
 <#
     .SYNOPSIS
-        Removes a user
+        Returns list of categories defined for the user
     
     .DESCRIPTION          
 
@@ -17,11 +17,11 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
-        
+
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
@@ -32,22 +32,25 @@ param(
     [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Users 
+Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'Confirm' = $false
-                            'UserId' = $UserId
-    }    
-    $null = Remove-MgUser @cmdArgs
-
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User removed"
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'UserId'= $UserId
+                        'All' = $null
     }
-    else{
-        Write-Output "User removed"
-    }
+    $result = Get-MgUserOutlookMasterCategory @cmdArgs
+    
+    foreach($itm in $result){ # fill result lists
+        if($null -ne $SRXEnv) {            
+            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
+        }
+        else{
+            Write-Output $itm.DisplayName 
+        }
+    }   
 }
 catch{
     throw 

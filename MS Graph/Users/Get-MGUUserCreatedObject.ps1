@@ -1,10 +1,10 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Users 
+#requires -Modules Microsoft.Graph.Users
 
 <#
     .SYNOPSIS
-        Removes a user
-    
+        Returns directory objects that were created by the use
+        
     .DESCRIPTION          
 
     .NOTES
@@ -17,11 +17,11 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
-        
+
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
@@ -32,22 +32,22 @@ param(
     [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Users 
+Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'Confirm' = $false
-                            'UserId' = $UserId
-    }    
-    $null = Remove-MgUser @cmdArgs
-
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'UserId'= $UserId
+                        'All' = $null
+    }
+    $result = Get-MgUserCreatedObject @cmdArgs | Select-Object * 
+  
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "User removed"
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output "User removed"
-    }
+        Write-Output $result
+    }    
 }
 catch{
     throw 

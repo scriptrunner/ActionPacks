@@ -10,6 +10,10 @@
 
   Returns users and contacts that report to the user
 
++ [Get-MGUUserCreatedObject.ps1](./Get-MGUUserCreatedObject.ps1)
+  
+  Returns directory objects that were created by the use
+
 + [Get-MGUUserExtension.ps1](./Get-MGUUserExtension.ps1)
 
   Returns a collection of open extensions defined for the user
@@ -54,6 +58,10 @@
 
   Creates a User
 
++ [New-MGUUserOutlookMasterCategory.ps1](./New-MGUUserOutlookMasterCategory.ps1)
+
+  Define category for the user
+
 + [Set-MGUUser.ps1](./Set-MGUUser.ps1)
 
   Updates a User
@@ -62,6 +70,11 @@
 
   Removes a User
 
++ [Remove-MGUUserOutlookMasterCategory.ps1](./Remove-MGUUserOutlookMasterCategory.ps1)
+
+  Removes category defined for the user
+
 ## [Queries](./_QUERY_)
 
 + Search users
++ Serach user Outlook master categories

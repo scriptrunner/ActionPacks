@@ -18,7 +18,7 @@ Use cases for managing teams with Microsoft Graph
 
 ## [Users](./Users)
 
-+ New, get, set, restore, remove, invoke renew user
++ New, get, set, remove user
 
 ## [Library](./_LIB_)
 

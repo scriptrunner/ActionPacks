@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Groups 
+#requires -Modules Microsoft.Graph.Users
 
 <#
     .SYNOPSIS
-        Invokes renew a Group
+        Returns devices that are owned by the user
     
     .DESCRIPTION          
 
@@ -17,37 +17,45 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Groups 
+        Requires Modules Microsoft.Graph.Users
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Groups
-        
-    .Parameter GroupId
-        [sr-en] Group identifier
-        [sr-de] Gruppen ID
+        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
+
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
 #>
 
 param( 
-    [string]$GroupId
+    [Parameter(Mandatory = $true)]
+    [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Groups 
+Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'GroupId' = $GroupId
-                            'Confirm' = $false
-                            'PassThru' = $null
-    }    
-    $result = Invoke-MgRenewGroup @cmdArgs
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'UserId'= $UserId
+                        'All' = $null
+    }
+    $odevice = Get-MgUserOwnedDevice @cmdArgs | Select-Object *
+
+    [PSCustomObject]$result = @{
+        'DeletedDateTime' = $odevice.DeletedDateTime
+        'Id' = $odevice.Id
+    }
+    foreach($key in $odevice.AdditionalProperties.Keys){
+        $result.Add($key,$odevice.AdditionalProperties.$key)
+    }
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
         Write-Output $result
-    }
+    }    
 }
 catch{
     throw 

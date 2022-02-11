@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Groups 
+#requires -Modules Microsoft.Graph.Users 
 
 <#
     .SYNOPSIS
-        Invokes renew a Group
+        Removes a user
     
     .DESCRIPTION          
 
@@ -17,36 +17,35 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Groups 
+        Requires Modules Microsoft.Graph.Users 
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Groups
+        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
         
-    .Parameter GroupId
-        [sr-en] Group identifier
-        [sr-de] Gruppen ID
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
 #>
 
 param( 
-    [string]$GroupId
+    [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Groups 
+Import-Module Microsoft.Graph.Users 
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'GroupId' = $GroupId
                             'Confirm' = $false
-                            'PassThru' = $null
+                            'UserId' = $UserId
     }    
-    $result = Invoke-MgRenewGroup @cmdArgs
+    $null = Remove-MgUser @cmdArgs
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+        $SRXEnv.ResultMessage = "User removed"
     }
     else{
-        Write-Output $result
+        Write-Output "User removed"
     }
 }
 catch{

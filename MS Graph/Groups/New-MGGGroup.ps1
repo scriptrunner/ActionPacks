@@ -20,6 +20,7 @@
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Groups
 
     .PARAMETER DisplayName
         [sr-en] Name of the group

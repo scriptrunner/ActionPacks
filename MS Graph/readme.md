@@ -1,10 +1,12 @@
 # Action Pack for Groups, Users, Teams with Microsoft Graph
 Use cases for managing teams with Microsoft Graph
-> Note: The use of the scripts requires the Modules Microsoft.Graph.Groups, Microsoft.Graph.Teams, Microsoft.Graph.Users.
+> Note: The use of the scripts requires the Modules Microsoft.Graph.Groups, Microsoft.Graph.Teams, Microsoft.Graph.Users, Microsoft.Graph.Authentication.
 
 ## [Authentication](./Authentication)
 
-+ New, add, get, remove users
++ Add, get, set, remove environment
++ Get context, profile
++ Find Graph permission
 
 ## [Groups](./Groups)
 

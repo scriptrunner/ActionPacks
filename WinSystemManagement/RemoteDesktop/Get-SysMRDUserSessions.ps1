@@ -35,7 +35,7 @@ Param(
 try{
     [string[]]$Script:Header = @("SessionName","UserName","ID","Status","Type","Device") 
     $Script:result
-    $Script:output
+    $Script:output = @()
 
     if([System.String]::IsNullOrWhiteSpace($ComputerName) -eq $true){
         $Script:result = qwinsta | ForEach-Object { (($_.Trim() -replace "\s+",","))} | ConvertFrom-Csv -Header $Script:Header

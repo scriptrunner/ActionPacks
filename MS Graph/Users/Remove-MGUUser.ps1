@@ -20,7 +20,7 @@
         Requires Modules Microsoft.Graph.Users 
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
         
     .Parameter UserId
         [sr-en] User identifier

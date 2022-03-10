@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Groups 
+#requires -Modules Microsoft.Graph.Identity.DirectoryManagement
 
 <#
     .SYNOPSIS
-        Invokes renew a Group
+        Confirms a domain
     
     .DESCRIPTION          
 
@@ -17,31 +17,31 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Groups 
+        Requires Modules Microsoft.Graph.Identity.DirectoryManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Groups
-        
-    .Parameter GroupId
-        [sr-en] Group identifier
-        [sr-de] Gruppen ID
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Domain
+
+    .Parameter Id
+        [sr-en] Identifier of the domain
+        [sr-de] ID der Domäne
 #>
 
 param( 
-    [string]$GroupId
+    [Parameter(Mandatory = $true)]
+    [string]$Id
 )
 
-Import-Module Microsoft.Graph.Groups 
+Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'GroupId' = $GroupId
                             'Confirm' = $false
-                            'PassThru' = $null
-    }    
-    $result = Invoke-MgRenewGroup @cmdArgs
-
+                            'DomainId' = $Id
+    }
+    $result = Confirm-MgDomain @cmdArgs | Select-Object $Properties
+    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

@@ -14,6 +14,10 @@
 
   Lists computers where disabled or inactive
 
++ [New-ADComputer.ps1](./New-ADComputer.ps1)
+
+  Create a Active Directory computer
+
 + [Remove-ADComputer.ps1](./Remove-ADComputer.ps1)
 
   Removes Active Directory computer

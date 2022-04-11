@@ -5,7 +5,7 @@ Use cases for managing users, groups and computers in on prem AD
 ## [Manage Computers](./Computers)
 
 + Get/Set properties of the computer
-+ Remove computer
++ Create/remove computer
 + Enable/Disable Computer
 + Add/remove computers to groups
 + List of disabled computers

@@ -3,11 +3,9 @@
 
 <#
 .SYNOPSIS
-    Start, stop, restart or suspend VMWare virtual machines
+    Start, stop or restart VMWare virtual machines
 
 .DESCRIPTION
-    This script allows to start, stop, restart or suspend VMWare virtual machines. To can choose a single machine or 
-    multiple machines.
 
 .NOTES
     This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner.
@@ -32,11 +30,11 @@
     Specifies a PSCredential object that contains credentials for authenticating with the server
 
 .Parameter VirtualMachines
-    Specifies the virtual machines to be start, stop, restart or suspend
+    Specifies the virtual machines to be start, stop, restart, suspend or shutdown
 #>
 
 param(
-    [ValidateSet("Start", "Stop", "Restart", "Suspend")]
+    [ValidateSet("Start", "Stop", "Restart", "Suspend", "Shutdown")]
     [string]$Action,
     [Parameter(Mandatory = $true)]
     [string]$VIServer,
@@ -57,7 +55,7 @@ try {
         'RunAsync' = $true
         'VM'       = ''
     }
-    
+    #DELETE 
     if ($vmServer) {
         if ($Action -eq "Start") {
             foreach ($item in $VirtualMachines) {
@@ -71,51 +69,63 @@ try {
                 }
             }
         }
-    }
-    if ($Action -eq "Stop") {
-        foreach ($item in $VirtualMachines) {
-            try {
-                $cmdArgs.VM = $item
-                Stop-VM @cmdArgs
-                Write-Output "Computer $($item) stopped successfully"
+        if ($Action -eq "Stop") {
+            foreach ($item in $VirtualMachines) {
+                try {
+                    $cmdArgs.VM = $item
+                    Stop-VM @cmdArgs
+                    Write-Output "Computer $($item) stopped successfully"
+                }
+                catch {
+                    Write-Output "A problem occured stopping the VM $($item)"
+                }
+            }   
+        }
+        if ($Action -eq "Restart") {
+            foreach ($item in $VirtualMachines) {
+                try {
+                    $cmdArgs.VM = $item
+                    Restart-VM @cmdArgs
+                    Write-Output "Computer $($item) restartet successfully"
+                }
+                catch {
+                    Write-Output "A problem occured restarting the VM $($item)"
+                }
             }
-            catch {
-                Write-Output "A problem occured stopping the VM $($item)"
+        }
+        if ($Action -eq "Suspend") {
+            foreach ($item in $VirtualMachines) {
+                try {
+                    $cmdArgs.VM = $item
+                    Suspend-VM @cmdArgs
+                    Write-Output "Computer $($item) suspended successfully"
+                }
+                catch {
+                    Write-Output "A problem occured suspending the VM $($item)"
+                }
             }
-        }   
-    }
-    if ($Action -eq "Restart") {
-        foreach ($item in $VirtualMachines) {
-            try {
-                $cmdArgs.VM = $item
-                Restart-VM @cmdArgs
-                Write-Output "Computer $($item) restartet successfully"
-            }
-            catch {
-                Write-Output "A problem occured restarting the VM $($item)"
+        }
+        if ($Action -eq "Shutdown") {
+            foreach ($item in $VirtualMachines) {
+                try {
+                    $cmdArgs.VM = $item
+                    Suspend-VM @cmdArgs
+                    Write-Output "Computer $($item) shutdown successfully"
+                }
+                catch {
+                    Write-Output "A problem occured shutting down the VM $($item)"
+                }
             }
         }
     }
-    if ($Action -eq "Suspend") {
-        foreach ($item in $VirtualMachines) {
-            try {
-                $cmdArgs.VM = $item
-                Suspend-VM @cmdArgs
-                Write-Output "Computer $($item) suspended successfully"
-            }
-            catch {
-                Write-Output "A problem occured suspending the VM $($item)"
-            }
-        }
-        else {
-            Write-Output "Connection to VI Server not established"
-        }
+    else {
+        Write-Output "Connection to VI Server not established"
     }
 }
 catch {
     throw "Something went wrong"
 }
-finally {
+finally{
     Disconnect-VIServer -Server $vmServer
 }
 

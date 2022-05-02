@@ -109,7 +109,8 @@ try {
             foreach ($item in $VirtualMachines) {
                 try {
                     $cmdArgs.VM = $item
-                    Suspend-VM @cmdArgs
+                    $cmdArgs.Remove("RunAsync")
+                    Shutdown-VMGuest @cmdArgs
                     Write-Output "Computer $($item) shutdown successfully"
                 }
                 catch {

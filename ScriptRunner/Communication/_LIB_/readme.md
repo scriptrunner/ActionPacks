@@ -8,14 +8,14 @@ You can learn how to use the individual functions in the documentation:<br />
 
 or in short form using the following guides:
 
-###### SRXSendMailTo
+#### SRXSendMailTo
 
 You need a SMTP server which allows anonymous authentication or authentication by credentials.<br /> 
 If you want to use Exchange Online as SMTP server, you have to configure the SMTP authentication first.<br /> 
 Microsoft strongly advises against this:<br /> 
 https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/authenticated-client-smtp-submission
 
-###### SRXPostToTeamsChannel
+#### SRXPostToTeamsChannel
 
 **Creating the Incoming Webhook**
 
@@ -37,7 +37,7 @@ Invoke the function with the following parameters:
 5. *$ActivityTitle:* Here you can specify the title for an activity.
 6. *$ActivitySubtitle:* A subtitle for the "ActivityTitle".
 
-###### SRXPostToYammer
+#### SRXPostToYammer
 
 **Prerquisites**
 
@@ -75,7 +75,7 @@ Invoke the function with the following parameters:
 *$yammerUri:* Takes the URI for the Yammer endpoint
 
 
-###### SRXPostToSlackChannel
+#### SRXPostToSlackChannel
 
 **Creating the Incoming Webhook**
 

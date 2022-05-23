@@ -39,7 +39,7 @@ Invoke the function with the following parameters:
 
 #### SRXPostToYammer
 
-**Prerquisites**
+**Prerequisites**
 
 1. An account/user with permissions to post to Yammer.<br />
 2. An Azure AD app with appropriate permissions (for this, a new app can be created or, if ScriptRunner is already used with Azure AD, the ScriptRunner Service App).<br />

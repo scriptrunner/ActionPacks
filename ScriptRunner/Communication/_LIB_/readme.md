@@ -67,7 +67,7 @@ Invoke the function with the following parameters:
 *$clientId:* Takes the ID of your app  (Client ID).<br />
 *$clientSecret:* Takes your client secret.<br />
 *$tokenCredential:* Takes a PSCredential object, which should contain the credentials of the user permitted to the Yammer API.<br />
-*$grantType:* Takes the grant type to the Yammer API (e.g. "authorization_code").<br />
+*$grantType:* Takes the grant type to the Yammer API (e.g. "password").<br />
 *$scope:* Takes the scope which the app should have to manipulate Yammer data.<br />
 *$method:* Takes the method for the web request (POST, GET, DEL and PUT).<br />
 *$groupId:* Takes the group ID for the Yammer community/group.<br />

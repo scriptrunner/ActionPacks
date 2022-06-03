@@ -34,14 +34,6 @@
 
   Gets administrators configured for this site
 
-+ [Get-CTXControllerMetadata.ps1](./Get-CTXControllerMetadata.ps1)
-
-  Gets the metadata from the Controller
-
-+ [Get-CTXControllers.ps1](./Get-CTXControllers.ps1)
-
-  Gets Controllers running broker services in the site
-
 + [Get-CTXEffectiveAdministrator.ps1](./Get-CTXEffectiveAdministrator.ps1)
 
   Retrieve the effective administrator objects for a user
@@ -158,10 +150,6 @@
 
   Removes metadata from the given administrator
 
-+ [Remove-CTXControllerMetadata.ps1](./Remove-CTXControllerMetadata.ps1)
-
-  Removes metadata from the controller
-
 + [Remove-CTXMachine.ps1](./Remove-CTXMachine.ps1)
 
   Removes the machine from its desktop group or catalog
@@ -237,10 +225,6 @@
 + [Set-CTXAdministratorMetadata.ps1](./Set-CTXAdministratorMetadata.ps1)
 
   Adds or updates metadata on the given Administrator
-
-+ [Set-CTXControllerMetadata.ps1](./Set-CTXControllerMetadata.ps1)
-
-  Adds or updates metadata for the Controller
 
 + [Set-CTXMachine.ps1](./Set-CTXMachine.ps1)
 

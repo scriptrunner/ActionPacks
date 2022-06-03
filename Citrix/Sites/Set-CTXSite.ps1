@@ -49,6 +49,7 @@ param(
     [string]$ColorDepth,
     [bool]$LocalHostCacheEnabled,
     [bool]$ReuseMachinesWithoutShutdownInOutageAllowed,
+    [bool]$TrustRequestsSentToTheXmlServicePort,
     [bool]$SecureIcaRequired
 )                                                            
 
@@ -71,6 +72,9 @@ try{
     }
     if($PSBoundParameters.ContainsKey('LocalHostCacheEnabled') -eq $true){
         $cmdArgs.Add('LocalHostCacheEnabled',$LocalHostCacheEnabled)
+    }
+    if($PSBoundParameters.ContainsKey('TrustRequestsSentToTheXmlServicePort') -eq $true){
+        $cmdArgs.Add('TrustRequestsSentToTheXmlServicePort',$TrustRequestsSentToTheXmlServicePort)
     }
     if($PSBoundParameters.ContainsKey('ReuseMachinesWithoutShutdownInOutageAllowed') -eq $true){
         $cmdArgs.Add('ReuseMachinesWithoutShutdownInOutageAllowed',$ReuseMachinesWithoutShutdownInOutageAllowed)

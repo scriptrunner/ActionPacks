@@ -20,8 +20,6 @@ Use cases for managing Citrix Systems and Solutions
 + Get, disconnect, stop sessions
 + Get service, service status, service capabilities
 + Get, create or update, remove service metadata 
-+ Get controller
-+ Get, create or update, remove controller metadata 
 + Get, import role configuration
 + Get permission groups, admin effective rights, users effective administrator objects
 + Refresh enabled features
@@ -77,11 +75,18 @@ Use cases for managing Citrix Systems and Solutions
 
 ## [Sites](./Sites)
 
-+ Get, set site
++ New, get, set site
 + Get, create or update, remove site metadata
 + New, get, set, rename, remove zone
 + New, get, set, remove zone users
 + Get, create or update, remove zone metadata
++ Create site database
++ Add, get, remove controller
++ Get, create or update, remove controller metadata
++ Export database schema
++ Set license server
++ Get, set, unregister service instances
++ Get, create or update, remove service instance metadata
 
 ## [Reports](./_REPORTS_)
 
@@ -96,6 +101,7 @@ Use cases for managing Citrix Systems and Solutions
 + Get zones, zone users
 + Get sessions
 + Get high level operation ids
++ Get service instances
 
 ## [Library](./_LIB_)
 

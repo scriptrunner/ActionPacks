@@ -19,6 +19,10 @@
 
   Returns broker catalogs  
 
++ [QUY_Get-CTXConfigRegisteredServiceInstance.ps1](./QUY_Get-CTXConfigRegisteredServiceInstance.ps1)
+
+  Returns the service instances that are registered in the directory 
+
 + [QUY_Get-CTXDesktopGroups.ps1](./QUY_Get-CTXDesktopGroups.ps1)
 
   Returns broker desktop groups  

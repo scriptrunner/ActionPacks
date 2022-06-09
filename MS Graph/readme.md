@@ -32,6 +32,9 @@ Use cases for managing teams with Microsoft Graph
 ## [Teams](./Teams)
 
 + New, get, set, copy, remove team
++ New, get, set, remove team channel
++ Get, remove team member
++ Get, set, remove team of group
 
 ## [Users](./Users)
 

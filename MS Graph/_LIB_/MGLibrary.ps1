@@ -52,11 +52,10 @@ function ConnectMSGraph(){
             )
         
         try{
-            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                        'ClientID' = $ClientID
-                        'TenantId' = $TenantId
-                        }
+            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
             if($PSCmdlet.ParameterSetName -eq 'Certificate'){
+                $cmdArgs.Add('ClientID',$ClientID)
+                $cmdArgs.Add('TenantId',$TenantId)
                 $cmdArgs.Add('CertificateThumbprint',$CertificateThumbprint)                
             }
             else{

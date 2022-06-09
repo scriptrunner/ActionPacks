@@ -7,3 +7,11 @@
 + [QUY_Get-MGTTeam.ps1](./QUY_Get-MGTTeam.ps1)
 
   Returns all Teams
+
++ [QUY_Get-MGTTeamChannel.ps1](./QUY_Get-MGTTeamChannel.ps1)
+
+  Returns all channels of the team
+
++ [QUY_Get-MGTTeamMember.ps1](./QUY_Get-MGTTeamMember.ps1)
+
+  Returns members and owners of the team

@@ -7,6 +7,14 @@
 
   Copies a Team
 
++ [Get-MGTCatalogTeamApp.ps1](./Get-MGTCatalogTeamApp.ps1)
+
+  Get teams apps from app catalogs
+
++ [Get-MGTCatalogTeamAppDefinition.ps1](./Get-MGTCatalogTeamAppDefinition.ps1)
+
+  The details for each version of the app
+
 + [Get-MGTGroupTeam.ps1](./Get-MGTGroupTeam.ps1)
 
   Get team from group
@@ -19,6 +27,10 @@
 
   Collection of channels and messages associated with the team
 
++ [Get-MGTTeamChannelFileFolder.ps1](./Get-MGTTeamChannelFileFolder.ps1)
+
+  Metadata for the location where the channel's files are stored
+
 + [Get-MGTTeamChannelMember.ps1](./Get-MGTTeamChannelMember.ps1)
 
   A collection of membership records associated with the channel
@@ -26,6 +38,10 @@
 + [Get-MGTTeamMember.ps1](./Get-MGTTeamMember.ps1)
 
   Members and owners of the team
+
++ [Get-MGTTeamOperation.ps1](./Get-MGTTeamOperation.ps1)
+
+  The async operations that ran or are running on this team
 
 + [New-MGTTeam.ps1](./New-MGTTeam.ps1)
 
@@ -47,6 +63,14 @@
 
   Removes a team channel
 
++ [Remove-MGTTeamChannelFileFolder.ps1](./Remove-MGTTeamChannelFileFolder.ps1)
+
+  Removes the location where the channel's files are stored
+
++ [Remove-MGTTeamChannelTab.ps1](./Remove-MGTTeamChannelTab.ps1)
+
+  Removes the channel tab of the team
+
 + [Remove-MGTTeamMember.ps1](./Remove-MGTTeamMember.ps1)
 
   Removes a member from the team
@@ -63,8 +87,14 @@
 
   Updates a team channel
 
++ [Set-MGTTeamChannelTab.ps1](./Set-MGTTeamChannelTab.ps1)
+
+  Updates a team channel tab
+
 ## [Queries](./_QUERY_)
 
 + Search teams
-+ Search team channels
++ Search team channels 
++ Search team channel tabs
 + Search team members
++ Search team apps

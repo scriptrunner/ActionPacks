@@ -33,8 +33,13 @@ Use cases for managing teams with Microsoft Graph
 
 + New, get, set, copy, remove team
 + New, get, set, remove team channel
++ Get, set, remove team channel tab
 + Get, remove team member
 + Get, set, remove team of group
++ Get team app
++ Get team app definition
++ Get team operation
++ Get, remove team channel file folder
 
 ## [Users](./Users)
 

@@ -20,11 +20,11 @@
         Requires Modules Microsoft.Graph.Teams 
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Teams
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
     .Parameter TeamId
-        [sr-en] Source team identifier
-        [sr-de] Quell-Team ID
+        [sr-en] Team identifier
+        [sr-de] Team ID
 
     .Parameter Properties
         [sr-en] List of properties to expand. Use * for all properties

@@ -19,7 +19,7 @@
         Requires Modules Microsoft.Graph.Authentication 
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Authentication
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 #>
 
 param( 

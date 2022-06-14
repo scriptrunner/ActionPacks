@@ -20,7 +20,7 @@
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Groups
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Groups
       
     .Parameter GroupId
         [sr-en] Group identifier
@@ -38,7 +38,7 @@ try{
     $result = $null
     GetGroupMembers -GroupID $GroupId -Memberships ([ref]$result)
     
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction SilentlyContinue) {
+    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
     if($SRXEnv) {

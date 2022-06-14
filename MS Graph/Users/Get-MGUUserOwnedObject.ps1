@@ -20,7 +20,7 @@
         Requires Modules Microsoft.Graph.Users
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/HPMSGraph/MS%20Graph/Users
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
 
     .Parameter UserId
         [sr-en] User identifier
@@ -57,7 +57,7 @@ try{
     }
     $result= $result | Sort-Object DisplayName
     
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction SilentlyContinue) {
+    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
     if($SRXEnv) {

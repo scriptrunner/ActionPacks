@@ -23,3 +23,7 @@
 + [QUY_Get-MGTTeamMember.ps1](./QUY_Get-MGTTeamMember.ps1)
 
   Returns members and owners of the team
+
++ [QUY_Get-MGTUserTeamWorkInstalledApp.ps1](./QUY_Get-MGTUserTeamWorkInstalledApp.ps1)
+
+  Returns apps installed in the personal scope of this user

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a Team
+        Invoke action archive/unarchive
     
     .DESCRIPTION          
 
@@ -26,16 +26,16 @@
         [sr-en] Team identifier
         [sr-de] Team ID
 
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+    .Parameter Archive
+        [sr-en] Archive setting of the team
+        [sr-de] Archiv Status des Teams
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
     [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [Parameter(Mandatory = $true)]
+    [bool]$Archive
 )
 
 Import-Module Microsoft.Graph.Teams 
@@ -44,10 +44,15 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'TeamID' = $TeamId
-                        'Properties' = '*'
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    if($Archive -eq $true){
+        Invoke-MgArchiveTeam @cmdArgs
+    }
+    else{
+        Invoke-MgUnarchiveTeam @cmdArgs
+    }
 
+    $mgTeam = Get-MgTeam @cmdArgs
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $mgTeam
     }

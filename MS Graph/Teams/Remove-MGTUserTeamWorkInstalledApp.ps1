@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a Team
+        Removes a app installed in the personal scope of this user
     
     .DESCRIPTION          
 
@@ -22,20 +22,20 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
-    .Parameter TeamId
-        [sr-en] Team identifier
-        [sr-de] Team ID
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
 
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+    .Parameter UserId
+        [sr-en] Id of userScopeTeamsAppInstallation
+        [sr-de] Benutzer Scope ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$UserScopeTeamsAppInstallationId
 )
 
 Import-Module Microsoft.Graph.Teams 
@@ -43,16 +43,18 @@ Import-Module Microsoft.Graph.Teams
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'Properties' = '*'
+                    'UserId' = $UserId
+                    'UserScopeTeamsAppInstallationId' = $UserScopeTeamsAppInstallationId
+                    'Confirm' = $false
+                    'PassThru' = $null
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    $mgWork = Remove-MgUserTeamworkInstalledApp @cmdArgs
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $mgTeam
+        $SRXEnv.ResultMessage = $mgWork
     }
     else{
-        Write-Output $mgTeam
+        Write-Output $mgWork
     }
 }
 catch{

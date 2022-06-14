@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a Team
+        Returns apps installed in the personal scope of this user
     
     .DESCRIPTION          
 
@@ -22,20 +22,14 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
-    .Parameter TeamId
-        [sr-en] Team identifier
-        [sr-de] Team ID
-
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [string]$UserId
 )
 
 Import-Module Microsoft.Graph.Teams 
@@ -43,16 +37,18 @@ Import-Module Microsoft.Graph.Teams
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'Properties' = '*'
+                    'UserId' = $UserId
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    $mgWork = Get-MgUserTeamworkInstalledApp @cmdArgs | Select-Object *
 
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $mgTeam
-    }
-    else{
-        Write-Output $mgTeam
+    foreach($itm in $mgWork){ # fill result lists
+        if($null -ne $SRXEnv) {            
+            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.ID) # DisplayValue            
+        }
+        else{
+            Write-Output $itm.DisplayName 
+        }
     }
 }
 catch{

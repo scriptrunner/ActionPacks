@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a Team
+        Get teamwork
     
     .DESCRIPTION          
 
@@ -22,31 +22,17 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
-    .Parameter TeamId
-        [sr-en] Team identifier
-        [sr-de] Team ID
-
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
 )
 
 Import-Module Microsoft.Graph.Teams 
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'Properties' = '*'
-    }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
+    $mgTeam = Get-MgTeamWork @cmdArgs | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $mgTeam

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a Team
+        Microsoft Teams teams that the user is a member of
     
     .DESCRIPTION          
 
@@ -22,9 +22,9 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
-    .Parameter TeamId
-        [sr-en] Team identifier
-        [sr-de] Team ID
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
 
     .Parameter Properties
         [sr-en] List of properties to expand. Use * for all properties
@@ -33,26 +33,25 @@
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
-    [ValidateSet('CreatedDateTime','Description','DisplayName','Id','IsArchived','Specialization','Visibility')]
-    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime')
+    [string]$UserId,
+    [ValidateSet('DisplayName','Description','Id','IsArchived','Members','Visibility','WebUrl')]
+    [string[]]$Properties = @('DisplayName','Description','Id','IsArchived')
 )
-
+            : 
 Import-Module Microsoft.Graph.Teams 
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'Properties' = '*'
+                    'UserId' = $UserId
     }
-    $mgTeam = Get-MgTeam @cmdArgs | Select-Object $Properties
+    $mgTeams = Get-MgUserJoinedTeam @cmdArgs | Select-Object $Properties
 
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $mgTeam
+        $SRXEnv.ResultMessage = $mgTeams
     }
     else{
-        Write-Output $mgTeam
+        Write-Output $mgTeams
     }
 }
 catch{

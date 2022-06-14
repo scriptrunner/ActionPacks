@@ -43,6 +43,26 @@
 
   The async operations that ran or are running on this team
 
++ [Get-MGTTeamWork.ps1](./Get-MGTTeamWork.ps1)
+  
+  Get teamwork
+
++ [Get-MGTUserJoinedTeam.ps1](./Get-MGTUserJoinedTeam.ps1)
+  
+  Microsoft Teams teams that the user is a member of
+
++ [Get-MGTUserTeamWork.ps1](./Get-MGTUserTeamWork.ps1)
+  
+  Container for Microsoft Teams features available for the user
+
++ [Get-MGTUserTeamWorkInstalledApp.ps1](./Get-MGTUserTeamWorkInstalledApp.ps1)
+  
+  Apps installed in the personal scope of this user
+
++ [Invoke-MGTArchiveTeam.ps1](./Invoke-MGTArchiveTeam.ps1)
+
+  Invoke action archive/unarchive
+
 + [New-MGTTeam.ps1](./New-MGTTeam.ps1)
 
   Creates a Team
@@ -75,6 +95,10 @@
 
   Removes a member from the team
 
++ [Remove-MGTUserTeamWorkInstalledApp.ps1](./Remove-MGTUserTeamWorkInstalledApp.ps1)
+  
+  Removes a app installed in the personal scope of this user
+
 + [Set-MGTGroupTeam.ps1](./Set-MGTGroupTeam.ps1)
 
   Update the navigation property team in groups
@@ -98,3 +122,4 @@
 + Search team channel tabs
 + Search team members
 + Search team apps
++ Search user team work installed apps

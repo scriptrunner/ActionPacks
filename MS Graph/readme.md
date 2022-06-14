@@ -8,27 +8,6 @@ Use cases for managing teams with Microsoft Graph
 + Get context, profile
 + Find Graph permission
 
-## [Domain](./Domain)
-
-+ New, confirm, get, set, remove domain
-
-## [Groups](./Groups)
-
-+ New, get, set, restore, remove, invoke renew group
-+ New, get, set, remove group extension
-+ New, get group member
-+ New, get group owner
-+ Get group memberof, members with license error
-+ Get accepted, rejected group sender
-+ Get group permission grant
-+ Get group Lifecycle Policy
-+ Test group property
-+ Reset group unseen count
-
-## [Organization](./Organization)
-
-+ New, get, set, restore, remove organization
-
 ## [Teams](./Teams)
 
 + New, get, set, copy, remove, archive, unarchive team
@@ -44,19 +23,6 @@ Use cases for managing teams with Microsoft Graph
 + Get user team joined team
 + Get user team work
 + Get, remove user team work installed app
-
-## [Users](./Users)
-
-+ New, get, set, remove user
-+ New, set, remove Outlook master categories
-+ Remove manager
-+ Get setting
-+ Get registered device, owned device, owned object, created objet
-+ Get transitive member of, member of
-+ Get OAuth permission grant
-+ Get license detail
-+ Get extension
-+ Get direct report
 
 ## [Library](./_LIB_)
 

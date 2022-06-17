@@ -8,6 +8,24 @@ Use cases for managing teams with Microsoft Graph
 + Get context, profile
 + Find Graph permission
 
+## [Groups](./Groups)
+
++ New, get, set, restore, remove, invoke renew group
++ New, get, set, remove group extension
++ New, get group member
++ New, get group owner
++ Get group memberof, members with license error
++ New, get, set, remove group lifecycle policy
++ Add, remove group to/from lifecycle policy
++ Get accepted, rejected group sender
++ Get group permission grant
++ Get group Lifecycle Policy
++ Get group notebook
++ Get group thread, thread post
++ Get group conversation, conversation thread, conversation thread post
++ Test group property
++ Reset group unseen count
+
 ## [Teams](./Teams)
 
 + New, get, set, copy, remove, archive, unarchive team

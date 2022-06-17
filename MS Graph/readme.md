@@ -19,9 +19,14 @@ Use cases for managing teams with Microsoft Graph
 + New, get group member
 + New, get group owner
 + Get group memberof, members with license error
++ New, get, set, remove group lifecycle policy
++ Add, remove group to/from lifecycle policy
 + Get accepted, rejected group sender
 + Get group permission grant
 + Get group Lifecycle Policy
++ Get group notebook
++ Get group thread, thread post
++ Get group conversation, conversation thread, conversation thread post
 + Test group property
 + Reset group unseen count
 

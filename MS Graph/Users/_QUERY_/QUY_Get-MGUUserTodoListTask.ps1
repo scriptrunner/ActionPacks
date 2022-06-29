@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns all users
+        Returns tasks in this task list
     
     .DESCRIPTION          
 
@@ -17,26 +17,46 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users/_QUERY_
+
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
 #>
 
 param( 
+    [Parameter(Mandatory = $true)]
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    $result = Get-MgUser -All -Sort DisplayName | Sort-Object DisplayName
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+    }
+    $result = Get-MgUserTodoListTask @cmdArgs | Sort-Object Title | Select-Object @('Title','Id')
+    
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
             $null = $SRXEnv.ResultList.Add($itm.ID) # Value
-            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
+            $null = $SRXEnv.ResultList2.Add($itm.Title) # DisplayValue            
         }
         else{
-            Write-Output $itm.DisplayName 
+            Write-Output $itm.Title 
         }
-    }
+    }    
 }
 catch{
     throw 

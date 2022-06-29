@@ -53,15 +53,21 @@ Use cases for managing teams with Microsoft Graph
 ## [Users](./Users)
 
 + New, get, set, remove user
-+ New, set, remove Outlook master categories
-+ Remove manager
-+ Get setting
-+ Get registered device, owned device, owned object, created objet
-+ Get transitive member of, member of
++ Get, new, set, remove Outlook master categories
++ Get, new, set, remove todo list
++ Get, new, set, remove todo list task
++ Get, new, set, remove todo list task linked resource
++ Get, remove user manager
++ Get, set user setting
++ Get registered device, owned device, owned object, created object
++ Get transitive member
++ Get member of
 + Get OAuth permission grant
 + Get license detail
 + Get extension
 + Get direct report
++ Get user photo
++ Get, set user photo content
 
 ## [Library](./_LIB_)
 

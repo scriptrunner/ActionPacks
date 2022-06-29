@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns the memberships of the user
+        Updates task in this task list
     
     .DESCRIPTION          
 
@@ -25,43 +25,56 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter TodoTaskId 
+        [sr-en] Id of todo task
+        [sr-de] Task ID
+
+    .Parameter Title
+        [sr-en] Brief description of the task
+        [sr-de] Beschreibung der Aufgabe
+
+    .Parameter IsReminderOn
+        [sr-en] Set alert to remind the user of the task
+        [sr-de] Alarm einstellen
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId ,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskId,
+    [string]$Title,
+    [switch]$IsReminderOn
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
+    [string[]]$Properties = @('Title','Id','LastModifiedDateTime','Status')
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
+                'Confirm' = $false
+                'PassThru' = $null
     }
-    $mships = Get-MgUserMemberof @cmdArgs | Select-Object *
+    if($PSBoundParameters.ContainsKey('Title') -eq $true){
+        $cmdArgs.Add('Title',$Title)
+    }
+    if($IsReminderOn.IsPresent -$true){
+        $cmdArgs.Add('IsReminderOn',$null)
+    }
+    $null = Update-MgUserTodoListTask @cmdArgs
 
-    [PSCustomObject]$result = @()
-    # memberships
-    foreach($itm in $mships){
-        [PSCustomObject]$ship = [PSCustomObject] @{DisplayName='';Mail='';Type=''}
-        if($itm.AdditionalProperties.ContainsKey('@odata.type')){
-            $ship.Type = $itm.AdditionalProperties.Item('@odata.type').Replace('#microsoft.graph.','')
-        }
-        if($itm.AdditionalProperties.ContainsKey('displayName')){
-            $ship.DisplayName = $itm.AdditionalProperties.displayName
-        }
-        if($itm.AdditionalProperties.ContainsKey('mail')){
-            $ship.Mail = $itm.AdditionalProperties.mail
-        }
-        $result += $ship
-    }
-    $result = $result | Sort-Object DisplayName
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
+    $result = Get-MgUserTodoListTask -UserId $UserId -TodoTaskListId $TodoTaskListId | Sort-Object Title | Select-Object $Properties    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

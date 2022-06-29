@@ -3,8 +3,8 @@
 
 <#
     .SYNOPSIS
-        Returns the memberships of the user
-    
+        Removes resource linked to the task
+
     .DESCRIPTION          
 
     .NOTES
@@ -25,43 +25,46 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter TodoTaskId 
+        [sr-en] Id of todo task
+        [sr-de] Task ID
+
+    .Parameter LinkedResourceId 
+        [sr-en] Id of linked resource
+        [sr-de] Ressourcen ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskId,
+    [Parameter(Mandatory = $true)]
+    [string]$LinkedResourceId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
+                'LinkedResourceId' = $LinkedResourceId
+                'PassThru' = $null
+                'Confirm' = $false
     }
-    $mships = Get-MgUserMemberof @cmdArgs | Select-Object *
+    $null = Remove-MgUserTodoListTaskLinkedResource @cmdArgs
 
-    [PSCustomObject]$result = @()
-    # memberships
-    foreach($itm in $mships){
-        [PSCustomObject]$ship = [PSCustomObject] @{DisplayName='';Mail='';Type=''}
-        if($itm.AdditionalProperties.ContainsKey('@odata.type')){
-            $ship.Type = $itm.AdditionalProperties.Item('@odata.type').Replace('#microsoft.graph.','')
-        }
-        if($itm.AdditionalProperties.ContainsKey('displayName')){
-            $ship.DisplayName = $itm.AdditionalProperties.displayName
-        }
-        if($itm.AdditionalProperties.ContainsKey('mail')){
-            $ship.Mail = $itm.AdditionalProperties.mail
-        }
-        $result += $ship
-    }
-    $result = $result | Sort-Object DisplayName
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
+    $result = Get-MgUserTodoListTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

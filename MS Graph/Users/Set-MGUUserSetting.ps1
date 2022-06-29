@@ -3,8 +3,8 @@
 
 <#
     .SYNOPSIS
-        Returns the memberships of the user
-    
+        Updates settings for the user
+        
     .DESCRIPTION          
 
     .NOTES
@@ -25,11 +25,21 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .PARAMETER ContributionToContentDiscoveryDisabled
+        [sr-en] Disable documents in the user's Office Delve
+        [sr-de] Benutzer Dokumente sperren
+
+    .PARAMETER ContributionToContentDiscoveryAsOrganizationDisabled
+        [sr-en] Reflects the Office Delve organization level setting
+        [sr-de] Einstellung der Organisation
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [bool]$ContributionToContentDiscoveryDisabled,
+    [bool]$ContributionToContentDiscoveryAsOrganizationDisabled
 )
 
 Import-Module Microsoft.Graph.Users
@@ -38,30 +48,18 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
-                        'All' = $null
+                        'Confirm' = $false
+                        'PassThru' = $null
     }
-    $mships = Get-MgUserMemberof @cmdArgs | Select-Object *
+    if($PSBoundParameters.ContainsKey('ContributionToContentDiscoveryDisabled') -eq $true){
+        $cmdArgs.Add('ContributionToContentDiscoveryDisabled',$ContributionToContentDiscoveryDisabled)
+    }
+    if($PSBoundParameters.ContainsKey('ContributionToContentDiscoveryAsOrganizationDisabled') -eq $true){
+        $cmdArgs.Add('ContributionToContentDiscoveryAsOrganizationDisabled',$ContributionToContentDiscoveryAsOrganizationDisabled)
+    }
+    $null = Update-MgUserSetting @cmdArgs
 
-    [PSCustomObject]$result = @()
-    # memberships
-    foreach($itm in $mships){
-        [PSCustomObject]$ship = [PSCustomObject] @{DisplayName='';Mail='';Type=''}
-        if($itm.AdditionalProperties.ContainsKey('@odata.type')){
-            $ship.Type = $itm.AdditionalProperties.Item('@odata.type').Replace('#microsoft.graph.','')
-        }
-        if($itm.AdditionalProperties.ContainsKey('displayName')){
-            $ship.DisplayName = $itm.AdditionalProperties.displayName
-        }
-        if($itm.AdditionalProperties.ContainsKey('mail')){
-            $ship.Mail = $itm.AdditionalProperties.mail
-        }
-        $result += $ship
-    }
-    $result = $result | Sort-Object DisplayName
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
+    $result = Get-MgUserSetting -UserId $UserId | Select-Object *    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

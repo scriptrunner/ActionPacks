@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns all users
+        Exports user's profile photo
     
     .DESCRIPTION          
 
@@ -17,26 +17,44 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
+
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
+
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
+
+    .PARAMETER OutFile
+        [sr-en] Path to write output file to
+        [sr-de] Pfad und Dateiname der Bilddatei
 #>
 
 param( 
+    [Parameter(Mandatory = $true)]
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$OutFile
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    $result = Get-MgUser -All -Sort DisplayName | Sort-Object DisplayName
-    foreach($itm in $result){ # fill result lists
-        if($null -ne $SRXEnv) {            
-            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
-            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
-        }
-        else{
-            Write-Output $itm.DisplayName 
-        }
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'OutFile' = $OutFile
+                'PassThru' = $null
     }
+    $result = Get-MgUserPhotoContent @cmdArgs
+
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $result
+    }
+    else{
+        Write-Output $result
+    }    
 }
 catch{
     throw 

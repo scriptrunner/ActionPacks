@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns list of categories defined for the user
+        Returns tasks in this task list
     
     .DESCRIPTION          
 
@@ -20,37 +20,46 @@
         Requires Modules Microsoft.Graph.Users
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users/_QUERY_
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
 
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId,
+    [ValidateSet('Title','BodyLastModifiedDateTime','CreatedDateTime','Id','Importance','IsReminderOn','LastModifiedDateTime','Status')]
+    [string[]]$Properties = @('Title','Id','LastModifiedDateTime','Status')
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
     }
-    $result = Get-MgUserOutlookMasterCategory @cmdArgs
+    $result = Get-MgUserTodoListTask @cmdArgs | Select-Object $Properties
     
-    foreach($itm in $result){ # fill result lists
-        if($null -ne $SRXEnv) {            
-            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
-            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
-        }
-        else{
-            Write-Output $itm.DisplayName 
-        }
-    }   
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $result
+    }
+    else{
+        Write-Output $result
+    }    
 }
 catch{
     throw 

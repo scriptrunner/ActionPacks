@@ -40,7 +40,7 @@ try{
                         'UserId'= $UserId
                         'All' = $null
     }
-    $res = Get-MgUserTransitiveMemberOf @cmdArgs | Select-Object *
+    $res = Get-MgUserTransitiveMember @cmdArgs | Select-Object *
 
     [PSCustomObject]$result = @()
     foreach($obj in $res){

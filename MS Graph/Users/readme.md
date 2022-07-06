@@ -2,6 +2,10 @@
 
 > Note: The use of the scripts requires the PowerShell Microsoft.Graph.Users
 
++ [Get-MGUScopedRoleMemberOf.ps1](./Get-MGUScopedRoleMemberOf.ps1)
+
+  Returns user's scoped role
+
 + [Get-MGUUser.ps1](./Get-MGUUser.ps1)
 
   Returns a User

@@ -8,6 +8,26 @@ Use cases for managing teams with Microsoft Graph
 + Get context, profile
 + Find Graph permission
 
+## [Contacts](./Contacts)
+
++ Get contact manager, direct report, member group, member object, member of, transitive member of
++ Confirm member of group, member objects
+
+## [Contract](./Contract)
+
++ Get contract, member group, member object
+
+## [Device](./Device)
+
++ Get, set, remove device
++ Get device extension, member groups, member object, member of, transitive member of, registered owner, registered user
+
+## [Domain](./Domain)
+
++ New, confirm, get, set, remove domain
++ Invoke force delete domain
++ Get domain name reference
+
 ## [Groups](./Groups)
 
 + New, get, set, restore, remove, invoke renew group
@@ -25,6 +45,15 @@ Use cases for managing teams with Microsoft Graph
 + Get group conversation, conversation thread, conversation thread post
 + Test group property
 + Reset group unseen count
+
+## [Organization](./Organization)
+
++ Get organization
++ Get organization extension, member object
+
+## [Others](./Others)
+
++ Get, rmeove subscribed Skus
 
 ## [Teams](./Teams)
 
@@ -57,7 +86,7 @@ Use cases for managing teams with Microsoft Graph
 + Get OAuth permission grant
 + Get license detail
 + Get extension
-+ Get direct report
++ Get direct report, scoped role
 + Get user photo
 + Get, set user photo content
 

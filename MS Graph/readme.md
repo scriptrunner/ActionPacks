@@ -46,6 +46,19 @@ Use cases for managing teams with Microsoft Graph
 + Test group property
 + Reset group unseen count
 
+## [Mail](./Mail)
+
++ New, get, set, remove user mail folder
++ New, get, set, remove user mail folder child folder
++ New, get, set, remove user message
++ New, get, set, remove user mail folder message
++ New, get, set, remove user mail folder child folder message
++ Get user mail folder message attachment, rule
++ Get user mail folder child folder message attachment
++ Get user message attachment
++ Get user message content
++ Get, remove user inference classification 
+
 ## [Organization](./Organization)
 
 + Get organization
@@ -53,7 +66,7 @@ Use cases for managing teams with Microsoft Graph
 
 ## [Others](./Others)
 
-+ Get, rmeove subscribed Skus
++ Get, remove subscribed Skus
 
 ## [Teams](./Teams)
 

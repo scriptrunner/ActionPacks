@@ -83,11 +83,13 @@ param(
     [string]$ColorDepth,
     [Validateset('DesktopsOnly','AppsOnly','DesktopsAndApps')]
     [string]$DeliveryType,
-    [Validateset('L5','L7','L7_6')]
+    [Validateset('L5','L7','L7_6','L7_7','L7_8','L7_9','L7_20','L7_25')]
     [string]$MinimumFunctionalLevel = 'L7_6',
     [bool]$Enabled,
     [bool]$InMaintenanceMode,
-    [string]$TenantId
+    [string]$TenantId,    
+    [Validateset('SingleSession','MultiSession')]
+    [string]$SessionSupport
 )                                                            
 
 $LogID = $null
@@ -125,6 +127,9 @@ try{
     }
     if($PSBoundParameters.ContainsKey('TenantId') -eq $true){
         $cmdArgs.Add('TenantId',$TenantId)
+    }
+    if($PSBoundParameters.ContainsKey('SessionSupport') -eq $true){
+        $cmdArgs.Add('SessionSupport',$SessionSupport)
     }
 
     $ret = New-BrokerDesktopGroup @cmdArgs | Select-Object $Properties

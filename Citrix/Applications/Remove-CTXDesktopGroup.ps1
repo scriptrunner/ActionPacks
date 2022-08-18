@@ -29,20 +29,33 @@
     .Parameter Name
         [sr-en] Name of the desktop group
         [sr-de] Name der Desktop-Gruppe
+
+    .Parameter RemoveAssignedApplications
+        [sr-en] Remove assigned applications
+        [sr-de] Zugewiesene Anwendungen löschen
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
     [string]$Name,
-    [string]$SiteServer
+    [string]$SiteServer,
+    [bool]$RemoveAssignedApplications
 )                                                            
 
 $LogID = $null
 [bool]$success = $false
 try{ 
     StartCitrixSessionAdv -ServerName ([ref]$SiteServer)
-    StartLogging -ServerAddress $SiteServer -LogText "Remove Desktop Group $($Name)" -LoggingID ([ref]$LogID)
 
+    if($RemoveAssignedApplications -eq $true){
+        $deskGrp = Get-BrokerDesktopGroup -Name $Name -AdminAddress $SiteServer
+        $curApps = Get-BrokerApplication -DesktopGroupUid $deskGrp.Uid -AdminAddress $SiteServer
+        if ($curApps.Count -gt 0) {
+            Remove-BrokerApplication -InputObject $curApps -AdminAddress $SiteServer
+        }        
+    } 
+
+    StartLogging -ServerAddress $SiteServer -LogText "Remove Desktop Group $($Name)" -LoggingID ([ref]$LogID)
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AdminAddress' = $SiteServer
                             'Name' = $Name

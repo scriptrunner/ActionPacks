@@ -26,6 +26,10 @@
         This can be provided as a host name or an IP address
         [sr-de] Name oder IP Adresse des XenDesktop Controllers
 
+    .Parameter MachineNames
+        [sr-en] Name of the machines to create (in the form 'domain\machine')
+        [sr-de] Namen der Maschinen (Domäne\Maschinenname)
+
     .Parameter MachineName
         [sr-en] Name of the machine to create (in the form 'domain\machine')
         [sr-de] Name der Maschine (Domäne\Maschinenname)
@@ -60,54 +64,77 @@
 #>
 
 param(
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true,ParameterSetName = 'Single')]
     [string]$MachineName,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true,ParameterSetName = 'Multi')]
+    [string[]]$MachineNames,
+    [Parameter(Mandatory = $true,ParameterSetName = 'Single')]
+    [Parameter(Mandatory = $true,ParameterSetName = 'Multi')]
     [Int64]$CatalogUid,
+    [Parameter(ParameterSetName = 'Single')]
     [string]$AssignedClientName,
+    [Parameter(ParameterSetName = 'Single')]
     [string]$AssignedIPAddress,
+    [Parameter(ParameterSetName = 'Single')]
     [string]$HostedMachineId,
+    [Parameter(ParameterSetName = 'Single')]
     [int]$HypervisorConnectionUid,
+    [Parameter(ParameterSetName = 'Single')]
     [bool]$InMaintenanceMode,
+    [Parameter(ParameterSetName = 'Single')]
     [bool]$IsReserved,
+    [Parameter(ParameterSetName = 'Single')]
+    [Parameter(ParameterSetName = 'Multi')]
     [string]$SiteServer
 )                                                            
 
 $LogID = $null
 [bool]$success = $false
+[string[]]$ret = @()
 try{ 
     [string[]]$Properties = @('MachineName','PowerState','FaultState','MaintenanceModeReason','SessionCount','SessionState','CatalogName','DesktopGroupName','IPAddress','ZoneName','Uid','SessionsEstablished','SessionsPending')
     StartCitrixSessionAdv -ServerName ([ref]$SiteServer)
-    StartLogging -ServerAddress $SiteServer -LogText "Create machine $($MachineName)" -LoggingID ([ref]$LogID)
 
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AdminAddress' = $SiteServer
-                            'MachineName' = $MachineName
                             'CatalogUid' = $CatalogUid
                             'LoggingID' = $LogID
                             }        
     
-    if($PSBoundParameters.ContainsKey('AssignedClientName') -eq $true){
-        $cmdArgs.Add('AssignedClientName',$AssignedClientName)
+    if($PSCmdlet.ParameterSetName -eq 'Single'){         
+        StartLogging -ServerAddress $SiteServer -LogText "Create machine $($MachineName)" -LoggingID ([ref]$LogID)
+        $cmdArgs.Add('MachineName' , $MachineName)
+        if($PSBoundParameters.ContainsKey('AssignedClientName') -eq $true){
+            $cmdArgs.Add('AssignedClientName',$AssignedClientName)
+        }
+        if($PSBoundParameters.ContainsKey('AssignedIPAddress') -eq $true){
+            $cmdArgs.Add('AssignedIPAddress',$AssignedIPAddress)
+        }
+        if($PSBoundParameters.ContainsKey('HostedMachineId') -eq $true){
+            $cmdArgs.Add('HostedMachineId',$HostedMachineId)
+        }
+        if($PSBoundParameters.ContainsKey('InMaintenanceMode') -eq $true){
+            $cmdArgs.Add('InMaintenanceMode',$InMaintenanceMode)
+        }
+        if($PSBoundParameters.ContainsKey('HypervisorConnectionUid') -eq $true){
+            $cmdArgs.Add('HypervisorConnectionUid',$HypervisorConnectionUid)
+        }
+        if($PSBoundParameters.ContainsKey('IsReserved') -eq $true){
+            $cmdArgs.Add('IsReserved',$IsReserved)
+        }
+        $ret += New-BrokerMachine @cmdArgs | Select-Object $Properties
+        $success = $true
     }
-    if($PSBoundParameters.ContainsKey('AssignedIPAddress') -eq $true){
-        $cmdArgs.Add('AssignedIPAddress',$AssignedIPAddress)
-    }
-    if($PSBoundParameters.ContainsKey('HostedMachineId') -eq $true){
-        $cmdArgs.Add('HostedMachineId',$HostedMachineId)
-    }
-    if($PSBoundParameters.ContainsKey('InMaintenanceMode') -eq $true){
-        $cmdArgs.Add('InMaintenanceMode',$InMaintenanceMode)
-    }
-    if($PSBoundParameters.ContainsKey('HypervisorConnectionUid') -eq $true){
-        $cmdArgs.Add('HypervisorConnectionUid',$HypervisorConnectionUid)
-    }
-    if($PSBoundParameters.ContainsKey('IsReserved') -eq $true){
-        $cmdArgs.Add('IsReserved',$IsReserved)
+    else{
+        foreach($machine in $MachineNames){
+            StartLogging -ServerAddress $SiteServer -LogText "Create machine $($machine)" -LoggingID ([ref]$LogID)
+            $ret += New-BrokerMachine @cmdArgs -MachineName $machine | Select-Object $Properties
+            $success = $true
+            StopLogging -LoggingID $LogID -ServerAddress $SiteServer -IsSuccessful $success
+            $LogID = $null
+        }
     }
 
-    $ret = New-BrokerMachine @cmdArgs | Select-Object $Properties
-    $success = $true
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret
     }

@@ -73,6 +73,18 @@ Use cases for managing Citrix Systems and Solutions
 + Remove log operation
 + Test Log Database connection
 
+## [Policies](./Policies)
+
++ New, get, set, rename, remove access policy rule
++ Get, create or update, remove access policy rule metadata
++ New, get, set, rename, remove assignment policy rule
++ Get, create or update, remove assignment policy rule metadata
++ New, get, set, rename, remove entitlement policy rule
++ Get, create or update, remove entitlement policy rule metadata
++ New, get, set, rename, remove app assignment policy rule
++ New, get, set, rename, remove app entitlement policy rule
++ Test name available access, entitlement, assignment, app assignment, app entitlement policy rule
+
 ## [Sites](./Sites)
 
 + New, get, set site
@@ -102,6 +114,7 @@ Use cases for managing Citrix Systems and Solutions
 + Get sessions
 + Get high level operation ids
 + Get service instances
++ Get app assignment, assignment, access, app entitlement and entitlement policies
 
 ## [Library](./_LIB_)
 

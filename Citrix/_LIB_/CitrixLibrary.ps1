@@ -210,6 +210,9 @@ function StopLogging(){
     )
 
     try{
+        if($null -eq $LoggingID){
+            return
+        }
         [guid]$LogId =[System.Guid]::NewGuid()
         if([System.Guid]::TryParse($LoggingID,[ref]$LogId) -eq $false){
             return

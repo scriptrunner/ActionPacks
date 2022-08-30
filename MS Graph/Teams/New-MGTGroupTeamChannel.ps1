@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Creates a team channel
+        Create new navigation property to channels for groups
     
     .DESCRIPTION          
 
@@ -16,15 +16,14 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Teams 
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
-    .Parameter TeamId
-        [sr-en] Team identifier
-        [sr-de] Team ID
+    .Parameter GroupId
+        [sr-en] Group identifier
+        [sr-de] Gruppen ID
 
     .Parameter DisplayName
         [sr-en] Name of the channel
@@ -49,7 +48,7 @@
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
+    [string]$GroupId,
     [Parameter(Mandatory = $true)]
     [string]$DisplayName,
     [string]$Description,
@@ -62,9 +61,8 @@ Import-Module Microsoft.Graph.Teams
 
 try{
     [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime','IsFavoriteByDefault')
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
+                        'GroupId' = $GroupId
                         'DisplayName' = $DisplayName
                         'Confirm' = $false
     }
@@ -81,7 +79,7 @@ try{
         $cmdArgs.Add('IsFavoriteByDefault',$null)
     }
 
-    $mgChannel = New-MgTeamChannel @cmdArgs | Select-Object $Properties
+    $mgChannel = New-MgGroupTeamChannel @cmdArgs | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $mgChannel
     }
@@ -93,5 +91,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

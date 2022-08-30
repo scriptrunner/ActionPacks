@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Creates a team channel
+        Update the navigation property channels in groups
     
     .DESCRIPTION          
 
@@ -16,15 +16,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Teams 
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Teams
 
-    .Parameter TeamId
-        [sr-en] Team identifier
-        [sr-de] Team ID
+    .Parameter GroupId
+        [sr-en] Group identifier
+        [sr-de] Gruppen ID
+
+    .Parameter ChannelId
+        [sr-en] Id of channel
+        [sr-de] Kanal ID
 
     .Parameter DisplayName
         [sr-en] Name of the channel
@@ -49,39 +52,32 @@
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$TeamId,
+    [string]$GroupId,
+    [Parameter(Mandatory = $true)]
+    [string]$ChannelId,
     [Parameter(Mandatory = $true)]
     [string]$DisplayName,
-    [string]$Description,
-    [string]$EMail,
-    [switch]$IsFavoriteByDefault,
-    [string]$WebUrl
+    [string]$Description
 )
 
 Import-Module Microsoft.Graph.Teams 
 
 try{
     [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime','IsFavoriteByDefault')
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                        'TeamID' = $TeamId
-                        'DisplayName' = $DisplayName
+                        'GroupId' = $GroupId
+                        'ChannelId' = $ChannelId
                         'Confirm' = $false
+                        'PassThru' = $null
     }
     if($PSBoundParameters.ContainsKey('Description') -eq $true){
         $cmdArgs.Add('Description',$Description)
     }
-    if($PSBoundParameters.ContainsKey('EMail') -eq $true){
-        $cmdArgs.Add('EMail',$EMail)
-    }
-    if($PSBoundParameters.ContainsKey('WebUrl') -eq $true){
-        $cmdArgs.Add('WebUrl',$WebUrl)
-    }
-    if($IsFavoriteByDefault.IsPresent -eq $true){
-        $cmdArgs.Add('IsFavoriteByDefault',$null)
+    if($PSBoundParameters.ContainsKey('DisplayName') -eq $true){
+        $cmdArgs.Add('DisplayName',$DisplayName)
     }
 
-    $mgChannel = New-MgTeamChannel @cmdArgs | Select-Object $Properties
+    $mgChannel = Update-MgGroupTeamChannel @cmdArgs | Select-Object $Properties
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $mgChannel
     }
@@ -93,5 +89,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

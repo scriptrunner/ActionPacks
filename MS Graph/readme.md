@@ -73,6 +73,7 @@ Use cases for managing teams with Microsoft Graph
 + New, get, set, copy, remove, archive, unarchive team
 + New, get, set, remove team channel
 + Get, set, remove team channel tab
++ Get team incoming channels 
 + Get, remove team member
 + Get, set, remove team of group
 + Get team app
@@ -82,7 +83,13 @@ Use cases for managing teams with Microsoft Graph
 + Get team work
 + Get user team joined team
 + Get user team work
++ Get user team work associated team
++ Get team group operation
++ New, get, set, remove group team channel
 + Get, remove user team work installed app
++ Get team photo
++ Get, set team photo content
++ Get user chat
 
 ## [Users](./Users)
 

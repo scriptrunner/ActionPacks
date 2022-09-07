@@ -102,7 +102,7 @@ param(
     [bool]$SecureIcaRequired = $true,
     [bool]$ExcludedUserFilterEnabled,
     [string[]]$ExcludedUsers,
-    [bool]$IncludedUserFilterEnabled,
+    [bool]$IncludedUserFilterEnabled = $false,
     [string[]]$IncludedUsers,
     [ValidateSet('FourBit','EightBit','SixteenBit','TwentyFourBit')]
     [string]$ColorDepth,

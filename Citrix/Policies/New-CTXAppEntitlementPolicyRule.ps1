@@ -77,7 +77,7 @@ param(
     [bool]$Enabled = $true,
     [bool]$ExcludedUserFilterEnabled,
     [string[]]$ExcludedUsers,
-    [bool]$IncludedUserFilterEnabled,
+    [bool]$IncludedUserFilterEnabled = $false,
     [string[]]$IncludedUsers,
     [ValidateSet('Allowed','Disallowed')]
     [string]$LeasingBehavior,

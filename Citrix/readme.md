@@ -32,12 +32,16 @@ Use cases for managing Citrix Systems and Solutions
 + Add, new, get, set, rename, remove application group
 + New, get, move, rename, remove application folder
 + Add, new, get, set, move, rename, remove application
++ New, get, set, rename, remove reboot schedule
 + Add, remove application from group
 + Get, create or update, remove catalog metadata 
 + Get, create or update, remove desktop group metadata 
 + Get, create or update, remove application group metadata 
 + Get, create or update, remove application folder metadata 
 + Get, create or update, remove application metadata 
++ Get, create or update, remove reboot schedule metadata 
++ Get, start, stop rebbot cycle
++ Start desktop group reboot cycle
 + Test application name available, desktop group name available, application group name available
 + Test Broker Database connection
 
@@ -114,6 +118,7 @@ Use cases for managing Citrix Systems and Solutions
 + Get sessions
 + Get high level operation ids
 + Get service instances
++ Get reboot schedules
 + Get app assignment, assignment, access, app entitlement and entitlement policies
 
 ## [Library](./_LIB_)

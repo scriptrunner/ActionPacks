@@ -63,6 +63,10 @@
 
   Returns permissions configured for the site
 
++ [QUY_Get-CTXRebootSchedule.ps1](./QUY_Get-CTXRebootSchedule.ps1)
+
+  Returns the reboot schedules
+
 + [QUY_Get-CTXRoles.ps1](./QUY_Get-CTXRoles.ps1)
 
   Returns roles configured for this site

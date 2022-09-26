@@ -216,6 +216,7 @@ try{
                 'Filter' = {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
                 'SearchBase' = $OUPath 
                 'SearchScope' = $SearchScope
+                'Properties' = '*'
                 }
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)

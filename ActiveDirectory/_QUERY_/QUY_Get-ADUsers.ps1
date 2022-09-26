@@ -25,7 +25,7 @@
         Specifies the AD path
         [sr-de] Active Directory Pfad
 
-    .Parameter UserName
+    .Parameter SamAccountName
         Specifies the SamAccountName of the users, use * to represent any series of characters, is the parameter empty all users retrieved 
         [sr-de] Gibt den SamAccountNamen des Benutzers an, verwenden Sie * als Joker, keine Angabe gibt alle Bneutzer zurück
 

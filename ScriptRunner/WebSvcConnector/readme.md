@@ -11,12 +11,14 @@ using the built-in Loopback WebService Connector instance, but the code is not l
 to local execution, it is only the ScriptRunner endpoint URL that needs more attention 
 from remote.
 
+## API Endpoints
+
 The ScriptRunner WebService Connector provides three different endpoint APIs to start an Action:
  - Action OData API, on http[s]://server:port/ScriptRunner/ActionContextItem...
  - Action Webhook API, on http[s]://server:port/ScriptRunner/api2/PostWebhook/$ActionID
  - Azure PowerAutomate API, on http[s]://server:port/ScriptRunner/api2/StartAction
 
-WebSvcConnector.ps1 is a container of three main functions, one for each of these endpoints.
+[WebSvcConnector.ps1](./WebSvcConnector.ps1) is a container of three main functions, one for each of these endpoints.
 So after you load (dot-source) the script, you have three functions available:
 
  - Start-AsrWebSvcConnector to call the Action OData API,
@@ -26,13 +28,19 @@ So after you load (dot-source) the script, you have three functions available:
 The functions use Windows Integrated Auth (with the current user) by default, but also provide a
 $BasicAuthCreds PSCredential parameter for Basic Authentication. 
 For the constructed API URLs to have the correct protocol, host, and port, you specify either
-the appropriate ScriptRunner endpoint (like 'http://server:port/ScriptRunner/' or 
-'https://server:port/ScriptRunner/'; check your ScriptRunner installation to use the correct
+the appropriate ScriptRunner endpoint (like `http://server:port/ScriptRunner/` or 
+`https://server:port/ScriptRunner/`; check your ScriptRunner installation to use the correct
 settings), or the complete API URL.
 
 Other parameters provide the appropriate data for the respective API.
 
-In addition to this WebSvcConnector.ps1 script, there are three scripts, one for each of the 
+## Example Scripts
+
+In addition to the [WebSvcConnector.ps1](./WebSvcConnector.ps1) script, there are three scripts, one for each of the 
 APIs, that were formerly integrated as sample scripts in your ScriptRunner installation.
 For more details about the scripts, functions, and parameters, check the comprehensive 
 Powershell help that is integrated into the scripts.
+
+- Action OData API - [CallASRWebSvcConnector.ps1](./CallASRWebSvcConnector.ps1)
+- Action Webhook API - [CallASRWebhook.ps1](./CallASRWebhook.ps1)
+- Azure PowerAutomate API - [CallASRWebSvcConnector2.ps1](./CallASRWebSvcConnector2.ps1)

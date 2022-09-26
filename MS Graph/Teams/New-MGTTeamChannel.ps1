@@ -61,6 +61,7 @@ param(
 Import-Module Microsoft.Graph.Teams 
 
 try{
+    [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime','IsFavoriteByDefault')
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'TeamID' = $TeamId

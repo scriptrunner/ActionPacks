@@ -98,7 +98,7 @@ param(
     [string]$Description,
     [bool]$IsRemotePC,
     [bool]$MachinesArePhysical = $true,
-    [Validateset('L5','L7','L7_6')]
+    [Validateset('L5','L7','L7_6','L7_7','L7_8','L7_9','L7_20','L7_25')]
     [string]$MinimumFunctionalLevel = 'L7_6',
     [string]$PvsAddress,
     [string]$PvsDomain,

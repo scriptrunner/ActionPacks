@@ -19,6 +19,14 @@
 
   Get team from group
 
++ [Get-MGTGroupTeamChannel.ps1](./Get-MGTGroupTeamChannel.ps1)
+
+  Collection of channels and messages associated with the group
+
++ [Get-MGTGroupTeamOperation.ps1](./Get-MGTGroupTeamOperation.ps1)
+
+  Get operations from groups
+
 + [Get-MGTTeam.ps1](./Get-MGTTeam.ps1)
 
   Returns the Team
@@ -35,6 +43,14 @@
 
   A collection of membership records associated with the channel
 
++ [Get-MGTTeamChannelTab.ps1](./Get-MGTTeamChannelTab.ps1)
+
+  A collection of all the tabs in the channel
+
++ [Get-MGTTeamIncomingChannel.ps1](./Get-MGTTeamIncomingChannel.ps1)
+
+  Get incoming Channels from teams
+
 + [Get-MGTTeamMember.ps1](./Get-MGTTeamMember.ps1)
 
   Members and owners of the team
@@ -43,9 +59,21 @@
 
   The async operations that ran or are running on this team
 
++ [Get-MGTTeamPhoto.ps1](./Get-MGTTeamPhoto.ps1)
+
+  Get photo from teams
+
++ [Get-MGTTeamPhotoContent.ps1](./Get-MGTTeamPhotoContent.ps1)
+
+  Get media content for the navigation property photo from teams
+
 + [Get-MGTTeamWork.ps1](./Get-MGTTeamWork.ps1)
   
   Get teamwork
+
++ [Get-MGTUserChat.ps1](./Get-MGTUserChat.ps1)
+  
+  Get chats from users
 
 + [Get-MGTUserJoinedTeam.ps1](./Get-MGTUserJoinedTeam.ps1)
   
@@ -55,6 +83,10 @@
   
   Container for Microsoft Teams features available for the user
 
++ [Get-MGTUserTeamWorkAssociatedTeam.ps1](./Get-MGTUserTeamWorkAssociatedTeam.ps1)
+  
+  Get associatedTeams from users
+
 + [Get-MGTUserTeamWorkInstalledApp.ps1](./Get-MGTUserTeamWorkInstalledApp.ps1)
   
   Apps installed in the personal scope of this user
@@ -62,6 +94,10 @@
 + [Invoke-MGTArchiveTeam.ps1](./Invoke-MGTArchiveTeam.ps1)
 
   Invoke action archive/unarchive
+
++ [New-MGTGroupTeamChannel.ps1](./New-MGTGroupTeamChannel.ps1)
+
+  Create new navigation property to channels for groups
 
 + [New-MGTTeam.ps1](./New-MGTTeam.ps1)
 
@@ -74,6 +110,10 @@
 + [Remove-MGTGroupTeam.ps1](./Remove-MGTGroupTeam.ps1)
 
   Delete navigation property team for groups
+
++ [Remove-MGTGroupTeamChannel.ps1](./Remove-MGTGroupTeamChannel.ps1)
+
+  Delete navigation property channels for groups
 
 + [Remove-MGTTeam.ps1](./Remove-MGTTeam.ps1)
 
@@ -103,6 +143,10 @@
 
   Update the navigation property team in groups
 
++ [Set-MGTGroupTeamChannel.ps1](./Set-MGTGroupTeamChannel.ps1)
+
+  Update the navigation property channels in groups
+
 + [Set-MGTTeam.ps1](./Set-MGTTeam.ps1)
 
   Updates a Team
@@ -114,6 +158,10 @@
 + [Set-MGTTeamChannelTab.ps1](./Set-MGTTeamChannelTab.ps1)
 
   Updates a team channel tab
+
++ [Set-MGTTeamPhotoContent.ps1](./Set-MGTTeamPhotoContent.ps1)
+
+  Update media content for the navigation property photo in teams
 
 ## [Queries](./_QUERY_)
 

@@ -54,6 +54,18 @@
 
   Gets broker desktop groups
 
++ [Get-CTXRebootCycle.ps1](./Get-CTXRebootCycle.ps1)
+
+  Gets one or more reboot cycles
+
++ [Get-CTXRebootSchedule.ps1](./Get-CTXRebootSchedule.ps1)
+
+  Gets one or more reboot schedules
+
++ [Get-CTXRebootScheduleMetadata.ps1](./Get-CTXRebootScheduleMetadata.ps1)
+
+  Gets metadata from the reboot schedule
+
 + [Move-CTXApplication.ps1](./Move-CTXApplication.ps1)
 
   Move a published application from one admin folder to another
@@ -81,6 +93,10 @@
 + [New-CTXDesktopGroup.ps1](./New-CTXDesktopGroup.ps1)
 
   Create a new desktop group for managing the brokering of groups of desktops
+
++ [New-CTXRebootSchedule.ps1](./New-CTXRebootSchedule.ps1)
+
+  Creates a new reboot schedule for a desktop group
 
 + [Remove-CTXApplication.ps1](./Remove-CTXApplication.ps1)
 
@@ -122,6 +138,14 @@
 
   Deletes Desktop Group Metadata from the Desktop Group object
 
++ [Remove-CTXRebootSchedule.ps1](./Remove-CTXRebootSchedule.ps1)
+
+  Removes the reboot schedule
+
++ [Remove-CTXRebootScheduleMetadata.ps1](./Remove-CTXRebootScheduleMetadata.ps1)
+
+  Deletes Metadata from the Reboot Schedule object
+
 + [Rename-CTXApplication.ps1](./Rename-CTXApplication.ps1)
 
   Renames an application
@@ -141,6 +165,10 @@
 + [Rename-CTXDesktopGroup.ps1](./Rename-CTXDesktopGroup.ps1)
 
   Renames a desktop group
+
++ [Rename-CTXRebootSchedule.ps1](./Rename-CTXRebootSchedule.ps1)
+
+  Renames a reboot schedule
 
 + [Set-CTXApplication.ps1](./Set-CTXApplication.ps1)
 
@@ -173,6 +201,26 @@
 + [Set-CTXDesktopGroupMetaData.ps1](./Set-CTXDesktopGroupMetaData.ps1)
 
   Creates or updates metadata for desktop group
+
++ [Set-CTXRebootSchedule.ps1](./Set-CTXRebootSchedule.ps1)
+
+  Updates the values of one or more desktop group reboot schedules
+
++ [Set-CTXRebootScheduleMetadata.ps1](./Set-CTXRebootScheduleMetadata.ps1)
+
+  Creates or updates metadata for Reboot Schedule
+
++ [Start-CTXRebootCycle.ps1](./Start-CTXRebootCycle.ps1)
+
+  Creates and starts a reboot cycle for each desktop group that contains machines from the specified catalog
+
++ [Start-CTXDesktopGroupRebootCycle.ps1](./Start-CTXDesktopGroupRebootCycle.ps1)
+
+  Creates and starts a reboot cycle for each specified desktop group
+
++ [Stop-CTXRebootCycle.ps1](./Stop-CTXRebootCycle.ps1)
+
+  Cancels the specified reboot cycle
 
 + [Test-CTXApplicationGroupNameAvailable.ps1](./Test-CTXApplicationGroupNameAvailable.ps1)
 

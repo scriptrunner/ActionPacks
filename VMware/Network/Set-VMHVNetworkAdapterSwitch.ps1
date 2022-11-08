@@ -1,5 +1,5 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core,VMware.VimAutomation.Vds
 
 <#
 .SYNOPSIS
@@ -16,7 +16,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Core,VMware.VimAutomation.Vds
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
@@ -113,7 +113,8 @@ Param(
     [bool]$WakeOnLan
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
+Import-Module VMware.VimAutomation.Vds
 
 try{
     if([System.String]::IsNullOrWhiteSpace($AdapterName) -eq $true){

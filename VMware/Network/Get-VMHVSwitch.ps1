@@ -1,5 +1,5 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Vds
 
 <#
 .SYNOPSIS
@@ -16,7 +16,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Vds
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
@@ -48,7 +48,7 @@ Param(
     [string]$SwitchID
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Vds
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

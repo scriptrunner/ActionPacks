@@ -1,6 +1,5 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
-
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 <#
 .SYNOPSIS
     Modifies the properties of the specified virtual hard disk
@@ -16,7 +15,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Core
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
@@ -100,7 +99,7 @@ Param(
     [int32]$ToolsWaitSecs = 20
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

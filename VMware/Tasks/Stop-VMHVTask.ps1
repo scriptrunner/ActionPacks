@@ -1,5 +1,5 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Common
 
 <#
 .SYNOPSIS
@@ -16,7 +16,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Common
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Tasks
@@ -40,7 +40,7 @@ Param(
     [string]$TaskID
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Common
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

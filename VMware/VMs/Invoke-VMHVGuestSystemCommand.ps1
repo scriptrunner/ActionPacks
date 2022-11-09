@@ -1,5 +1,5 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
 .SYNOPSIS
@@ -17,7 +17,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Core
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
@@ -56,7 +56,7 @@ Param(
     [string]$Command
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     [string[]]$Properties = @('OSFullName','State','IPAddress','Disks','ConfiguredGuestId','ToolsVersion')    

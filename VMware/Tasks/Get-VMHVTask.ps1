@@ -1,5 +1,5 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Common
 
 <#
 .SYNOPSIS
@@ -16,7 +16,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Common
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Tasks
@@ -46,7 +46,7 @@ Param(
     [string[]]$Properties = @('Description','State','IsCancelable','StartTime','FinishTime','PercentComplete','Name')
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Common
 
 try{
     if($Properties -contains '*'){

@@ -2,42 +2,48 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Moves a hard disk from one location to another
+    .SYNOPSIS
+        Moves a hard disk from one location to another
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter SourceDatastoreName
-    Specifies the datastore of the hard disk
+    .Parameter SourceDatastoreName
+        [sr-en] Datastore of the hard disk
+        [sr-de] Quell-Datastore
 
-.Parameter TargetDatastoreName
-    Specifies a datastore where you want to place the hard disk
+    .Parameter TargetDatastoreName
+        [sr-en] Datastore where you want to place the hard disk
+        [sr-de] Ziel-Datastore
 
-.Parameter DiskID
-    Specifies the ID of the hard disk you want to move
+    .Parameter DiskID
+        [sr-en] ID of the hard disk you want to move
+        [sr-de] ID der Festplatte
 
-.Parameter StorageFormat
-    Specifies the storage format of the relocated hard disk
+    .Parameter StorageFormat
+        [sr-en] Storage format of the relocated hard disk
+        [sr-de] Format der Festplatte
 #>
 
 [CmdLetBinding()]

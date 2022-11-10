@@ -2,36 +2,40 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Removes the specified host network adapter
+    .SYNOPSIS
+        Removes the specified host network adapter
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of the host whose network adapter you want to remove
+    .Parameter HostName
+        [sr-en] Name of the host whose network adapter you want to remove
+        [sr-de] Hostname
 
-.Parameter AdapterName
-    Specifies the name of the host network adapter you want to remove
+    .Parameter AdapterName
+        [sr-en] Name of the host network adapter you want to remove
+        [sr-de] Name des Netzwerk-Adapters
 #>
 
 [CmdLetBinding()]

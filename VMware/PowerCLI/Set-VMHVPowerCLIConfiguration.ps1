@@ -22,29 +22,38 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/PowerCLI
 
 .Parameter Scope
-    Specifies the scope of the setting that you want to modify
+    [sr-en] Scope of the setting that you want to modify
+    [sr-de] Scope der Einstellungen
     
 .Parameter InvalidCertificateAction
-    Define the action to take when an attempted connection to a server fails due to a certificate error
+    [sr-en] Action to take when an attempted connection to a server fails due to a certificate error
+    [sr-de] Verhalten bei einem Zertifikatsfehler
     
 .Parameter DisplayDeprecationWarnings
-    Indicates whether you want to see warnings about deprecated elements
+    [sr-en] See warnings about deprecated elements
+    [sr-de] Warnungen für veraltete Elemente
 
 .Parameter DefaultVIServerMode
-    Specifies the server connection mode. The new configuration takes effect immediately after you run the script
+    [sr-en] Server connection mode. The new configuration takes effect immediately after you run the script
+    [sr-de] Verbindungsmodus
 
 .Parameter WebOperationTimeoutSeconds
-    Defines the timeout for Web operations
+    [sr-en] Timeout for Web operations
+    [sr-de] Timeout 
 
 .Parameter ProxyPolicy
-    Specifies whether VMware PowerCLI uses a system proxy server to connect to the vCenter Server system
+    [sr-en] VMware PowerCLI uses a system proxy server to connect to the vCenter Server system
+    [sr-de] Systemproxyserver
 
 .Parameter CEIPDataTransferProxyPolicy
-    Specifies the proxy policy for the connection through which Customer Experience Improvement Program (CEIP) data is sent to VMware. 
+    [sr-en] Proxy policy for the connection through which Customer Experience Improvement Program (CEIP) data is sent to VMware. 
     Changing this setting requires a restart of PowerCLI before it takes effect
+    [sr-de] Proxy-Richtlinie für die Verbindung, über die CEIP-Daten (Customer Experience Improvement Program) an VMware gesendet werden. 
+    Eine Änderung dieser Einstellung erfordert einen Neustart von PowerCLI, bevor sie wirksam wird
 
 .Parameter ParticipateInCEIP
-    Specifies if PowerCLI should send anonymous usage information to VMware. For more information about the Customer Experience Improvement Program (CEIP), see the PowerCLI User's Guide
+    [sr-en] PowerCLI should send anonymous usage information to VMware. For more information about the Customer Experience Improvement Program (CEIP), see the PowerCLI User's Guide
+    [sr-de] PowerCLI soll anonyme Nutzungsinformationen an VMware senden
 #>
 
 [CmdLetBinding()]

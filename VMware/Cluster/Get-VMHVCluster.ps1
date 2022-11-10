@@ -2,45 +2,52 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the clusters available on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the clusters available on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Cluster
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Cluster
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter ClusterID
-    Specifies the ID of the cluster you want to retrieve
+    .Parameter ClusterID
+        [sr-en] ID of the cluster you want to retrieve
+        [sr-de] Cluster-Id
 
-.Parameter ClusterName
-    Specifies the name of the cluster you want to retrieve, is the parameter empty all hosts retrieved
+    .Parameter ClusterName
+        [sr-en] Name of the cluster you want to retrieve, is the parameter empty all hosts retrieved
+        [sr-de] Cluster-name
 
-.Parameter VM
-    Specifies the name of the virtual machine to filter the cluster that contain at least them
+    .Parameter VM
+        [sr-en] Name of the virtual machine to filter the cluster that contain at least them
+        [sr-de] Virtuelle Maschine
 
-.Parameter NoRecursion
-    Indicates that you want to disable the recursive behavior of the command
+    .Parameter NoRecursion
+        [sr-en] Disable the recursive behavior of the command
+        [sr-de] Rekursive Verhalten deaktivieren
 
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Name,Id. Use * for all properties
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]

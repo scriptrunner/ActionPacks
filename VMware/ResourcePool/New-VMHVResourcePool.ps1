@@ -2,66 +2,80 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new resource pool
+    .SYNOPSIS
+        Creates a new resource pool
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/ResourcePool
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/ResourcePool
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter Name
-    Specifies a name for the new resource pool
+    .Parameter Name
+        [sr-en] Name for the new resource pool
+        [sr-de] Name des Ressourcen Pool
 
-.Parameter VMHost
-    Specifies the host on which you want to create the new resource pool
+    .Parameter VMHost
+        [sr-en] Host on which you want to create the new resource pool
+        [sr-de] Host
 
-.Parameter CpuExpandableReservation
-    Indicates that the CPU reservation can grow beyond the specified value if the parent resource pool has unreserved resources
+    .Parameter CpuExpandableReservation
+        [sr-en] CPU reservation can grow beyond the specified value if the parent resource pool has unreserved resources
+        [sr-de] CPU-Reservierung kann über den angegebenen Wert hinausgehen
 
-.Parameter CpuLimitMhz
-    Specifies a CPU usage limit in MHz
+    .Parameter CpuLimitMhz
+        [sr-en] CPU usage limit in MHz
+        [sr-de] CPU Limit in Mhz
 
-.Parameter CpuReservationMhz
-    Specifies the CPU size in MHz that is guaranteed to be available
+    .Parameter CpuReservationMhz
+        [sr-en] CPU size in MHz that is guaranteed to be available
+        [sr-de] CPU Größe in Mhz
 
-.Parameter CpuSharesLevel
-    Specifies the CPU allocation level for this pool
+    .Parameter CpuSharesLevel
+        [sr-en] CPU allocation level for this pool
+        [sr-de] Ebene der CPU-Zuweisung
 
-.Parameter MemExpandableReservation
-    If the value is $true, the memory reservation can grow beyond the specified value if the parent resource pool has unreserved resources
+    .Parameter MemExpandableReservation
+        [sr-en] If the value is $true, the memory reservation can grow beyond the specified value if the parent resource pool has unreserved resources
+        [sr-de] Speicherreservierung über den angegebenen Wert hinaus wachsen
 
-.Parameter MemLimitGB
-    Specifies a memory usage limit in gigabytes (GB)
+    .Parameter MemLimitGB
+        [sr-en] Memory usage limit in gigabytes (GB)
+        [sr-de] Mindest verfügbarer Speicher in Gigabyte
 
-.Parameter MemReservationGB
-    Specifies the guaranteed available memory in gigabytes (GB)
+    .Parameter MemReservationGB
+        [sr-en] Guaranteed available memory in gigabytes (GB)
+        [sr-de] Garantierte Speicher in Gigabyte
 
-.Parameter MemSharesLevel
-    Specifies the memory allocation level for this pool
+    .Parameter MemSharesLevel
+        [sr-en] Memory allocation level for this pool
+        [sr-de] Ebene der Speicherzuweisung
 
-.Parameter NumCpuShares
-    Specifies the CPU allocation level for this pool
+    .Parameter NumCpuShares
+        [sr-en] CPU allocation level for this pool
+        [sr-de] Ebene der CPU-Zuweisung
 
-.Parameter NumMemShares
-    Specifies the memory allocation level for this pool
+    .Parameter NumMemShares
+        [sr-en] Memory allocation level for this pool
+        [sr-de] Ebene der Speicherzuweisung
 #>
 
 [CmdLetBinding()]

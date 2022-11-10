@@ -2,45 +2,52 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new virtual floppy drive
+    .SYNOPSIS
+        Creates a new virtual floppy drive
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Drives
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Drives
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine to which you want to attach the new virtual floppy drive
+    .Parameter VMName
+        [sr-en] Virtual machine to which you want to attach the new virtual floppy drive
+        [sr-de] Virtuelle Maschine
 
-.Parameter FloppyImagePath
-    Specifies the datastore path to the floppy image file backing the virtual floppy drive
+    .Parameter FloppyImagePath
+        [sr-en] Datastore path to the floppy image file backing the virtual floppy drive
+        [sr-de] Datastore
 
-.Parameter HostDevice
-    Specifies the path to the floppy drive on the host which will back this virtual floppy drive
+    .Parameter HostDevice
+        [sr-en] Path to the floppy drive on the host which will back this virtual floppy drive
+        [sr-de] Laufwerk
 
-.Parameter NewFloppyImagePath
-    Specifies a new datastore path to a floppy image file backing the virtual floppy drive
+    .Parameter NewFloppyImagePath
+        [sr-en] New datastore path to a floppy image file backing the virtual floppy drive
+        [sr-de] Datastore Pfad des Images
 
-.Parameter StartConnected
-    Indicates that the virtual floppy drive starts connected when its associated virtual machine powers on
+    .Parameter StartConnected
+        [sr-en] Virtual floppy drive starts connected when its associated virtual machine powers on
+        [sr-de] Diskettenlaufwerk verbinden beim Start der virtuellen Maschine
 #>
 
 [CmdLetBinding()]

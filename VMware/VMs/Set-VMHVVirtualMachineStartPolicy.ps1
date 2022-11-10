@@ -2,70 +2,85 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Modifies the virtual machine start policy
+    .SYNOPSIS
+        Modifies the virtual machine start policy
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP-Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Anmeldedaten für die Authentifizierung beim Server
 
-.Parameter VMId
-    Specifies the ID of the virtual machine you want to retrieve
+    .Parameter VMId
+        [sr-en] ID of the virtual machine
+        [sr-de] ID der VM
 
-.Parameter VMName
-    Specifies the name of the virtual machine you want to retrieve, is the parameter empty all virtual machines retrieved
+    .Parameter VMName
+        [sr-en] Name of the virtual machine
+        [sr-de] Name der VM
 
-.Parameter StartAction
-    Indicates that the virtual machine uses the value of the StartDelay parameter of the host
+    .Parameter StartAction
+        [sr-en] Virtual machine uses the value of the StartDelay parameter of the host
+        [sr-de] Virtuelle Maschine verwendet StartDelay des Hosts
 
-.Parameter StopAction
-    Specifies the default action of the virtual machine when the server stops
+    .Parameter StopAction
+        [sr-en] Default action of the virtual machine when the server stops
+        [sr-de] Standardaktion der virtuellen Maschine beim SToppen des Servers
 
-.Parameter StartDelay
-    Specifies a default start delay in seconds
+    .Parameter StartDelay
+        [sr-en] Default start delay in seconds
+        [sr-de] Standard-Startverzögerung in Sekunden
 
-.Parameter StopDelay
-    Specifies a default stop delay in seconds
+    .Parameter StopDelay
+        [sr-en] Default stop delay in seconds
+        [sr-de] Standard-Stopverzögerung in Sekunden
 
-.Parameter StartOrder
-    Specifies a number to define the virtual machines start order
+    .Parameter StartOrder
+        [sr-en] Number to define the virtual machines start order
+        [sr-de] Startreihenfolge der virtuellen Maschine
 
-.Parameter UnspecifiedStartOrder
-    Indicates that no order is defined for starting the virtual machines
+    .Parameter UnspecifiedStartOrder
+        [sr-en] Indicates that no order is defined for starting the virtual machines
+        [sr-de] Keine Reihenfolge für den Start der virtuellen Maschinen definiert
 
-.Parameter WaitForHeartBeat
-    Indicates whether the virtual machine should start after receiving a heartbeat, ignore heartbeats and start after the StartDelay has elapsed ($true), 
-    or follow the system default before powering on ($false)
+    .Parameter WaitForHeartBeat
+        [sr-en] Indicates whether the virtual machine should start after receiving a heartbeat, ignore heartbeats and start after the StartDelay has elapsed ($true), 
+        or follow the system default before powering on ($false)
+        [sr-de] Virtuelle Maschine nach dem Empfang eines Heartbeats starten
 
-.Parameter InheritStartDelayFromHost
-    Indicates that the virtual machine uses the value of the StartDelay parameter of the host
+    .Parameter InheritStartDelayFromHost
+        [sr-en] Indicates that the virtual machine uses the value of the StartDelay parameter of the host
+        [sr-de] Virtuelle Maschine verwendet den Wert des StartDelay-Parameters des Hosts
 
-.Parameter InheritStopActionFromHost
-    Indicates that the virtual machine uses the value of the StopAction parameter of the host
+    .Parameter InheritStopActionFromHost
+        [sr-en] Indicates that the virtual machine uses the value of the StopAction parameter of the host
+        [sr-de] Virtuelle Maschine verwendet den Wert des StopAction-Parameters des Hosts
 
-.Parameter InheritStopDelayFromHost
-    Indicates that the virtual machine uses the value of the StopDelay parameter of the host
+    .Parameter InheritStopDelayFromHost
+        [sr-en] Indicates that the virtual machine uses the value of the StopDelay parameter of the host
+        [sr-de] Virtuelle Maschine verwendet den Wert des StopDelay-Parameters des Hosts
 
-.Parameter InheritWaitForHeartbeatFromHost
-    Indicates that the virtual machine uses the value of the WaitforHeartbeat parameter of the host
+    .Parameter InheritWaitForHeartbeatFromHost
+        [sr-en] Indicates that the virtual machine uses the value of the WaitforHeartbeat parameter of the host
+        [sr-de] Virtuelle Maschine verwendet den Wert des Parameters WaitforHeartbeat des Hosts
 #>
 
 [CmdLetBinding()]

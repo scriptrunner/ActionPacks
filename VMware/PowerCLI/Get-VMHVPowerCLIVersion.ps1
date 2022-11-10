@@ -20,8 +20,6 @@
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/PowerCLI
-
-
 #>
 
 [CmdLetBinding()]

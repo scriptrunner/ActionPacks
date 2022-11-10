@@ -2,48 +2,56 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the statistical information available on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the statistical information available on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Server
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Server
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter Common
-    Indicates whether collects common CPU, disk, memory and network statistics
+    .Parameter Common
+        [sr-en] Collects common CPU, disk, memory and network statistics
+        [sr-de] CPU-, Festplatten-, Speicher- und Netzwerkstatistiken
 
-.Parameter CPU
-    Indicates whether collects common CPU statistics, such as the average CPU usage and average CPU usagemhz counters as appropriate for each entity
+    .Parameter CPU
+        [sr-en] Collects common CPU statistics, such as the average CPU usage and average CPU usagemhz counters as appropriate for each entity
+        [sr-de] CPU-Statistiken
 
-.Parameter Memory
-    Indicates whether collects common memory statistics, such as the mem usage, mem vmmemctl, mem active and mem granted counters as appropriate for each entity
+    .Parameter Memory
+        [sr-en] Collects common memory statistics, such as the mem usage, mem vmmemctl, mem active and mem granted counters as appropriate for each entity
+        [sr-de] Speicher-Statistiken
 
-.Parameter Disk
-    Indicates whether collects common disk statistics, such as the average disk usage, average disk read and average disk write counters as appropriate for each entity
+    .Parameter Disk
+        [sr-en] Collects common disk statistics, such as the average disk usage, average disk read and average disk write counters as appropriate for each entity
+        [sr-de] Festplatten-Statistiken
 
-.Parameter Network
-    Indicates whether collects common network statistics, such as the average network usage, average network transmitted and average network received counters as appropriate for each entity
+    .Parameter Network
+        [sr-en] Collects common network statistics, such as the average network usage, average network transmitted and average network received counters as appropriate for each entity
+        [sr-de] Netzwerkstatistiken
 
-.Parameter MaxResult
-    Specifies the maximum number of statistical information, beginning with the newest, are retrieved
+    .Parameter MaxResult
+        [sr-en] Maximum number of statistical information, beginning with the newest, are retrieved
+        [sr-de] Maximales Ergebnis
 #>
 
 [CmdLetBinding()]

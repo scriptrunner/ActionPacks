@@ -2,59 +2,70 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Modifies the configuration of the specified virtual CD drive
+    .SYNOPSIS
+        Modifies the configuration of the specified virtual CD drive
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Drives
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Drives
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server   
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter DriveName
-    Specifies the name of the CD drive you want to retrieve
+    .Parameter DriveName
+        [sr-en] Name of the CD drive you want to retrieve
+        [sr-de] CD-Laufwerk
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to configure the virtual CD drive
+    .Parameter VMName
+        [sr-en] Virtual machine from which you want to configure the virtual CD drive
+        [sr-de] Virtuelle Maschine
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to configure the virtual CD drive
+    .Parameter TemplateName
+        [sr-en] Virtual machine template from which you want to configure the virtual CD drive
+        [sr-de] Vorlage
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to configure the virtual CD drive
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to configure the virtual CD drive
+        [sr-de] Snapshotname
 
-.Parameter Connected
-    Indicates that the virtual CD drive is connected after its creation. 
-    This parameter can be specified only if the corresponding virtual machine is powered on    
+    .Parameter Connected
+        [sr-en] CD drive is connected after its creation. 
+        This parameter can be specified only if the corresponding virtual machine is powered on    
+        [sr-de] CD-Laufwerk verbinden nach seiner Erstellung
 
-.Parameter NoMedia
-    Indicates that you want to detach from the CD drive any type of connected media - 
-    ISO from datastore or host device
+    .Parameter NoMedia
+        [sr-en] Detach from the CD drive any type of connected media - 
+        ISO from datastore or host device
+        [sr-de] Medien des CD-Laufwerks trennen
 
-.Parameter HostDevice
-    Specifies the path to the CD drive on the host which backs this virtual CD drive
+    .Parameter HostDevice
+        [sr-en] CD drive on the host which backs this virtual CD drive
+        [sr-de] Host CD-Laufwerk
 
-.Parameter IsoPath
-    Specifies the datastore path to the ISO (CD image) file that backs the virtual CD drive
+    .Parameter IsoPath
+        [sr-en] Datastore path to the ISO (CD image) file that backs the virtual CD drive
+        [sr-de] Pfad zum ISO Image
 
-.Parameter StartConnected
-    Indicates that the virtual CD drive starts connected when the virtual machine associated with it powers on.
+    .Parameter StartConnected
+        [sr-en] Virtual CD drive starts connected when the virtual machine associated with it powers on
+        [sr-de] CD-Laufwerk wird verbunden beim Start der virtuellen Maschine
 #>
 
 [CmdLetBinding()]

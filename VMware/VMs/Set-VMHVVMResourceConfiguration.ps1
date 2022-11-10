@@ -2,63 +2,76 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Configures resource allocation between the virtual machine
+    .SYNOPSIS
+        Configures resource allocation between the virtual machine
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP-Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Anmeldedaten für die Authentifizierung beim Server
+        
+    .Parameter VMId
+        [sr-en] ID of the virtual machine
+        [sr-de] ID der VM
 
-.Parameter VMId
-    Specifies the ID of the virtual machine you want to remove
+    .Parameter VMName
+        [sr-en] Name of the virtual machine
+        [sr-de] Name der VM
 
-.Parameter VMName
-    Specifies the name of the virtual machine you want to remove
+    .Parameter DiskName
+        [sr-en] Name of the virtual hard disk you want to configure
+        [sr-de] Name der Disk
 
-.Parameter DiskName
-    Specifies the name of the virtual hard disk you want to configure
+    .Parameter CpuLimitMhz
+        [sr-en] Limit on CPU usage in MHz
+        [sr-de] Begrenzung der CPU-Nutzung in MHz
 
-.Parameter CpuLimitMhz
-    Specifies the limit on CPU usage in MHz
+    .Parameter CpuReservationMhz
+        [sr-en] Number of CPU MHz that are guaranteed to be available
+        [sr-de] Garantierte Anzahl der CPU-MHz
 
-.Parameter CpuReservationMhz
-    Specifies the number of CPU MHz that are guaranteed to be available
+    .Parameter CpuSharesLevel
+        [sr-en] CPU allocation level
+        [sr-de] CPU-Zuordnungsebene
 
-.Parameter CpuSharesLevel
-    Specifies the CPU allocation level
+    .Parameter MemLimitGB
+        [sr-en] Memory usage limit in gigabytes
+        [sr-de] Speicher Limit in Gigabyte
 
-.Parameter MemLimitGB
-    Specifies a memory usage limit in gigabytes
+    .Parameter MemReservationGB
+        [sr-en] Guaranteed available memory in gigabytes 
+        [sr-de] Garantiert verfügbarer Speicher in Gigabyte
 
-.Parameter MemReservationGB
-    Specifies the guaranteed available memory in gigabytes 
+    .Parameter MemSharesLevel
+        [sr-en] Memory allocation level for this pool
+        [sr-de] Speicher-Zuordnungsebene für diesen Pool
 
-.Parameter MemSharesLevel
-    Specifies the memory allocation level for this pool
+    .Parameter NumCpuShares
+        [sr-en] CPU allocation level for this pool
+        [sr-de] CPU-Zuordnungsebene für diesen Pool
 
-.Parameter NumCpuShares
-    Specifies the CPU allocation level for this pool
-
-.Parameter NumMemShares
-    Specifies the number of memory shares allocated
+    .Parameter NumMemShares
+        [sr-en] Number of memory shares allocated
+        [sr-de] Anzahl der zugewiesenen Speicheranteile
 #>
 
 [CmdLetBinding()]

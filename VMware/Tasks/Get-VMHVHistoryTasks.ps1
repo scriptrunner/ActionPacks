@@ -2,48 +2,56 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves information about the history tasks
+    .SYNOPSIS
+        Retrieves information about the history tasks
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Tasks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Tasks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter MonthsAgo
-    Specifies how many months back
+    .Parameter MonthsAgo
+        [sr-en] How many months back
+        [sr-de] Monate zurück
 
-.Parameter DaysAgo
-    Specifies how many days back
-    
-.Parameter HoursAgo
-    Specifies how many hours back
+    .Parameter DaysAgo
+        [sr-en] How many days back
+        [sr-de] Tage zurück
+        
+    .Parameter HoursAgo
+        [sr-en] How many hours back
+        [sr-de] Stunden zurück
 
-.Parameter MinutesAgo
-    Specifies how many minutes back
+    .Parameter MinutesAgo
+        [sr-en] How many minutes back
+        [sr-de] Minuten zurück
 
-.Parameter MaxResult
-    Specifies the maximum number of tasks are retrieved
+    .Parameter MaxResult
+        [sr-en] Maximum number of tasks are retrieved
+        [sr-de] Maximales Result
 
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Description,Name. Use * for all properties
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]

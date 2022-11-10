@@ -2,52 +2,60 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Move the virtual machine to another location
+    .SYNOPSIS
+        Move the virtual machine to another location
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the name of the virtual machine you want to move another location
+    .Parameter VMName
+        [sr-en] Name of the virtual machine
+        [sr-de] Name der VM
 
-.Parameter DatastoreName
-    Specifies the datastore where you want to move the virtual machine
+    .Parameter DatastoreName
+        [sr-en] Datastore where you want to move the virtual machine
+        [sr-de] Ziel-Datastore
 
-.Parameter FolderName
-    Specifies a virtual machine folder where you want to move the virtual machine
+    .Parameter FolderName
+        [sr-en] Folder where you want to move the virtual machine
+        [sr-de] Ziel-Ordner
 
-.Parameter DatacenterName
-    Specifies a datacenter where you want to move the virtual machine
+    .Parameter DatacenterName
+        [sr-en] Datacenter where you want to move the virtual machine
+        [sr-de] Ziel Datacenter
 
-.Parameter ResourcePoolName
-    Specifies the resource pool where you want to move the virtual machine
+    .Parameter ResourcePoolName
+        [sr-en] Resource pool where you want to move the virtual machine
+        [sr-de] Ziel-Resource Pool
 
-.Parameter HostName
-    Specifies the host where you want to move the virtual machine
+    .Parameter HostName
+        [sr-en] Host where you want to move the virtual machine
+        [sr-de] Ziel-Host
 
-.Parameter DiskStorageFormat
-    Specifies a new storage format for the hard disk of the virtual machine you want to move
-#>
+    .Parameter DiskStorageFormat
+        [sr-en] New storage format for the hard disk of the virtual machine you want to move
+        [sr-de] Neues Festplattenformat
 #>
 
 [CmdLetBinding()]

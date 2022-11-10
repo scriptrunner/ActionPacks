@@ -2,51 +2,60 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the virtual hard disks available on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the virtual hard disks available on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to retrieve the hard disks
+    .Parameter VMName
+        [sr-en] Virtual machine from which you want to retrieve the hard disks
+        [sr-de] Virtuelle Maschine
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to retrieve the hard disks
+    .Parameter TemplateName
+        [sr-en] Virtual machine template from which you want to retrieve the hard disks
+        [sr-de] Vorlage
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to retrieve the hard disks
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to retrieve the hard disks
+        [sr-de] Snapshotname
 
-.Parameter DatastoreName
-    Specifies the name of the datastore you want to search for hard disks
+    .Parameter DatastoreName
+        [sr-en] Name of the datastore you want to search for hard disks
+        [sr-de} Datastore
 
-.Parameter DiskName
-    Specifies the name of the SCSI hard disk you want to retrieve, is the parameter empty all SCSI hard disks retrieved
+    .Parameter DiskName
+        [sr-en] Name of the SCSI hard disk you want to retrieve, is the parameter empty all SCSI hard disks retrieved
+        [sr-de] Name der Festplatte
 
-.Parameter DiskID
-    Specifies the ID of the hard disk you want to retrieve
-    
-.Parameter DiskType
-    Specifies the type of the hard disk you want to retrieve
+    .Parameter DiskID
+        [sr-en] ID of the hard disk you want to retrieve
+        [sr-de] ID der Festplatte
+        
+    .Parameter DiskType
+        [sr-en] Type of the hard disk you want to retrieve
+        [sr-de] Typ der Festplatte
 #>
 
 [CmdLetBinding()]

@@ -2,39 +2,44 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the datastores available on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the datastores available on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Datastore
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Datastore
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter Datastore
-    Specifies the name of the datastore you want to retrieve, is the parameter empty all datastores retrieved
+    .Parameter Datastore
+        [sr-en] Name of the datastore
+        [sr-de] Name des Datastores
 
-.Parameter RefreshFirst
-    Indicates that first refreshes the storage system information and then retrieves the specified datastores
+    .Parameter RefreshFirst
+        [sr-en] Refreshes the storage system information and then retrieves the specified datastores
+        [sr-de] Speichersysteminformationen aktualisieren
 
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Name,State. Use * for all properties
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]

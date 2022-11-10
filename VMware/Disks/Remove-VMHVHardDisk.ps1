@@ -2,45 +2,52 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Removes the specified virtual hard disk
+    .SYNOPSIS
+        Removes the specified virtual hard disk
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to remove the hard disk
+    .Parameter VMName
+        [sr-en] Virtual machine from which you want to retrieve the SCSI controllers 
+        [sr-de] Virtuelle Maschine
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to remove the hard disk
+    .Parameter TemplateName
+        [sr-en] Virtual machine template from which you want to modify the SCSI controller
+        [sr-de] Vorlage
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to remove the hard disk
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to modify the SCSI controller
+        [sr-de] Snapshotname
 
-.Parameter DiskName
-    Specifies the name of the SCSI hard disk you want to remove
+    .Parameter DiskName
+        [sr-en] Name of the SCSI hard disk you want to modify the SCSI controller 
+        [sr-de] SCSI Festplatte
 
-.Parameter DeletePermanently
-    Indicates that you want to delete the hard disks not only from the inventory, but from the datastore as well
+    .Parameter DeletePermanently
+        [sr-en] Delete the hard disks not only from the inventory, but from the datastore as well
+        [sr-de] Vorlage wird nicht nur aus dem Inventar, sondern auch aus dem Datenspeicher gelöscht
 #>
 
 [CmdLetBinding()]

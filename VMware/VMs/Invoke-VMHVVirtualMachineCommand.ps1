@@ -2,48 +2,49 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Invokes a command for the specified virtual machine. 
-    The acceptable commands are: Start, Stop, Suspend, Restart
+    .SYNOPSIS
+        Invokes a command for the specified virtual machine. 
+        The acceptable commands are: Start, Stop, Suspend, Restart
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    [sr-en] Specifies the IP address or the DNS name of the vSphere server to which you want to connect
-    [sr-de] IP-Adresse oder der DNS-Name des vSphere-Servers
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP-Adresse oder der DNS-Name des vSphere-Servers
 
-.Parameter VICredential
-    [sr-en] Specifies a PSCredential object that contains credentials for authenticating with the server
-    [sr-de] Benutzerkonto für die Authentifizierung beim Server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Authentifizierung beim Server
 
-.Parameter VMId
-    [sr-en] Specifies the ID of the virtual machine you want to execute the command
-    [sr-de] ID der virtuellen Maschine
+    .Parameter VMId
+        [sr-en] Specifies the ID of the virtual machine you want to execute the command
+        [sr-de] ID der virtuellen Maschine
 
-.Parameter VMName
-    [sr-en] Specifies the name of the virtual machine you want to execute the command
-    [sr-de] Name der virtuellen Maschine
+    .Parameter VMName
+        [sr-en] Specifies the name of the virtual machine you want to execute the command
+        [sr-de] Name der virtuellen Maschine
 
-.Parameter Command
-    [sr-en] Specifies the command that executed on the virtual machine
-    [sr-de] Befehl, der auf der virtuellen Maschine ausgeführt wird
+    .Parameter Command
+        [sr-en] Specifies the command that executed on the virtual machine
+        [sr-de] Befehl, der auf der virtuellen Maschine ausgeführt wird
 
-.Parameter Kill
-    [sr-en] Indicates that you want to stop the specified virtual machine by terminating the processes running on the ESX
-    [sr-de] Die auf dem ESX-System laufenden Prozesse beenden
+    .Parameter Kill
+        [sr-en] Indicates that you want to stop the specified virtual machine by terminating the processes running on the ESX
+        [sr-de] Die auf dem ESX-System laufenden Prozesse beenden
 #>
 
 [CmdLetBinding()]

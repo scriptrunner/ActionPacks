@@ -2,70 +2,83 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Modifies the configuration of the virtual machine
+    .SYNOPSIS
+        Modifies the configuration of the virtual machine
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP-Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Anmeldedaten für die Authentifizierung beim Server
 
-.Parameter VMId
-    Specifies the ID of the virtual machine you want to configure
+    .Parameter VMId
+        [sr-en] ID of the virtual machine
+        [sr-de] ID der VM
 
-.Parameter VMName
-    Specifies the name of the virtual machine you want to configure
+    .Parameter VMName
+        [sr-en] Name of the virtual machine
+        [sr-de] Name der VM
 
-.Parameter Notes
-    Provides a description for the virtual machine
+    .Parameter Notes
+        [sr-en] Description for the virtual machine
+        [sr-de] Beschreibung der VM
 
-.Parameter Cpus
-    Specifies the number of the virtual CPUs
+    .Parameter Cpus
+        [sr-en] Number of the virtual CPUs
+        [sr-de] Anzahl der Prozessoren
 
-.Parameter CoresPerSocket
-    Specifies the number of virtual CPU cores per socket
+    .Parameter CoresPerSocket
+        [sr-en] Number of virtual CPU cores per socket
+        [sr-de] Anzahl der CPUs per Socket
 
-.Parameter MemoryGB
-    Specifies the memory size in gigabytes (GB)
+    .Parameter MemoryGB
+        [sr-en] Memory size in gigabytes (GB)
+        [sr-de] Arbeitsspeicher in Gigabyte
 
-.Parameter Network 
-    Specifies the network to which you want to connect the virtual machine
+    .Parameter Network 
+        [sr-en] Network to which you want to connect the virtual machine
+        [sr-de] Netzwerk der VM
 
-.Parameter GuestId
-    Specifies the guest operating system
+    .Parameter GuestId
+        [sr-en] Guest operating system
+        [sr-de] Betriebssystem der VM
 
-.Parameter OSCustomizationSpec
-    [sr-en] Customization specification that is to be applied to the virtual machine. 
-    This works only in 32-bit mode 
-    [sr-de] Benutzerdefinierte Einstellungen der virtuellen Maschine
-    Nur für 32Bit
+    .Parameter OSCustomizationSpec
+        [sr-en] Customization specification that is to be applied to the virtual machine. 
+        This works only in 32-bit mode 
+        [sr-de] Benutzerdefinierte Einstellungen der virtuellen Maschine
+        Nur für 32Bit
 
-.Parameter HardwareVersion
-    Specifies the version to which you want to upgrade the virtual machine. 
-    You cannot downgrade to an earlier version
+    .Parameter HardwareVersion
+        [sr-en] Version to which you want to upgrade the virtual machine. 
+        You cannot downgrade to an earlier version
+        [sr-de] Version auf die die VM aktualisiert wird
 
-.Parameter VMSwapfilePolicy
-    Specifies the swapfile placement policy
+    .Parameter VMSwapfilePolicy
+        [sr-en] Swapfile placement policy
+        [sr-de] Regeln für die Auslagerungsdatei
 
-.Parameter NewName
-    Specifies a new name for the virtual machine
+    .Parameter NewName
+        [sr-en] New name for the virtual machine
+        [sr-de] Neuer der Name der VM
 #>
 
 [CmdLetBinding()]

@@ -2,42 +2,48 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new virtual machine template
+    .SYNOPSIS
+        Creates a new virtual machine template
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Templates
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Templates
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter TemplateName
-    Specifies the name of the new template
+    .Parameter TemplateName
+        [sr-en] Name of the new virtual template
+        [sr-de] Name der neuen Vorlage
 
-.Parameter VMId
-    Specifies the ID of the virtual machine from which you want to create the new template
+    .Parameter VMId
+        [sr-en] ID of the virtual machine
+        [sr-de] ID der VM
 
-.Parameter VMName
-    Specifies the name of the virtual machine from which you want to create the new template
+    .Parameter VMName
+        [sr-en] Name of the source virtual machine
+        [sr-de] Name der Quell-VM
 
-.Parameter Datacenter
-    Specifies the name of the datacenter where you want to place the new template
+    .Parameter Datacenter
+        [sr-en] Datacenter where you want to place the new template
+        [sr-de] Datacenter der neuen Vorlage
 #>
 
 [CmdLetBinding()]

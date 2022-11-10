@@ -1,68 +1,83 @@
 ﻿#Requires -Version 5.0
 # Requires -Modules VMware.VimAutomation.Core
+
 <#
-.SYNOPSIS
-    Modifies the properties of the specified virtual hard disk
+    .SYNOPSIS
+        Modifies the properties of the specified virtual hard disk
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the name of the virtual machine to which you want to add the new disk
+    .Parameter VMName
+        [sr-en] Name of the virtual machine to which you want to add the new disk
+        [sr-de] Virtuelle Maschine
 
-.Parameter DiskName
-    Specifies the name of the SCSI hard disk you want to modify
+    .Parameter DiskName
+        [sr-en] Name of the SCSI hard disk you want to modify
+        [sr-de] SCSI Laufwerk
 
-.Parameter DatastoreName
-    Indicates that you want to inflate the hard disk
+    .Parameter DatastoreName
+        [sr-en] Datastore
+        [sr-de] Datastore
 
-.Parameter Inflate
-    Indicates that you want to inflate the hard disk
+    .Parameter Inflate
+        [sr-en] Inflate the hard disk
+        [sr-de] Festplatte erweitern
 
-.Parameter ZeroOut
-    Specifies that you want to fill the hard disk with zeros
+    .Parameter ZeroOut
+        [sr-en] Fill the hard disk with zeros
+        [sr-de] Festplatte mit Nullen auffüllen
 
-.Parameter CapacityGB
-    Specifies the updated capacity of the virtual disk in gigabytes (GB). 
-    This parameter is supported only when the disk type is rawVirtual or flat
+    .Parameter CapacityGB
+        [sr-en] Specifies the updated capacity of the virtual disk in gigabytes (GB). 
+        This parameter is supported only when the disk type is rawVirtual or flat
+        [sr-de] Aktualisierte Kapazität der virtuellen Festplatte, in Gigabyte
 
-.Parameter SCSIControllerName
-    Specifies a SCSI controller to which you want to attach the new hard disk
+    .Parameter SCSIControllerName
+        [sr-en] SCSI controller to which you want to attach the new hard disk
+        [sr-de] SCSI-Kontroller
 
-.Parameter Persistence
-    Specifies the disk persistence mode
+    .Parameter Persistence
+        [sr-en] Disk persistence mode
+        [sr-de] Festplatten Persistenz-Modus
 
-.Parameter DiskType
-    Specifies the type of file backing you want to use
+    .Parameter DiskType
+        [sr-en] Type of file backing you want to use
+        [sr-de] Typ der Dateisicherung
 
-.Parameter GuestCredential
-    Specifies the PSCredential object that contains the credentials you want to use for authenticating with the guest operating system
+    .Parameter GuestCredential
+        [sr-en] PSCredential object that contains the credentials you want to use for authenticating with the guest operating system
+        [sr-de] Benutzerkonto des Betriebssystems
 
-.Parameter Partition
-    Specifies the partitions you want to resize
+    .Parameter Partition
+        [sr-en] Partition you want to resize
+        [sr-de] Partition zum Vergrößern
 
-.Parameter ToolsWaitSecs
-    Specifies the time in seconds to wait for a response from VMware Tools. 
-    If a non-positive value is provided, the system waits infinitely long time.
+    .Parameter ToolsWaitSecs
+        [sr-en] Time in seconds to wait for a response from VMware Tools. 
+        If a non-positive value is provided, the system waits infinitely long time.
+        [sr-de] Wartezeit in Sekunden, auf die VMware Tools
 #>
 
 [CmdLetBinding()]

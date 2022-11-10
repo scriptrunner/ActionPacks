@@ -2,72 +2,88 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Updates the specified virtual network
+    .SYNOPSIS
+        Updates the specified virtual network
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the host whose networking configuration you want to modify
+    .Parameter HostName
+        [sr-en] Host whose networking configuration you want to modify
+        [sr-de] Hostname
 
-.Parameter ConsoleGateway
-    Specifies a new console gateway
+    .Parameter ConsoleGateway
+        [sr-en] New console gateway
+        [sr-de] Gateway Adresse
 
-.Parameter ConsoleGatewayDevice  
-    Specifies a new console gateway device
-    
-.Parameter ConsoleV6Gateway  
-    Specifies a console V6 gateway address
+    .Parameter ConsoleGatewayDevice  
+        [sr-en] New console gateway device
+        [sr-de] Konsole Gateway
+        
+    .Parameter ConsoleV6Gateway  
+        [sr-en] Console V6 gateway address
+        [sr-de] V6 Gateway
 
-.Parameter ConsoleV6GatewayDevice  
-    Specifies a console V6 gateway device
+    .Parameter ConsoleV6GatewayDevice  
+        [sr-en] Console V6 gateway device
+        [sr-de] V6 Gateway
 
-.Parameter DnsAddress  
-    Specifies a new DNS address
+    .Parameter DnsAddress  
+        [sr-en] New DNS address
+        [sr-de] Neue DNS Adresse
 
-.Parameter DomainName 
-    Specifies a new domain name
+    .Parameter DomainName 
+        [sr-en] New domain name
+        [sr-de] Neuer Domänenname
 
-.Parameter HostName 
-    Specifies a new host name
+    .Parameter HostName 
+        [sr-en] New host name
+        [sr-de] Neuer Hostname
 
-.Parameter IPv6Enabled
-    Indicates that IPv6 configuration is enabled 
+    .Parameter IPv6Enabled
+        [sr-en] IPv6 configuration is enabled 
+        [sr-de] IPv6 aktivieren
 
-.Parameter SearchDomain
-    Specifies a new search domain
-    
-.Parameter VMKernelGateway
-    Specifies a new kernel gateway
+    .Parameter SearchDomain
+        [sr-en] New search domain
+        [sr-de] Neue Suchdomäne
+        
+    .Parameter VMKernelGateway
+        [sr-en] New kernel gateway
+        [sr-de] Neuer Kernel Gateway
 
-.Parameter VMKernelGatewayDevice
-    Specifies a new kernel gateway device
+    .Parameter VMKernelGatewayDevice
+        [sr-en] New kernel gateway device
+        [sr-de] Kernel Gateway
 
-.Parameter VMKernelV6Gateway
-    Specifies a VMKernel V6 gateway address 
+    .Parameter VMKernelV6Gateway
+        [sr-en] VMKernel V6 gateway address 
+        [sr-de] V6 Kernel Gateway Adresse
 
-.Parameter VMKernelV6GatewayDevice
-    Specifies a VMKernel V6 gateway device     
+    .Parameter VMKernelV6GatewayDevice
+        [sr-en] VMKernel V6 gateway device   
+        [sr-de] V6 Kernel Gateway
 #>
 
 [CmdLetBinding()]

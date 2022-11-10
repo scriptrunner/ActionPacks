@@ -2,75 +2,92 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Configures the specified host network adapter
+    .SYNOPSIS
+        Configures the specified host network adapter
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of the host whose network adapter you want to modify
+    .Parameter HostName
+        [sr-en] Name of the host whose network adapter you want to modify
+        [sr-de] Hostname
 
-.Parameter AdapterName
-    Specifies the name of the host network adapter you want to modify
+    .Parameter AdapterName
+        [sr-en] Name of the host network adapter you want to modify
+        [sr-de] Netzwerk-Adapter
 
-.Parameter AutomaticIPv6
-    Indicates that the IPv6 address is obtained through a router advertisement
+    .Parameter AutomaticIPv6
+        [sr-en] IPv6 address is obtained through a router advertisement
+        [sr-de] IPv6-Adresse von Router
 
-.Parameter Dhcp
-    Indicates whether the host network adapter uses a Dhcp server
+    .Parameter Dhcp
+        [sr-en] Host network adapter uses a Dhcp server
+        [sr-de] DHCP aktivieren
 
-.Parameter FaultToleranceLoggingEnabled
-    Indicates that the network adapter is enabled for Fault Tolerance (FT) logging
+    .Parameter FaultToleranceLoggingEnabled
+        [sr-en] Network adapter is enabled for Fault Tolerance (FT) logging
+        [sr-de] Fault Tolerance aktivieren
 
-.Parameter IPv4
-    Specifies an IP address for the network adapter using an IPv4 dot notation
+    .Parameter IPv4
+        [sr-en] IP address for the network adapter using an IPv4 dot notation
+        [sr-de] IPv4 Adresse
 
-.Parameter IPv6
-    Specifies an IPv6 address for the network adapter
+    .Parameter IPv6
+        [sr-en] IPv6 address for the network adapter
+        [sr-de] IPv6 Adresse
 
-.Parameter IPv6ThroughDhcp
-    Indicates that the IPv6 address is obtained through DHCP
+    .Parameter IPv6ThroughDhcp
+        [sr-en] IPv6 address is obtained through DHCP
+        [sr-en] IPv6-Adresse über DHCP
 
-.Parameter IPv6Enabled
-    Indicates that IPv6 configuration is enabled
+    .Parameter IPv6Enabled
+        [sr-en] IPv6 configuration is enabled
+        [sr-de] IPv6 aktivieren
 
-.Parameter MACAddress
-    Specifies the media access control (MAC) address of the virtual network adapter
+    .Parameter MACAddress
+        [sr-en] Media access control (MAC) address of the virtual network adapter
+        [sr-de] MAC Adresse
 
-.Parameter ManagementTrafficEnabled
-    Indicates that you want to enable the network adapter for management traffic
+    .Parameter ManagementTrafficEnabled
+        [sr-en] Enable the network adapter for management traffic
+        [sr-de] Management Traffic aktivieren
 
-.Parameter MtuSize
-    Specifies the MTU size
+    .Parameter MtuSize
+        [sr-en] MTU size
+        [sr-de] MTU Größe
 
-.Parameter SubnetMask
-    Specifies a subnet mask for the NIC
+    .Parameter SubnetMask
+        [sr-en] Subnet mask for the NIC
+        [sr-de] Subnet Maske
 
-.Parameter VMotionEnabled
-    Indicates that you want to use the virtual host/VMKernel network adapter for VMotion
+    .Parameter VMotionEnabled
+        [sr-en] Virtual host/VMKernel network adapter for VMotion
+        [sr-de] VMotion aktivieren
 
-.Parameter VsanTrafficEnabled
-    Specifies whether Virtual SAN traffic is enabled on this network adapter
+    .Parameter VsanTrafficEnabled
+        [sr-en] Virtual SAN traffic is enabled on this network adapter
+        [sr-de] Virtual SAN aktivieren
 #>
 
 [CmdLetBinding()]

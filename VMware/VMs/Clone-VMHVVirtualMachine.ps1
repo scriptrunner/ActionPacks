@@ -2,69 +2,84 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new virtual machine from a linked clone
+    .SYNOPSIS
+        Creates a new virtual machine from a linked clone
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter SourceVMName
-    Specifies a virtual machine to clone
+    .Parameter SourceVMName
+        [sr-en] Virtual machine to clone
+        [sr-de] Quell-VM
 
-.Parameter ClusterName
-    Specifies the datastore cluster where you want to place the new virtual machine
+    .Parameter ClusterName
+        [sr-en] Datastore cluster where you want to place the new virtual machine
+        [sr-de] Cluster der neuen virtuellen Maschine
 
-.Parameter HostName
-    Specifies the name of the host on which you want to create the new virtual machine
+    .Parameter HostName
+        [sr-en] Name of the host on which you want to create the new virtual machine
+        [sr-de] Host der virtuellen Maschine
 
-.Parameter VMName
-    Specifies the name of the virtual machine you want to execute the command
+    .Parameter VMName
+        [sr-en] Name of the virtual machine
+        [sr-de] Name der VM
 
-.Parameter Notes
-    Provides a description of the new virtual machine
+    .Parameter Notes
+        [sr-en] Description of the new virtual machine
+        [sr-de] Beschreibung der virtuellen Maschine
 
-.Parameter SnapshotName
-    Specifies a source snapshot for the linked clone that you want to create
+    .Parameter SnapshotName
+        [sr-en] Source snapshot for the linked clone that you want to create
+        [sr-de] Quell-Snapshot zum Erstellen der virtuellen Maschine
 
-.Parameter DatastoreName
-    Specifies the datastore where you want to place the new virtual machine
+    .Parameter DatastoreName
+        [sr-en] Datastore where you want to place the new virtual machine
+        [sr-de] Datastore der virtuellen Maschine
 
-.Parameter DiskStorageFormat
-    Specifies the storage format of the disks of the virtual machine
+    .Parameter DiskStorageFormat
+        [sr-en] Storage format of the disks of the virtual machine
+        [sr-de] Festplattenformat der virtuellen Maschine
 
-.Parameter OSCustomizationSpec
-    Specifies a customization specification that is to be applied to the new virtual machine
+    .Parameter OSCustomizationSpec
+        [sr-en] Customization specification that is to be applied to the new virtual machine
+        [sr-de] Customization specification die angewendet wird bei der Erstellung der neuen virtuellen Maschine
 
-.Parameter Location
-    Specifies the folder where you want to place the new virtual machine
-    
-.Parameter DrsAutomationLevel
-    Specifies a DRS (Distributed Resource Scheduler) automation level
+    .Parameter Location
+        [sr-en] Folder where you want to place the new virtual machine
+        [sr-de] Ordner der virtuellen Maschine
+        
+    .Parameter DrsAutomationLevel
+        [sr-en] DRS (Distributed Resource Scheduler) automation level
+        [sr-de] DRS Automationsebene
 
-.Parameter HAIsolationResponse
-    Indicates whether the virtual machine should be powered off if a host determines that it is isolated from the rest of the compute resource
+    .Parameter HAIsolationResponse
+        [sr-en] Virtual machine should be powered off if a host determines that it is isolated from the rest of the compute resource
+        [sr-de] Virtuelle Maschine soll ausgeschaltet werden, falls sie isoliert ist
 
-.Parameter HARestartPriority
-    Specifies the virtual machine HA restart priority
+    .Parameter HARestartPriority
+        [sr-en] Virtual machine HA restart priority
+        [sr-de] HA Restartpriorität
 #>
 
 [CmdLetBinding()]

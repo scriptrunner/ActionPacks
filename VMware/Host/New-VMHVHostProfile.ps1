@@ -2,43 +2,48 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new host profile based on a reference host
+    .SYNOPSIS
+        Creates a new host profile based on a reference host
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        Specifies the IP address or the DNS name of the vSphere server to which you want to connect
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter ProfileName
-    Specifies a name for the new host profile
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of the reference host, on which the new virtual machine host profile is based
+    .Parameter HostName
+        [sr-en] Name of the reference host, on which the new virtual machine host profile is based
+        [sr-de] Hostname
 
-.Parameter CompatibilityMode
-    If you are connected to a vCenter Server/ESX 5.0 or later, use this parameter to indicate that you want 
-    new profile to be compatible with hosts running ESX/vCenter Server versions earlier than 5.0 
+    .Parameter CompatibilityMode
+        [sr-en] If you are connected to a vCenter Server/ESX 5.0 or later, use this parameter to indicate that you want 
+        new profile to be compatible with hosts running ESX/vCenter Server versions earlier than 5.0 
+        [sr-de] Profil kompatibel mit ESX/vCenter Server-Versionen vor 5.0
 
-.Parameter Description
-    Provides a description for the new host profile
+    .Parameter Description
+        [sr-en] Description for the new host profile
+        [sr-de] Beschreibung des Host Profils
 #>
 
 [CmdLetBinding()]

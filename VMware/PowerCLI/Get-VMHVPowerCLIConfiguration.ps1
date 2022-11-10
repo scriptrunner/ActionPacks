@@ -22,7 +22,8 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/PowerCLI
 
 .Parameter Scope
-    Specifies a scope to filter VMware PowerCLI settings by
+    [sr-en] Scope to filter VMware PowerCLI settings by
+    [sr-de] Umfang zum Filtern von VMware PowerCLI-Einstellungen
 #>
 
 [CmdLetBinding()]

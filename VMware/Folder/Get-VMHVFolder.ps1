@@ -2,42 +2,48 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the folders available on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the folders available on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Folder
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Folder
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter FolderName
-    Specifies the name of the folder you want to retrieve, is the parameter empty all folders retrieved
+    .Parameter FolderName
+        [sr-en] Name of the folder you want to retrieve, is the parameter empty all folders retrieved
+        [sr-de] Ordner
 
-.Parameter LocationName
-    Specifies a container object where you want to retrieve the folder
+    .Parameter LocationName
+        [sr-en] Container object where you want to retrieve the folder
+        [sr-de] Containerobjekt
 
-.Parameter LocationType
-    Specifies the type of the container object where you want to retrieve the folder
+    .Parameter LocationType
+        [sr-en] Type of the container object where you want to retrieve the folder
+        [sr-de] Typ des Containerobjekts
 
-.Parameter NoRecursion
-    Indicates that you want to disable the recursive behavior of the command
+    .Parameter NoRecursion
+        [sr-en] Disable the recursive behavior of the command
+        [sr-de] Rekursive Verhalten deaktivieren
 #>
 
 [CmdLetBinding()]

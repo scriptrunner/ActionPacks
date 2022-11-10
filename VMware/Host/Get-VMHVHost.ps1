@@ -2,48 +2,56 @@
 # Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the hosts on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the hosts on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Core
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter ID
-    Specifies the ID of the host you want to retrieve
+    .Parameter ID
+        [sr-en] ID of the host you want to retrieve
+        [sr-de] Id des Hosts
 
-.Parameter Name
-    Specifies the name of the host you want to retrieve, is the parameter empty all hosts retrieved
+    .Parameter Name
+        [sr-en] Name of the host you want to retrieve, is the parameter empty all hosts retrieved
+        [sr-de] Hostname
 
-.Parameter Datastore
-    Specifies the datastore or datastore cluster to which the host that you want to retrieve are associated
+    .Parameter Datastore
+        [sr-en] Datastore or datastore cluster to which the host that you want to retrieve are associated
+        [sr-de] Datastore oder Cluster
 
-.Parameter VM
-    Specifies the virtual machine whose host you want to retrieve
+    .Parameter VM
+        [sr-en] Virtual machine whose host you want to retrieve
+        [sr-de] Virtuelle Maschine
 
-.Parameter NoRecursion
-    Indicates that you want to disable the recursive behavior
+    .Parameter NoRecursion
+        [sr-en] Disable the recursive behavior
+        [sr-de] Rekursives Verhalten deaktivieren
 
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Name,ConnectionState. Use * for all properties
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]

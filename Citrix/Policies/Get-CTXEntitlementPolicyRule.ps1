@@ -33,6 +33,10 @@
     .Parameter Uid
         [sr-en] Uid of the rule
         [sr-de] Uid der Regel
+
+    .Parameter DesktopGroupUid
+        [sr-en] Rules that apply to the desktop group
+        [sr-de] Regeln dieser Desktop-Gruppe
         
     .Parameter Properties
         List of properties to expand. Use * for all properties
@@ -42,7 +46,8 @@
 param( 
     [string]$RuleName,
     [int]$Uid,
-    [string]$SiteServer,    
+    [string]$SiteServer,  
+    [int]$DesktopGroupUid,  
     [ValidateSet('*','BrowserName','ColorDepth','Description','DesktopGroupUid','Enabled','ExcludedUserFilterEnabled','ExcludedUsers','IconUid','IncludedUserFilterEnabled','IncludedUsers','LeasingBehavior','MaxPerEntitlementInstances','MetadataMap','Name','PublishedName','RestrictToTag','SecureIcaRequired','SessionReconnection','UUID','Uid')]
     [string[]]$Properties = @('Name','Description','DesktopGroupUid','Enabled','ExcludedUsers','IncludedUsers','PublishedName')
 
@@ -65,8 +70,11 @@ try{
     elseif($PSBoundParameters.ContainsKey('RuleName') -eq $true){
         $cmdArgs.Add('Name',$RuleName)
     }
-                                                
+    if($PSBoundParameters.ContainsKey('DesktopGroupUid') -eq $true){
+        $cmdArgs.Add('DesktopGroupUid',$DesktopGroupUid)
+    }                                         
     $ret = Get-BrokerEntitlementPolicyRule @cmdArgs | Select-Object *
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $ret
     }

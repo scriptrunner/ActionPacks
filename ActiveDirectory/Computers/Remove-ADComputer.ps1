@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -101,7 +101,7 @@ try{
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
-    $Cmp= Get-ADComputer  @cmdArgs   
+    $Cmp = Get-ADComputer @cmdArgs   
 
     $Script:res
     if($null -ne $Cmp){

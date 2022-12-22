@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -18,8 +18,7 @@
     .COMPONENT
         Requires Module ActiveDirectory
 
-    .LINK
-        
+    .LINK        
 #>
 
 param(                

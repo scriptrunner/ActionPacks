@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -130,7 +130,7 @@ try{
         }
         if($UnLock -eq $true){
             if($Script:User.LockedOut -eq $true){
-                Unlock-ADAccount @cmdArgs                
+                $null = Unlock-ADAccount @cmdArgs                
                 $Out += "User $($Username) unlocked"
             }
             else{
@@ -139,7 +139,7 @@ try{
         }
         if($EnableStatus -eq 'Enable'){
             if($Script:User.Enabled -eq $false){
-                Enable-ADAccount @cmdArgs
+                $null = Enable-ADAccount @cmdArgs
                 $Out += "User $($Username) enabled"
             }
             else{
@@ -148,7 +148,7 @@ try{
         }
         else{
             if($Script:User.Enabled -eq $true){
-                Disable-ADAccount @cmdArgs
+                $null = Disable-ADAccount @cmdArgs
                 $Out += "User $($Username) disabled"
             }
             else{
@@ -159,8 +159,8 @@ try{
         $cmdArgs['Identity'] = $Script:User.SAMAccountName
         $Script:User = Get-ADUser @cmdArgs -Properties $Script:Properties
         
-        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res = New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp = ($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)
         foreach($item in $Script:Properties){
             if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
@@ -168,7 +168,7 @@ try{
             }
         }
         $Out +=$res | Format-Table -HideTableHeaders
-        if($SRXEnv) {
+        if($null -ne $SRXEnv) {
             $SRXEnv.ResultMessage = $Out
         }  
         else {
@@ -176,10 +176,10 @@ try{
         }
     }
     else{
-        if($SRXEnv) {
+        if($null -ne $SRXEnv) {
             $SRXEnv.ResultMessage = "User $($Username) not found"
         }    
-        Throw "User $($Username) not found"
+        throw "User $($Username) not found"
     }   
 }
 catch{

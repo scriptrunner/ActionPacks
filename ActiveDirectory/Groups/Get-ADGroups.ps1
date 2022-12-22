@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -95,7 +95,7 @@ try{
     if($null -ne $Script:Grps){ 
         $resultMessage = @()
         foreach($itm in $Script:Grps){
-            $resultMessage = $resultMessage + ($itm.DistinguishedName + ';' +$itm.SamAccountName)
+            $resultMessage += ($itm.DistinguishedName + ';' +$itm.SamAccountName)
         }
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $resultMessage 

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -47,7 +47,8 @@
     
     .Parameter AuthType
         Specifies the authentication method to use
-        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an#>
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
+#>
 
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
@@ -133,7 +134,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "User $($Username) not found"
         }    
-        Throw "User $($Username) not found"
+        throw "User $($Username) not found"
     }   
 }
 catch{

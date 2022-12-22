@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -113,11 +113,10 @@ try{
                 }
         if($null -ne $DomainAccount){
             $cmdArgs.Add("Credential", $DomainAccount)
-        }
+        }        
+        $null = Remove-ADServiceAccount @cmdArgs
         
-        Remove-ADServiceAccount @cmdArgs
-        
-        if($SRXEnv) {
+        if($null -ne $SRXEnv) {
             $SRXEnv.ResultMessage = "Service account $($AccountName) deleted"
         } 
         else {
@@ -125,10 +124,10 @@ try{
         }
     }
     else{
-        if($SRXEnv) {
+        if($null -ne $SRXEnv) {
             $SRXEnv.ResultMessage = "Service account $($AccountName) not found"
         }    
-        Throw "Service account $($AccountName) not found"
+        throw "Service account $($AccountName) not found"
     }   
 }
 catch{

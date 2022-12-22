@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -72,7 +72,7 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType = "Negotiate"
 )
 
 Import-Module ActiveDirectory
@@ -129,7 +129,7 @@ try{
         $grp = Get-ADGroup @cmdArgs
         if($null -ne $grp){
             try {
-                Remove-ADGroupMember @remArgs -Identity $grp -Members $usr
+                $null = Remove-ADGroupMember @remArgs -Identity $grp -Members $usr
                 $res = $res + "User $($usr) removed from Group $($GroupName)"
             }
             catch {
@@ -140,7 +140,7 @@ try{
             $res = $res + "Group $($GroupName) not found"
         }      
     }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $res
     }
     else{

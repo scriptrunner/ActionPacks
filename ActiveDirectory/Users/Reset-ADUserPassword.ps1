@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -17,7 +17,6 @@
 
     .COMPONENT
         Requires Module ActiveDirectory
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
@@ -115,8 +114,7 @@ try{
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
-
-    $Script:User= Get-ADUser @cmdArgs
+    $Script:User = Get-ADUser @cmdArgs
      
     if($null -ne $Script:User){
         $Out=@()
@@ -127,22 +125,20 @@ try{
                 }
         if($null -ne $DomainAccount){
             $cmdArgs.Add("Credential", $DomainAccount)
-        }
-        
-        Set-ADAccountPassword @cmdArgs -NewPassword $NewPassword -Reset -Confirm:$false       
+        }        
+        $null = Set-ADAccountPassword @cmdArgs -NewPassword $NewPassword -Reset -Confirm:$false       
         $Out += "New password of user $($Username) is set"
 
 
         if($UserMustChangePasswordAtLogon -eq $true){
-            Set-ADUser @cmdArgs -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Confirm:$false
+            $null = Set-ADUser @cmdArgs -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false -Confirm:$false
             $Out +=  "User $($Username) must change the password on next logon"
         }
         Start-Sleep -Seconds 5 # wait
-
-        Get-ADUser @cmdArgs -Properties $Script:Properties
+        $Script:User = Get-ADUser @cmdArgs -Properties $Script:Properties
         
-        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res = New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp = ($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)
         foreach($item in $Script:Properties){
             if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){

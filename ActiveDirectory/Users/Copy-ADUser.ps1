@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -17,7 +17,6 @@
 
     .COMPONENT
         Requires Module ActiveDirectory
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
@@ -200,8 +199,8 @@ try{
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
-
     $Source= Get-ADUser @cmdArgs
+
     $cmdArgs = @{'ErrorAction' = 'Stop'
                 'Server' = $Domain.PDCEmulator
                 'AuthType' = $AuthType
@@ -219,7 +218,7 @@ try{
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
-    New-ADUser @cmdArgs
+    $null = New-ADUser @cmdArgs
     Start-Sleep -Seconds 5 # wait
     $cmdArgs = @{'ErrorAction' = 'Stop'
                 'Server' = $Domain.PDCEmulator
@@ -241,10 +240,10 @@ try{
             $cmdArgs.Add("Credential", $DomainAccount)
         }
         if((-not [System.String]::IsNullOrWhiteSpace($GivenName)) -or(-not [System.String]::IsNullOrWhiteSpace($Surname))){
-            Set-ADUser @cmdArgs -GivenName $GivenName -Surname $Surname
+            $null = Set-ADUser @cmdArgs -GivenName $GivenName -Surname $Surname
         }
         if($ChangePasswordAtLogon -eq $true){
-            Set-ADUser @cmdArgs -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false
+            $null = Set-ADUser @cmdArgs -PasswordNeverExpires $false -ChangePasswordAtLogon $true -CannotChangePassword $false
         }
         if($CopyGroupMemberships){
             $exists = Get-ADPrincipalGroupMembership @cmdArgs
@@ -252,13 +251,13 @@ try{
             $Groups = Get-ADPrincipalGroupMembership @cmdArgs |  Where-Object SID -ne $exists.SID # remove domain users
             $cmdArgs.Item("Identity") =  $Script:User.SAMAccountName
             if($null -ne $Groups){
-                Add-ADPrincipalGroupMembership @cmdArgs -memberOf $Groups
+                $null = Add-ADPrincipalGroupMembership @cmdArgs -memberOf $Groups
             }
         }
         
         $Script:User = Get-ADUser @cmdArgs -Properties $Script:Properties
-        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res = New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp = ($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)
         foreach($item in $Script:Properties){
             if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){
@@ -279,7 +278,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "User $($SourceUserName) not copied"
         }    
-        Throw "User $($SourceUserName) not copied"
+        throw "User $($SourceUserName) not copied"
     }   
 }
 catch{

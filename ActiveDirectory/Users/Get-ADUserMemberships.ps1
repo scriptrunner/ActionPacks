@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -44,7 +44,6 @@
     .Parameter AuthType
         Specifies the authentication method to use
         [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
-
 #>
 
 param(
@@ -66,7 +65,7 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType = "Negotiate"
 )
 
 Import-Module ActiveDirectory
@@ -97,12 +96,12 @@ try{
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }                
-    $Script:User= Get-ADUser @cmdArgs | Select-Object MemberOf
+    $Script:User = Get-ADUser @cmdArgs | Select-Object MemberOf
     
     if($null -ne $Script:User){
         $resultMessage = @()
         foreach($itm in $Script:User.MemberOf){
-            $resultMessage = $resultMessage + $itm
+            $resultMessage += $itm
         }
         if($SRXEnv) {
             $SRXEnv.ResultMessage = $resultMessage 
@@ -115,7 +114,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "User $($Username) not found"
         }    
-        Throw "User $($Username) not found"
+        throw "User $($Username) not found"
     }   
 }
 catch{

@@ -1,7 +1,7 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
-function GetDomain(){
+function GetDomain{
     <#
         .SYNOPSIS
             Gets the domain
@@ -33,34 +33,35 @@ function GetDomain(){
         .Parameter AuthType
             Specifies the authentication method to use
             [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
-        #>
+    #>
 
-        [CmdLetBinding()]
-        Param(
-            [string]$DomainName, 
-            [PSCredential]$DomainAccount,
-            [ValidateSet('Basic', 'Negotiate')]
-            [string]$AuthType="Negotiate"
-        )
+    [CmdLetBinding()]
+    Param(
+        [string]$DomainName, 
+        [PSCredential]$DomainAccount,
+        [ValidateSet('Basic', 'Negotiate')]
+        [string]$AuthType="Negotiate",
+        [ref]$DomainObject
+    )
 
-        try{
-            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-                                    'AuthType' = $AuthType
-                                    }
-            if($null -ne $DomainAccount){
-                $cmdArgs.Add("Credential", $DomainAccount)
-            }
-            if([System.String]::IsNullOrWhiteSpace($DomainName)){
-                $cmdArgs.Add("Current", 'LocalComputer')
-            }
-            else {
-                $cmdArgs.Add("Identity", $DomainName)
-            }
-            return Get-ADDomain @cmdArgs                        
+    try{
+        [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                                'AuthType' = $AuthType
+                                }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
         }
-        catch{
-            throw
+        if([System.String]::IsNullOrWhiteSpace($DomainName)){
+            $cmdArgs.Add("Current", 'LocalComputer')
         }
-        finally{
+        else {
+            $cmdArgs.Add("Identity", $DomainName)
         }
+        $DomainObject.Value = Get-ADDomain @cmdArgs                        
+    }
+    catch{
+        throw
+    }
+    finally{
+    }
 }

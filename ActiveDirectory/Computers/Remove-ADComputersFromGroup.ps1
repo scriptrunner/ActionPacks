@@ -21,7 +21,6 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Computers
 
-
     .Parameter OUPath
         [sr-en] Specifies the AD path
         [sr-de] Active Directory Pfad

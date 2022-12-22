@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -36,10 +36,6 @@
     .Parameter DomainName
         Name of Active Directory Domain
         [sr-de] Name der Active Directory Domäne
-        
-    .Parameter SearchScope
-        Specifies the scope of an Active Directory search
-        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
     
     .Parameter AuthType
         Specifies the authentication method to use
@@ -60,23 +56,13 @@ param(
     [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateSet('Base','OneLevel','SubTree')]
-    [string]$SearchScope='SubTree',
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType = "Negotiate"
 )
 
 Import-Module ActiveDirectory
 
-try{
-    $Script:User 
-    $Script:Domain
-
-    if([System.String]::IsNullOrWhiteSpace($SamAccountName)){
-        $SamAccountName = "*"
-    }
+try{    
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                             'AuthType' = $AuthType
                             }
@@ -94,42 +80,19 @@ try{
     $cmdArgs = @{'ErrorAction' = 'Stop'
                 'Server' = $Domain.PDCEmulator
                 'AuthType' = $AuthType
-                'Filter' = {(SamAccountName -eq $Username) -or (DisplayName -eq $Username) -or (DistinguishedName -eq $Username) -or (UserPrincipalName -eq $Username)}
-                'SearchBase' = $OUPath 
-                'SearchScope' = $SearchScope
+                'Identity' = $Username
                 }
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
-
-    $Script:User = Get-ADUser @cmdArgs
+    $null = Remove-ADUser @cmdArgs -Confirm:$false
     
-    if($null -ne $Script:User){
-        $cmdArgs = @{'ErrorAction' = 'Stop'
-                    'Server' = $Domain.PDCEmulator
-                    'AuthType' = $AuthType
-                    'Identity' = $Script:User
-                    'Confirm' = $false
-                    }
-        if($null -ne $DomainAccount){
-            $cmdArgs.Add("Credential", $DomainAccount)
-        }
-        
-        Remove-ADUser @cmdArgs
-        
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "User $($Username) deleted"
-        } 
-        else {
-            Write-Output "User $($Username) deleted"
-        }
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = "User $($Username) deleted"
+    } 
+    else {
+        Write-Output "User $($Username) deleted"
     }
-    else{
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "User $($Username) not found"
-        }    
-        Throw "User $($Username) not found"
-    }   
 }
 catch{
     throw

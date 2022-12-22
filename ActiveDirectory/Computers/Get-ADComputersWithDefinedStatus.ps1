@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -47,7 +47,7 @@
     
     .Parameter AuthType
         Specifies the authentication method to use
-        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an#>
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(

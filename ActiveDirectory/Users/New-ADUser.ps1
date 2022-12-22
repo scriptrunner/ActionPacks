@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -17,7 +17,6 @@
 
     .COMPONENT
         Requires Module ActiveDirectory
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Users
@@ -170,7 +169,7 @@ param(
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType = "Negotiate"
 )
 
 Import-Module ActiveDirectory
@@ -196,7 +195,7 @@ try{
     $Domain = Get-ADDomain @cmdArgs
 
     if([System.String]::IsNullOrWhiteSpace($SAMAccountName)){
-        $SAMAccountName= $GivenName + '.' + $Surname 
+        $SAMAccountName = $GivenName + '.' + $Surname 
     }
     if($SAMAccountName.Length -gt 20){
         $SAMAccountName = $SAMAccountName.Substring(0,20)
@@ -262,8 +261,8 @@ try{
         }
         $Script:User = Get-ADUser @cmdArgs
         
-        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res = New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp = ($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)
         foreach($item in $Script:Properties){
             if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){

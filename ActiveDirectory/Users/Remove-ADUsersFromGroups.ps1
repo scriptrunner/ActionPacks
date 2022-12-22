@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -122,7 +122,7 @@ try{
     if($UserNames){            
         foreach($name in $UserNames){
             $cmdArgs["Filter"] = {(SamAccountName -eq $name) -or (DisplayName -eq $name) -or (DistinguishedName -eq $name) -or (UserPrincipalName -eq $name)}
-            $usr= Get-ADUser @cmdArgs | Select-Object SAMAccountName
+            $usr = Get-ADUser @cmdArgs | Select-Object SAMAccountName
             if($null -ne $usr){
                 $UserSAMAccountNames += $usr.SAMAccountName
             }
@@ -135,24 +135,24 @@ try{
         $founded = @()
         foreach($itm in $GroupNames){
             $grpArgs["Filter"] = {(SamAccountName -eq $itm) -or (DistinguishedName -eq $itm)}
-            $grp= Get-ADGroup @grpArgs
+            $grp = Get-ADGroup @grpArgs
             if($null -ne $grp){
                 $founded += $itm
                 try {
-                    Remove-ADGroupMember @remArgs -Identity $grp -Members $usr                    
-                    $res = $res + "User $($usr) removed from Group $($itm)"
+                    $null = Remove-ADGroupMember @remArgs -Identity $grp -Members $usr                    
+                    $res += "User $($usr) removed from Group $($itm)"
                 }
                 catch {
-                    $res = $res + "Error: Remove user $($usr) from Group $($itm) $($_.Exception.Message)"
+                    $res += "Error: Remove user $($usr) from Group $($itm) $($_.Exception.Message)"
                 }
             }
             else {
-                $res = $res + "Group $($itm) not found"
+                $res += "Group $($itm) not found"
             }        
         }
-        $GroupNames=$founded
+        $GroupNames = $founded
     }
-    if($SRXEnv) {
+    if($null = $SRXEnv) {
         $SRXEnv.ResultMessage = $res
     }
     else{

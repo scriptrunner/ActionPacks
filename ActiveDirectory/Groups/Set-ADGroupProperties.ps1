@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -23,7 +23,7 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/ActiveDirectory/Groups
 
     .Parameter OUPath
-        Specifies the AD path
+        AD path
         [sr-de] Active Directory Pfad
 
     .Parameter GroupName
@@ -34,28 +34,32 @@
         Active Directory Credential for remote execution on jumphost without CredSSP
         [sr-de] Active Directory-Benutzerkonto für die Remote-Ausführung ohne CredSSP        
 
+    .Parameter DisplayName
+        Display name of the group
+        [sr-de]Anzeigename     
+
     .Parameter Description
-        Specifies a description of the group
-        [sr-de]Beschreibung der Gruppe
+        Description of the group
+        [sr-de]Beschreibung der Gruppe      
+
+    .Parameter HomePage
+        Home page of the group
+        [sr-de] Homepage der Gruppe
 
     .Parameter Scope
-        Specifies the group scope of the group
-        [sr-de] Gibt den Gruppenbereich der Gruppe an
+        Scope of the group
+        [sr-de] Gruppenbereich der Gruppe an
 
     .Parameter Category
-        Specifies the category of the group
+        Category of the group
         [sr-de] Kategorie der Gruppe
 
     .Parameter DomainName
         Name of Active Directory Domain
         [sr-de] Name der Active Directory Domäne
-        
-    .Parameter SearchScope
-        Specifies the scope of an Active Directory search
-        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
     
     .Parameter AuthType
-        Specifies the authentication method to use
+        Authentication method to use
         [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
@@ -70,26 +74,28 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
+    [string]$DisplayName,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$Description,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateSet('','DomainLocal', 'Global', 'Universal')]
-    [string]$Scope = '',
+    [string]$HomePage,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateSet('','Distribution', 'Security')]
-    [string]$Category = '',  
+    [ValidateSet('DomainLocal', 'Global', 'Universal')]
+    [string]$Scope,
+    [Parameter(ParameterSetName = "Local or Remote DC")]
+    [Parameter(ParameterSetName = "Remote Jumphost")]
+    [ValidateSet('Distribution', 'Security')]
+    [string]$Category,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
     [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateSet('Base','OneLevel','SubTree')]
-    [string]$SearchScope='SubTree',
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType = "Negotiate"
 )
 
 Import-Module ActiveDirectory
@@ -114,53 +120,36 @@ try{
                 'Server' = $Domain.PDCEmulator
                 'AuthType' = $AuthType
                 'Identity' = $GroupName
-                'SearchBase' = $OUPath 
-                'SearchScope' = $SearchScope
                 }
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
     }
+    $Grp = Get-ADGroup @cmdArgs
 
-    $Script:Grp = Get-ADGroup @cmdArgs
-    if($null -ne $Script:Grp){
-        if(-not [System.String]::IsNullOrWhiteSpace($Description)){
-            $Script:Grp.Description = $Description
-        }
-        if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-            $Script:Grp.DisplayName = $DisplayName
-        }
-        if(-not [System.String]::IsNullOrWhiteSpace($HomePage)){
-            $Script:Grp.HomePage = $HomePage
-        }
-        if(-not [System.String]::IsNullOrWhiteSpace($Scope)){
-            $Script:Grp.GroupScope = $Scope
-        }
-        if(-not [System.String]::IsNullOrWhiteSpace($Category)){
-            $Script:Grp.GroupCategory = $Category
-        }
-        $cmdArgs = @{'ErrorAction' = 'Stop'
-                    'Server' = $Domain.PDCEmulator
-                    'AuthType' = $AuthType
-                    'Instance' =$Script:Grp
-                    }
-        if($null -ne $DomainAccount){
-            $cmdArgs.Add("Credential", $DomainAccount)
-        }
-        Set-ADGroup @cmdArgs
-        
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "Group $($GroupName) changed"
-        } 
-        else{
-            Write-Output "Group $($GroupName) changed"
-        }
+    $cmdArgs.Add('Confirm',$false)
+    if($PSBoundParameters.ContainsKey('Scope') -eq $true){
+        $cmdArgs.Add('GroupScope',$Scope)
     }
-    else {
-        if($SRXEnv) {
-            $SRXEnv.ResultMessage = "Group $($GroupName) not found"
-        }    
-    Throw "Group $($GroupName) not found"
-    }   
+    if($PSBoundParameters.ContainsKey('Category') -eq $true){
+        $cmdArgs.Add('GroupCategory',$Category)
+    }
+    if($PSBoundParameters.ContainsKey('Description') -eq $true){
+        $cmdArgs.Add('Description', $Description)
+    }
+    if($PSBoundParameters.ContainsKey('DisplayName') -eq $true){
+        $cmdArgs.Add('DisplayName', $DisplayName)
+    }
+    if($PSBoundParameters.ContainsKey('HomePage') -eq $true){
+        $cmdArgs.Add('HomePage',$HomePage)
+    }    
+    $null = Set-ADGroup @cmdArgs
+        
+    if($null -ne $SRXEnv) {
+        $SRXEnv.ResultMessage = "Group $($GroupName) changed"
+    } 
+    else{
+        Write-Output "Group $($GroupName) changed"
+    }    
 }
 catch{
     throw

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -234,69 +234,73 @@ try{
             $cmdArgs.Add("Credential", $DomainAccount)
         }
 
-        if(-not [System.String]::IsNullOrWhiteSpace($GivenName)){
-            $Script:User.GivenName = $GivenName
+        if($PSBoundParameters.ContainsKey('GivenName') -eq $true){
+            $cmdArgs.Add("GivenName", $GivenName)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Surname)){
-            $Script:User.Surname = $Surname
+        if($PSBoundParameters.ContainsKey('Surname') -eq $true){
+            $cmdArgs.Add("Surname",$Surname)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Description)){
-            $Script:User.Description = $Description
+        if($PSBoundParameters.ContainsKey('Description') -eq $true){
+            $cmdArgs.Add("Description",$Description)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($DisplayName)){
-            $Script:User.DisplayName = $DisplayName
+        if($PSBoundParameters.ContainsKey('DisplayName') -eq $true){
+            $cmdArgs.Add("DisplayName",$DisplayName)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Office)){
-            $Script:User.Office = $Office
+        if($PSBoundParameters.ContainsKey('Office') -eq $true){
+            $cmdArgs.Add("Office", $Office)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($EmailAddress)){
-            $Script:User.EmailAddress = $EmailAddress
+        if($PSBoundParameters.ContainsKey('EmailAddress') -eq $true){
+            $cmdArgs.Add("EmailAddress", $EmailAddress)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Phone)){
-            $Script:User.OfficePhone = $Phone
+        if($PSBoundParameters.ContainsKey('Phone') -eq $true){
+            $cmdArgs.Add("OfficePhone", $Phone)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Title)){
-            $Script:User.Title = $Title
+        if($PSBoundParameters.ContainsKey('Title') -eq $true){
+            $cmdArgs.Add("Title",$Title)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Department)){
-            $Script:User.Department = $Department
+        if($PSBoundParameters.ContainsKey('Department') -eq $true){
+            $cmdArgs.Add("Department", $Department)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Company)){
-            $Script:User.Company = $Company
+        if($PSBoundParameters.ContainsKey('Company') -eq $true){
+            $cmdArgs.Add("Company", $Company)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($Street)){
-            $Script:User.StreetAddress = $Street
+        if($PSBoundParameters.ContainsKey('Street') -eq $true){
+            $cmdArgs.Add("StreetAddress",$Street)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($PostalCode)){
-            $Script:User.PostalCode = $PostalCode
+        if($PSBoundParameters.ContainsKey('PostalCode') -eq $true){
+            $cmdArgs.Add("PostalCode", $PostalCode)
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($City)){
-            $Script:User.City = $City
+        if($PSBoundParameters.ContainsKey('City') -eq $true){
+            $cmdArgs.Add("City", $City)
         }
         if($PSBoundParameters.ContainsKey('CannotChangePassword') -eq $true ){
-            $Script:User.CannotChangePassword = $CannotChangePassword.ToBool()
+            $cmdArgs.Add("CannotChangePassword", $CannotChangePassword.ToBool())
         }
         if($PSBoundParameters.ContainsKey('PasswordNeverExpires') -eq $true){
-            $Script:User.PasswordNeverExpires = $PasswordNeverExpires.ToBool()
-        }
-        $cmdArgs.Add('Instance', $Script:User)
-        $Script:User = Set-ADUser @cmdArgs
-        
+            $cmdArgs.Add("PasswordNeverExpires", $PasswordNeverExpires.ToBool())
+        }        
         if($PSBoundParameters.ContainsKey('ChangePasswordAtLogon') -eq $true ){ # is not a property from the user object
-            $Script:User = Set-ADUser @cmdArgs -ChangePasswordAtLogon:$ChangePasswordAtLogon.ToBool()
+            $cmdArgs.Add("ChangePasswordAtLogon",$ChangePasswordAtLogon.ToBool())
         }
-        if(-not [System.String]::IsNullOrWhiteSpace($NewSAMAccountName)){ # user must changed with replace parameter
+        $cmdArgs.Add('Identity',$Script:User.DistinguishedName)
+        $null = Set-ADUser @cmdArgs
+
+        $cmdArgs = @{'ErrorAction' = 'Stop'
+                'Server' = $Domain.PDCEmulator
+                'AuthType' = $AuthType
+                'Identity' = $Script:User.DistinguishedName
+        }
+        if($null -ne $DomainAccount){
+            $cmdArgs.Add("Credential", $DomainAccount)
+        }
+        if($PSBoundParameters.ContainsKey('NewSAMAccountName') -eq $true){ # user must changed with replace parameter
             $Script:User = Set-ADUser @cmdArgs -Replace @{'SAMAccountName'=$NewSAMAccountName}            
         }
         Start-Sleep -Seconds 5 # wait
-        $cmdArgs.Remove('Confirm')
-        $cmdArgs.Remove('PassThru')
-        $cmdArgs.Remove('Instance')
-        $cmdArgs.Add('Identity' , $Script:User.SAMAccountName)
         $Script:User = Get-ADUser @cmdArgs -Properties $Script:Properties
         
-        $res=New-Object 'System.Collections.Generic.Dictionary[string,string]'
-        $tmp=($Script:User.DistinguishedName  -split ",",2)[1]
+        $res = New-Object 'System.Collections.Generic.Dictionary[string,string]'
+        $tmp = ($Script:User.DistinguishedName  -split ",",2)[1]
         $res.Add('Path:', $tmp)
         foreach($item in $Script:Properties){
             if(-not [System.String]::IsNullOrWhiteSpace($Script:User[$item])){

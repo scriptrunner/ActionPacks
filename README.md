@@ -7,7 +7,7 @@ Use cases for managing users, groups and computers in on prem AD
 ## [Azure](./Azure)
 Use cases for managing Microsoft Azure
 
-## [Automation Booster](./Automation%20Booster)
+## [User Management](./User%20Management)
 Solutions and sample scripts for selected use cases
 
 ## [Citrix](./Citrix)
@@ -21,6 +21,9 @@ Use cases for managing mailboxes, distribution lists, resources, and services in
 
 ## [Hyper-V](./Hyper-V)
 Use cases for managing the Hyper-V virtualization platform
+
+## [MS Graph](./MS%20Graph)
+Use cases for managing Microsoft Graph
 
 ## [Office 365](./O365)
 Use cases to manage users, groups, and services in O365.<br>

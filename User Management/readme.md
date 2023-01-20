@@ -1,4 +1,4 @@
-# Action Pack for Automation Booster
+# Action Pack for User Management
 
 ## [User management](./UserManagement)
  +  Solutions and sample scripts for on and off boarding operations

@@ -1,4 +1,4 @@
-# Action Pack for Exchange Online v2
+# Action Pack for Exchange Online Management
 
 > Note: The use of the scripts requires the PowerShell Module ExchangeOnlineManagement
 

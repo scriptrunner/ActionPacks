@@ -20,7 +20,7 @@
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_Reports_
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/_Reports_
 
     .Parameter Identity
         [sr-en] Specifies name, Alias or SamAccountName of the target recipient

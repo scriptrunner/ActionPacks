@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/MailBoxes
 
     .Parameter Mailbox
         [sr-en] Filters the results by the user mailbox that's associated with the mobile device

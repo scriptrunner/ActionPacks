@@ -20,7 +20,7 @@ function ConnectExchangeOnline(){
             Requires Module ExchangeOnlineManagement
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline_v2/_LIB_
+            https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/_LIB_
 
         .Parameter ExOCredential
             [sr-en] Credential object containing the Exchange Online user/password
@@ -154,7 +154,7 @@ function ConnectExchangeOnline(){
 function ConnectExchangeOnlineIPSession(){
     <#
         .SYNOPSIS
-            Use the Connect-IPPSSession cmdlet in the Exchange Online PowerShell V2 module to connect to Security & Compliance Center PowerShell or standalone Exchange Online Protection PowerShell
+            Use the Connect-IPPSSession cmdlet in the Exchange Online PowerShell module to connect to Security & Compliance Center PowerShell or standalone Exchange Online Protection PowerShell
 
         .DESCRIPTION
 
@@ -170,7 +170,7 @@ function ConnectExchangeOnlineIPSession(){
             Requires Module ExchangeOnlineManagement
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_LIB_
+            https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/_LIB_
 
         .Parameter ExOCredential
             [sr-en] Credential object containing the Exchange Online user/password
@@ -274,7 +274,7 @@ function DisconnectExchangeOnline(){
             Requires Module ExchangeOnlineManagement
 
         .LINK
-            https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline_v2/_LIB_
+            https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/_LIB_
 
         #>
 

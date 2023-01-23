@@ -4,7 +4,6 @@
 <#
     .SYNOPSIS
         Configure the availability and features of MyAnalytics for the specified user
-        This cmdlet is available in version 2.0.4-Preview3 of the EXO V2 Module
     
     .DESCRIPTION  
 
@@ -20,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/MailBoxes
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/MailBoxes
 
     .Parameter Identity
         [sr-en] Specifies name, Alias or SamAccountName of the mailbox

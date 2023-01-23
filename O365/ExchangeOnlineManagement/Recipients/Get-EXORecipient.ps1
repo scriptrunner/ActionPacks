@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/Recipients
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/Recipients
 
     .Parameter Identity
         [sr-en] Specifies name, Guid or UPN of the recipient object

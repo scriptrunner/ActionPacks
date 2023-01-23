@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/BriefingEmail
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/BriefingEmail
 
     .Parameter Identity
         [sr-en] Specifies the user that you want to modify(for example, Jeff.Skywalker@DevStar.com)

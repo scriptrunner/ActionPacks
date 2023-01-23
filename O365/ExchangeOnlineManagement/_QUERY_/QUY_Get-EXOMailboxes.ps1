@@ -19,7 +19,7 @@
         Requires PS Module ExchangeOnlineManagement
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlinev2/_QUERY_
+        https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnlineManagement/_QUERY_
 
     .Parameter Archive
         [sr-en] Returns only mailboxes that have an archive mailbox

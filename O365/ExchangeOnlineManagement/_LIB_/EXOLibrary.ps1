@@ -1,4 +1,4 @@
-#Requires -Version 5.0
+﻿#Requires -Version 5.0
 #Requires -Modules ExchangeOnlineManagement
 
 function ConnectExchangeOnline(){
@@ -176,38 +176,77 @@ function ConnectExchangeOnlineIPSession(){
             [sr-en] Credential object containing the Exchange Online user/password
             [sr-de] Gibt den Benutzernamen und das Kennwort an zum Anmelden an Exchange Online an
 
+        .Parameter CertificateFilePath
+            [sr-en] Certificate that's used for CBA, complete public path to the certificate file
+            [sr-de] Kompletter Pfad der Zertifikatsdatei
+
+        .Parameter CertificateThumbprint
+            [sr-en] Certificate that's used for CBA, thumbprint value of the certificate
+            [sr-de] Thumbprint des Zertifikats
+
+        .Parameter AppId
+            [sr-en] Application ID (GUID) of the service principal that's used in certificate based authentication (CBA)
+            [sr-de] Anwendungs-ID (GUID) der App-Registrierung
+
+        .Parameter Organization
+            [sr-en] Primary .onmicrosoft.com domain of the organization
+            [sr-de] Primäre Domäne des Mandanten
+
         .Parameter ConnectionEndpoint
-            [sr-en] Specifies the connection endpoint for the remote PowerShell session
-            [sr-de] Gibt den connection endpoint für die Remote-PowerShell-Sitzung an
+            [sr-en] Connection endpoint for the remote PowerShell session
+            [sr-de] Connection endpoint für die Remote-PowerShell-Sitzung
         #>
 
         [CmdLetBinding()]
         Param(
-            [Parameter(Mandatory = $true)]  
+            [Parameter(Mandatory = $true,ParameterSetName = 'Credential')]  
             [PSCredential]$ExOCredential,
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificateFilePath')]  
+            [string]$CertificateFilePath,
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificateThumbprint')]  
+            [string]$CertificateThumbprint,
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificateFilePath')]  
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificateThumbprint')]  
+            [string]$AppId,
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificateFilePath')]  
+            [Parameter(Mandatory = $true,ParameterSetName = 'CertificateThumbprint')]  
+            [string]$Organization,
+            [Parameter(ParameterSetName = 'Credential')]
             [ValidateSet('Default','O365 Germany','MS 365 GCC High','MS 365 DoD','Standalone EOP')]
             [string]$ConnectionEndpoint = 'Default'
         )
 
         try{
-            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
-            'Credential' = $ExOCredential
+            [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
+
+            if($PSCmdlet.ParameterSetName -eq 'CertificateThumbprint'){
+                $cmdArgs.Add('AppId',$AppId)
+                $cmdArgs.Add('Organization',$Organization)
+                $cmdArgs.Add('CertificateThumbprint',$CertificateThumbprint)
+            }
+            elseif($PSCmdlet.ParameterSetName -eq 'CertificateFilePath'){
+                $cmdArgs.Add('AppId',$AppId)
+                $cmdArgs.Add('Organization',$Organization)
+                $cmdArgs.Add('CertificateFilePath',$CertificateFilePath)
+            }
+            elseif($PSCmdlet.ParameterSetName -eq 'Credential'){
+                $cmdArgs.Add('Credential',$ExOCredential)
+                switch ($ConnectionEndpoint){
+                    'O365 Germany'{
+                        $cmdArgs.Add('ConnectionUri', 'https://ps.compliance.protection.outlook.de/PowerShell-LiveID')
+                    }
+                    'MS 365 GCC High'{
+                        $cmdArgs.Add('ConnectionUri', 'https://outlook.office365.us/powershell-liveid')
+                    }
+                    'MS 365 DoD'{
+                        $cmdArgs.Add('ConnectionUri', 'https://l5.ps.compliance.protection.office365.us/powershell-liveid/')
+                    }
+                    'Standalone EOP'{
+                        $cmdArgs.Add('ConnectionUri', 'https://ps.protection.outlook.com/powershell-liveid/')
+                    }
+                }
             }
 
-            switch ($ConnectionEndpoint){
-                'O365 Germany'{
-                    $cmdArgs.Add('ConnectionUri', 'https://ps.compliance.protection.outlook.de/PowerShell-LiveID')
-                }
-                'MS 365 GCC High'{
-                    $cmdArgs.Add('ConnectionUri', 'https://outlook.office365.us/powershell-liveid')
-                }
-                'MS 365 DoD'{
-                    $cmdArgs.Add('ConnectionUri', 'https://l5.ps.compliance.protection.office365.us/powershell-liveid/')
-                }
-                'Standalone EOP'{
-                    $cmdArgs.Add('ConnectionUri', 'https://ps.protection.outlook.com/powershell-liveid/')
-                }
-            }
             $null = Connect-IPPSSession @cmdArgs                        
         }
         catch{
@@ -216,7 +255,6 @@ function ConnectExchangeOnlineIPSession(){
         finally{
         }
 }
-
 function DisconnectExchangeOnline(){
     <#
         .SYNOPSIS

@@ -85,8 +85,8 @@ param(
     [string]$ResourceGroupName,
     [int]$DataDiskSizeInGb,
     [switch]$EnableUltraSSD,
-    [ValidateSet('Win2016Datacenter', 'Win2012R2Datacenter', 'Win2012Datacenter', 'Win2008R2SP1', 'UbuntuLTS', 'CentOS', 'CoreOS', 'Debian', 'openSUSE-Leap', 'RHEL', 'SLES')]
-    [string]$Image = "Win2016Datacenter",
+    [ValidateSet('Win2022AzureEditionCore','Win2019Datacenter','Win2016Datacenter','Win2012R2Datacenter','Win2012Datacenter','UbuntuLTS','CentOS','CoreOS','Debian','openSUSE-Leap','RHEL','SLES')]
+    [string]$Image = "Win2019Datacenter",
     [ValidateSet('Static', 'Dynamic')]
     [string]$AllocationMethod,
     [string]$Location,

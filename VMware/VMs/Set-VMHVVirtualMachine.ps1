@@ -123,9 +123,9 @@ Param(
     [Parameter(ParameterSetName = "Splatting",HelpMessage="ASRDisplay(Alias=Memory)")]
     [decimal]$MemoryGB,
     [Parameter(ParameterSetName = "Splatting",HelpMessage="ASRDisplay(ReadOnly)")]
-    [decimal]$CpuUsageAverage,
+    [string]$CpuUsageAverage,
     [Parameter(ParameterSetName = "Splatting",HelpMessage="ASRDisplay(ReadOnly)")]
-    [decimal]$MemoryUsageAverage,
+    [string]$MemoryUsageAverage,
     [Parameter(ParameterSetName = "Splatting",HelpMessage="ASRDisplay(ReadOnly)")]
     [decimal]$GuestDiskTotal,
     [Parameter(ParameterSetName = "Splatting",HelpMessage="ASRDisplay(ReadOnly)")]

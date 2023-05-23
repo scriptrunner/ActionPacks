@@ -73,7 +73,7 @@ param(
 )
 
 try{
-    $box = New-Mailbox -Name $Name -UserPrincipalName $UserPrincipalName -Password $Password -ResetPasswordOnNextLogon:$ResetPasswordOnNextLogon  -Force -Confirm:$false
+    $box = New-Mailbox -Name $Name -UserPrincipalName $UserPrincipalName -Password $Password -ResetPasswordOnNextLogon:$ResetPasswordOnNextLogon -Force -Confirm:$false
     if($null -ne $box){
         [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
                                 'Identity' = $box.UserPrincipalName

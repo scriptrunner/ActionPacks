@@ -22,6 +22,10 @@ Use cases for managing teams with Microsoft Graph
 + Get, set, remove device
 + Get device extension, member groups, member object, member of, transitive member of, registered owner, registered user
 
+## [Device Management](./DeviceManagement)
++ ### [Devices](./DeviceManagement/Devices)
++ ### [Policies](./DeviceManagement/Policies)
+
 ## [Domain](./Domain)
 
 + New, confirm, get, set, remove domain

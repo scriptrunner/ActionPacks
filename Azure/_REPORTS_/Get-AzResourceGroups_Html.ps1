@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Resources
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -26,7 +26,7 @@
 param( 
 )
 
-Import-Module Az
+Import-Module Az.Resources
 
 try{
     [string[]]$Properties = @('ResourceGroupName','Location','ProvisioningState','Tags','ResourceId')

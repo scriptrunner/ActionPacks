@@ -25,9 +25,7 @@
 param( 
 )
 
-Import-Module Az
-
-$VerbosePreference = 'SilentlyContinue'
+Import-Module Az.Compute
 
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}

@@ -17,7 +17,7 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module Az
+    Requires Module Az.Compute
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute

@@ -26,9 +26,7 @@ param(
     [bool]$GetIDs
 )
 
-Import-Module Az
-
-$VerbosePreference = 'SilentlyContinue'
+Import-Module Az.Resources
 
 try{
     $result = Get-AzResourceGroup -ErrorAction Stop | Sort-Object ResourceGroupName

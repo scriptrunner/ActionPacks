@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Compute
         Requires Library script AzureAzLibrary.ps1
 
     .LINK

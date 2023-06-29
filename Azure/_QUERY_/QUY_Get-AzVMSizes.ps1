@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Compute
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -38,9 +38,7 @@ param(
     [string]$VMName
 )
 
-Import-Module Az
-
-$VerbosePreference = 'SilentlyContinue'
+Import-Module Az.Compute
 
 try{
     $result = Get-AzVMSize -ResourceGroupName $ResourceGroupName -VMName $VMName -ErrorAction Stop | Sort-Object Name

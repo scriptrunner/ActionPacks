@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Resources
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -59,7 +59,7 @@ param(
     [string[]]$Properties = @('Name','ResourceGroupName','ResourceType','Location')
 )
 
-Import-Module Az
+Import-Module Az.Resources
 
 try{
     if($Properties -contains '*'){

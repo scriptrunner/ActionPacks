@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Sql
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -49,7 +49,7 @@ param(
     [string[]]$Properties = @('ElasticPoolName','ResourceGroupName','ServerName','ResourceID','Location','State','Edition','Dtu','DatabaseDtuMax','DatabaseDtuMin','StorageMB','CreationDate','Tags')
 )
 
-Import-Module Az
+Import-Module Az.Sql
 
 try{
     if($Properties -contains '*'){

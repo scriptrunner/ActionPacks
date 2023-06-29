@@ -27,8 +27,6 @@ param(
 
 Import-Module Az.Storage
 
-$VerbosePreference = 'SilentlyContinue'
-
 try{
     $result = Get-AzStorageAccount -ErrorAction Stop | Select-Object @('StorageAccountName')  | Sort-Object StorageAccountName
 

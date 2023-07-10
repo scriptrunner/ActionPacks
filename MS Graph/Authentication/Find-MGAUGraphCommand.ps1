@@ -22,19 +22,36 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
-    .PARAMETER Online
+    .PARAMETER Uri
         [sr-en]
         [sr-de]
         
-    .PARAMETER PermissionType
+    .PARAMETER Command
+        [sr-en]
+        [sr-de]
+        
+    .PARAMETER Method
+        [sr-en]
+        [sr-de]
+        
+    .PARAMETER ApiVersion
         [sr-en]
         [sr-de]
 #>
 
 param( 
-    [switch]$Online,
-    [ValidateSet('Any','Application','Delegated')]
-    [string]$PermissionType
+    [Parameter(Mandatory = $true,ParameterSetName = 'Uri')]
+    [string]$Uri,
+    [Parameter(Mandatory = $true,ParameterSetName = 'Command')]
+    [string]$Command,
+    [Parameter(ParameterSetName = 'Uri')]
+    [ValidateSet('Get','Post','Put','Patch','Delete')]
+    [string]$Method,
+    [Parameter(ParameterSetName = 'All')]
+    [Parameter(ParameterSetName = 'Uri')]
+    [Parameter(ParameterSetName = 'Command')]
+    [ValidateSet('v1.0','beta')]
+    [string]$ApiVersion
 )
 
 Import-Module Microsoft.Graph.Authentication 
@@ -43,15 +60,27 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{
         ErrorAction = 'Stop'
-        All = $null
     }
-    if($Online.IsPresent -eq $true){
-        $cmdArgs.Add('Online',$null)    
+    switch($PSCmdlet.ParameterSetName){
+        'Uri'{
+            $cmdArgs.Add('Uri',$Uri)
+            if($PSBoundParameters.ContainsKey('Method') -eq $true){
+                $cmdArgs.Add('Method',$Method)
+            }
+            break
+        }
+        'Command'{
+            $cmdArgs.Add('Command',$Command)
+            break
+        }
+        default{
+            $cmdArgs.Add('InputObject','*')
+        }
+    }    
+    if($PSBoundParameters.ContainsKey('ApiVersion') -eq $true){
+        $cmdArgs.Add('ApiVersion',$ApiVersion)
     }
-    if($PSBoundParameters.ContainsKey('PermissionType') -eq $true){
-        $cmdArgs.Add('PermissionType',$PermissionType)
-    }
-    $result = Find-MgGraphPermission @cmdArgs | Select-Object * | Sort-Object Name
+    $result = Find-MgGraphCommand @cmdArgs | Select-Object * | Sort-Object Command
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

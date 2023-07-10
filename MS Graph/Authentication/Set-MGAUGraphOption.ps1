@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS        
-        Set-MgEnvironment
+        Set-MgGraphOption
 
     .DESCRIPTION          
 
@@ -21,42 +21,17 @@
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
-
-    .Parameter Name
-        [sr-en] 
-        [sr-de]
-
-    .Parameter AzureADEndpoint
-        [sr-en]
-        [sr-de]
-
-    .Parameter GraphEndpoint
-        [sr-en]
-        [sr-de]
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [string]$Name,
-    [string]$AzureADEndpoint,
-    [string]$GraphEndpoint
+    [bool]$EnableLoginByWAM
 )
 
 Import-Module Microsoft.Graph.Authentication 
 
-try{
+try{ 
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                'Name' = $Name
-                'Confirm' = $false
-    }
-    if($PSBoundParameters.ContainsKey('AzureADEndpoint') -eq $true){
-        $cmdArgs.Add('AzureADEndpoint',$AzureADEndpoint)
-    }
-    if($PSBoundParameters.ContainsKey('GraphEndpoint') -eq $true){
-        $cmdArgs.Add('GraphEndpoint',$GraphEndpoint)
-    }
-    $result = Set-MgEnvironment @cmdArgs | Select-Object *
+    $result = Set-MgGraphOption -EnableLoginByWAM $EnableLoginByWAM -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

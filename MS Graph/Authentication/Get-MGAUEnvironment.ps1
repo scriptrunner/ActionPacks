@@ -3,7 +3,8 @@
 
 <#
     .SYNOPSIS        
-    
+        Get-MgEnvironment
+        
     .DESCRIPTION          
 
     .NOTES
@@ -20,16 +21,27 @@
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
+
+    .PARAMETER Name
+        [sr-en]
+        [sr-de]
 #>
 
 param( 
+    [string]$Name
 )
 
 Import-Module Microsoft.Graph.Authentication 
 
 try{
     ConnectMSGraph 
-    $result = Get-MgEnvironment -ErrorAction Stop | Select-Object *
+    [hashtable]$cmdArgs = @{
+        ErrorAction = 'Stop'
+    }
+    if($PSBoundParameters.ContainsKey('Name') -eq $true){
+        $cmdArgs.Add('Name',$Name)
+    }
+    $result = Get-MgEnvironment @cmdArgs | Select-Object * | Sort-Object Name
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

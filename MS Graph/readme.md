@@ -5,8 +5,11 @@ Use cases for managing teams with Microsoft Graph
 ## [Authentication](./Authentication)
 
 + Add, get, set, remove environment
-+ Get context, profile
-+ Find Graph permission
++ Get context
++ Get, set Graph option
++ Get, set Graph request context
++ Invoke Graph request
++ Find Graph permission, Graph command
 
 ## [Contacts](./Contacts)
 

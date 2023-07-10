@@ -3,8 +3,8 @@
 
 <#
     .SYNOPSIS        
-        Set-MgEnvironment
-
+        Set-MgRequestContext
+        
     .DESCRIPTION          
 
     .NOTES
@@ -22,41 +22,50 @@
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
-    .Parameter Name
-        [sr-en] 
-        [sr-de]
-
-    .Parameter AzureADEndpoint
+    .PARAMETER ClientTimeout
         [sr-en]
         [sr-de]
 
-    .Parameter GraphEndpoint
+    .PARAMETER MaxRetry
+        [sr-en]
+        [sr-de]
+
+    .PARAMETER RetryDelay
+        [sr-en]
+        [sr-de]
+
+    .PARAMETER RetriesTimeLimit
         [sr-en]
         [sr-de]
 #>
 
 param( 
-    [Parameter(Mandatory = $true)]
-    [string]$Name,
-    [string]$AzureADEndpoint,
-    [string]$GraphEndpoint
+    [int]$ClientTimeout,
+    [int]$MaxRetry,
+    [int]$RetryDelay,
+    [int]$RetriesTimeLimit
 )
 
 Import-Module Microsoft.Graph.Authentication 
 
-try{
+try{ 
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                'Name' = $Name
                 'Confirm' = $false
     }
-    if($PSBoundParameters.ContainsKey('AzureADEndpoint') -eq $true){
-        $cmdArgs.Add('AzureADEndpoint',$AzureADEndpoint)
+    if($PSBoundParameters.ContainsKey('ClientTimeout') -eq $true){
+        $cmdArgs.Add('ClientTimeout',$ClientTimeout)
     }
-    if($PSBoundParameters.ContainsKey('GraphEndpoint') -eq $true){
-        $cmdArgs.Add('GraphEndpoint',$GraphEndpoint)
+    if($PSBoundParameters.ContainsKey('MaxRetry') -eq $true){
+        $cmdArgs.Add('MaxRetry',$MaxRetry)
     }
-    $result = Set-MgEnvironment @cmdArgs | Select-Object *
+    if($PSBoundParameters.ContainsKey('RetriesTimeLimit') -eq $true){
+        $cmdArgs.Add('RetriesTimeLimit',$RetriesTimeLimit)
+    }
+    if($PSBoundParameters.ContainsKey('RetryDelay') -eq $true){
+        $cmdArgs.Add('RetryDelay',$RetryDelay)
+    }
+    $result = Set-MgRequestContext @cmdArgs | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

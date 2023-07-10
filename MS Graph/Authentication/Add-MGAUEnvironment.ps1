@@ -3,7 +3,8 @@
 
 <#
     .SYNOPSIS        
-    
+        Add-MgEnvironment
+        
     .DESCRIPTION          
 
     .NOTES

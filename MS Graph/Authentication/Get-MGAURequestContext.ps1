@@ -2,9 +2,9 @@
 #requires -Modules Microsoft.Graph.Authentication 
 
 <#
-    .SYNOPSIS
+    .SYNOPSIS        
+        Get-MgRequestContext
         
-    
     .DESCRIPTION          
 
     .NOTES
@@ -28,9 +28,9 @@ param(
 
 Import-Module Microsoft.Graph.Authentication 
 
-try{
+try{ 
     ConnectMSGraph 
-    $result = Get-MgProfile -ErrorAction Stop | Select-Object *
+    $result = Get-MgRequestContext -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

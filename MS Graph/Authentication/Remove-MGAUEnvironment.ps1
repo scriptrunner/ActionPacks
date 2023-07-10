@@ -3,7 +3,8 @@
 
 <#
     .SYNOPSIS        
-    
+        Remove-MgEnvironment
+        
     .DESCRIPTION          
 
     .NOTES

@@ -23,19 +23,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
     .PARAMETER Uri
-        [sr-en]
+        [sr-en] Uri
         [sr-de]
         
     .PARAMETER Command
-        [sr-en]
+        [sr-en] Command
         [sr-de]
         
     .PARAMETER Method
-        [sr-en]
+        [sr-en] Method
         [sr-de]
         
     .PARAMETER ApiVersion
-        [sr-en]
+        [sr-en] ApiVersion
         [sr-de]
 #>
 

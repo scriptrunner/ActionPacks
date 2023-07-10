@@ -21,6 +21,10 @@
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
+        
+    .Parameter EnableLoginByWAM
+        [sr-en] EnableLoginByWAM
+        [sr-de]
 #>
 
 param( 

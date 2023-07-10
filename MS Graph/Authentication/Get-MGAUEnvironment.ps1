@@ -23,7 +23,7 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
     .PARAMETER Name
-        [sr-en]
+        [sr-en] Name
         [sr-de]
 #>
 

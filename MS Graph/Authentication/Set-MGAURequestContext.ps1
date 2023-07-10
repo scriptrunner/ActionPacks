@@ -23,19 +23,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
     .PARAMETER ClientTimeout
-        [sr-en]
+        [sr-en] ClientTimeout
         [sr-de]
 
     .PARAMETER MaxRetry
-        [sr-en]
+        [sr-en] MaxRetry
         [sr-de]
 
     .PARAMETER RetryDelay
-        [sr-en]
+        [sr-en] RetryDelay
         [sr-de]
 
     .PARAMETER RetriesTimeLimit
-        [sr-en]
+        [sr-en] RetriesTimeLimit
         [sr-de]
 #>
 

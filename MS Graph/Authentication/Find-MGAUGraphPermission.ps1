@@ -23,11 +23,11 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
     .PARAMETER Online
-        [sr-en]
+        [sr-en] Online
         [sr-de]
         
     .PARAMETER PermissionType
-        [sr-en]
+        [sr-en] PermissionType
         [sr-de]
 #>
 

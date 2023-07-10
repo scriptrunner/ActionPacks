@@ -21,6 +21,18 @@
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
+
+    .PARAMETER Uri
+        [sr-en] Uri
+        [sr-de]
+
+    .PARAMETER Body
+        [sr-en] Body
+        [sr-de]
+
+    .PARAMETER Method
+        [sr-en] Method
+        [sr-de]
 #>
 
 param( 

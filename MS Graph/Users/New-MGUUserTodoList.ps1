@@ -84,6 +84,6 @@ try{
 catch{
     throw 
 }
-finally{
+finally{ 
     DisconnectMSGraph
 }

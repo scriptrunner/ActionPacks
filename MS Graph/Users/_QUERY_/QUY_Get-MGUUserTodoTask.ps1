@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns user's scoped role
+        Returns tasks in this task list
     
     .DESCRIPTION          
 
@@ -20,16 +20,22 @@
         Requires Modules Microsoft.Graph.Users
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users/_QUERY_
 
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId
 )
 
 Import-Module Microsoft.Graph.Users
@@ -38,14 +44,18 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
     }
-    $result = Get-MgScopedRoleMemberOf @cmdArgs | Select-Object *
-
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    }
-    else{
-        Write-Output $result
+    $result = Get-MgUserTodoTask @cmdArgs | Sort-Object Title | Select-Object @('Title','Id')
+    
+    foreach($itm in $result){ # fill result lists
+        if($null -ne $SRXEnv) {            
+            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.Title) # DisplayValue            
+        }
+        else{
+            Write-Output $itm.Title 
+        }
     }    
 }
 catch{

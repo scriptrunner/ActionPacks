@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Updates settings for the user
+        Updates settings for the user 
         
     .DESCRIPTION          
 
@@ -49,7 +49,6 @@ try{
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
                         'Confirm' = $false
-                        'PassThru' = $null
     }
     if($PSBoundParameters.ContainsKey('ContributionToContentDiscoveryDisabled') -eq $true){
         $cmdArgs.Add('ContributionToContentDiscoveryDisabled',$ContributionToContentDiscoveryDisabled)

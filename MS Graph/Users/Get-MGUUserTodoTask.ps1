@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns collection of resources linked to the task
+        Returns tasks in this task list 
     
     .DESCRIPTION          
 
@@ -30,9 +30,13 @@
         [sr-en] Id of todo task list
         [sr-de] Todo-Tasklist ID
 
-    .Parameter TodoTaskId 
-        [sr-en] Id of todo task
-        [sr-de] Task ID
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
+
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
@@ -40,8 +44,9 @@ param(
     [string]$UserId,
     [Parameter(Mandatory = $true)]
     [string]$TodoTaskListId,
-    [Parameter(Mandatory = $true)]
-    [string]$TodoTaskId
+    [string]$TodoTaskId,
+    [ValidateSet('Title','BodyLastModifiedDateTime','CreatedDateTime','Id','Importance','IsReminderOn','LastModifiedDateTime','Status')]
+    [string[]]$Properties = @('Title','Id','LastModifiedDateTime','Status')
 )
 
 Import-Module Microsoft.Graph.Users
@@ -51,9 +56,14 @@ try{
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
-                'TodoTaskId' = $TodoTaskId
     }
-    $result = Get-MgUserTodoListTaskLinkedResource @cmdArgs | Sort-Object ApplicationName
+    if($PSBoundParameters.ContainsKey('TodoTaskId') -eq $true){
+        $cmdArgs.Add('TodoTaskId',$TodoTaskId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
+    }
+    $result = Get-MgUserTodoTask @cmdArgs | Select-Object $Properties | Format-List
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

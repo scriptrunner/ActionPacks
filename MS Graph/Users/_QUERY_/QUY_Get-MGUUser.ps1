@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns all users
+        Returns all users 
     
     .DESCRIPTION          
 

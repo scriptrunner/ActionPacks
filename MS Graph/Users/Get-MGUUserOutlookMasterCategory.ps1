@@ -40,7 +40,7 @@ try{
                         'UserId'= $UserId
                         'All' = $null
     }
-    $result = Get-MgUserOutlookMasterCategory @cmdArgs
+    $result = Get-MgUserOutlookMasterCategory @cmdArgs | Select-Object *
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

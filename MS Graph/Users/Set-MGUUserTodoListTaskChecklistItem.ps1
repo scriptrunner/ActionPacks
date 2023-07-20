@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Removes task in this task list
+        Update the properties of a checklistItem object
     
     .DESCRIPTION          
 
@@ -30,35 +30,56 @@
         [sr-en] Id of todo task list
         [sr-de] Todo-Tasklist ID
 
-    .Parameter TodoTaskId 
-        [sr-en] Id of todo task
-        [sr-de] Task ID
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
+
+    .Parameter ChecklistItemId
+        [sr-en] Unique identifier of checklistItem
+        [sr-de] Eindeutige ID des Items
+
+    .Parameter DisplayName
+        [sr-en] Name of the item
+        [sr-de] Name des Items
+
+    .Parameter IsChecked
+        [sr-en] State indicating whether the item is checked off or not
+        [sr-de] Angabe, ob der Punkt abgehakt ist
 #>
 
-param( 
+param(
     [Parameter(Mandatory = $true)]
     [string]$UserId,
     [Parameter(Mandatory = $true)]
     [string]$TodoTaskListId,
     [Parameter(Mandatory = $true)]
-    [string]$TodoTaskId
+    [string]$TodoTaskId,
+    [Parameter(Mandatory = $true)]
+    [string]$ChecklistItemId,
+    [string]$DisplayName,
+    [switch]$IsChecked
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
-    [string[]]$Properties = @('Title','Id','CreatedDateTime','Status')
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
                 'TodoTaskId' = $TodoTaskId
+                'ChecklistItemId' = $ChecklistItemId
                 'Confirm' = $false
-                'PassThru' = $null
     }
-    $null = Remove-MgUserTodoListTask @cmdArgs
+    if($PSBoundParameters.ContainsKey('DisplayName') -eq $true){
+        $cmdArgs.Add('DisplayName', $DisplayName)
+    }
+    if($IsChecked.IsPresent -eq $true){
+        $cmdArgs.Add('IsChecked',$null)
+    }
+    $null = Update-MgUserTodoListTaskChecklistItem @cmdArgs
     
-    $result = Get-MgUserTodoTask -UserId $UserId -TodoTaskListId $TodoTaskListId | Sort-Object Title | Select-Object $Properties | Format-List
+    $result = Get-MgUserTodoTaskChecklistItem -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId -UserId $UserId | Select-Object *
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
@@ -69,6 +90,6 @@ try{
 catch{
     throw 
 }
-finally{
+finally{ 
     DisconnectMSGraph
 }

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns user or contact that is this user's manager
+        Returns user or contact that is this user's manager 
     
     .DESCRIPTION          
 

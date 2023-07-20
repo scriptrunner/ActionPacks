@@ -25,11 +25,16 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [string]$TodoTaskListId
 )
 
 Import-Module Microsoft.Graph.Users
@@ -38,6 +43,12 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
+    }
+    if($PSBoundParameters.ContainsKey('TodoTaskListId') -eq $true){
+        $cmdArgs.Add('TodoTaskListId',$TodoTaskListId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
     }
     $result = Get-MgUserTodoList @cmdArgs | Select-Object *
     

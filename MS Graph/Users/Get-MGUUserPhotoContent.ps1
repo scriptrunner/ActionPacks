@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Exports user's profile photo
+        Exports user's profile photo 
     
     .DESCRIPTION          
 

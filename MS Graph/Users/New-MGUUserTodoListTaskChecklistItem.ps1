@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Create an outlookCategory object in the user's master list of categories
+        Create a new checklistItem object
     
     .DESCRIPTION          
 
@@ -26,36 +26,52 @@
         [sr-en] User identifier
         [sr-de] Benutzer ID
 
-    .Parameter Color
-        [sr-en] Color
-        [sr-de] Farbe
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
 
     .Parameter DisplayName
-        [sr-en] A unique name that identifies a category in the user's mailbox
-        [sr-de] Eindeutiger Anzeigename
+        [sr-en] Name of the item
+        [sr-de] Name des Items
+
+    .Parameter IsChecked
+        [sr-en] State indicating whether the item is checked off or not
+        [sr-de] Angabe, ob der Punkt abgehakt ist
 #>
 
-param( 
+param(
     [Parameter(Mandatory = $true)]
-    [string]$UserId,     
+    [string]$UserId,
     [Parameter(Mandatory = $true)]
-    [string]$Color, 
+    [string]$TodoTaskListId,
     [Parameter(Mandatory = $true)]
-    [string]$DisplayName
+    [string]$TodoTaskId,
+    [Parameter(Mandatory = $true)]
+    [string]$DisplayName,
+    [switch]$IsChecked
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'Color' = $Color
-                        'DisplayName' = $DisplayName
-                        'Confirm' = $false
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
+                'DisplayName' = $DisplayName
+                'Confirm' = $false
     }
-    $result = New-MgUserOutlookMasterCategory @cmdArgs | Select-Object *
+    if($IsChecked.IsPresent -eq $true){
+        $cmdArgs.Add('IsChecked',$null)
+    }
+    $null = New-MgUserTodoListTaskChecklistItem @cmdArgs
     
+    $result = Get-MgUserTodoTaskChecklistItem -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId -UserId $UserId | Select-Object *
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
@@ -66,6 +82,6 @@ try{
 catch{
     throw 
 }
-finally{
+finally{ 
     DisconnectMSGraph
 }

@@ -3,10 +3,9 @@
 
 <#
     .SYNOPSIS
-        Returns collection of this user's license details
-    
-    .DESCRIPTION  
+        Returns the checklistItem objects
         
+    .DESCRIPTION          
 
     .NOTES
         This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
@@ -26,32 +25,46 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskId
 )
 
-Import-Module Microsoft.Graph.Users
+Import-Module Microsoft.Graph.Users 
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+                    'UserId' = $UserId
+                    'TodoTaskListId' = $TodoTaskListId
+                    'TodoTaskId' = $TodoTaskId
+                    'All' = $null
     }
-    $result = Get-MgUserLicenseDetail @cmdArgs | Select-Object *
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    }
-    else{
-        Write-Output $result
-    }    
+    $result = Get-MgUserTodoTaskChecklistItem @cmdArgs | Select-Object * 
+  
+    foreach($itm in $result){ # fill result lists
+        if($null -ne $SRXEnv) {            
+            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
+        }
+        else{
+            Write-Output $itm.DisplayName 
+        }
+    }   
 }
 catch{
     throw 

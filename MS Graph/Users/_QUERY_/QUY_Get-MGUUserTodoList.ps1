@@ -37,7 +37,7 @@ Import-Module Microsoft.Graph.Users
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                'UserId' = $UserId
+                'UserId' = $UserId 
     }
     $lists = Get-MgUserTodoList @cmdArgs | Select-Object *
     

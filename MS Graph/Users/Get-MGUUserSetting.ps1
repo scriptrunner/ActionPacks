@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns settings for the user
+        Returns settings for the user 
         
     .DESCRIPTION          
 

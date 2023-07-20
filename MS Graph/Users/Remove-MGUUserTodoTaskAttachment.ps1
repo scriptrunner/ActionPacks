@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns resources linked to the task
+        Delete a taskFileAttachment object from a todoTask resource
     
     .DESCRIPTION          
 
@@ -20,7 +20,7 @@
         Requires Modules Microsoft.Graph.Users
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users/_QUERY_
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
 
     .Parameter UserId
         [sr-en] User identifier
@@ -30,9 +30,13 @@
         [sr-en] Id of todo task list
         [sr-de] Todo-Tasklist ID
 
-    .Parameter TodoTaskId 
-        [sr-en] Id of todo task
-        [sr-de] Task ID
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
+
+    .Parameter AttachmentBaseId
+        [sr-en] Unique identifier of attachmentBase
+        [sr-de] Eindeutige ID des Attachments
 #>
 
 param( 
@@ -41,7 +45,9 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$TodoTaskListId,
     [Parameter(Mandatory = $true)]
-    [string]$TodoTaskId
+    [string]$TodoTaskId,
+    [Parameter(Mandatory = $true)]
+    [string]$AttachmentBaseId
 )
 
 Import-Module Microsoft.Graph.Users
@@ -52,18 +58,16 @@ try{
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
                 'TodoTaskId' = $TodoTaskId
+                'AttachmentBaseId' = $AttachmentBaseId
     }
-    $result = Get-MgUserTodoListTaskLinkedResource @cmdArgs | Sort-Object ApplicationName
+    $result = Remove-MgUserTodoListTaskAttachment @cmdArgs
     
-    foreach($itm in $result){ # fill result lists
-        if($null -ne $SRXEnv) {            
-            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
-            $null = $SRXEnv.ResultList2.Add($itm.ApplicationName) # DisplayValue            
-        }
-        else{
-            Write-Output $itm.Title 
-        }
-    }   
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $result
+    }
+    else{
+        Write-Output $result
+    }    
 }
 catch{
     throw 

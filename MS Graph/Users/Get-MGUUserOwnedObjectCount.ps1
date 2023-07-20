@@ -3,8 +3,8 @@
 
 <#
     .SYNOPSIS
-        Returns tasks in this task list
-    
+        Get the number of the resource
+        
     .DESCRIPTION          
 
     .NOTES
@@ -25,35 +25,22 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
-
-    .Parameter TodoTaskListId 
-        [sr-en] Id of todo task list
-        [sr-de] Todo-Tasklist ID
-
-    .Parameter Properties
-        [sr-en] List of properties to expand. Use * for all properties
-        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId,
-    [Parameter(Mandatory = $true)]
-    [string]$TodoTaskListId,
-    [ValidateSet('Title','BodyLastModifiedDateTime','CreatedDateTime','Id','Importance','IsReminderOn','LastModifiedDateTime','Status')]
-    [string[]]$Properties = @('Title','Id','LastModifiedDateTime','Status')
+    [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Users
+Import-Module Microsoft.Graph.Users 
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                'UserId' = $UserId
-                'TodoTaskListId' = $TodoTaskListId
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'UserId'= $UserId
     }
-    $result = Get-MgUserTodoListTask @cmdArgs | Select-Object $Properties
-    
+    $result = Get-MgUserOwnedObjectCount @cmdArgs -ConsistencyLevel 'eventual' | Select-Object * 
+  
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

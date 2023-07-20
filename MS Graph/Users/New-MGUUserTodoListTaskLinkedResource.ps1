@@ -79,7 +79,7 @@ try{
     }
     $null = New-MgUserTodoListTaskLinkedResource @cmdArgs
 
-    $result = Get-MgUserTodoListTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
+    $result = Get-MgUserTodoTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

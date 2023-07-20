@@ -2,21 +2,25 @@
 
 > Note: The use of the scripts requires the PowerShell Microsoft.Graph.Users
 
-+ [Get-MGUScopedRoleMemberOf.ps1](./Get-MGUScopedRoleMemberOf.ps1)
-
-  Returns user's scoped role
-
 + [Get-MGUUser.ps1](./Get-MGUUser.ps1)
 
-  Returns a User
+  Retrieve the properties and relationships of user object
+
++ [Get-MGUUserCount.ps1](./Get-MGUUserCount.ps1)
+
+  Get the number of the resource
 
 + [Get-MGUUserCreatedObject.ps1](./Get-MGUUserCreatedObject.ps1)
-  
+        
   Returns directory objects that were created by the use
 
-+ [Get-MGUUserDirectReport.ps1](./Get-MGUUserDirectReport.ps1)
++ [Get-MGUUserDirectReportAsUser.ps1](./Get-MGUUserDirectReportAsUser.ps1)
 
   Returns users and contacts that report to the user
+
++ [Get-MGUUserDirectReportCount.ps1](./Get-MGUUserDirectReportCount.ps1)
+
+  Get the number of the resource
 
 + [Get-MGUUserExtension.ps1](./Get-MGUUserExtension.ps1)
 
@@ -34,6 +38,10 @@
 
   Returns the memberships of the user
 
++ [Get-MGUUserMemberOfCount.ps1](./Get-MGUUserMemberOfCount.ps1)
+
+  Get the number of the resource
+
 + [Get-MGUUserOAuthPermissionGrant.ps1](./Get-MGUUserOAuthPermissionGrant.ps1)
 
   Returns oauth2PermissionGrants from users
@@ -42,17 +50,41 @@
 
   Returns list of categories defined for the user
 
++ [Get-MGUUserOutlookMasterCategoryCount.ps1](./Get-MGUUserOutlookMasterCategoryCount.ps1)
+
+  Get the number of the resource
+
 + [Get-MGUUserOwnedDevice.ps1](./Get-MGUUserOwnedDevice.ps1)
 
   Returns devices that are owned by the user
+
++ [Get-MGUUserOwnedDeviceAsDevice.ps1](./Get-MGUUserOwnedDeviceAsDevice.ps1)
+
+  Returns devices that are owned by the user, as device
+
++ [Get-MGUUserOwnedDeviceCount.ps1](./Get-MGUUserOwnedDeviceCount.ps1)
+
+  Get the number of the resource
 
 + [Get-MGUUserOwnedObject.ps1](./Get-MGUUserOwnedObject.ps1)
 
   Returns directory objects that are owned by the user
 
++ [Get-MGUUserOwnedObjectAsApplication.ps1](./Get-MGUUserOwnedObjectAsApplication.ps1)
+
+  Returns directory objects that are owned by the user, as application
+  
++ [Get-MGUUserOwnedObjectAsGroup.ps1](./Get-MGUUserOwnedObjectAsGroup.ps1)
+
+  Returns directory objects that are owned by the user, as group
+
++ [Get-MGUUserOwnedObjectCount.ps1](./Get-MGUUserOwnedObjectCount.ps1)
+
+  Get the number of the resource
+
 + [Get-MGUUserPhoto.ps1](./Get-MGUUserPhoto.ps1)
 
-  Returns user's profile photo
+  Returns directory objects that are owned by the user
 
 + [Get-MGUUserPhotoContent.ps1](./Get-MGUUserPhotoContent.ps1)
 
@@ -60,7 +92,15 @@
 
 + [Get-MGUUserRegisteredDevice.ps1](./Get-MGUUserRegisteredDevice.ps1)
 
-  Returns devices that are registered for the user
+    Returns devices that are registered for the user
+
++ [Get-MGUUserRegisteredDeviceAsDevice.ps1](./Get-MGUUserRegisteredDeviceAsDevice.ps1)
+
+    Returns devices that are registered for the user, as device
+
++ [Get-MGUUserRegisteredDeviceCount.ps1](./Get-MGUUserRegisteredDeviceCount.ps1)
+
+    Get the number of the resource
 
 + [Get-MGUUserSetting.ps1](./Get-MGUUserSetting.ps1)
 
@@ -70,17 +110,25 @@
 
   Returns task lists in the users mailbox
 
-+ [Get-MGUUserTodoListTask.ps1](./Get-MGUUserTodoListTask.ps1)
++ [Get-MGUUserTodoTaskLinkedResource.ps1](./Get-MGUUserTodoTaskLinkedResource.ps1)
 
-  Returns tasks in this task list
+  Read the properties and relationships of a linkedResource object
 
-+ [Get-MGUUserTodoListTaskLinkedResource.ps1](./Get-MGUUserTodoListTaskLinkedResource.ps1)
++ [Get-MGUUserTodoTask.ps1](./Get-MGUUserTodoTask.ps1)
 
-  Returns collection of resources linked to the task
+  Returns tasks in this task list 
 
-+ [Get-MGUUserTransitiveMember.ps1](./Get-MGUUserTransitiveMember.ps1)
++ [Get-MGUUserTodoTaskAttachment.ps1](./Get-MGUUserTodoTaskAttachment.ps1)
 
-  Returns a collection of resources linked to the task
+  Read the properties and relationships of a taskFileAttachment object
+
++ [Get-MGUUserTodoTaskAttachmentCount.ps1](./Get-MGUUserTodoTaskAttachmentCount.ps1)
+
+  Get the number of the resource  
+
++ [Get-MGUUserTodoTaskChecklistItem.ps1](./Get-MGUUserTodoTaskChecklistItem.ps1)
+
+  Read the properties and relationships of a taskFileAttachment object
 
 + [New-MGUUser.ps1](./New-MGUUser.ps1)
 
@@ -88,7 +136,7 @@
 
 + [New-MGUUserOutlookMasterCategory.ps1](./New-MGUUserOutlookMasterCategory.ps1)
 
-  Define category for the user
+  Create an outlookCategory object in the user's master list of categories
 
 + [New-MGUUserTodoList.ps1](./New-MGUUserTodoList.ps1)
 
@@ -97,6 +145,14 @@
 + [New-MGUUserTodoListTask.ps1](./New-MGUUserTodoListTask.ps1)
 
   Creates task in this task list
+
++ [New-MGUUserTodoListTaskAttachment.ps1](./New-MGUUserTodoListTaskAttachment.ps1)
+
+  Add a new taskFileAttachment object to a todoTask
+
++ [New-MGUUserTodoListTaskCheckListItem.ps1](./New-MGUUserTodoListTaskCheckListItem.ps1)
+
+  Create a new checklistItem object
 
 + [New-MGUUserTodoListTaskLinkedResource.ps1](./New-MGUUserTodoListTaskLinkedResource.ps1)
 
@@ -122,6 +178,10 @@
 
   Removes task in this task list
 
++ [Remove-MGUUserTodoListTaskChecklistItem.ps1](./Remove-MGUUserTodoListTaskChecklistItem.ps1)
+
+  Delete a checklistItem object
+
 + [Remove-MGUUserTodoListTaskLinkedResource.ps1](./Remove-MGUUserTodoListTaskLinkedResource.ps1)
 
   Removes resource linked to the task
@@ -129,6 +189,10 @@
 + [Set-MGUUser.ps1](./Set-MGUUser.ps1)
 
   Updates a User
+
++ [Set-MGUUserManager.ps1](./Set-MGUUserManager.ps1)
+
+  Sets user's manager
 
 + [Set-MGUUserOutlookMasterCategory.ps1](./Set-MGUUserOutlookMasterCategory.ps1)
 
@@ -150,6 +214,10 @@
 
   Updates task in this task list
 
++ [Set-MGUUserTodoListTaskChecklistItem.ps1](./Set-MGUUserTodoListTaskChecklistItem.ps1)
+
+  Update the properties of a checklistItem object
+
 + [Set-MGUUserTodoListTaskLinkedResource.ps1](./Set-MGUUserTodoListTaskLinkedResource.ps1)
 
   Updates resource linked to the task
@@ -159,5 +227,7 @@
 + Search users
 + Search user Outlook master categories
 + Search user todo task lists
++ Search user todo task list attachments
 + Search user todo task list tasks 
++ Search user todo task list check list items 
 + Search user todo task list task linked resources 

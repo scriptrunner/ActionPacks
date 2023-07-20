@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Create an outlookCategory object in the user's master list of categories
+        Returns resources linked to the task
     
     .DESCRIPTION          
 
@@ -20,48 +20,51 @@
         Requires Modules Microsoft.Graph.Users
 
     .LINK
-        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
+        https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users/_QUERY_
 
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
 
-    .Parameter Color
-        [sr-en] Color
-        [sr-de] Farbe
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
 
-    .Parameter DisplayName
-        [sr-en] A unique name that identifies a category in the user's mailbox
-        [sr-de] Eindeutiger Anzeigename
+    .Parameter TodoTaskId 
+        [sr-en] Id of todo task
+        [sr-de] Task ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId,     
+    [string]$UserId,
     [Parameter(Mandatory = $true)]
-    [string]$Color, 
+    [string]$TodoTaskListId,
     [Parameter(Mandatory = $true)]
-    [string]$DisplayName
+    [string]$TodoTaskId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'Color' = $Color
-                        'DisplayName' = $DisplayName
-                        'Confirm' = $false
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
+                'All' = $null
     }
-    $result = New-MgUserOutlookMasterCategory @cmdArgs | Select-Object *
+    $result = Get-MgUserTodoTaskLinkedResource @cmdArgs | Sort-Object ApplicationName
     
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    }
-    else{
-        Write-Output $result
-    }    
+    foreach($itm in $result){ # fill result lists
+        if($null -ne $SRXEnv) {            
+            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.ApplicationName) # DisplayValue            
+        }
+        else{
+            Write-Output $itm.Title 
+        }
+    }   
 }
 catch{
     throw 

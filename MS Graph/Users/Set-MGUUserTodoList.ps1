@@ -44,7 +44,7 @@
 
     .Parameter WellknownListName
         [sr-en] Wellknown list name
-        [sr-de] Wellknown Listname
+        [sr-de] Wellknown Listname 
 #>
 
 param( 
@@ -67,7 +67,6 @@ try{
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
                 'Confirm' = $false
-                'PassThru' = $null
     }
     if($PSBoundParameters.ContainsKey('DisplayName') -eq $true){
         $cmdArgs.Add('DisplayName',$DisplayName)

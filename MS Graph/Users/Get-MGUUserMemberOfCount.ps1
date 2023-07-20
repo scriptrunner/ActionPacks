@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a collection of resources linked to the task
+        Get the number of the resource
     
     .DESCRIPTION          
 
@@ -25,11 +25,16 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .PARAMETER Transitive
+        [sr-en] Transitive
+        [sr-de] 
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [switch]$Transitive
 )
 
 Import-Module Microsoft.Graph.Users
@@ -38,40 +43,25 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
-                        'All' = $null
+                        'ConsistencyLevel' = 'eventual'
     }
-    $res = Get-MgUserTransitiveMember @cmdArgs | Select-Object *
-
-    [PSCustomObject]$result = @()
-    foreach($obj in $res){
-        [PSCustomObject]$item = [PSCustomObject]@{
-            'DeletedDateTime' = $obj.DeletedDateTime
-            'Id' = $obj.Id
-            'Type' = $obj.AdditionalProperties.Item('@odata.type').Replace('#microsoft.graph.','')
-            'CreatedDateTime' = $obj.AdditionalProperties.createdDateTime
-            'DisplayName' = $obj.AdditionalProperties.displayName
-            'Description' = $obj.AdditionalProperties.description
-            'GroupTypes' = $obj.AdditionalProperties.groupTypes
-            'Mail' = $obj.AdditionalProperties.mail
-        }
-        $result += $item
-    }
-          
-    $result = $result | Sort-Object DisplayName
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
+    if($Transitive.IsPresent -eq $true){
+        $mships = Get-MgUserTransitiveMemberOfCount @cmdArgs | Select-Object *
     }
     else{
-        Write-Output $result
+        $mships = Get-MgUserMemberOfCount @cmdArgs | Select-Object *
+    }    
+
+    if($SRXEnv) {
+        $SRXEnv.ResultMessage = $mships
+    }
+    else{
+        Write-Output $mships
     }    
 }
 catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
+    DisconnectMSGraph 
 }

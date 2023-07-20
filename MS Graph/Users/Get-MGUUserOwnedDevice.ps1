@@ -50,7 +50,7 @@ try{
         $result.Add($key,$odevice.AdditionalProperties.$key)
     }
 
-    if($SRXEnv) {
+    if($SRXEnv) { 
         $SRXEnv.ResultMessage = $result
     }
     else{

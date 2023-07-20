@@ -118,7 +118,7 @@ function DisconnectMSGraph(){
 
         try{
             if($null -ne (Get-MgContext)){
-                Disconnect-MgGraph 
+                $null = Disconnect-MgGraph 
             }
         }
         catch{

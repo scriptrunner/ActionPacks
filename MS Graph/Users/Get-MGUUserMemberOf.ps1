@@ -25,11 +25,16 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .PARAMETER Transitive
+        [sr-en] Groups, including nested groups, and directory roles that a user is a member of
+        [sr-de] Gruppen, einschließlich verschachtelter Gruppen, und Verzeichnisrollen, in denen ein Benutzer Mitglied ist
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [switch]$Transitive
 )
 
 Import-Module Microsoft.Graph.Users
@@ -40,7 +45,12 @@ try{
                         'UserId'= $UserId
                         'All' = $null
     }
-    $mships = Get-MgUserMemberof @cmdArgs | Select-Object *
+    if($Transitive.IsPresent -eq $true){
+        $mships = Get-MgUserTransitiveMemberOf @cmdArgs | Select-Object *
+    }
+    else{
+        $mships = Get-MgUserMemberOf @cmdArgs | Select-Object *
+    }  
 
     [PSCustomObject]$result = @()
     # memberships
@@ -73,5 +83,5 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
+    DisconnectMSGraph 
 }

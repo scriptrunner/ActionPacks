@@ -48,7 +48,7 @@ try{
                 'Confirm' = $false
                 'PassThru' = $null
     }
-    $null = Remove-MgUserTodoList @cmdArgs | Select-Object *
+    $null = Remove-MgUserTodoList @cmdArgs
     
     $result = Get-MgUserTodoList -UserId $UserId | Select-Object *
     if($SRXEnv) {

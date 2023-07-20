@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns users and contacts that report to the user
+        Read the properties and relationships of a taskFileAttachment object
     
     .DESCRIPTION          
 
@@ -25,31 +25,45 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
+                'All' = $null
     }
-    $result = Get-MgUserDirectReport @cmdArgs
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $result
-    }
-    else{
-        Write-Output $result
+    $result = Get-MgUserTodoTaskAttachment @cmdArgs
+    
+    foreach($itm in $result){ # fill result lists
+        if($null -ne $SRXEnv) {            
+            $null = $SRXEnv.ResultList.Add($itm.ID) # Value
+            $null = $SRXEnv.ResultList2.Add($itm.Name) # DisplayValue            
+        }
+        else{
+            Write-Output $itm.Title 
+        }
     }    
 }
 catch{

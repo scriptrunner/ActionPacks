@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Create an outlookCategory object in the user's master list of categories
+        Read the properties and relationships of a linkedResource object
     
     .DESCRIPTION          
 
@@ -26,35 +26,45 @@
         [sr-en] User identifier
         [sr-de] Benutzer ID
 
-    .Parameter Color
-        [sr-en] Color
-        [sr-de] Farbe
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
 
-    .Parameter DisplayName
-        [sr-en] A unique name that identifies a category in the user's mailbox
-        [sr-de] Eindeutiger Anzeigename
+    .Parameter TodoTaskId 
+        [sr-en] Id of todo task
+        [sr-de] Task ID
+
+    .Parameter LinkedResourceId 
+        [sr-en] Unique identifier of linkedResource
+        [sr-de] Ressourcen ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId,     
+    [string]$UserId,
     [Parameter(Mandatory = $true)]
-    [string]$Color, 
+    [string]$TodoTaskListId,
     [Parameter(Mandatory = $true)]
-    [string]$DisplayName
+    [string]$TodoTaskId,
+    [string]$LinkedResourceId 
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'Color' = $Color
-                        'DisplayName' = $DisplayName
-                        'Confirm' = $false
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
     }
-    $result = New-MgUserOutlookMasterCategory @cmdArgs | Select-Object *
+    if($PSBoundParameters.ContainsKey('LinkedResourceId') -eq $false){
+        $cmdArgs.Add('All',$null)
+    }
+    else{
+        $cmdArgs.Add('LinkedResourceId',$LinkedResourceId)
+    }
+    $result = Get-MgUserTodoTaskLinkedResource @cmdArgs | Sort-Object ApplicationName
     
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

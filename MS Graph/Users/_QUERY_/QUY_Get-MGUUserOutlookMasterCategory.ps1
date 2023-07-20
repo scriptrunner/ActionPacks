@@ -38,7 +38,7 @@ try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
-                        'All' = $null
+                        'All' = $null 
     }
     $result = Get-MgUserOutlookMasterCategory @cmdArgs
     

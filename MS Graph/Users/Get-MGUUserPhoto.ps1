@@ -25,11 +25,16 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+        
+    .Parameter PhotoId
+        [sr-en] Unique identifier of profilePhoto
+        [sr-de] Photo ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [string]$PhotoId
 )
 
 Import-Module Microsoft.Graph.Users
@@ -39,7 +44,13 @@ try{
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
     }
-    $result = Get-MgUserPhoto @cmdArgs
+    if($PSBoundParameters.ContainsKey('PhotoId') -eq $true){
+        $cmdArgs.Add('ProfilePhotoId',$PhotoId)
+    }
+    else {
+        $cmdArgs.Add('All',$null)
+    }
+    $result = Get-MgUserPhoto @cmdArgs | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a collection of open extensions defined for the user
+        Returns a collection of open extensions defined for the user 
     
     .DESCRIPTION          
 
@@ -40,7 +40,7 @@ try{
                         'UserId'= $UserId
                         'All' = $null
     }
-    $result = Get-MgUserExtension @cmdArgs
+    $result = Get-MgUserExtension @cmdArgs | Select-Object *
 
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result

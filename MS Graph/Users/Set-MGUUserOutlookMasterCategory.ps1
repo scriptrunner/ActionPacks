@@ -53,7 +53,6 @@ try{
                         'OutlookCategoryId' = $CategoryId
                         'DisplayName' = $DisplayName
                         'Confirm' = $false
-                        'PassThru' = $null
     }
     $result = Update-MgUserOutlookMasterCategory @cmdArgs
     

@@ -37,10 +37,6 @@
     .PARAMETER AgeGroup
         [sr-en] Age group of the user
         [sr-de] Altersgruppe des Benutzers
-        
-    .PARAMETER Birthday
-        [sr-en] Users birthday
-        [sr-de] Geburtstag des Benutzers
 
     .PARAMETER BusinessPhone
         [sr-en] Telephone number
@@ -131,7 +127,6 @@ param(
     [switch]$AccountEnabled,
     [ValidateSet('Minor','NotAdult','Adult')]
     [string]$AgeGroup,
-    [datetime]$Birthday,
     [string]$BusinessPhone,
     [string]$City,
     [string]$CompanyName,
@@ -154,7 +149,6 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    [string[]]$Properties = @('DisplayName','Id','GivenName','Surname','Mail','PostalCode','City','StreetAddress','CompanyName','Country','Department','AccountEnabled','LastPasswordChangeDateTime','CreatedDateTime','DeletedDateTime')
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'Confirm' = $false
@@ -175,7 +169,7 @@ try{
         $cmdArgs.Add('City',$City)
     }
     if($PSBoundParameters.ContainsKey('CompanyName') -eq $true){
-        $cmdArgs.Add('CompanyName',$CompanyName)
+        $cmdArgs.Add('CompanyName',$CompanyName) 
     }
     if($PSBoundParameters.ContainsKey('Country') -eq $true){
         $cmdArgs.Add('Country',$Country)
@@ -216,7 +210,7 @@ try{
     if($PSBoundParameters.ContainsKey('StreetAddress') -eq $true){
         $cmdArgs.Add('StreetAddress',$StreetAddress)
     }
-    $result = New-MgUser @cmdArgs | Select-Object $Properties
+    $result = New-MgUser @cmdArgs #| Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

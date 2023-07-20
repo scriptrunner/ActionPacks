@@ -15,7 +15,7 @@
         PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
         © ScriptRunner Software GmbH
 
-    .COMPONENT
+    .COMPONENT 
         Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 

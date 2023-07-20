@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a user
+        Retrieve the properties and relationships of user object
     
     .DESCRIPTION          
 

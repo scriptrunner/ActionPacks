@@ -75,7 +75,6 @@ try{
                 'TodoTaskListId' = $TodoTaskListId
                 'TodoTaskId' = $TodoTaskId
                 'LinkedResourceId' = $LinkedResourceId
-                'PassThru' = $null
                 'Confirm' = $false
     }
     if($PSBoundParameters.ContainsKey('ApplicationName') -eq $true){
@@ -89,7 +88,7 @@ try{
     }
     $null = Update-MgUserTodoListTaskLinkedResource @cmdArgs
 
-    $result = Get-MgUserTodoListTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
+    $result = Get-MgUserTodoTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

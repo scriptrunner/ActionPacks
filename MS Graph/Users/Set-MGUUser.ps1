@@ -151,12 +151,10 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    [string[]]$Properties = @('DisplayName','Id','GivenName','Surname','Mail','PostalCode','City','StreetAddress','CompanyName','Country','Department','AccountEnabled','LastPasswordChangeDateTime','CreatedDateTime','DeletedDateTime')
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'UserId' = $UserId
                         'Confirm' = $false
-                        'PassThru' = $null
     }
     if($ShowInAddressList.IsPresent){
         $cmdArgs.Add('ShowInAddressList',$ShowInAddressList)
@@ -224,7 +222,7 @@ try{
     if($PSBoundParameters.ContainsKey('StreetAddress') -eq $true){
         $cmdArgs.Add('StreetAddress',$StreetAddress)
     }
-    $result = Update-MgUser @cmdArgs | Select-Object $Properties
+    $result = Update-MgUser @cmdArgs #| Select-Object $Properties
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

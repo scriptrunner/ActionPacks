@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Creates task in this task list
+        Creates task in this task list 
     
     .DESCRIPTION          
 
@@ -65,7 +65,7 @@ try{
     }
     $null = New-MgUserTodoListTask @cmdArgs
 
-    $result = Get-MgUserTodoListTask -UserId $UserId -TodoTaskListId $TodoTaskListId | Sort-Object Title | Select-Object $Properties    
+    $result = Get-MgUserTodoTask -UserId $UserId -TodoTaskListId $TodoTaskListId | Sort-Object Title | Select-Object $Properties | Format-List    
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

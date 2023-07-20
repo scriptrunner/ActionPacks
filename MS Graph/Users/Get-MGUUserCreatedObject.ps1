@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns directory objects that were created by the use
+        Returns directory objects that were created by the user
         
     .DESCRIPTION          
 
@@ -32,7 +32,7 @@ param(
     [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Users
+Import-Module Microsoft.Graph.Users 
 
 try{
     ConnectMSGraph 

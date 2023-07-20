@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Users 
+#requires -Modules Microsoft.Graph.Users
 
 <#
     .SYNOPSIS
-        Removes user or contact that is this user's manager 
+        Add a new taskFileAttachment object to a todoTask
     
     .DESCRIPTION          
 
@@ -17,38 +17,58 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
-        
+
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
+
+    .Parameter TodoTaskId
+        [sr-en] Unique identifier of todoTask
+        [sr-de] Eindeutige ID des Tasks
+        
+    .Parameter Name
+        [sr-en] Name
+        [sr-de] Name
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskListId,
+    [Parameter(Mandatory = $true)]
+    [string]$TodoTaskId,
+    [Parameter(Mandatory = $true)]
+    [string]$Name
 )
 
-Import-Module Microsoft.Graph.Users 
+Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'Confirm' = $false
-                            'PassThru' = $null
-                            'UserId' = $UserId
-    }    
-    $null = Remove-MgUserManagerByRef @cmdArgs
-
+                'UserId' = $UserId
+                'TodoTaskListId' = $TodoTaskListId
+                'TodoTaskId' = $TodoTaskId
+                'Name' = $Name
+                'Confirm' = $false
+    }
+    $result = New-MgUserTodoListTaskAttachment @cmdArgs | Select-Object *
+    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Users manager removed"
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output "Users manager removed"
-    }
+        Write-Output $result
+    }    
 }
 catch{
     throw 

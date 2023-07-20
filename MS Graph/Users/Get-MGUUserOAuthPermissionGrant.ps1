@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns oauth2PermissionGrants from users
+        Get oauth2PermissionGrants from users
     
     .DESCRIPTION          
 
@@ -25,11 +25,16 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter OAuth2PermissionGrantId
+        [sr-en] Unique identifier of oAuth2PermissionGrant
+        [sr-de] Eindeutige ID des oAuth2PermissionGrant
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [string]$OAuth2PermissionGrantId
 )
 
 Import-Module Microsoft.Graph.Users
@@ -37,8 +42,13 @@ Import-Module Microsoft.Graph.Users
 try{
     ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+                        'UserId'= $UserId                        
+    }
+    if($PSBoundParameters.ContainsKey('OAuth2PermissionGrantId') -eq $true){
+        $cmdArgs.Add('OAuth2PermissionGrantId',$OAuth2PermissionGrantId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
     }
     $result = Get-MgUserOauth2PermissionGrant @cmdArgs | Select-Object *
 

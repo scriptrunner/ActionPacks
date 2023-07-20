@@ -5,7 +5,7 @@
     .SYNOPSIS
         Returns devices that are registered for the user
         
-    .DESCRIPTION          
+    .DESCRIPTION
 
     .NOTES
         This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 

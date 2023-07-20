@@ -54,7 +54,7 @@ try{
         $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $result
+        Write-Output $result 
     }    
 }
 catch{

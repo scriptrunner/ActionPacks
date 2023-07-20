@@ -1,10 +1,10 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Users 
+#requires -Modules Microsoft.Graph.Users
 
 <#
     .SYNOPSIS
-        Removes user or contact that is this user's manager 
-    
+        Returns directory objects that were created by the user as group
+        
     .DESCRIPTION          
 
     .NOTES
@@ -17,11 +17,11 @@
 
     .COMPONENT
         Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Users
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Users
-        
+
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
@@ -36,19 +36,18 @@ Import-Module Microsoft.Graph.Users
 
 try{
     ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'Confirm' = $false
-                            'PassThru' = $null
-                            'UserId' = $UserId
-    }    
-    $null = Remove-MgUserManagerByRef @cmdArgs
-
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'UserId'= $UserId
+                        'All' = $null
+    }
+    $result = Get-MgUserOwnedObjectAsGroup @cmdArgs | Select-Object * 
+  
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = "Users manager removed"
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output "Users manager removed"
-    }
+        Write-Output $result
+    }    
 }
 catch{
     throw 

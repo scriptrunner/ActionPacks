@@ -34,6 +34,10 @@
     All files and sub directories in the repository path will be removed before checking out the repo.
 .PARAMETER TestConnection
     Test connection to the GitRepoUrl.
+.PARAMETER UseSSH
+    Uses SSH instead of https used for private repos and public key autentication
+    For use a system account known_hosts and id_rsa need to be placed in "C:\Windows\System32\config\systemprofile\.ssh\"
+    
 .NOTES
     General notes
     -------------------
@@ -66,7 +70,8 @@ param(
     [switch]$Cleanup,
     [switch]$RemoveGitConfig,
     [switch]$CheckSSL,
-    [switch]$TestConnection
+    [switch]$TestConnection,
+    [switch]$UseSSH 
 )
 
 $userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}(?:[a-zA-Z0-9._]|-(?=[a-zA-Z0-9])){0,38}$'
@@ -100,6 +105,13 @@ function Test-LastExitcode ([string]$ActionFailed, [bool]$ErrorOutput = $true) {
             Write-Error -Message "Failed to run 'git command' with exit code '$LASTEXITCODE'." -ErrorAction 'Stop'
         }
     }
+}
+
+if ($UseSSH) {
+    Set-Location -Path $SRLibraryPath
+    $Expression = "$($script:GitExePath)"
+    Invoke-Expression "& '$Expression' clone $GitRepoUrl"
+    exit 0
 }
 
 function Invoke-GitCommand ([string[]]$ArgumentList, [bool]$ErrorOutput = $true){

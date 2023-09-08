@@ -71,15 +71,15 @@ param(
 	[switch]$RemoveGitConfig,
 	[switch]$CheckSSL,
 	[switch]$TestConnection,
-	[switch]$UseSSH 
+	[switch]$UseSSH
 )
 
 $userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}(?:[a-zA-Z0-9._]|-(?=[a-zA-Z0-9])){0,38}$'
 $showError = $true
 
 function Add-SRXResultMessage ([string[]] $Message) {
-	if($SRXEnv -and $Message){
-		if([string]::IsNullOrEmpty($SRXEnv.ResultMessage)){
+	if($SRXEnv -and $Message) {
+		if([string]::IsNullOrEmpty($SRXEnv.ResultMessage)) {
 			$SRXEnv.ResultMessage = $Message
 		}
 		else{
@@ -88,12 +88,19 @@ function Add-SRXResultMessage ([string[]] $Message) {
 	}
 }
 
-function Test-LastExitcode ([string]$ActionFailed, [bool]$ErrorOutput = $true) {
+function Test-LastExitcode ()
+{
+	[CmdletBinding()]
+	param (
+		[string]$ActionFailed,
+		[switch]$ErrorOutput
+	)
+
 	if ($LASTEXITCODE -ne 0) {
-		if($ErrorOutput){
+		if($ErrorOutput.IsPresent) {
 			$err = $Error[0]
-			if($err){
-				if($SRXEnv){
+			if($err) {
+				if($SRXEnv) {
 					$SRXEnv.ResultMessage += $err.Exception | Out-String
 				}
 			}
@@ -107,59 +114,74 @@ function Test-LastExitcode ([string]$ActionFailed, [bool]$ErrorOutput = $true) {
 	}
 }
 
-if ($UseSSH) {
-	Set-Location -Path $SRLibraryPath
-	$Expression = "$($script:GitExePath)"
-	Invoke-Expression "& '$Expression' clone $GitRepoUrl"
-	exit 0
-}
+function Invoke-GitCommand
+{
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('InjectionRisk.CommandInjection', '', Scope='Function')]
+	[CmdletBinding()]
+	param (
+		[Parameter(Mandatory)]
+		[string[]]$ArgumentList,
+		[switch]$ErrorOutput,
+		[switch]$Passthru
+	)
 
-function Invoke-GitCommand ([string[]]$ArgumentList, [bool]$ErrorOutput = $true){
-	if(-not $ArgumentList){
+	if($ArgumentList.Count -eq 0) {
 		throw "Invalid command. No arguments specified."
 	}
 	try {
 		# redirect stderr of git.exe to stdout
 		# see: https://stackoverflow.com/questions/2095088/error-when-calling-3rd-party-executable-from-powershell-when-using-an-ide
 		$result = (& cmd.exe '/c' "`"$script:GitExePath`" 2>&1" $ArgumentList)
-		if($ErrorOutput){
+		if($ErrorOutput.IsPresent) {
 			$result
 			Add-SRXResultMessage -Message $result
 		}
+		if($Passthru.IsPresent) {
+			$result
+		}
 	}
 	catch {
-		if($ErrorOutput){
+		if($ErrorOutput.IsPresent) {
 			$_
 		}
 	}
-	finally{
-		Test-LastExitcode -ActionFailed "git $ArgumentList" -ErrorOutput $ErrorOutput
+	finally {
+		Test-LastExitcode -ActionFailed "git $ArgumentList" -ErrorOutput:$ErrorOutput
 	}
 }
 
 # entry point
-if(-not (Test-Path -Path $GitExePath -ErrorAction SilentlyContinue)){
+if(-not (Test-Path -Path $GitExePath -ErrorAction SilentlyContinue)) {
 	throw "'$GitExePath' does not exist."
+	if('git.exe' -ne (Split-Path -Path $GitExePath -Leaf)) {
+		throw "'$GitExePath' is not valid."
+	}
 }
 
-if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
+if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)) {
 	New-Item -Path $SRLibraryPath -ItemType 'Directory' -Force
 }
 
-if($TestConnection.IsPresent){
+if($TestConnection.IsPresent) {
 	$testUri = (Split-Path -Path $GitRepoUrl -Parent) -replace '\\', '/'
 	$result = Invoke-WebRequest -Uri $testUri -UseBasicParsing -UseDefaultCredentials -ErrorAction SilentlyContinue
-	if($null -eq $result -or $result.StausCode -ge 300){
+	if($null -eq $result -or $result.StausCode -ge 300) {
 		throw "Failed to send/receive request to/from '$testUri'. ($result.StatusCode - $result.StatusDescription)"
 	}
 }
 
-if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('http://')){
-	if($PSCmdlet.ParameterSetName -eq 'PrivateRepository'){
+if ($UseSSH.IsPresent) {
+	Set-Location -Path $SRLibraryPath
+	Invoke-GitCommand -ArgumentList @('clone', "$($GitRepoUrl)")
+	exit 0
+}
+
+if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('http://')) {
+	if($PSCmdlet.ParameterSetName -eq 'PrivateRepository') {
 		$i = $GitRepoUrl.IndexOf('://')
 		$i += 3
-		if(-not ($GitUserCredential.UserName -match $userNamePattern)){
-			if($GitUserCredential.UserName.Contains('@')){
+		if(-not ($GitUserCredential.UserName -match $userNamePattern)) {
+			if($GitUserCredential.UserName.Contains('@')) {
 				Write-Error "Do not use an email address. Use the git user name instead." -ErrorAction Continue
 			}
 			throw "Invalid UserName '$($GitUserCredential.UserName)'. The user name does not match the GitHub user name pattern."
@@ -181,7 +203,7 @@ else {
 Invoke-WebRequest -Uri $gitUrl -UseBasicParsing -UseDefaultCredentials -ErrorAction SilentlyContinue 
 
 
-if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
+if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue) {
 	$Script:currentLocation = Get-Location
 	# get repo name => set as base dir
 	$i = $gitUrl.LastIndexOf('/')
@@ -189,16 +211,16 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
 	$repo = $gitUrl.Substring($i)
 	$repo = $repo.Split('.')[0]
 	Write-Output "Repository: '$repo'."
-	if($AddRepositoryNameToPath){
+	if($AddRepositoryNameToPath) {
 		$SRLibraryPath = Join-Path -Path $SRLibraryPath -ChildPath $repo
 	}
-	if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)){
+	if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)) {
 		"Create directory '$SRLibraryPath' ..."
 		$null = New-Item -Path $SRLibraryPath -ItemType Directory -Force
 	}
 	Set-Location -Path $SRLibraryPath
-	if($Cleanup.IsPresent -or $RemoveGitConfig.IsPresent){
-		if([string]::Equals($SRLibraryPath.Trim('\'), "$(Join-Path -Path $env:ProgramData -ChildPath 'ScriptRunner\ScriptMgr')")){
+	if($Cleanup.IsPresent -or $RemoveGitConfig.IsPresent) {
+		if([string]::Equals($SRLibraryPath.Trim('\'), "$(Join-Path -Path $env:ProgramData -ChildPath 'ScriptRunner\ScriptMgr')")) {
 			Write-Error "Cannot remove path '$($SRLibraryPath)'!" -ErrorAction Stop
 		}
 		"Cleanup '$SRLibraryPath' ..."
@@ -209,56 +231,56 @@ if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue){
 
 	# init new local repo
 	[string[]]$arguments = @('init')
-	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput $showError
+	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput:$showError
 	# activate sparse checkout
 	$arguments = @('config', 'core.sparseCheckout', 'true')
-	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput $showError
+	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput:$showError
 	# do not prompt for user/password
 	$arguments = @('config', 'core.askPass', 'false')
-	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput $showError
+	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput:$showError
 
 	# SSL handling
-	 if($CheckSSL.IsPresent){
+	 if($CheckSSL.IsPresent) {
 		$arguments = @('config', 'http.sslVerify', 'false')
-		Invoke-GitCommand -ArgumentList $arguments -ErrorOutput $showError
+		Invoke-GitCommand -ArgumentList $arguments -ErrorOutput:$showError
 	 }
 
-	$result = (& cmd.exe '/c' "`"$GitExePath`" 2>&1" @('remote', 'show'))
-	if($result -and ($result -eq 'origin')){
-		Invoke-GitCommand -ArgumentList @('remote', 'update') -ErrorOutput $showError
+	$result = Invoke-GitCommand -ArgumentList @('remote', 'show') -Passthru
+	if($result -and ($result -eq 'origin')) {
+		Invoke-GitCommand -ArgumentList @('remote', 'update') -ErrorOutput:$showError
 	}
 	else{
-		Invoke-GitCommand -ArgumentList @('remote', 'add', '-f', 'origin',  $gitUrl) -ErrorOutput $showError
+		Invoke-GitCommand -ArgumentList @('remote', 'add', '-f', 'origin',  $gitUrl) -ErrorOutput:$showError
 	}
 	# setup sparse dirs
-	if(Test-Path -Path '.\.git\info\sparse-checkout' -ErrorAction SilentlyContinue){
+	if(Test-Path -Path '.\.git\info\sparse-checkout' -ErrorAction SilentlyContinue) {
 		'Found previous sparse dirs:'
 		Get-Content -Path '.\.git\info\sparse-checkout' -Force -Encoding UTF8
 		"Remove previous sparse dirs ..."
 		Remove-Item -Path '.\.git\info\sparse-checkout' -Force
 	}
-	foreach($subDir in $SparseDirs){
+	foreach($subDir in $SparseDirs) {
 		"Add sparse dir:"
 		$subDir = $subDir.Replace('\', '/').Trim()
 		Add-Content -Value $subDir -Path '.\.git\info\sparse-checkout' -Force -Encoding UTF8 -PassThru
 	}
 	# checkout specified branch 
 	$arguments = @('checkout', $Branch)
-	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput $showError
+	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput:$showError
 
 	$arguments = @('pull', 'origin')
-	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput $showError
+	Invoke-GitCommand -ArgumentList $arguments -ErrorOutput:$showError
 
 	$Script:currentLocation | Set-Location
 
-	if($RemoveGitConfig.IsPresent){
+	if($RemoveGitConfig.IsPresent) {
 		[string]$gitConfigPath = Join-Path -Path $SRLibraryPath -ChildPath ".git"
-		if(Test-Path -Path $gitConfigPath -ErrorAction SilentlyContinue){
+		if(Test-Path -Path $gitConfigPath -ErrorAction SilentlyContinue) {
 			"Remove '$($gitConfigPath)' ..."
 			Remove-Item -Path $gitConfigPath -Recurse -Force -Confirm:$false -ErrorAction Stop
 		}
 		$gitConfigPath = Join-Path -Path $SRLibraryPath -ChildPath ".github"
-		if(Test-Path -Path $gitConfigPath -ErrorAction SilentlyContinue){
+		if(Test-Path -Path $gitConfigPath -ErrorAction SilentlyContinue) {
 			"Remove '$($gitConfigPath)' ..."
 			Remove-Item -Path $gitConfigPath -Recurse -Force -Confirm:$false -ErrorAction Stop
 		}

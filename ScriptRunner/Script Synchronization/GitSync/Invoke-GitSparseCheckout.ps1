@@ -14,8 +14,13 @@
 .PARAMETER GitUserCredential
 	Credential of a git user, who is authorized to access the given git repository.
 	Note that an email address is not a valid account name. You must use this ParameterSet for private repositories.
+	The username must not be empty and must match the AllowedUsernamePattern.
 	You can use a personal access token (PAT) with BasicAuth headers as an alternative to username/password authentication in the url.
-	Add the PAT as a password to the Credential and set the UsePATBasicAuth switch.
+	Add the PAT as a password to the Credential and set the UseBasicAuth switch.
+.PARAMETER AllowedUsernamePattern
+	A regular expression to vaidate the username of the GitUserCredential.
+.PARAMETER IgnoreUsername
+	The username of the GitUserCredential will not be validated and will not be used for authentication but must not be empty.
 .PARAMETER SparseDirs
 	Specify the list of subfolders you want to check out. If empty, all files will be checked out.
 	Example: "ActiveDirectory/*", "O365/*"
@@ -40,13 +45,13 @@
 	This will also cleanup the local repository path before initializing a new repository.
 	All files and sub directories in the repository path will be removed before checking out the repo.
 .PARAMETER UseSSH
-	Uses SSH instead of https used for private repos and public key autentication
-	For use a system account known_hosts and id_rsa need to be placed in "C:\Windows\System32\config\systemprofile\.ssh\"
-.PARAMETER UsePATBasicAuth
+	Uses ssh instead of https. Used for private repos and public key autentication.
+	For use with a system account, the known_hosts and id_rsa file must be placed in "C:\Windows\System32\config\systemprofile\.ssh\"
+	Only the GitRepoUrl and SRLibraryPath parameter will be reflected when this swich is used.
+.PARAMETER UseBasicAuth
 	You can use a personal access token (PAT) with a BasicAuth header to authenticate as an alternate to user/password authentication in the URL.
-	e.g. into Azure DevOps Service or Azure DevOps Server.
-	Add the PAT as a password to the Credential and set this switch.
-
+	For use for example with Azure DevOps Service or Azure DevOps Server.
+	Add the PAT as a password to the Credential and set this switch. Use the IgnoreUsername switch to skip the username of the GitUserCredential for authentication.
 .NOTES
 	General notes
 	-------------------
@@ -63,43 +68,48 @@
 	the use and the consequences of the use of this freely available script.
 	PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
 	© ScriptRunner Software GmbH
-
-	.LINK
+.LINK
 	Azure DevOps Services or Server - Use personal access tokens to authenticate
 	https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate
 
-	.LINK
+.LINK
 	GitLab - Clone repository using personal access token
 	https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#clone-repository-using-personal-access-token
 
-	.LINK
+.LINK
 	GitHub - Using a personal access token on the command line
 	https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#using-a-personal-access-token-on-the-command-line
 
-	.LINK
+.LINK
 	Bitbucket - Using Repository Access Tokens with the Git command line interface
 	https://support.atlassian.com/bitbucket-cloud/docs/using-access-tokens/
+
 #>
 
 [CmdletBinding(DefaultParameterSetName='Default')]
 param(
 	[Parameter(Mandatory = $true)]
 	[string]$GitRepoUrl,
-	[Parameter(Mandatory = $true, ParameterSetName='PrivateRepository')]
-	[pscredential]$GitUserCredential,
-	[string[]]$SparseDirs,
 	[string]$Branch = 'main',
+	[string[]]$SparseDirs,
 	[string]$SRLibraryPath = 'C:\ProgramData\ScriptRunner\ScriptMgr\Git',
 	[bool]$AddRepositoryNameToPath = $true,
 	[string]$GitExePath = 'C:\Program Files\Git\cmd\git.exe',
 	[switch]$Cleanup,
 	[switch]$RemoveGitConfig,
 	[switch]$CheckSSL,
+	[Parameter(Mandatory = $true, ParameterSetName='SSH')]
 	[switch]$UseSSH,
-	[switch]$UsePATBasicAuth
+	[Parameter(Mandatory = $true, ParameterSetName='PrivateRepository')]
+	[pscredential]$GitUserCredential,
+	[Parameter(ParameterSetName='PrivateRepository')]
+	[string]$AllowedUsernamePattern = '^([^_]|[a-zA-Z0-9]){1}(?:[a-zA-Z0-9._]|-(?=[a-zA-Z0-9])){0,38}$',
+	[Parameter(ParameterSetName='PrivateRepository')]
+	[switch]$UseBasicAuth,
+	[Parameter(ParameterSetName='PrivateRepository')]
+	[switch]$IgnoreUsername
 )
 
-$userNamePattern = [regex]'^([^_]|[a-zA-Z0-9]){1}(?:[a-zA-Z0-9._]|-(?=[a-zA-Z0-9])){0,38}$'
 $showError = $true
 
 function Add-SRXResultMessage ([string[]] $Message) {
@@ -113,7 +123,7 @@ function Add-SRXResultMessage ([string[]] $Message) {
 	}
 }
 
-function Test-LastExitcode ()
+function Test-LastExitcode
 {
 	[CmdletBinding()]
 	param (
@@ -122,14 +132,17 @@ function Test-LastExitcode ()
 	)
 
 	if ($LASTEXITCODE -ne 0) {
+		$Script:currentLocation | Set-Location
 		if($ErrorOutput.IsPresent) {
 			$err = $Error[0]
 			if($err) {
 				if($SRXEnv) {
 					$SRXEnv.ResultMessage += $err.Exception | Out-String
 				}
+				else {
+					$err.Exception | Out-String
+				}
 			}
-			$Script:currentLocation | Set-Location
 			Write-Error -Message "Failed to run '$ActionFailed' with exit code '$LASTEXITCODE'." -ErrorAction 'Stop'
 		}
 		else{
@@ -155,13 +168,19 @@ function Invoke-GitCommand
 	}
 	try {
 		$gitConfigArgs = @()
-		if($script:UsePATBasicAuth.IsPresent) {
-			$base64Cred = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("$($GitUserCredential.UserName):$($GitUserCredential.GetNetworkCredential().Password)"))
+		if($script:UseBasicAuth.IsPresent) {
+			[string]$base64Cred = ''
+			if($IgnoreUsername.IsPresent) {
+				$base64Cred = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(":$($script:GitUserCredential.GetNetworkCredential().Password)"))
+			}
+			else {
+				$base64Cred = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("$($script:GitUserCredential.UserName):$($script:GitUserCredential.GetNetworkCredential().Password)"))
+			}
 			$gitConfigArgs = @('-c', "http.extraHeader=`"Authorization: Basic $base64Cred`"")
 		}
 		# redirect stderr of git.exe to stdout
 		# see: https://stackoverflow.com/questions/2095088/error-when-calling-3rd-party-executable-from-powershell-when-using-an-ide
-		$result = (& cmd.exe '/c' "`"$script:GitExePath`" 2>&1" $gitConfigArgs $ArgumentList)
+		$result = (& cmd.exe '/c' "`"$script:GitExePath`" 2>&1 $gitConfigArgs $ArgumentList")
 		if($ErrorOutput.IsPresent) {
 			$result
 			Add-SRXResultMessage -Message $result
@@ -176,7 +195,8 @@ function Invoke-GitCommand
 		}
 	}
 	finally {
-		Test-LastExitcode -ActionFailed "git $ArgumentList" -ErrorOutput:$ErrorOutput
+		Test-LastExitcode -ActionFailed "git $($gitConfigArgs[0]) $ArgumentList" -ErrorOutput:$ErrorOutput
+		#Test-LastExitcode -ActionFailed "git $($gitConfigArgs[0]) $ArgumentList" -ErrorOutput
 	}
 }
 
@@ -192,14 +212,7 @@ if(-not (Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue)) {
 	New-Item -Path $SRLibraryPath -ItemType 'Directory' -Force
 }
 
-# if($TestConnection.IsPresent) {
-# 	$testUri = (Split-Path -Path $GitRepoUrl -Parent) -replace '\\', '/'
-# 	$result = Invoke-WebRequest -Uri $testUri -UseBasicParsing -UseDefaultCredentials -ErrorAction SilentlyContinue
-# 	if($null -eq $result -or $result.StausCode -ge 300) {
-# 		throw "Failed to send/receive request to/from '$testUri'. ($result.StatusCode - $result.StatusDescription)"
-# 	}
-# }
-
+# needs a refactoring
 if ($UseSSH.IsPresent) {
 	Set-Location -Path $SRLibraryPath
 	Invoke-GitCommand -ArgumentList @('clone', "$($GitRepoUrl)") -Passthru
@@ -207,24 +220,29 @@ if ($UseSSH.IsPresent) {
 }
 
 if($GitRepoUrl.Trim().StartsWith('https://') -or $GitRepoUrl.Trim().StartsWith('http://')) {
-	if((-not $UsePATBasicAuth.IsPresent) -and ($PSCmdlet.ParameterSetName -eq 'PrivateRepository')) {
+	if(-not $UseBasicAuth.IsPresent -and $PSCmdlet.ParameterSetName -eq 'PrivateRepository') {
 		$i = $GitRepoUrl.IndexOf('://')
 		$i += 3
-		if(-not [string]::IsNullOrEmpty($GitUserCredential.UserName)) {
-			if(-not ($GitUserCredential.UserName -match $userNamePattern)) {
+		if([string]::IsNullOrEmpty($GitUserCredential.UserName)) {
+			# GetNetworkCredential() => The value for UserName is not in the correct format.
+			throw "Username cannot be empty."
+		}
+		if($IgnoreUsername.IsPresent) {
+			$gitUrl = $GitRepoUrl.Insert($i, $([uri]::EscapeDataString($GitUserCredential.GetNetworkCredential().Password)) + '@')
+		}
+		else {
+			$usernamePattern = [regex]$AllowedUsernamePattern
+			if(-not ($GitUserCredential.UserName -match $usernamePattern)) {
 				if($GitUserCredential.UserName.Contains('@')) {
-					Write-Error "Do not use an email address. Use the git user name instead." -ErrorAction Continue
+					Write-Error "An email address is not allowed as username. Use the git user name instead." -ErrorAction Continue
 				}
-				throw "Invalid UserName '$($GitUserCredential.UserName)'. The user name does not match the GitHub user name pattern."
+				throw "Invalid UserName '$($GitUserCredential.UserName)'. The user name does not match the allowed user name pattern."
 			}
 			$gitUrl = $GitRepoUrl.Insert($i, $GitUserCredential.UserName + ':' + $([uri]::EscapeDataString($GitUserCredential.GetNetworkCredential().Password)) + '@')
 		}
-		else {
-			$gitUrl = $GitRepoUrl.Insert($i, $([uri]::EscapeDataString($GitUserCredential.GetNetworkCredential().Password)) + '@')
-		}
 		# surpress git error output, if giturl contains cleartext password
 		$showError = $false
-		$GitRepoUrl = $($gitUrl.Replace($([uri]::EscapeDataString($GitUserCredential.GetNetworkCredential().Password), '*****')))
+		$GitRepoUrl = $($gitUrl.Replace($([uri]::EscapeDataString($GitUserCredential.GetNetworkCredential().Password)), '*****'))
 	}
 	else {
 		$gitUrl = $GitRepoUrl
@@ -237,11 +255,12 @@ else {
 # "Request http get '$GitRepoUrl' ..."
 # Invoke-WebRequest -Uri $gitUrl -Method Get -UseBasicParsing -ErrorAction SilentlyContinue | Select-Object Encoding, StatusCode, StatusDescription
 
-"get commit ID of 'refs/heads/$($Branch)' from '$($GitRepoUrl)'..."
-Invoke-GitCommand -ArgumentList @('ls-remote', '--heads', $gitUrl, $Branch) -Passthru
-
 if(Test-Path -Path $SRLibraryPath -ErrorAction SilentlyContinue) {
 	$Script:currentLocation = Get-Location
+
+	"get commit ID of 'refs/heads/$($Branch)' from '$($GitRepoUrl)'..."
+	Invoke-GitCommand -ArgumentList @('ls-remote', '--heads', $gitUrl, $Branch) -Passthru
+
 	# get repo name => set as base dir
 	$i = $gitUrl.LastIndexOf('/')
 	$i++

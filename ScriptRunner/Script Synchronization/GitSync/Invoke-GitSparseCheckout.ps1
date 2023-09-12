@@ -35,7 +35,7 @@
 	Cleanup the local repository before initializing a new repository.
 	All files and sub directories in the repository path will be removed before checking out the repo.
 .PARAMETER CheckSSL
-	Do a SSL Check on git communication?
+	Do a SSL Check on git communication
 .Parameter AddRepositoryNameToPath
 	Creates a folder with the repository name in the storage path, if not available.
 	Otherwise, the system synchronizes directly to the storage path.
@@ -50,7 +50,7 @@
 	Only the GitRepoUrl and SRLibraryPath parameter will be reflected when this swich is used.
 .PARAMETER UseBasicAuth
 	You can use a personal access token (PAT) with a BasicAuth header to authenticate as an alternate to user/password authentication in the URL.
-	For use for example with Azure DevOps Service or Azure DevOps Server.
+	This parameter is intended for use with Azure DevOps Service or Azure DevOps Server, for example.
 	Add the PAT as a password to the Credential and set this switch. Use the IgnoreUsername switch to skip the username of the GitUserCredential for authentication.
 .NOTES
 	General notes

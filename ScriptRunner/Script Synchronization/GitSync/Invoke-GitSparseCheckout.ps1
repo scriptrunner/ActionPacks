@@ -5,6 +5,11 @@
 	Checkout a branch of a Git repository to ScriptRunner Library.
 	If you specifiy SparseDirs, only the given directories will be checked out.
 	If you want to checkout a private repository, you must specify the GitUserCredential.
+	NOTE:
+	The script requires [Git for Windows](https://git-for-windows.github.io).
+	You can download the tool set from [Git for Windows Releases at Github](https://github.com/git-for-windows/git/releases).
+	You must also install the [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager#readme),
+	which is shipped with the Git for Windows installation.
 .PARAMETER GitRepoUrl
 	URL of the git repository. e.g.
 	- 'https://github.com/my-org/my-repo.git.git'
@@ -68,6 +73,19 @@
 	the use and the consequences of the use of this freely available script.
 	PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
 	© ScriptRunner Software GmbH
+
+.LINK
+	Git for Windows
+	https://github.com/git-for-windows/git#readme
+
+.LINK
+	Git for Windows Releases
+	https://github.com/git-for-windows/git/releases
+
+.LINK
+	Git Credential Manager
+	https://github.com/git-ecosystem/git-credential-manager#readme
+
 .LINK
 	Azure DevOps Services or Server - Use personal access tokens to authenticate
 	https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate
@@ -84,6 +102,9 @@
 	Bitbucket - Using Repository Access Tokens with the Git command line interface
 	https://support.atlassian.com/bitbucket-cloud/docs/using-access-tokens/
 
+.LINK
+	Sync Git repositories to ScriptRunner
+	https://github.com/scriptrunner/ActionPacks/tree/master/ScriptRunner/Script%20Synchronization/GitSync#readme
 #>
 
 [CmdletBinding(DefaultParameterSetName='Default')]

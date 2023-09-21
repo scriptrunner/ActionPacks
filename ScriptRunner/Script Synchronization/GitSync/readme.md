@@ -2,7 +2,7 @@
 
 You can use the [Invoke-GitSparseCheckout.ps1](./Invoke-GitSparseCheckout.ps1) script to check out a branch of a Git repository to the ScriptRunner Library or pull updates to a local repository.
 
-The script requires [Git for Windows](https://git-for-windows.github.io). You can download this tool from [Git for Windows Releases at Github](https://github.com/git-for-windows/git/releases).
+The script requires [Git for Windows](https://git-for-windows.github.io). You can download the tool set from [Git for Windows Releases at Github](https://github.com/git-for-windows/git/releases). In order to ensure that the script works without errors, you must also install the [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager#readme), which is shipped with **Git for Windows** installation.
 
 ## Script Parameters
 
@@ -103,9 +103,11 @@ The script requires [Git for Windows](https://git-for-windows.github.io). You ca
 
 [Git for Windows](https://git-for-windows.github.io)
 
+[Git for Windows at GitHub](https://github.com/git-for-windows/git#readme)
+
 [Git for Windows Releases](https://github.com/git-for-windows/git/releases)
 
-[Git Credential Manager for Windows](https://github.com/Microsoft/Git-Credential-Manager-for-Windows)
+[Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager#readme)
 
 [Azure DevOps Services or Server - Use personal access tokens to authenticate](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate)
 

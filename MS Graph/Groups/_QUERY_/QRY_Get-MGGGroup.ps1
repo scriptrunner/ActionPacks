@@ -27,7 +27,7 @@ param(
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
+    ConnectMSGraph  
     $result = Get-MgGroup -All -Sort DisplayName | Sort-Object DisplayName
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            

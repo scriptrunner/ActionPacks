@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Read the properties and relationships of a taskFileAttachment object
+        Returns taskFileAttachment objects
     
     .DESCRIPTION          
 

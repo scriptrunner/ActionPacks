@@ -50,7 +50,7 @@
 
   Imports a virtual machine from a file
 
-+ [Invoke-MSHVVirtualMachineCommand.ps1](./Invoke-MSHVVirtualMachineCommand.ps1)
++ [Manage-MSHVVirtualMachine.ps1](./Manage-MSHVVirtualMachine.ps1)
 
   Invokes a command for the virtual machine from the Hyper-V host.<br>
   The acceptable commands are: Start, Stop, Suspend, Resume, Restart, Save and Turn off

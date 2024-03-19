@@ -31,8 +31,8 @@
         [sr-de] Zu löschende Berechtigungen, Komma getrennt
 
     .Parameter QueryPermissions
-        [sr-en] Permissions, find by the Query _\QUERY_\QUY_Get-CTXPermissions
-        [sr-de] Berechtigungen, durch die Query _\QUERY_\QUY_Get-CTXPermissions abgefragt
+        [sr-en] Permissions, find by the Query _\QUERY_\QRY_Get-CTXPermissions
+        [sr-de] Berechtigungen, durch die Query _\QUERY_\QRY_Get-CTXPermissions abgefragt
 
     .Parameter Role
         [sr-en] Role name or identifier of the role to update

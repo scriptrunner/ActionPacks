@@ -31,8 +31,8 @@
         [sr-de] Abzufragende Operationen, Komma getrennt
 
     .Parameter QueryOperations
-        [sr-en] Operations to query, find by the Query _\QUERY_\QUY_Get-CTXOperations
-        [sr-de] Abzufragende Operationen, durch die Query _\QUERY_\QUY_Get-CTXOperations abgefragt
+        [sr-en] Operations to query, find by the Query _\QUERY_\QRY_Get-CTXOperations
+        [sr-de] Abzufragende Operationen, durch die Query _\QUERY_\QRY_Get-CTXOperations abgefragt
 
     .Parameter Annotate
         [sr-en] Annotates each result with the operation it relates to

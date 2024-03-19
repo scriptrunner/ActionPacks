@@ -44,7 +44,7 @@
     Where section of the SQL Command
 
 .Example
-    QUY_Get-DMSSIMGeneric -ServerName MyServer - DatabaseName SR_Report -IDColumn Id -DisplayColumn DisplayName -Table BaseEntities_JobControlSet -WhereSection Id=300
+    QRY_Get-DMSSIMGeneric -ServerName MyServer - DatabaseName SR_Report -IDColumn Id -DisplayColumn DisplayName -Table BaseEntities_JobControlSet -WhereSection Id=300
 #>
 
 [CmdLetBinding()]

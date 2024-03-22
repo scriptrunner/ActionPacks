@@ -12,6 +12,20 @@
 + Get, set virtual machine size
 + Get available virtual machine sizes
 
+## [KeyVault](./KeyVault)
+
++ Add, backup, get, import, remove, undo removal, restore certificate
++ Add, get, remove certificate contact
++ Add, backup, get, set, remove, undo removal, restore key
++ Get, invoke key rotation policy
++ Get, new, backup, set, remove, undo removal, restore secret
++ Get secret value
++ Get, remove certificate issuer
++ Get certificate policy
++ Get, remove certificate operation
++ Get key vault
++ Remove, set access policy
+
 ## [Network](./Network)
 
 + Add, get, remove network security groups

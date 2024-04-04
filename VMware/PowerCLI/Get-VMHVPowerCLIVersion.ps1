@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 # Requires -Module VMware.VimAutomation.Core
 
 <#

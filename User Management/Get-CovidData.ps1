@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -25,15 +25,15 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Automation%20Booster
 
     .Parameter RapidApiKey
-        X-RapidAPI-Key. 
+        [sr-en] X-RapidAPI-Key. 
         Register for an API Key at https://rapidapi.com
         
     .Parameter Countries
-        Names of the countries.
+        [sr-en] Names of the countries.
         Show All, shows the statistics of all countries
 
     .Parameter ShowTotals
-        Show global totals
+        [sr-en] Show global totals
 #>
 
 param( 

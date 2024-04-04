@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,22 +20,22 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter DiskNumber
-    Specifies the disk number
+    [sr-en] Disk number
 
 .Parameter PartitionNumber
-    Specifies the number of the partition
+    [sr-en] Number of the partition
 
 .Parameter Size
-    Specifies the size of the partition to create, in bytes
+    [sr-en] Size of the partition to create, in bytes
 
 .Parameter UseMaximumSize
-    Creates the largest possible partition on the specified disk
+    [sr-en] Creates the largest possible partition on the specified disk
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to resize the disk. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to resize the disk. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

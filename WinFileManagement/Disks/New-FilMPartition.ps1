@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,43 +20,43 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter Number
-    Specifies the disk number
+    [sr-en] Disk number
 
 .Parameter ComputerName
-    Specifies the name of the computer on which the partition creates. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer on which the partition creates. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter AssignDriveLetter 
-    Assigns a drive letter to the new partition
+    [sr-en] Assigns a drive letter to the new partition
 
 .Parameter DriveLetter
-    Specifies the specific drive letter to assign to the new partition
+    [sr-en] Drive letter to assign to the new partition
 
 .Parameter IsActive
-    Specifies that the object is marked active
+    [sr-en] The object is marked active
 
 .Parameter IsHidden
-    Specifies that is a hidden partition
+    [sr-en] Is a hidden partition
 
 .Parameter MbrType
-    Specifies the type of MBR partition to create
+    [sr-en] Type of MBR partition to create
 
 .Parameter UseMaximumSize
-    Creates the largest possible partition on the specified disk
+    [sr-en] Creates the largest possible partition on the specified disk
 
 .Parameter Size
-    Specifies the size of the partition to create, in bytes
+    [sr-en] Size of the partition to create, in bytes
 
 .Parameter FormatNewPartition
-    Formats the new partition after create
+    [sr-en] Formats the new partition after create
 
 .Parameter FileSystem
-    Specifies the file system with which to format the volume
+    [sr-en] File system with which to format the volume
 
 .Parameter FormatFull
-    Performs a full format. A full format writes to every sector of the disk, takes much longer to perform than the default (quick) format
+    [sr-en] Performs a full format. A full format writes to every sector of the disk, takes much longer to perform than the default (quick) format
 #>
 
 [CmdLetBinding()]

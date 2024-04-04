@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,13 +20,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
 
 .Parameter ObjectName
-    Specifies the folder or file name with the path
+    [sr-en] Folder or file name with the path
 
 .Parameter ObjectClass
-    Specifies the type of the accounts
-
-.EXAMPLE
-
+    [sr-en] Type of the accounts
 #>
 
 [CmdLetBinding()]

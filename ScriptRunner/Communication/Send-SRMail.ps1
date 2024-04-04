@@ -1,7 +1,6 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
   
-function SRSendMail
-{
+function SRSendMail{
     <#
         .SYNOPSIS
             Function for send mail. You can use the function from other scripts
@@ -15,46 +14,46 @@ function SRSendMail
             © ScriptRunner Software GmbH
         
         .PARAMETER MailSender
-            Specifies the address from which the mail is sent
+            Address from which the mail is sent
 
         .PARAMETER MailRecipients                
-            Specifies the addresses to which the mail is sent. 
+            Addresses to which the mail is sent. 
             Enter names (optional) and the e-mail address, such as "John Doe <john.doe@example.com>".
             Use the comma to separate the addresses
 
         .PARAMETER MailSubject
-            Specifies the subject of the email message
+            Subject of the email message
 
         .PARAMETER MailBody
-            Specifies the body of the email message
+            Body of the email message
             
         .Parameter MailBodyEncoding
-            Specifies the type of encoding for the body
+            Type of encoding for the body
 
         .PARAMETER MailUseSsl
             Uses the Secure Sockets Layer (SSL) protocol to establish a connection to the remote computer to send mail
 
         .PARAMETER MailPriority
-            Specifies the priority of the email message. The acceptable values for this parameter are: Normal, High, Low
+            Priority of the email message. The acceptable values for this parameter are: Normal, High, Low
 
         .PARAMETER MailServer
-            Specifies the name of the SMTP server that sends the e-mail message. 
+            Name of the SMTP server that sends the e-mail message. 
             The default value is the value of the $PSEmailServer preference variable
 
         .PARAMETER MailServerCredential
-            Specifies a user account that has permission to perform this action. The default is the current user.
+            User account that has permission to perform this action. The default is the current user.
 
         .PARAMETER CopyRecipients
-            Specifies the e-mail addresses to which a carbon copy (CC) of the e-mail message is sent. 
+            E-mail addresses to which a carbon copy (CC) of the e-mail message is sent. 
             Enter names (optional) and the e-mail address, such as "John Doe <john.doe@example.com>".
             Use the comma to separate the addresses
 
         .PARAMETER Attachments
-            Specifies the path and file names of files to be attached to the e-mail message. 
+            Path and file names of files to be attached to the e-mail message. 
             Use the comma to separate the files
 
         .Parameter HtmlBody
-            Specifies that the value of the Body parameter contains HTML
+            Value of the Body parameter contains HTML
     #>
     [CmdletBinding()]
     param(

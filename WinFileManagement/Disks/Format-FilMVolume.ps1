@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,25 +20,25 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter DriveLetter
-    Specifies a letter used to identify a drive or volume in the system
+    [sr-en] Letter used to identify a drive or volume in the system
 
 .Parameter AllocationUnitSize
-    Specifies the allocation unit size to use when formatting the volume
+    [sr-en] Allocation unit size to use when formatting the volume
 
 .Parameter FileSystem
-    Specifies the file system with which to format the volume
+    [sr-en] File system with which to format the volume
 
 .Parameter Full
-    Performs a full format. A full format writes to every sector of the disk, takes much longer to perform than the default (quick) format, and is not recommended on storage that is thinly provisioned
+    [sr-en] Performs a full format. A full format writes to every sector of the disk, takes much longer to perform than the default (quick) format, and is not recommended on storage that is thinly provisioned
 
 .Parameter NewFileSystemLabel
-    Specifies a new label to use for the volume
+    [sr-en] New label to use for the volume
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

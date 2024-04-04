@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS    
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter Number
-    Specifies the disk number of the disk to initialize
+    [sr-en] Disk number of the disk to initialize
 
 .Parameter UniqueID
-    Specifies the UniqueID of the disk to initialize
+    [sr-en] UniqueID of the disk to initialize
 
 .Parameter PartitionStyle
-    Specifies the type of the partition
+    [sr-en] Type of the partition
 
 .Parameter ComputerName
-    Specifies the name of the computer on which you want to clear the associated Disk object. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer on which you want to clear the associated Disk object. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

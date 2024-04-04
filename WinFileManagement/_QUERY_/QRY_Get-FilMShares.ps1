@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_QUERY_
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the shares
+    [sr-en] Name of the computer from which to retrieve the shares
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter SpecialShares
-    Indicates that the shares to be numerated should be special. Admin share, default shares, IPC$ share are examples of special shares
+    [sr-en] Shares to be numerated should be special. Admin share, default shares, IPC$ share are examples of special shares
 
 .Parameter IncludeHidden
-    Indicates that shares that are created and used internally are also enumerated
+    [sr-en] Shares that are created and used internally are also enumerated
 #>
 
 [CmdLetBinding()]

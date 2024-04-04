@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,10 +21,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_REPORTS_
 
 .Parameter StartFolder
-    Specifies the start folder of the evaluation 
+    [sr-en] Start folder of the evaluation 
 
 .Parameter Top
-    Specifies the number of rankings
+    [sr-en] Number of rankings
 #>
 
 [CmdLetBinding()]

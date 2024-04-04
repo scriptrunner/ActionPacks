@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_QUERY_
 
 .Parameter StartObjectName
-    Specifies the start folder or drive
+    [sr-en] Start folder or drive
 
 .Parameter ObjectClass
-    Specifies the type of the objects
+    [sr-en] Type of the objects
 
 .Parameter Recurse
-    Gets the items in the specified locations and in all child items of the locations
+    [sr-en] Gets the items in the specified locations and in all child items of the locations
 
 .Parameter ObjectName
-     Specifies the name of the object
+    [sr-en] Name of the object
 #>
 
 [CmdLetBinding()]

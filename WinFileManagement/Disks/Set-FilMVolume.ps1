@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter DriveLetter
-    Specifies a letter used to identify a drive or volume in the system
+    [sr-en] Letter used to identify a drive or volume in the system
 
 .Parameter DedupMode
-    Specifies the Data Deduplication mode to use for the volume, if Data Deduplication is enabled on this volume
+    [sr-en] Data Deduplication mode to use for the volume, if Data Deduplication is enabled on this volume
 
 .Parameter NewFileSystemLabel
-    Specifies a new file system label to use
+    [sr-en] New file system label to use
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

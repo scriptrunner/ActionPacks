@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter Number
-    Specifies the disk number. If the parameter less than 0, all disks are retrieved
+    [sr-en] Disk number. If the parameter less than 0, all disks are retrieved
 
 .Parameter DriveLetter
-    Specifies a letter used to identify a drive or volume in the system. Specifically the drive on which the partition resides
+    [sr-en] Letter used to identify a drive or volume in the system. Specifically the drive on which the partition resides
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the partition informations. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to retrieve the partition informations. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter Properties
-    List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
 #>
 
 [CmdLetBinding()]

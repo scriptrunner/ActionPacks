@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,13 +21,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_REPORTS_
 
 .Parameter StartObjectName
-    Specifies the start folder or drive
+    [sr-en] Start folder or drive
 
 .Parameter ObjectType
-    Specifies the type of the objects
+    [sr-en] Type of the objects
 
 .Parameter ObjectsCumulated
-    Cumulates the objects and there sizes
+    [sr-en] Cumulates the objects and there sizes
 #>
 
 [CmdLetBinding()]

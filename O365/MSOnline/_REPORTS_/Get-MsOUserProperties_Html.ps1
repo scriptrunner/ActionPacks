@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,18 +16,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
+        Azure Active Directory Powershell Module 
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/_REPORTS_
 
     .Parameter UserObjectId
-        [sr-en] Specifies the unique ID of the user
+        [sr-en] Unique ID of the user
         [sr-de] Gibt die eindeutige ID des Benutzers an
 
     .Parameter UserName
-        [sr-en] Specifies the Display name, Sign-In Name or user principal name of the user from which to get properties
+        [sr-en] Display name, Sign-In Name or user principal name of the user from which to get properties
         [sr-de] Gibt den Anzeigenamen, Anmeldenamen oder UPN des Benutzers an
 
     .Parameter Properties
@@ -35,7 +35,7 @@
         [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 
     .Parameter TenantId
-        [sr-en] Specifies the unique ID of a tenant
+        [sr-en] Unique ID of a tenant
         [sr-de] Die eindeutige ID eines Mandanten
 #>
 

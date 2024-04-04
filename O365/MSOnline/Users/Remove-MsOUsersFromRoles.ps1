@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -17,32 +17,31 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Users
 
     .Parameter RoleIds
-        Specifies the unique IDs of the roles from which to remove members
+        [sr-en] Unique IDs of the roles from which to remove members
 
     .Parameter RoleNames
-        Specifies the names of the roles from which to remove members
+        [sr-en] Names of the roles from which to remove members
     
     .Parameter UserIds
-        Specifies the unique object IDs of the users to remove from the roles
+        [sr-en] Unique object IDs of the users to remove from the roles
 
     .Parameter UserNames
-        Specifies the Display names, Sign-In Name or user principal names of the users to remove from the roles
+        [sr-en] Display names, Sign-In Name or user principal names of the users to remove from the roles
 
     .Parameter ServicePrincipalIds
-        Specifies the unique object IDs of the service principals to add remove from roles
+        [sr-en] Unique object IDs of the service principals to add remove from roles
 
     .Parameter ServicePrincipalNames
-        Specifies the Display names of the service principals to add remove from roles
+        [sr-en] Display names of the service principals to add remove from roles
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

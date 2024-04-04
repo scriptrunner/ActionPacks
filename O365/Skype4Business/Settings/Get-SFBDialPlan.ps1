@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,22 +18,21 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Settings
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        The unique identifier designating the scope, and for per-user scope a name, to identify the dial plan you want to retrieve
+        [sr-en] The unique identifier designating the scope, and for per-user scope a name, to identify the dial plan you want to retrieve
 
     .Parameter LocalStore
-        Retrieves the dial plan information from the local replica of the Central Management store, rather than the Central Management store itself
+        [sr-en] Retrieves the dial plan information from the local replica of the Central Management store, rather than the Central Management store itself
 
     .Parameter TenantID
-        Unique identifier for the tenant
+        [sr-en] Unique identifier for the tenant
 #>
 
 param(    

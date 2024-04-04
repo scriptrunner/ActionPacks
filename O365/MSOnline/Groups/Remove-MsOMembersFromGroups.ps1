@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,32 +16,31 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Groups
 
     .Parameter TargetGroupNames
-        Specifies the display names of the groups to which to remove members
+        [sr-en] Display names of the groups to which to remove members
 
     .Parameter GroupNames
-        Specifies the display names of the groups to remove from the target groups
+        [sr-en] Display names of the groups to remove from the target groups
 
     .Parameter UserNames
-        Specifies the Sign-In names, display names or user principal names of the users to remove from the target groups
+        [sr-en] Sign-In names, display names or user principal names of the users to remove from the target groups
     
     .Parameter GroupObjectIds
-        Specifies the unique IDs of the groups to which to remove members
+        [sr-en] Unique IDs of the groups to which to remove members
 
     .Parameter GroupIds
-        Specifies the unique object IDs of the groups to remove from the group
+        [sr-en] Unique object IDs of the groups to remove from the group
 
     .Parameter UserIds
-        Specifies the unique object IDs of the users to remove from the group
+        [sr-en] Unique object IDs of the users to remove from the group
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

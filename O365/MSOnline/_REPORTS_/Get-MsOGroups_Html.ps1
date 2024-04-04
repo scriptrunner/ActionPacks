@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,30 +16,30 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
+        Azure Active Directory Powershell Module 
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/_REPORTS_
 
     .Parameter IsAgentRole
-        [sr-en] Specifies that this cmdlet returns only agent groups. This value applies only to partner users
+        [sr-en] Only agent groups. This value applies only to partner users
         [sr-de] Nur Agentengruppen 
 
     .Parameter HasLicenseErrorsOnly
-        [sr-en] Specifies whether this cmdlet returns only security groups that have license errors
+        [sr-en] Only security groups that have license errors
         [sr-de] Nur Sicherheitsgruppen mit Lizenzfehlern
 
     .Parameter HasErrorsOnly
-        [sr-en] Indicates that this cmdlet returns only groups that have validation errors
+        [sr-en] Only groups that have validation errors
         [sr-de] Nur Gruppen mit Validierungsfehlern
     
     .Parameter GroupType
-        [sr-en] Specifies the type of groups to get
+        [sr-en] Type of groups to get
         [sr-de] Gibt den Typ der Gruppen an
 
     .Parameter TenantId
-        [sr-en] Specifies the unique ID of a tenant
+        [sr-en] Unique ID of a tenant
         [sr-de] Die eindeutige ID eines Mandanten
 #>
 

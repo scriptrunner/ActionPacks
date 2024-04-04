@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,44 +18,43 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Members
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter User
-        Indicates the Identity of the user account to be modified. User Identities can be specified using one of four formats: 
+        [sr-en] Identity of the user account to be modified. User Identities can be specified using one of four formats: 
         1) the user's SIP address; 
         2) the user's user principal name (UPN); 
         3) the user's domain name and logon name, in the form domain\logon 
         4) the user's Active Directory display name 
 
     .Parameter AudioVideoDisabled
-        Indicates whether the user is allowed to make audio/visual (A/V) calls by using Skype for Business
+        [sr-en] User is allowed to make audio/visual (A/V) calls by using Skype for Business
     
     .Parameter EnterpriseVoiceEnabled
-        Indicates whether the user has been enabled for Enterprise Voice
+        [sr-en] User has been enabled for Enterprise Voice
 
     .Parameter HostedVoiceMail
-        Enables a user's voice mail calls to be routed to a hosted version of Microsoft Exchange Server
+        [sr-en] Enables a user's voice mail calls to be routed to a hosted version of Microsoft Exchange Server
 
     .Parameter LineURI
-        Phone number assigned to the user
+        [sr-en] Phone number assigned to the user
 
     .Parameter OnPremLineURI
-        Specifies the phone number assigned to the user if no number is assigned to that user in the Skype for Business hybrid environment
+        [sr-en] Phone number assigned to the user if no number is assigned to that user in the Skype for Business hybrid environment
 
     .Parameter PrivateLine
-        Phone number for the user's private telephone line
+        [sr-en] Phone number for the user's private telephone line
 
     .Parameter RemoteCallControlTelephonyEnabled
-        Indicates whether the user has been enabled for remote call control telephony
+        [sr-en] User has been enabled for remote call control telephony
 
     .Parameter ExchangeArchivingPolicy
-        Indicates where the user's instant messaging sessions are archived.
+        [sr-en] User's instant messaging sessions are archived.
 #>
 
 param(    

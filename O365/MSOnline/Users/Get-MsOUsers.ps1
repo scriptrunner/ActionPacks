@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,29 +16,28 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Users
 
     .Parameter HasErrorsOnly
-        Inidates that this cmdlet returns only users that have validation errors
+        [sr-en] Only users that have validation errors
 
     .Parameter OnlyDeletedUsers
-        Indicates that this cmdlet returns only users in the recycling bin
+        [sr-en] Only users in the recycling bin
 
     .Parameter OnlyUnlicensedUsers
-        Indicates that this cmdlet returns only users who are not assigned a license
+        [sr-en] Only users who are not assigned a license
 
     .Parameter LicenseReconciliationNeededOnly
-        Indicates that this cmdlet filter for only users that require license reconciliation
+        [sr-en] Filter for only users that require license reconciliation
 
     .Parameter Filter
-        Specifies the filter for enabled or disabled users
+        [sr-en] Filter for enabled or disabled users
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

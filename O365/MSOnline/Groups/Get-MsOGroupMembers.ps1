@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,26 +16,25 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Groups
 
     .Parameter GroupObjectId
-        Specifies the unique ID of the group from which to get members
+        [sr-en] Unique ID of the group from which to get members
 
     .Parameter GroupName
-        Specifies the display name of the group from which to get members
+        [sr-en] Display name of the group from which to get members
 
     .Parameter Nested
-        Shows group members nested 
+        [sr-en] Shows group members nested 
 
     .Parameter MemberObjectTypes
-        Specifies the member object types
+        [sr-en] Member object types
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

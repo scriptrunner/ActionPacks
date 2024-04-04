@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,30 +16,29 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Users
 
     .Parameter UserObjectId
-        Specifies the unique ID of the user for which to set the password
+        [sr-en] Unique ID of the user for which to set the password
 
     .Parameter UserName
-        Specifies the Display name, Sign-In Name or user principal name of the user for which to set the password
+        [sr-en] Display name, Sign-In Name or user principal name of the user for which to set the password
 
     .Parameter NewPassword
-        Specifies a new password for the user
+        [sr-en] New password for the user
 
     .Parameter ForceChangePassword
-        Indicates whether the user must change the password the next time they sign in
+        [sr-en] User must change the password the next time they sign in
 
     .Parameter ForceChangePasswordOnly
-        Sets only user must change the password on the next logon.
+        [sr-en] User must change the password on the next logon.
         The new password will be ignored
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

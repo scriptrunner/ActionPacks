@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,44 +18,45 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        Specifies the identity of the target user
+        [sr-en] the identity of the target user
 
     .Parameter ExpandLocation
-        Displays the location parameter with its value
+        [sr-en] Displays the location parameter with its value
 
     .Parameter CivicAddressId
-        Specifies the identity of the civic address that is assigned to the target users
+        [sr-en] Identity of the civic address that is assigned to the target users
 
-    .Parameter EnterpriseVoiceStatus        
+    .Parameter EnterpriseVoiceStatus    
+        [sr-en] Find enabled users based on EnterpriseVoiceEnabled    
 
     .Parameter GetFromAAD
-        Get the users from Azure Active Directory
+        [sr-en] Get the users from Azure Active Directory
     
     .Parameter GetPendingUsers
-        Get only the users in pending state
+        [sr-en] Get only the users in pending state
 
     .Parameter LocationId
-        Specifies the location identity of the location whose users will be returned
+        [sr-en] Location identity of the location whose users will be returned
 
     .Parameter NumberAssigned
-        Return users who have a phone number assigned
+        [sr-en] Return users who have a phone number assigned
 
     .Parameter NumberNotAssigned
-        Return users who do not have a phone number assigned
+        [sr-en] Return users who do not have a phone number assigned
 
     .Parameter PSTNConnectivity
+        [sr-en] Find enabled users with PhoneSystem (OnPremises) or CallingPlan (Online)
 
     .Parameter Skip
-        Specifies the number of users to skip
+        [sr-en] Number of users to skip
 #>
 
 param(    

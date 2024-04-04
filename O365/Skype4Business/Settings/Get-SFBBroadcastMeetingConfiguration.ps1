@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,19 +18,18 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Settings
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter ExposeSDNConfigurationJsonBlob
-        On true, tonly return broadcast meeting configuration settings that relate to the Software Defined Network configuration
+        [sr-en] On true, tonly return broadcast meeting configuration settings that relate to the Software Defined Network configuration
 
     .Parameter LocalStore
-        Retrieves the information from the local replica of the Central Management store, rather than the Central Management store itself
+        [sr-en] Retrieves the information from the local replica of the Central Management store, rather than the Central Management store itself
 #>
 
 param(    

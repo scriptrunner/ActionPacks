@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,23 +18,22 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Members
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter User
-        Indicates the Identity of the user account to be retrieved. User Identities can be specified using one of four formats: 
+        [sr-en] Identity of the user account to be retrieved. User Identities can be specified using one of four formats: 
         1) the user's SIP address; 
         2) the user's user principal name (UPN); 
         3) the user's domain name and logon name, in the form domain\logon 
         4) the user's Active Directory display name 
 
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
 #>
 
 param(    

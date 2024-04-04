@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,25 +18,24 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Resources
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        The identifier for the auto attendant whose holidays are to be retrieved
+        [sr-en] The identifier for the auto attendant whose holidays are to be retrieved
 
     .Parameter Name
-        Represents the name for the holidays to be retrieved
+        [sr-en] Represents the name for the holidays to be retrieved
 
     .Parameter Year
-        Represents the year for the holidays to be retrieved
+        [sr-en] Represents the year for the holidays to be retrieved
 
     .Parameter TenantID
-        Guid of the tenant
+        [sr-en] Guid of the tenant
 #>
 
 param(    

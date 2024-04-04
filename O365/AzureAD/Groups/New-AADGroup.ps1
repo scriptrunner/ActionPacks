@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,23 +16,22 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module 
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups
 
     .Parameter GroupName
-        Specifies the display name of the group
+        [sr-en] Display name of the group
 
     .Parameter Description
-        Specifies a description of the group
+        [sr-en] Description of the group
 
     .Parameter MailEnabled
-        Indicates whether mail is enabled
+        [sr-en] Indicates whether mail is enabled
 
     .Parameter SecurityEnabled
-        Indicates whether the group is security-enabled
+        [sr-en] Indicates whether the group is security-enabled
 #>
 
 param(

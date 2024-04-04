@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,19 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set archive
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set archive
 
     .Parameter Enable
-        Enables or disables the archive state of the mailbox
+        [sr-en] Enables or disables the archive state of the mailbox
 
     .Parameter ArchiveDatabase 
-        Specifies the Exchange database that contains the archive that's associated with this mailbox
+        [sr-en] Exchange database that contains the archive that's associated with this mailbox
 #>
 
 param(

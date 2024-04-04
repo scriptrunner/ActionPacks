@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,20 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        On-premises Exchange Server 2016
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox
 
     .Parameter FilePath 
-        The FilePath parameter specifies the network share path of the .pst file to which data is exported
+        [sr-en] FilePath parameter specifies the network share path of the .pst file to which data is exported
 
     .Parameter IsArchiveBox 
-        Specifies that you're exporting from the user's archive
+        [sr-en] You're exporting from the user's archive
 #>
 
 param(

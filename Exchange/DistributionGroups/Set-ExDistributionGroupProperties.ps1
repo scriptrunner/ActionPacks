@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -16,31 +16,30 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/DistributionGroups
 
     .Parameter GroupName
-        Specifies the Name, Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group that you want to modify
+        [sr-en] Name, Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group that you want to modify
 
     .Parameter Alias
-        Specifies the Exchange alias (also known as the mail nickname) for the recipient
+        [sr-en] Exchange alias (also known as the mail nickname) for the recipient
     
     .Parameter DisplayName
-        Specifies the display name of the group
+        [sr-en] Display name of the group
 
     .Parameter ManagedBy
-        Specifies specifies an owner for the group. You can use the Alias, Display name, Distinguished name, Guid or Mail address that uniquely identifies the group owner
+        [sr-en] Owner for the group. You can use the Alias, Display name, Distinguished name, Guid or Mail address that uniquely identifies the group owner
     
     .Parameter PrimarySmtpAddress
-        Specifies the primary return email address that's used for the recipient
+        [sr-en] Primary return email address that's used for the recipient
     
     .Parameter MemberDepartRestriction
-        Specifies the restrictions that you put on requests to leave the group
+        [sr-en] Restrictions that you put on requests to leave the group
 
     .Parameter MemberJoinRestriction 
-        Specifies the restrictions that you put on requests to join the group
+        [sr-en] Restrictions that you put on requests to join the group
 #>
 
 param(

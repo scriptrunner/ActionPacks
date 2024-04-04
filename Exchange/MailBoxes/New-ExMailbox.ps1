@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -16,43 +16,42 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter Name
-        Specifies the unique name of the mailbox. The maximum length is 64 characters.
+        [sr-en] Unique name of the mailbox. The maximum length is 64 characters.
     
     .Parameter UserPrincipalName
-        Specifies the logon name for the user account
+        [sr-en] Logon name for the user account
 
     .Parameter Password
-        Specifies the password for the mailbox 
+        [sr-en] Password for the mailbox 
 
     .Parameter Alias
-        Specifies the alias name of the resource
+        [sr-en] Alias name of the resource
 
     .Parameter DisplayName
-        Specifies the display name of the resource
+        [sr-en] Display name of the resource
 
     .Parameter WindowsEmailAddress
-        Specifies the windows mail address of the mailbox
+        [sr-en] Windows mail address of the mailbox
 
     .Parameter FirstName
-        Specifies the user's first name
+        [sr-en] User's first name
 
     .Parameter LastName
-        Specifies the user's last name
+        [sr-en] User's last name
 
     .Parameter Office
-        Specifies the user's physical office name or number
+        [sr-en] User's physical office name or number
 
     .Parameter Phone
-        Specifies the user's telephone number
+        [sr-en] User's telephone number
 
     .Parameter ResetPasswordOnNextLogon
-        Specifies whether the user is required to change their password the next time they log on to their mailbox
+        [sr-en] User is required to change their password the next time they log on to their mailbox
 #>
 
 param(

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,36 +24,36 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Host
     
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter Action
-        Enables/disables the replication
+        [sr-en] Enables/disables the replication
 
     .Parameter AuthenticationType
-        Specifies which authentication types the Replica server will use
+        [sr-en] Authentication types the Replica server will use
 
     .Parameter KerberosAuthenticationPort
-        Specifies the port that the HTTP listener uses on the Replica server host
+        [sr-en] Port that the HTTP listener uses on the Replica server host
 
     .Parameter CertificateAuthenticationPort
-        Specifies the port on which the Replica server will receive replication data using certificate-based authentication
+        [sr-en] Port on which the Replica server will receive replication data using certificate-based authentication
 
     .Parameter Certificate
-        Specifies the certificate to use for mutual authentication of the replication data. 
+        [sr-en] Certificate to use for mutual authentication of the replication data. 
         This parameter is required only when Certificate is specified as the type of authentication
 
     .Parameter DefaultStorageLocation
-        Specifies the default location to store the virtual hard disk files when a Replica virtual machine is created. 
+        [sr-en] Default location to store the virtual hard disk files when a Replica virtual machine is created. 
         You must specify this parameter when AllowedFromAnyServer is True
 
     .Parameter AllowedFromAnyServer
-        Specifies whether to accept replication requests from any server
+        [sr-en] Accept replication requests from any server
 #>
 
 param(

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,22 +24,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the virtual machine whose snapshots are to be retrieved
+        [sr-en] Name of the virtual machine whose snapshots are to be retrieved
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter Properties
-        List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
+        [sr-en] Properties to expand, comma separated e.g. Name,Description. Use * for all properties
 
     .Parameter SnapshotType
-        Specifies the type of the snapshots to be retrieved  
+        [sr-en] Type of the snapshots to be retrieved  
 #>
 
 param(

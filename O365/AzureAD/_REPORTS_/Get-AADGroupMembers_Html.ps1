@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,18 +16,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
+        Azure Active Directory Powershell Module
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/_REPORTS_
 
     .Parameter GroupObjectId
-        [sr-en] Specifies the unique ID of the group from which to get members
+        [sr-en] Unique ID of the group from which to get members
         [sr-en] Eindeutige ID der Gruppe
 
     .Parameter GroupName
-        [sr-en] Specifies the display name of the group from which to get members
+        [sr-en] Display name of the group from which to get members
         [sr-en] Anzeigename der Gruppe
 
     .Parameter Nested
@@ -35,7 +35,7 @@
         [sr-de] Gruppenmitglieder rekursiv anzeigen
 
     .Parameter MemberObjectTypes
-        [sr-en] Specifies the member object types
+        [sr-en] Member object types
         [sr-de] Gruppen, Benutzer oder alle anzeigen
 
 #>

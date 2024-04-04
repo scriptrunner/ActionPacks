@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,14 +16,14 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
+        Azure Active Directory Powershell Module 
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/_REPORTS_
 
     .Parameter UserObjectId
-        [sr-en] Specifies the ID of a user (as a UPN or ObjectId) in Azure AD
+        [sr-en] ID of a user (as a UPN or ObjectId) in Azure AD
         [sr-en] ID oder UPN des Benutzers
 #>
 

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,48 +15,47 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
         
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set properties
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set properties
     
     .Parameter Unit
-        Specifies the units
+        [sr-en] Units
 
     .Parameter UseDatabaseQuotaDefaults
-        Specifies the alias name of the mailbox
+        [sr-en] Alias name of the mailbox
 
     .Parameter ProhibitSendQuota
-        Specifies a size limit for new messages on the mailbox. 
+        [sr-en] Size limit for new messages on the mailbox. 
         The value must be less than or equal to the ProhibitSendReceiveQuota value
 
     .Parameter ProhibitSendReceiveQuota
-        Specifies a size limit for send or receive new messages on the mailbox. 
+        [sr-en] Size limit for send or receive new messages on the mailbox. 
         The value must be greater than or equal to the ProhibitSendQuota or IssueWarningQuota values
 
     .Parameter RecoverableItemsQuota
-        Specifies the maximum size for the Recoverable Items folder of the mailbox
+        [sr-en] Maximum size for the Recoverable Items folder of the mailbox
 
     .Parameter RecoverableItemsWarningQuota
-        Specifies the warning threshold for the size of the Recoverable Items folder for the mailbox
+        [sr-en] Warning threshold for the size of the Recoverable Items folder for the mailbox
 
     .Parameter IssueWarningQuota
-        Specifies the warning threshold for the size of the mailbox
+        [sr-en] Warning threshold for the size of the mailbox
 
     .Parameter CalendarLoggingQuota 
-        Specifies the maximum size of the log in the Recoverable Items folder of the mailbox that stores changes to calendar items
+        [sr-en] Maximum size of the log in the Recoverable Items folder of the mailbox that stores changes to calendar items
         
     .Parameter ArchiveQuota
-        Specifies the maximum size for the user's archive mailbox
+        [sr-en] Maximum size for the user's archive mailbox
 
     .Parameter ArchiveWarningQuota 
-        Specifies the warning threshold for the size of the user's archive mailbox
+        [sr-en] Warning threshold for the size of the user's archive mailbox
         
     .Parameter RulesQuota
-        Specifies the limit for the size of Inbox rules for the mailbox (in bytes)
+        [sr-en] Limit for the size of Inbox rules for the mailbox (in bytes)
 #>
 
 param(

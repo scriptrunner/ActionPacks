@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,23 +16,22 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module 
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups
 
     .Parameter GroupObjectId
-        Specifies the unique ID of the group from which to get members
+        [sr-en] Unique ID of the group from which to get members
 
     .Parameter GroupName
-        Specifies the display name of the group from which to get members
+        [sr-en] Display name of the group from which to get members
 
     .Parameter Nested
-        Shows group members nested 
+        [sr-en] Shows group members nested 
 
     .Parameter MemberObjectTypes
-        Specifies the member object types
+        [sr-en] Member object types
 #>
 
 param(

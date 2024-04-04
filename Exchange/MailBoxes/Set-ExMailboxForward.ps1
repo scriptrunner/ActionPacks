@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,20 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        On-premises Exchange Server 2016
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox
 
     .Parameter ForwardTo
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of a recipient to forward the message to
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of a recipient to forward the message to
 
     .Parameter RuleName 
-        Specifies a name for the Inbox rule being created
+        [sr-en] Name for the Inbox rule being created
 #>
 
 param(

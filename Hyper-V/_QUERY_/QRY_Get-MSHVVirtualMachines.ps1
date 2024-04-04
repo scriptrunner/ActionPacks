@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -21,19 +21,19 @@
 		https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/_QUERY_
 
     .Parameter NamePattern
-    	VM names pattern to select.
+    	[sr-en] VM names pattern to select.
 
     .Parameter State
-    	Specific Microsoft.HyperV.PowerShell.VMState to filter for.
+    	[sr-en] Microsoft.HyperV.PowerShell.VMState to filter for.
 
     .Parameter Heartbeat
-		Specific Microsoft.HyperV.PowerShell.VMHeartbeatStatus to filter for.
+		[sr-en] Microsoft.HyperV.PowerShell.VMHeartbeatStatus to filter for.
 		
 	.Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
 	.Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
 #>
 
@@ -41,9 +41,9 @@ Param
 (
     [string]$NamePattern,
 	[ValidateSet('Off', 'Running', 'Saved', 'Paused')]
-    $State,
+    [string]$State,
 	[ValidateSet('Disabled', 'NoContact', 'Error', 'LostCommunication', 'OkApplicationsUnknown', 'OkApplicationsHealthy', 'OkApplicationsCritical')]
-	$Heartbeat,
+	[string]$Heartbeat,
     [string]$HostName,
     [PSCredential]$AccessAccount
 )

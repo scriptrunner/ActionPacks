@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,19 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/DistributionGroups
 
     .Parameter GroupObjectIds
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to which to add members
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to which to add members
 
     .Parameter GroupIds
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to add to the Universal distribution groups
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to add to the Universal distribution groups
 
     .Parameter UserIds
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the mailboxes to add to the groups
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the mailboxes to add to the groups
 #>
 
 param(

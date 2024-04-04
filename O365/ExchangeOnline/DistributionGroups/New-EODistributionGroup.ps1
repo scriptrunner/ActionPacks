@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,32 +15,31 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/DistributionGroups
 
     .Parameter GroupName
-        Specifies the unique name of the group. The maximum length is 64 characters
+        [sr-en] Unique name of the group. The maximum length is 64 characters
 
     .Parameter ManagedBy
-        Specifies specifies an owner for the group. You can use the Alias, Display name, Distinguished name, Guid or Mail address that uniquely identifies the group owner
+        [sr-en] Owner for the group. You can use the Alias, Display name, Distinguished name, Guid or Mail address that uniquely identifies the group owner
 
     .Parameter Alias
-        Specifies the Exchange alias (also known as the mail nickname) for the recipient
+        [sr-en] Exchange alias (also known as the mail nickname) for the recipient
     
     .Parameter DisplayName
-        Specifies the display name of the group
+        [sr-en] Display name of the group
 
     .Parameter Description
-        Specifies additional information about the object
+        [sr-en] Additional information about the object
 
     .Parameter Members
-        Specifies the recipients (mail-enabled objects) that are members of the group. 
+        [sr-en] Recipients (mail-enabled objects) that are members of the group. 
         You can use the Alias, Display name, Distinguished name, Guid or Mail address that uniquely identifies the recipient
 
     .Parameter GroupType
-        Specifies the type of group that you want to create.
+        [sr-en] Type of group that you want to create.
         Distribution = A distribution group
         Security = A mail-enabled security group
 #>

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,33 +24,33 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name of the virtual machine on which the DVD drive is to be configured
+        [sr-en] Name of the virtual machine on which the DVD drive is to be configured
 
     .Parameter ControllerType
-        Specifies the type of the controller, IDE or SCSI 
+        [sr-en] Type of the controller, IDE or SCSI 
 
     .Parameter ControllerNumber
-        Specifies the IDE controller of the DVD drives to be configured. 
+        [sr-en] IDE controller of the DVD drives to be configured. 
         If not specified, DVD drives attached to all controllers are configured.
 
     .Parameter ToControllerNumber
-        Specifies the controller number to which this VMDvdDrive should be moved.
+        [sr-en] Controller number to which this VMDvdDrive should be moved.
         Use -1 for don´t move the drive
 
     .Parameter ToControllerLocation
-        Specifies the controller location to which this virtual DVD drive should be moved
+        [sr-en] Controller location to which this virtual DVD drive should be moved
 
     .Parameter Path
-        Specifies the path to the ISO file or physical DVD drive that will serve as media for the virtual DVD drive
+        [sr-en] Path to the ISO file or physical DVD drive that will serve as media for the virtual DVD drive
 #>
 
 param(

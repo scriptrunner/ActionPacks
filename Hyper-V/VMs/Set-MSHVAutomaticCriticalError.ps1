@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -23,19 +23,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
     
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the virtual machine to be configured
+        [sr-en] Virtual machine to be configured
 
     .Parameter Action
-        Specifies the action to take when the VM encounters a critical error, and exceeds the timeout duration
+        [sr-en] Action to take when the VM encounters a critical error, and exceeds the timeout duration
 
     .Parameter TimeOut
-        Specifies the amount of time, in minutes, to wait in critical pause before powering off the virtual machine
+        [sr-en] Amount of time, in minutes, to wait in critical pause before powering off the virtual machine
 #>
 
 param(

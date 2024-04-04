@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,22 +24,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the virtual machine of which the snapshot is to be deleted
+        [sr-en] Name of the virtual machine of which the snapshot is to be deleted
 
     .Parameter SnapshotName
-        Specifies the virtual machine snapshot to be deleted
+        [sr-en] Virtual machine snapshot to be deleted
 
     .Parameter IncludeAllChildSnapshots
-        Specifies that the snapshots children are to be deleted along with the snapshot
+        [sr-en] Snapshots children are to be deleted along with the snapshot
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 #>
 
 param(

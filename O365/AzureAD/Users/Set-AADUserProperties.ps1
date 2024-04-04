@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -17,47 +17,46 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
     
     .Parameter UserObjectId
-        Specifies the unique ID of the user from which to set properties
+        [sr-en] Unique ID of the user from which to set properties
 
     .Parameter UserName
-        Specifies the Display name or user principal name of the user from which to set properties
+        [sr-en] Display name or user principal name of the user from which to set properties
 
     .Parameter DisplayName
-        Specifies the display name of the user
+        [sr-en] Display name of the user
 
     .Parameter FirstName
-        Specifies the first name of the user
+        [sr-en] First name of the user
 
     .Parameter LastName
-        Specifies the last name of the user
+        [sr-en] Last name of the user
 
     .Parameter PostalCode
-        Specifies the postal code of the user
+        [sr-en] Postal code of the user
 
     .Parameter City
-        Specifies the city of the user
+        [sr-en] City of the user
 
     .Parameter Street
-        Specifies the street address of the user
+        [sr-en] Street address of the user
 
     .Parameter PhoneNumber
-        Specifies the phone number of the user
+        [sr-en] Phone number of the user
 
     .Parameter MobilePhone
-        Specifies the mobile phone number of the user
+        [sr-en] Mobile phone number of the user
 
     .Parameter Department
-        Specifies the department of the user
+        [sr-en] Department of the user
 
     .Parameter Enabled
-        Specifies whether the user is able to log on using their user ID
+        [sr-en] User is able to log on using their user ID
 #>
 
 param(

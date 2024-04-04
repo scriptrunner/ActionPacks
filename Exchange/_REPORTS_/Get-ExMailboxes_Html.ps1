@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -21,10 +21,10 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/_REPORTS_ 
 
     .Parameter EnabledMailboxOnly
-        Specifies whether to include only enabled mailboxes in the results
+        [sr-en] Include only enabled mailboxes in the results
 
     .Parameter ExcludeResources
-        Specifies whether to exclude resource mailboxes in the results
+        [sr-en] Exclude resource mailboxes in the results
 #>
 
 param(

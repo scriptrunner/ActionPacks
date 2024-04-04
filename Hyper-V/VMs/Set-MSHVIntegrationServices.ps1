@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,37 +24,37 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the virtual machine to be configured
+        [sr-en] Virtual machine to be configured
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter OperatingSystemLanguage
-        Language of the Hyper-V operating system. The configuration of the integration services is language-dependent
+        [sr-en] Language of the Hyper-V operating system. The configuration of the integration services is language-dependent
 
     .Parameter ShutDown
-        Enables/disables the integration service "Operating system shutdown"
+        [sr-en] Enables/disables the integration service "Operating system shutdown"
 
     .Parameter TimeSynchronization
-        Enables/disables the integration service "Time synchronization"
+        [sr-en] Enables/disables the integration service "Time synchronization"
 
     .Parameter DataExchange
-        Enables/disables the integration service "Data Exchange"
+        [sr-en] Enables/disables the integration service "Data Exchange"
 
     .Parameter Heartbeat
-        Enables(/disables the integration service "Heartbeat"
+        [sr-en] Enables(/disables the integration service "Heartbeat"
 
     .Parameter Backup
-        Enables/disables the integration service "Backup (volume checkpoint)"
+        [sr-en] Enables/disables the integration service "Backup (volume checkpoint)"
 
     .Parameter GuestServices
-        Enables/disables the integration service "Guest services"
+        [sr-en] Enables/disables the integration service "Guest services"
 #>
 
 param(

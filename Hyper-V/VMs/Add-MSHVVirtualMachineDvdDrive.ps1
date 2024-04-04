@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,26 +24,26 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine whose BIOS is to be retrieved
+        [sr-en] Name or identifier of the virtual machine whose BIOS is to be retrieved
 
     .Parameter ControllerType
-        Specifies the type of the controller 
+        [sr-en] Type of the controller 
 
     .Parameter ControllerNumber
-        Specifies the number of the controller to which the DVD drive is to be added. 
+        [sr-en] Number of the controller to which the DVD drive is to be added. 
         If not specified, the first IDE controller on which the specified ControllerLocation is available is used
 
     .Parameter Path
-        Specifies the path to the ISO file or physical DVD drive that will serve as media for the virtual DVD drive
+        [sr-en] Path to the ISO file or physical DVD drive that will serve as media for the virtual DVD drive
 #>
 
 param(

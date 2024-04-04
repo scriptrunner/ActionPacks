@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Az.Compute
 
 <#
@@ -23,15 +23,15 @@
     https://github.com/scriptrunner/ActionPacks/blob/master/Azure/Compute
 
 .Parameter Name
-    [sr-en] Specifies the name of the virtual machine
+    [sr-en] Name of the virtual machine
     [sr-de] Name der virtuellen Maschine
 
 .Parameter ResourceGroupName
-    [sr-en] Specifies the name of the resource group of the virtual machine
+    [sr-en] Name of the resource group of the virtual machine
     [sr-de] Name der resource group die die virtuelle Maschine enthält
 
 .Parameter Command
-    [sr-en] Specifies the command that executed on the Azure virtual machine
+    [sr-en] Command that executed on the Azure virtual machine
     [sr-de] Kommando das für die virtuelle Maschine ausgeführt werden soll
 #>
 

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,13 +24,13 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/_QUERY_
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the virtual machine whose virtual network adapters are to be retrieved
+        [sr-en] Virtual machine whose virtual network adapters are to be retrieved
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 #>
 
 param(

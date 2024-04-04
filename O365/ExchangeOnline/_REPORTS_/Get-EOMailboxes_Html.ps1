@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -21,15 +21,15 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/_Reports_
 
     .Parameter InactiveMailboxOnly
-        [sr-en] Specifies whether to include only inactive mailboxes in the results
+        [sr-en] Include only inactive mailboxes in the results
         [sr-de] Gibt an, ob nur inaktive Postfächer in den Ergebnissen zurückgegeben werden
 
     .Parameter IncludeInactiveMailbox
-        [sr-en] Specifies whether to include inactive mailboxes in the results
+        [sr-en] Include inactive mailboxes in the results
         [sr-de] Gibt an, ob inaktive Postfächer in die Ergebnisse einbezogen werden
 
     .Parameter ExcludeResources
-        [sr-en] Specifies whether to exclude resource mailboxes in the results
+        [sr-en] Exclude resource mailboxes in the results
         [sr-de] Gibt an, ob nur Ressourcen aus den Ergebnissen ausgeschlossen werden
 #>
 

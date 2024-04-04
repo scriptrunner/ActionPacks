@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,37 +24,31 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine whose BIOS is to be retrieved
+        [sr-en] Name or identifier of the virtual machine whose BIOS is to be retrieved
 
     .Parameter NumLock
-        Specifies that NumLock is to be enabled or disabled in the BIOS of the virtual machine
+        [sr-en] NumLock is to be enabled or disabled in the BIOS of the virtual machine
 
     .Parameter StartUpOrder1
-        Specifies the boot device #1 in the BIOS of the virtual machine
+        [sr-en] Boot device #1 in the BIOS of the virtual machine
 
     .Parameter StartUpOrder2
-        Specifies the boot device #2 in the BIOS of the virtual machine
+        [sr-en] Boot device #2 in the BIOS of the virtual machine
 
     .Parameter StartUpOrder3
-        Specifies the boot device #3 in the BIOS of the virtual machine
+        [sr-en] Boot device #3 in the BIOS of the virtual machine
 
     .Parameter StartUpOrder4
-        Specifies the boot device #4 in the BIOS of the virtual machine
-
-    .Parameter StartUpOrder5
-        Specifies the boot device #5 in the BIOS of the virtual machine
-
-    .Parameter StartUpOrder6
-        Specifies the boot device #6 in the BIOS of the virtual machine
+        [sr-en] Boot device #4 in the BIOS of the virtual machine
 #>
 
 param(

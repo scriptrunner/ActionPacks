@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,23 +24,23 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name of the virtual machine on which the DVD drive is to be configured
+        [sr-en] Name of the virtual machine on which the DVD drive is to be configured
 
     .Parameter ControllerNumber
-        Specifies the IDE controller of the DVD drives to be configured. 
+        [sr-en] IDE controller of the DVD drives to be configured. 
         If not specified, DVD drives attached to all controllers are configured.
 
     .Parameter ControllerLocation
-        Specifies the number of the location on the controller from which the DVD drive is to be deleted
+        [sr-en] Number of the location on the controller from which the DVD drive is to be deleted
 #>
 
 param(

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -21,7 +21,7 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/_REPORTS_
 
     .Parameter Archive
-        [sr-en] Specifies whether to return mailbox statistics for the archive mailbox associated with the specified mailbox
+        [sr-en] Return mailbox statistics for the archive mailbox associated with the specified mailbox
         [sr-de] Gibt an, ob die Postfachstatistiken für das verbundene Archivpostfach zurückgegeben werden
 #>
 

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,31 +24,31 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Host
     
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter SwitchName
-        Specifies the name or the unique identifier of the virtual switch to be retrieved
+        [sr-en] Name or the unique identifier of the virtual switch to be retrieved
 
     .Parameter NetAdapterName
-        Specifies the name of the network adapter to be bound to the external switch to be created
+        [sr-en] Name of the network adapter to be bound to the external switch to be created
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter SwitchType
-        Specifies the type of the switch to be created. On create an External virtual switch, specify the NetAdapterName parameter
+        [sr-en] Type of the switch to be created. On create an External virtual switch, specify the NetAdapterName parameter
 
     .Parameter AllowManagementOS
-        Specifies whether the parent partition (i.e. the management operating system) is to have access to the physical NIC bound to the virtual switch to be created
+        [sr-en] Parent partition (i.e. the management operating system) is to have access to the physical NIC bound to the virtual switch to be created
 
     .Parameter EnableIov
-        Specifies that IO virtualization is to be enabled on the virtual switch to be created
+        [sr-en] IO virtualization is to be enabled on the virtual switch to be created
 
     .Parameter Notes
-        Specifies a note to be associated with the switch to be created
+        [sr-en] Note to be associated with the switch to be created
 #>
 
 param(

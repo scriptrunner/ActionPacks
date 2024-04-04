@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,22 +24,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the virtual machine snapshot to be renamed
+        [sr-en] Name of the virtual machine snapshot to be renamed
 
     .Parameter SnapshotName
-        Specifies the virtual machine snapshot to be renamed
+        [sr-en] Virtual machine snapshot to be renamed
 
     .Parameter NewName
-        Specifies the name to which the virtual machine snapshot is to be renamed
+        [sr-en] Name to which the virtual machine snapshot is to be renamed
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 #>
 
 param(

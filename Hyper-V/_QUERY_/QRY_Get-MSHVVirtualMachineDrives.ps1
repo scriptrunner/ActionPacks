@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,16 +24,16 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/_QUERY_
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the virtual machine whose drives are to be retrieved
+        [sr-en] Name of the virtual machine whose drives are to be retrieved
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter DriveType
-        Specifies the type of the drive to be retrieved  
+        [sr-en] Type of the drive to be retrieved  
 #>
 
 param(

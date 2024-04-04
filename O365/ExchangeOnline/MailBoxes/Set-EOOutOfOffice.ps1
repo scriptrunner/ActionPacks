@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,35 +15,34 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
 
     .Parameter MailboxIds
-        [sr-en] Specifies the Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
+        [sr-en] Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
         [sr-de] Alias, Anzeigename, Distinguished-Namen, SamAccount-Namen, Guids oder UPN der Mailboxen
 
     .Parameter InternalText
-        [sr-en] Specifies the Automatic Replies message that's sent to internal senders or senders within the organization
+        [sr-en] Automatic Replies message that's sent to internal senders or senders within the organization
         [sr-de] Text der automatischen Antwort an interne Absender
 
     .Parameter AutoReplyType 
-        [sr-en] Specifies whether Automatic Replies are sent to external senders
+        [sr-en] Automatic Replies are sent to external senders
         [sr-de] Automatische Antworten an externe Absender senden
 
     .Parameter ExternalText 
-        [sr-en] Specifies the Automatic Replies message that's sent to external senders or senders outside the organization
+        [sr-en] Automatic Replies message that's sent to external senders or senders outside the organization
         [sr-de] Text der automatischen Antwort an externe Absender
 
     .Parameter StartDate
-        [sr-en] Specifies the start date that Automatic Replies are sent for the specified mailbox
+        [sr-en] Start date that Automatic Replies are sent for the specified mailbox
         The text StartDate will be replaced by the defined start date
         [sr-de] Datum ab wann automatische Antworten verschickt werden.
         StartDate wird im Text der Antwort durch dieses Datum ersetzt
 
     .Parameter EndDate
-        [sr-en] Specifies the end date that Automatic Replies are sent for the specified mailbox
+        [sr-en] End date that Automatic Replies are sent for the specified mailbox
         The text EndDate will be replaced by the defined end date
         [sr-de] Datum bis wann automatische Antworten verschickt werden.
         EndDate wird im Text der Antwort durch dieses Datum ersetzt

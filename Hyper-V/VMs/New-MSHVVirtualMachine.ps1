@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,60 +24,60 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the new virtual machine. The default name is New virtual machine
+        [sr-en] Name of the new virtual machine. The default name is New virtual machine
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VHDPath
-        Specifies the path to a existing virtual hard disk file
+        [sr-en] Path to a existing virtual hard disk file
 
     .Parameter NewVHDPath
-        Creates a new virtual hard disk with the specified path and connects it to the new virtual machine, e.g. C:\vhds\myvm.vhdx. 
+        [sr-en] Creates a new virtual hard disk with the specified path and connects it to the new virtual machine, e.g. C:\vhds\myvm.vhdx. 
         Absolute paths are allowed. 
         If only a file name is specified, the virtual hard disk is created in the default path configured for the host
 
     .Parameter NewVHDSize
-        Specifies the size of the dynamic virtual hard disk that is created and attached to the new virtual machine, in bytes
+        [sr-en] Size of the dynamic virtual hard disk that is created and attached to the new virtual machine, in bytes
 
     .Parameter NoVHD
-        Creates a virtual machine without attaching any virtual hard disks
+        [sr-en] Creates a virtual machine without attaching any virtual hard disks
 
     .Parameter BootDevice
-        Specifies the device to use as the boot device for the new virtual machine
+        [sr-en] Device to use as the boot device for the new virtual machine
 
     .Parameter Generation
-        Specifies the generation, as an integer, for the virtual machine
+        [sr-en] Generation, as an integer, for the virtual machine
 
     .Parameter StartupMemory
-        Specifies the amount of memory, in bytes, to assign to the virtual machine, in bytes
+        [sr-en] Amount of memory, in bytes, to assign to the virtual machine, in bytes
 
     .Parameter FilePath
-        Specifies the directory to store the files for the new virtual machine
+        [sr-en] Directory to store the files for the new virtual machine
 
     .Parameter SwitchName
-        Specifies the friendly name of the virtual switch if you want to connect the new virtual machine to an existing virtual switch to provide connectivity to a network
+        [sr-en] Friendly name of the virtual switch if you want to connect the new virtual machine to an existing virtual switch to provide connectivity to a network
 
     .Parameter ProcessorCount
-        Specifies the number of virtual processors for the virtual machine
+        [sr-en] Number of virtual processors for the virtual machine
 
     .Parameter DynamicMemory 
-        Specifies whether dynamic memory is to be enabled on the virtual machine to be configured
+        [sr-en] Dynamic memory is to be enabled on the virtual machine to be configured
 
     .Parameter MemoryMinimum 
-        Specifies the minimum amount of memory that the virtual machine is to be allocated, in bytes
+        [sr-en] Minimum amount of memory that the virtual machine is to be allocated, in bytes
         
     .Parameter MemoryMaximum
-        Specifies the maximum amount of memory that the virtual machine is to be allocated, in bytes
+        [sr-en] Maximum amount of memory that the virtual machine is to be allocated, in bytes
 
     .Parameter Notes
-        Specifies notes to be associated with the virtual machine
+        [sr-en] Notes to be associated with the virtual machine
 #>
 
 param(

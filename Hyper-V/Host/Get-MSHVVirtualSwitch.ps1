@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,19 +24,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Host
     
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter SwitchName
-        Specifies the name or the unique identifier of the virtual switch to be retrieved
+        [sr-en] Name or the unique identifier of the virtual switch to be retrieved
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter Properties
-        List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
+        [sr-en] Properties to expand, comma separated e.g. Name,Description. Use * for all properties
 #>
 
 param(

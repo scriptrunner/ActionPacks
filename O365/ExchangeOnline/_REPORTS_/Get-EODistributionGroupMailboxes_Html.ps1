@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -21,7 +21,7 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/_REPORTS_
 
     .Parameter GroupId
-        [sr-en] Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group from which to get mailboxes
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group from which to get mailboxes
         [sr-de] Gibt den Alias, Anzeigenamen, Distinguished-Name, Guid oder die Mailadresse der Verteilergruppe oder der e-Mail-aktivierte Sicherheitsgruppe an
 
     .Parameter Nested
@@ -29,7 +29,7 @@
         [sr-de] Gruppenmitglieder rekursiv anzeigen
     
     .Parameter MemberObjectTypes
-        [sr-en] Specifies the member object types
+        [sr-en] Member object types
         [sr-de] Gruppen, Benutzer oder alle anzeigen
 #>
 

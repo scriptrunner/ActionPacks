@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,19 +16,19 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
 
     .Parameter UserObjectId
-        Specifies the ID of a user (as a UPN or ObjectId) in Azure AD
+        [sr-en] ID of a user (as a UPN or ObjectId) in Azure AD
 
     .Parameter LicenseSkuIds
-        Specifies a list of licenses SkuIDs to remove, comma separated
+        [sr-en] List of licenses SkuIDs to remove, comma separated
 
     .Parameter LicenseSkuNames
-        Specifies a list of licenses SkuPartNames to remove, comma separated
+        [sr-en] List of licenses SkuPartNames to remove, comma separated
 #>
 
 param(

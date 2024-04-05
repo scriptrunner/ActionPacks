@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter LoginName
-        It's the user Principal Name or UPN of a user
+        [sr-en] It's the user Principal Name or UPN of a user
 #>
 
 param(      

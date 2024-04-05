@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        Specifies the URL of the site collection to which to enable the hub site features
+        [sr-en] URL of the site collection to which to enable the hub site features
 
     .Parameter Principals
-        Specifies One or more principles (user or group) to be granted rights to the specified HubSite, 
+        [sr-en] One or more principles (user or group) to be granted rights to the specified HubSite, 
         comma separated
 #>
 

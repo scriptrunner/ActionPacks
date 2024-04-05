@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter Resource 
-        Resource of the permission request to add
+        [sr-en] Resource of the permission request to add
         
     .Parameter Scope
-        Scope of the permission request to add
+        [sr-en] Scope of the permission request to add
 #>
 
 param(            

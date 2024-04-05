@@ -17,25 +17,24 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter TenantCredentials
-        Parameter to fill out credentials of the SPO tenant
+        [sr-en] Parameter to fill out credentials of the SPO tenant
 
     .Parameter TargetWebUrl
-        Target web URL
+        [sr-en] Target web URL
 
     .Parameter SourceFilesPath
-        Source files Path
+        [sr-en] Source files Path
 
     .Parameter SourcePackagePath
-        Source Package Path
+        [sr-en] Source Package Path
  
     .Parameter NoLogFile
-        Controls if a log will be created or not
+        [sr-en] Controls if a log will be created or not
 #>
 
 param(        

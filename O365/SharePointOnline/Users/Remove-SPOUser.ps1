@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter LoginName
-        Specifies the user name
+        [sr-en] User name
 
     .Parameter Site
-        Specifies the site collection to remove the user from
+        [sr-en] Site collection to remove the user from
 
     .Parameter Group
-        Specifies the group to remove the user from
+        [sr-en] Group to remove the user from
 #>
 
 param(         

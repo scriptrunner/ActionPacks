@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter Site
-        URL of the site for enabling the modern communication
+        [sr-en] URL of the site for enabling the modern communication
 
     .Parameter DesignPackage
-        The topic design will be applied to the new home page
+        [sr-en] The topic design will be applied to the new home page
 #>
 
 param(     

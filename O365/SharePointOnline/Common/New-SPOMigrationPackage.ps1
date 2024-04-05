@@ -17,40 +17,39 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter OutputPackagePath
-        The directory location where the output package metadata files will be saved
+        [sr-en] The directory location where the output package metadata files will be saved
 
     .Parameter SourceFilesPath
-        The directory location where the source content files exist
+        [sr-en] The directory location where the source content files exist
 
     .Parameter IgnoreHidden
-        Ignore hidden files and folders
+        [sr-en] Ignore hidden files and folders
 
     .Parameter IncludeFileSharePermissions
-        Used to include permissions and sharing information into the generated manifest files in the package metadata
+        [sr-en] Used to include permissions and sharing information into the generated manifest files in the package metadata
 
     .Parameter NoAzureADLookup
-        Not lookup local user accounts in Azure Active Directory
+        [sr-en] Not lookup local user accounts in Azure Active Directory
 
     .Parameter NoLogFile
-        Used to not create a log file
+        [sr-en] Used to not create a log file
 
     .Parameter ReplaceInvalidCharacters
-        Replace characters in file and folder names that would be invalid in SharePoint Online
+        [sr-en] Replace characters in file and folder names that would be invalid in SharePoint Online
 
     .Parameter TargetDocumentLibraryPath
-        The web relative document library to use as the document library part of the base URL in the package metadata
+        [sr-en] The web relative document library to use as the document library part of the base URL in the package metadata
 
     .Parameter TargetDocumentLibrarySubFolderPath
-        Specifies the document library relative subfolder to use as the folder path part of the base URL in the package metadata
+        [sr-en] Document library relative subfolder to use as the folder path part of the base URL in the package metadata
 
     .Parameter TargetWebUrl
-        The fully qualified web URL to use as the web address part of the base URL in the package metadata
+        [sr-en] The fully qualified web URL to use as the web address part of the base URL in the package metadata
 #>
 
 param(     

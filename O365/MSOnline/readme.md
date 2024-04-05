@@ -1,6 +1,6 @@
-# Action Pack for Azure Active Directory v1
-Use cases to manage groups and users with Azure Active Directory Powershell Module v1
-> Note: The use of the scripts requires the Azure Active Directory Powershell Module v1.<br>Requirements: ScriptRunner Version 4.x or higher
+﻿# Action Pack for Azure Active Directory v1
+Use cases to manage groups and users with Azure Active Directory Powershell Module 
+> Note: The use of the scripts requires the Azure Active Directory Powershell Module
 
 ## [Manage Groups](./Groups)
 

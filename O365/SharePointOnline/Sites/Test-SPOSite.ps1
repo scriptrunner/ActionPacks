@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the SharePoint Online site collection to test
+        [sr-en] SharePoint Online site collection to test
 
     .Parameter RuleId
-        Specifies the health check rule to run
+        [sr-en] Health check rule to run
 
     .Parameter RunAlways
-        Displays a message that states the effect of the command instead of executing the command
+        [sr-en] Displays a message that states the effect of the command instead of executing the command
 #>
 
 param(        

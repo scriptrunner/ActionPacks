@@ -18,16 +18,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        The ID of the site design to get scoping information
+        [sr-en] ID of the site design to get scoping information
 
     .Parameter Principals
-        One or more principles to add permissions for, comma separated
+        [sr-en] One or more principles to add permissions for, comma separated
 #>
 
 param(        

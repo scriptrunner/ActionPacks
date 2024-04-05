@@ -17,28 +17,27 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter MoveDirection
-        Allows you to define the direction of the user move in relation to your current SharePoint location
+        [sr-en] Allows you to define the direction of the user move in relation to your current SharePoint location
 
     .Parameter MoveState
-        Move State current status
+        [sr-en] Move State current status
 
     .Parameter MoveEndTime
-        Allows you to obtain the moves that are scheduled to end by a particular time
+        [sr-en] Allows you to obtain the moves that are scheduled to end by a particular time
 
     .Parameter MoveStartTime
-        Allows you to obtain the moves that are scheduled to begin at a particular time
+        [sr-en] Allows you to obtain the moves that are scheduled to begin at a particular time
         
     .Parameter OdbMoveId
-        Onedrive GUID MoveID that you get when you start a job
+        [sr-en] Onedrive GUID MoveID that you get when you start a job
     
     .Parameter UserPrincipalName
-        User Principal name is the unique property on Azure AD for each user
+        [sr-en] User Principal name is the unique property on Azure AD for each user
 #>
 
 param(            

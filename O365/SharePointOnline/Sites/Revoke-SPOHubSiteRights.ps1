@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        Specifies the URL of the site collection to which to enable the hub site features
+        [sr-en] URL of the site collection to which to enable the hub site features
 
     .Parameter Principals
-        One or more principles to revoke the permissions for, comma separated
+        [sr-en] One or more principles to revoke the permissions for, comma separated
 #>
 
 param(        

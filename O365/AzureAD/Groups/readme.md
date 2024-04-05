@@ -1,5 +1,5 @@
-# Manage Groups
-> Note: The use of the scripts requires the PowerShell Module ActiveDirectory v2 and ScriptRunner Version 4.x or higher.
+﻿# Manage Groups
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory
 
 + [Add-AADMembersToGroups.ps1](./Add-AADMembersToGroups.ps1)
 

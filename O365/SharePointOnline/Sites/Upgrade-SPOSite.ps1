@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the SharePoint Online site collection to upgrade
+        [sr-en] SharePoint Online site collection to upgrade
 
     .Parameter NoEmail
-        Specifies that the system not send the requester and site collection administrators a notification e-mail message at the end of the upgrade process
+        [sr-en] System not send the requester and site collection administrators a notification e-mail message at the end of the upgrade process
 
     .Parameter QueueOnly
-        Adds the site collection to the upgrade queue. The upgrade does not occur immediately
+        [sr-en] Adds the site collection to the upgrade queue. The upgrade does not occur immediately
 
     .Parameter VersionUpgrade
-        Specifies whether to perform a version-to-version upgrade on the site collection
+        [sr-en] Perform a version-to-version upgrade on the site collection
 #>
 
 param(        

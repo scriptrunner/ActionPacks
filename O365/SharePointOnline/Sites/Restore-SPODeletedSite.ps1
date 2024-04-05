@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the URL of the site collection to restore
+        [sr-en] URL of the site collection to restore
 
     .Parameter NoWait
-        Specifies to continue executing script immediately
+        [sr-en] Continue executing script immediately
 #>
 
 param(        

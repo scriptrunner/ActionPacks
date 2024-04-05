@@ -17,44 +17,43 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the URL of the site collection to update
+        [sr-en] URL of the site collection to update
 
     .Parameter RemoveLabel
 
     .Parameter DisableSharingForNonOwners
-        This parameter prevents non-owners from invited new users to the site
+        [sr-en] This parameter prevents non-owners from invited new users to the site
 
     .Parameter EnablePWA
-        Determines whether site can include Project Web App
+        [sr-en] Determines whether site can include Project Web App
 
     .Parameter AllowEditing
-        Prevents users from editing Office files in the browser and copying and pasting Office file contents out of the browser window
+        [sr-en] Prevents users from editing Office files in the browser and copying and pasting Office file contents out of the browser window
 
     .Parameter AllowSelfServiceUpgrade
-        Determines whether site collection administrators can upgrade their site collections
+        [sr-en] Determines whether site collection administrators can upgrade their site collections
 
     .Parameter AnonymousLinkExpirationInDays
-        Specifies all anonymous/anyone links that have been created (or will be created) will expire after the set number of days
+        [sr-en] All anonymous/anyone links that have been created (or will be created) will expire after the set number of days
 
     .Parameter CommentsOnSitePagesDisabled
 
     .Parameter ConditionalAccessPolicy
-        Conditional Access Policy usage in SharePoint Online
+        [sr-en] Conditional Access Policy usage in SharePoint Online
 
     .Parameter DefaultLinkPermission
-        The default link permission for the site collection
+        [sr-en] The default link permission for the site collection
 
     .Parameter DefaultSharingLinkType
-        The default link type for the site collection
+        [sr-en] The default link type for the site collection
 
     .Parameter DenyAddAndCustomizePages
-        Determines whether the Add And Customize Pages right is denied on the site collection
+        [sr-en] Determines whether the Add And Customize Pages right is denied on the site collection
 
     .Parameter DisableAppViews
     
@@ -65,59 +64,59 @@
     .Parameter LimitedAccessFileType
 
     .Parameter LocaleId
-        Specifies the language of this site collection
+        [sr-en] Language of this site collection
 
     .Parameter LockState
-        Sets the lock state on a site
+        [sr-en] Sets the lock state on a site
 
     .Parameter NoWait
-        Specifies to continue executing script immediately
+        [sr-en] Continue executing script immediately
 
     .Parameter OverrideTenantAnonymousLinkExpirationPolicy
-        Choose whether to override the anonymous or anyone link expiration policy on this site
+        [sr-en] Choose whether to override the anonymous or anyone link expiration policy on this site
     
     .Parameter Owner
-        Specifies the owner of the site collection
+        [sr-en] Owner of the site collection
     
     .Parameter ResourceQuota
-        Specifies the resource quota in megabytes of the site collection
+        [sr-en] Resource quota in megabytes of the site collection
 
     .Parameter ResourceQuotaWarningLevel
-        Specifies the warning level in megabytes of the site collection to warn the site collection administrator that the site is approaching the resource quota
+        [sr-en] Warning level in megabytes of the site collection to warn the site collection administrator that the site is approaching the resource quota
 
     .Parameter RestrictedToGeo
 
     .Parameter SandboxedCodeActivationCapability
  
     .Parameter SharingAllowedDomainList
-        Specifies a list of email domains that is allowed for sharing with the external collaborators
+        [sr-en] List of email domains that is allowed for sharing with the external collaborators
 
     .Parameter SharingBlockedDomainList
-        Specifies a list of email domains that is blocked or prohibited for sharing with the external collaborators
+        [sr-en] List of email domains that is blocked or prohibited for sharing with the external collaborators
 
     .Parameter SharingCapability
-        Determines what level of sharing is available for the site
+        [sr-en] Determines what level of sharing is available for the site
 
     .Parameter SharingDomainRestrictionMode
-        Specifies the external sharing mode for domains
+        [sr-en] External sharing mode for domains
 
     .Parameter ShowPeoplePickerSuggestionsForGuestUsers
-        To enable the option to search for existing guest users at Site Collection Level, set this parameter to $true
+        [sr-en] To enable the option to search for existing guest users at Site Collection Level, set this parameter to $true
 
     .Parameter SocialBarOnSitePagesDisabled
-        Disables or enables the Social Bar for Site Collection
+        [sr-en] Disables or enables the Social Bar for Site Collection
 
     .Parameter StorageQuota
-        Specifies the storage quota in megabytes of the site collection
+        [sr-en] Storage quota in megabytes of the site collection
 
     .Parameter StorageQuotaReset
-        Resets the OneDrive for Business storage quota to the tenant’s new default storage space
+        [sr-en] Resets the OneDrive for Business storage quota to the tenant’s new default storage space
 
     .Parameter StorageQuotaWarningLevel
-        Specifies the warning level in megabytes of the site collection to warn the site collection administrator that the site is approaching the storage quota
+        [sr-en] Warning level in megabytes of the site collection to warn the site collection administrator that the site is approaching the storage quota
 
     .Parameter Title
-        Specifies the title of the site collection
+        [sr-en] Title of the site collection
 #>
 
 param(

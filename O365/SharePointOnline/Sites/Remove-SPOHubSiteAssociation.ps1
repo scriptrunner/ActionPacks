@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        URL of the site to remove from the hub site
+        [sr-en] URL of the site to remove from the hub site
 #>
 
 param(      

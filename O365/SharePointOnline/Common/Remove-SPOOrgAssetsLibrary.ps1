@@ -17,29 +17,23 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter LibraryUrl
-        Indicates the server relative URL of the library to be removed as a central location for organization assets
-
-    .Parameter ShouldRemoveFromCdn
+        [sr-en] Indicates the server relative URL of the library to be removed as a central location for organization assets
 #>
 
 param(         
     [Parameter(Mandatory = $true)]
-    [string]$LibraryUrl,
-    [Parameter(Mandatory = $true)]
-    [bool]$ShouldRemoveFromCdn
+    [string]$LibraryUrl
 )
 
 Import-Module Microsoft.Online.SharePoint.PowerShell
 
 try{    
-    $result = Remove-SPOOrgAssetsLibrary -LibraryUrl $LibraryUrl -ShouldRemoveFromCdn $ShouldRemoveFromCdn `
-                                           -Confirm:$false -ErrorAction Stop | Select-Object *
+    $result = Remove-SPOOrgAssetsLibrary -LibraryUrl $LibraryUrl -Confirm:$false -ErrorAction Stop | Select-Object *
       
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result

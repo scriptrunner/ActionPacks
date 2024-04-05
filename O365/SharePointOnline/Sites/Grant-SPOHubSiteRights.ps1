@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        URL of the hub site
+        [sr-en] URL of the hub site
 
     .Parameter Principals
-        One or more principles to add permissions for, comma separated
+        [sr-en] One or more principles to add permissions for, comma separated
 #>
 
 param(        

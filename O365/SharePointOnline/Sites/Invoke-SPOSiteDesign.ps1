@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        The ID of the site design to apply
+        [sr-en] ID of the site design to apply
 
     .Parameter WebUrl
-        The URL of the site collection where the site design will be applied
+        [sr-en] URL of the site collection where the site design will be applied
 #>
 
 param(        

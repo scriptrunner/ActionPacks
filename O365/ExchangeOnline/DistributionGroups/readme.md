@@ -1,6 +1,5 @@
-# Manage Distribution groups
+﻿# Manage Distribution groups
 The use of the scripts requires a remote PowerShell session to Exchange Online
-> Note: The use of the scripts requires ScriptRunner Version 4.x or higher.
 
 + [Add-EOMembersToDistributionGroups.ps1](./Add-EOMembersToDistributionGroups.ps1)
 

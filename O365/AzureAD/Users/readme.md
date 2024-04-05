@@ -1,5 +1,5 @@
-# Manage Users
-> Note: The use of the scripts requires the PowerShell Module ActiveDirectory v2 and ScriptRunner Version 4.x or higher.
+﻿# Manage Users
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory
 
 + [Add-AADUsersToRoles.ps1](./Add-AADUsersToRoles.ps1)
 

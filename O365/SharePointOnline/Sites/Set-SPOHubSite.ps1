@@ -17,28 +17,27 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        URL of the hub site
+        [sr-en] URL of the hub site
 
     .Parameter Description
-        A description of the hub site
+        [sr-en] A description of the hub site
 
     .Parameter LogoUrl
-        The URL of a logo to use in the hub navigation
+        [sr-en] URL of a logo to use in the hub navigation
 
     .Parameter RequiresJoinApproval
-        Determines if joining a Hub site requires approval
+        [sr-en] Determines if joining a Hub site requires approval
 
     .Parameter SiteDesignId
-        Site Design ID, for example db752673-18fd-44db-865a-aa3e0b28698e
+        [sr-en] Site Design ID, for example db752673-18fd-44db-865a-aa3e0b28698e
 
     .Parameter Title
-        The display name of the hub
+        [sr-en] The display name of the hub
 #>
 
 param(        

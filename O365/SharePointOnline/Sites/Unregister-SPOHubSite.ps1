@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        Guid based identifier or URL of the site to disable the hub site feature
+        [sr-en] Guid based identifier or URL of the site to disable the hub site feature
 #>
 
 param(        

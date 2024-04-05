@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter Identity
-        It's the unique identifier of the Public CDN path
+        [sr-en] It's the unique identifier of the Public CDN path
 #>
 
 param(     

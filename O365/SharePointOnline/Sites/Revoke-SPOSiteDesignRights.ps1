@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        The ID of the site design from which to revoke rights
+        [sr-en] ID of the site design from which to revoke rights
 
     .Parameter Principals
-        One or more principles to revoke rights on the specified site design, comma separated
+        [sr-en] One or more principles to revoke rights on the specified site design, comma separated
 #>
 
 param(        

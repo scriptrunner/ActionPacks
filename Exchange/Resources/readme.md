@@ -1,7 +1,6 @@
-# Manage Resources
+﻿# Manage Resources
 
 Note: The use of the scripts requires a remote PowerShell session to Microsoft Exchange Server.<br>
-Requirements: ScriptRunner Version 4.x or higher
 
 + [Get-ExActiveSyncMailboxPolicies.ps1](./Get-ExActiveSyncMailboxPolicies.ps1)
 

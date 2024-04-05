@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter HidesThemes
-        Hide the default themes
+        [sr-en] Hide the default themes
 #>
 
 param(     

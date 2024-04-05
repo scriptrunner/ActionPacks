@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter ExecuteCredentials
-        Credentials of a site collection administrator to use to connect to the site collection
+        [sr-en] Credentials of a site collection administrator to use to connect to the site collection
 
     .Parameter TargetWebUrl
-        The fully qualified target web URL where the package will be imported
+        [sr-en] The fully qualified target web URL where the package will be imported
 
     .Parameter JobId
-        The ID of a migration job that exists on the target site collection
+        [sr-en] The ID of a migration job that exists on the target site collection
 
     .Parameter NoLogFile
-        Used to not create a log file
+        [sr-en] Used to not create a log file
 #>
 
 param(     

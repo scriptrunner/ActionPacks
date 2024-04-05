@@ -17,28 +17,27 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the URL of the site collection
+        [sr-en] URL of the site collection
 
     .Parameter Limit
-        Specifies the maximum number of site collections to return
+        [sr-en] Maximum number of site collections to return
 
     .Parameter Detailed
-        Use this parameter to get additional property information on a site collection
+        [sr-en] Use this parameter to get additional property information on a site collection
 
     .Parameter IncludePersonalSite
-        Displays personal sites when value is set to $true
+        [sr-en] Displays personal sites when value is set to $true
 
     .Parameter Template
-        Displays sites of a specific template
+        [sr-en] Displays sites of a specific template
 
     .Parameter Properties
-        List properties to expand. Use * for all properties
+        [sr-en] List properties to expand. Use * for all properties
 #>
 
 param(        

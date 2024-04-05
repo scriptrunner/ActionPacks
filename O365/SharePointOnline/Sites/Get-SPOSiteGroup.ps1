@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Group
-        Specifies the group name
+        [sr-en] Group name
 
     .Parameter Site
-        Specifies the site collection scope
+        [sr-en] Site collection scope
 
     .Parameter Limit
-        Specifies the maximum number of site collections to return
+        [sr-en] Maximum number of site collections to return
 #>
 
 param(            

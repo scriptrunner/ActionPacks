@@ -16,9 +16,6 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.0.3 or greater
-    Requires .NET Framework Version 4.7.2.
-    Requires a ScriptRunner Microsoft 365 target
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/O365/MS-Teams/Apps

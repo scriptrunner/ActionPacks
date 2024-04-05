@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter Disable
-        Disable the current tenant's "SharePoint Online Client" service principal
+        [sr-en] Disable the current tenant's "SharePoint Online Client" service principal
 #>
 
 param(            

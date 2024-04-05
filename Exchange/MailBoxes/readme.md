@@ -1,7 +1,6 @@
-# Manage Mailboxes
+﻿# Manage Mailboxes
 
 Note: The use of the scripts requires a remote PowerShell session to Microsoft Exchange Server.<br>
-Requirements: ScriptRunner Version 4.x or higher
 
 + [Export-ExMailbox.ps1](./Export-ExMailbox.ps1)
 

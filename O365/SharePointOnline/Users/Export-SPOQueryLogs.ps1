@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter LoginName
-        Specifies the login name of the user to export
+        [sr-en] Login name of the user to export
 
     .Parameter OutputFolder
-        Target folder where the CSV file is generated
+        [sr-en] Target folder where the CSV file is generated
 
     .Parameter StartTime
-        Specifies from which point of time to export the logs from
+        [sr-en] Point of time to export the logs from
 #>
 
 param(            

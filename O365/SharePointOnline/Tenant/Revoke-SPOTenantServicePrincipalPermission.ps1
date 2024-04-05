@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter ObjectId
-        The Object ID of the permission grant to revoke
+        [sr-en] Object ID of the permission grant to revoke
 #>
 
 param(            

@@ -17,34 +17,33 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter ExecuteCredentials
-        Credentials of a site collection administrator to use to connect to the site collection
+        [sr-en] Credentials of a site collection administrator to use to connect to the site collection
 
     .Parameter MigrationPackageAzureLocations
-        A set of fully qualified URLs and SAS tokens representing the Azure Blob Storage containers that hold the package content and metadata files and an optional Azure Storage Reporting Queue
+        [sr-en] A set of fully qualified URLs and SAS tokens representing the Azure Blob Storage containers that hold the package content and metadata files and an optional Azure Storage Reporting Queue
 
     .Parameter DontWaitForEndJob
-        Not wait for the job to end
+        [sr-en] Not wait for the job to end
 
     .Parameter EncryptionParameters
-        Parameters of the encryption
+        [sr-en] Parameters of the encryption
 
     .Parameter JobIds
-        Id of a previously created migration job that exists on the target site collection, comma separated
+        [sr-en] Id of a previously created migration job that exists on the target site collection, comma separated
 
     .Parameter NoLogFile
-        Used to not create a log file
+        [sr-en] Used to not create a log file
 
     .Parameter AzureQueueUri
-        An optional fully qualified URL and SAS token representing the Azure Storage Reporting Queue where import operations will list events during import
+        [sr-en] An optional fully qualified URL and SAS token representing the Azure Storage Reporting Queue where import operations will list events during import
 
     .Parameter TargetWebUrl
-        The fully qualified target web URL where the package will be imported into
+        [sr-en] The fully qualified target web URL where the package will be imported into
 #>
 
 param(     

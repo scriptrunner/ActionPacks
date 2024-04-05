@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter LoginName
-        Specifies the user name
+        [sr-en] User name
 
     .Parameter Group
-        Specifies the group to get the users from
+        [sr-en] Group to get the users from
 
     .Parameter Site
-        Specifies the URL of the site collection to get the user from
+        [sr-en] URL of the site collection to get the user from
 
     .Parameter Limit
-        Specifies the maximum number of users returned
+        [sr-en] Maximum number of users returned
 #>
 
 param(            

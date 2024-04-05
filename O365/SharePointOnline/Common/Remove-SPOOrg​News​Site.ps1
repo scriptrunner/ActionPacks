@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter OrgNewsSiteUrl
-        The URL of a site to be marked as an organizational news site
+        [sr-en] URL of a site to be marked as an organizational news site
 #>
 
 param(     

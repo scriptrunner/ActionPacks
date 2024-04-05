@@ -17,31 +17,30 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Site
-        The site collection being connected to new Office 365 Group
+        [sr-en] The site collection being connected to new Office 365 Group
 
     .Parameter Alias
-        Specifies the email alias for the new Office 365 Group that will be created
+        [sr-en] Email alias for the new Office 365 Group that will be created
 
     .Parameter DisplayName
-        Specifies the name of the new Office 365 Group that will be created
+        [sr-en] Name of the new Office 365 Group that will be created
 
     .Parameter Classification
-        Specifies the classification value, if classifications are set for the organization
+        [sr-en] Classification value, if classifications are set for the organization
 
     .Parameter Description
-        Specifies the group’s description
+        [sr-en] Group’s description
 
     .Parameter IsPublic
-        Determines the Office 365 Group’s privacy setting
+        [sr-en] Determines the Office 365 Group’s privacy setting
 
     .Parameter KeepOldHomepage
-        For sites that already have a modern page set as homepage, you can specify whether you want to keep it as the homepage
+        [sr-en] For sites that already have a modern page set as homepage, you can specify whether you want to keep it as the homepage
 #>
 
 param(

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,43 +20,43 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Firewall
 
 .Parameter DisplayName
-    Specifies that only matching firewall rule of the indicated display name are created
+    [sr-en] Only matching firewall rule of the indicated display name are created
 
 .Parameter Direction
-    Specifies that matching firewall rule of the indicated direction are created
+    [sr-en] Matching firewall rule of the indicated direction are created
 
 .Parameter Description
-    Specifies that matching firewall rule of the indicated description are created
+    [sr-en] Matching firewall rule of the indicated description are created
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the firewall rule
+    [sr-en] Name of the computer from which to retrieve the firewall rule
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter Action
-    Specifies that matching firewall rule of the indicated action are created
+    [sr-en] Matching firewall rule of the indicated action are created
 
 .Parameter Authentication
-    Specifies that authentication is required on firewall rule
+    [sr-en] Authentication is required on firewall rule
 
 .Parameter Enabled 
-    Specifies that matching firewall rule of the indicated state are retrieved
+    [sr-en] Matching firewall rule of the indicated state are retrieved
 
 .Parameter LocalPort
-    Specifies that network packets with matching IP local port numbers match this rule
+    [sr-en] Network packets with matching IP local port numbers match this rule
 
 .Parameter Name
-    Specifies that only matching firewall rule of the indicated name are created
+    [sr-en] Only matching firewall rule of the indicated name are created
 
 .Parameter Program
-    Specifies the path and file name of the program for which the rule allows traffic
+    [sr-en] Path and file name of the program for which the rule allows traffic
 
 .Parameter Protocol
-    Specifies that network packets with matching IP addresses match this rule
+    [sr-en] Network packets with matching IP addresses match this rule
 
 .Parameter RemoteAddress
-    Specifies that network packet with matching IP address match this rule
+    [sr-en] Network packet with matching IP address match this rule
 #>
 
 [CmdLetBinding()]

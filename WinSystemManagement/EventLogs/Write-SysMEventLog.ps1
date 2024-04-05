@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,31 +20,31 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter CustomLogName
-    Specifies the name of the custom event log, enter the log name (not the LogDisplayName)
+    [sr-en] Name of the custom event log, enter the log name (not the LogDisplayName)
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
 
 .Parameter EventID
-    Specifies the event identifier. The maximum value for the EventId parameter is 65535
+    [sr-en] Event identifier. The maximum value for the EventId parameter is 65535
 
 .Parameter Message 
-    Specifies the event message
+    [sr-en] Event message
 
 .Parameter Source
-    Specifies the event source, which is typically the name of the application that is writing the event to the log
+    [sr-en] Event source, which is typically the name of the application that is writing the event to the log
 
 .Parameter SourceName
-    Specifies the event source, which is typically the name of the application that is writing the event to the log
+    [sr-en] Event source, which is typically the name of the application that is writing the event to the log
 
 .Parameter EntryType
-    Specifies the entry type of the event
+    [sr-en] Entry type of the event
 
 .Parameter Category
-    Specifies a task category for the event
+    [sr-en] Task category for the event
 #>
 
 [CmdLetBinding()]

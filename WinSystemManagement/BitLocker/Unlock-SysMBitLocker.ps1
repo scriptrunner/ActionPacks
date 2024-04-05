@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -15,31 +15,30 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
 
 .Parameter DriveLetter
-    Specifies the drive letter
+    [sr-en] Drive letter
 
 .Parameter AdAccountOrGroup
-    Indicates that BitLocker requires account credentials to unlock the volume
+    [sr-en] BitLocker requires account credentials to unlock the volume
 
 .Parameter Password
-    Specifes a string that contains a password. The password specified acts as a protector for the volume encryption key
+    [sr-en] String that contains a password. The password specified acts as a protector for the volume encryption key
 
 .Parameter RecoveryPassword
-    Specifies a recovery password. The password specified acts as a protector for the volume encryption key
+    [sr-en] Recovery password. The password specified acts as a protector for the volume encryption key
 
 .Parameter RecoveryKeyPath
-    Specifies the path to a recovery key. The key stored in the specified path acts as a protector for the volume encryption
+    [sr-en] Path to a recovery key. The key stored in the specified path acts as a protector for the volume encryption
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

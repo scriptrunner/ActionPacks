@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,143 +20,143 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Defender
 
 .Parameter ExclusionExtension    
-    Specifies, comma separated, file name extensions, such as obj or lib, to exclude from scheduled, custom, and real-time scanning
+    [sr-en] Comma separated, file name extensions, such as obj or lib, to exclude from scheduled, custom, and real-time scanning
 
 .Parameter ExclusionPath
-    Specifies, comma separated, file paths to exclude from scheduled and real-time scanning. 
+    [sr-en] Comma separated, file paths to exclude from scheduled and real-time scanning. 
     You can specify a folder to exclude all the files under the folder
 
 .Parameter CheckForSignaturesBeforeRunningScan
-     Indicates whether to check for new virus and spyware definitions before Windows Defender runs a scan
+     [sr-en] Check for new virus and spyware definitions before Windows Defender runs a scan
 
 .Parameter DisableArchiveScanning
-    Indicates whether to scan archive files, such as .zip and .cab files, for malicious and unwanted software
+    [sr-en] Scan archive files, such as .zip and .cab files, for malicious and unwanted software
 
 .Parameter DisableAutoExclusions
-    Indicates whether to disable the Automatic Exclusions feature for the server
+    [sr-en] Disable the Automatic Exclusions feature for the server
 
 .Parameter DisableBehaviorMonitoring
-    Indicates whether to enable behavior monitoring
+    [sr-en] Enable behavior monitoring
 
 .Parameter DisableCatchupFullScan
-    Indicates whether Windows Defender runs catch-up scans for scheduled full scans
+    [sr-en] Windows Defender runs catch-up scans for scheduled full scans
 
 .Parameter DisableCatchupQuickScan
-    Indicates whether Windows Defender runs catch-up scans for scheduled quick scans
+    [sr-en] Windows Defender runs catch-up scans for scheduled quick scans
 
 .Parameter DisableEmailScanning
-    Indicates whether Windows Defender parses the mailbox and mail files, according to their specific format, in order to analyze mail bodies and attachments
+    [sr-en] Windows Defender parses the mailbox and mail files, according to their specific format, in order to analyze mail bodies and attachments
 
 .Parameter DisableIOAVProtection
-    Indicates whether Windows Defender scans all downloaded files and attachments
+    [sr-en] Windows Defender scans all downloaded files and attachments
 
 .Parameter DisableIntrusionPreventionSystem
-    Indicates whether to configure network protection against exploitation of known vulnerabilities
+    [sr-en] Configure network protection against exploitation of known vulnerabilities
 
 .Parameter DisablePrivacyMode
-    Indicates whether to disable privacy mode
+    [sr-en] Disable privacy mode
 
 .Parameter DisableRealtimeMonitoring
-    Indicates whether to use real-time protection
+    [sr-en] Use real-time protection
 
 .Parameter DisableRemovableDriveScanning
-    Indicates whether to scan for malicious and unwanted software in removable drives, such as flash drives, during a full scan
+    [sr-en] Scan for malicious and unwanted software in removable drives, such as flash drives, during a full scan
 
 .Parameter DisableRestorePoint
-    Indicates whether to disable scanning of restore points
+    [sr-en] Disable scanning of restore points
 
 .Parameter DisableScanningMappedNetworkDrivesForFullScan
-     Indicates whether to scan mapped network drives
+     [sr-en] Scan mapped network drives
 
 .Parameter DisableScanningNetworkFiles
-    Indicates whether to scan for network files
+    [sr-en] Scan for network files
 
 .Parameter DisableScriptScanning
-     Specifies whether to disable the scanning of scripts during malware scans
+     [sr-en] Disable the scanning of scripts during malware scans
 
 .Parameter HighThreatDefaultAction
-    Specifies which automatic remediation action to take for a high level threat
+    [sr-en] Automatic remediation action to take for a high level threat
     
 .Parameter LowThreatDefaultAction
-    Specifies which automatic remediation action to take for a low level threat
+    [sr-en] Automatic remediation action to take for a low level threat
     
 .Parameter ModerateThreatDefaultAction
-    Specifies which automatic remediation action to take for a moderate level threat
+    [sr-en] Automatic remediation action to take for a moderate level threat
 
 .Parameter SevereThreatDefaultAction
-    Specifies which automatic remediation action to take for a severe level threat
+    [sr-en] Automatic remediation action to take for a severe level threat
 
 .Parameter MAPSReporting 
-    Specifies the type of membership in Microsoft Active Protection Service
+    [sr-en] Type of membership in Microsoft Active Protection Service
 
 .Parameter QuarantinePurgeItemsAfterDelay
-    Specifies the number of days to keep items in the Quarantine folder
+    [sr-en] Number of days to keep items in the Quarantine folder
 
 .Parameter RandomizeScheduleTaskTimes
-    Indicates whether to select a random time for the scheduled start and scheduled update for definitions
+    [sr-en] Select a random time for the scheduled start and scheduled update for definitions
 
 .Parameter RealTimeScanDirection
-    Specifies scanning configuration for incoming and outgoing files on NTFS volumes
+    [sr-en] Scanning configuration for incoming and outgoing files on NTFS volumes
 
 .Parameter RemediationScheduleDay
-    Specifies the day of the week on which to perform a scheduled full scan in order to complete remediation
+    [sr-en] Day of the week on which to perform a scheduled full scan in order to complete remediation
 
 .Parameter ReportingAdditionalActionTimeOut
-    Specifies the number of minutes before a detection in the additional action state changes to the cleared state
+    [sr-en] Number of minutes before a detection in the additional action state changes to the cleared state
 
 .Parameter ReportingCriticalFailureTimeOut
-    Specifies the number of minutes before a detection in the critically failed state changes to either the additional action state or the cleared state
+    [sr-en] Number of minutes before a detection in the critically failed state changes to either the additional action state or the cleared state
 
 .Parameter ReportingNonCriticalTimeOut
-    Specifies the number of minutes before a detection in the non-critically failed state changes to the cleared state
+    [sr-en] Number of minutes before a detection in the non-critically failed state changes to the cleared state
 
 .Parameter ScanAvgCPULoadFactor
-    Specifies the maximum percentage CPU usage for a scan
+    [sr-en] Maximum percentage CPU usage for a scan
 
 .Parameter ScanOnlyIfIdleEnabled
-    Indicates whether to start scheduled scans only when the computer is not in use
+    [sr-en] Start scheduled scans only when the computer is not in use
 
 .Parameter ScanParameters
-    Specifies the scan type to use during a scheduled scan
+    [sr-en] Scan type to use during a scheduled scan
 
 .Parameter ScanPurgeItemsAfterDelay
-    Specifies the number of days to keep items in the scan history folder
+    [sr-en] Number of days to keep items in the scan history folder
 
 .Parameter ScanScheduleDay
-    Specifies the day of the week on which to perform a scheduled scan
+    [sr-en] Day of the week on which to perform a scheduled scan
 
 .Parameter SignatureAuGracePeriod
-    Specifies a grace period, in minutes, for the definition. If a definition successfully updates within this period, Windows Defender abandons any service initiated updates
+    [sr-en] Grace period, in minutes, for the definition. If a definition successfully updates within this period, Windows Defender abandons any service initiated updates
 
 .Parameter SignatureDisableUpdateOnStartupWithoutEngine
-    Indicates whether to initiate definition updates even if no antimalware engine is present
+    [sr-en] Initiate definition updates even if no antimalware engine is present
 
 .Parameter SignatureFirstAuGracePeriod
-    Specifies a grace period, in minutes, for the definition
+    [sr-en] Grace period, in minutes, for the definition
 
 .Parameter SignatureScheduleDay
-    Specifies the day of the week on which to check for definition updates
+    [sr-en] Day of the week on which to check for definition updates
 
 .Parameter SignatureUpdateCatchupInterval
-    Specifies the number of days after which Windows Defender requires a catch-up definition update
+    [sr-en] Number of days after which Windows Defender requires a catch-up definition update
 
 .Parameter SignatureUpdateInterval
     Specifies the interval, in hours, at which to check for definition updates
 
 .Parameter SubmitSamplesConsent
-    Specifies how Windows Defender checks for user consent for certain samples
+    [sr-en] Windows Defender checks for user consent for certain samples
 
 .Parameter UILockdown
-    Indicates whether to disable UI lockdown mode
+    [sr-en] Disable UI lockdown mode
 
 .Parameter UnknownThreatDefaultAction
-    Specifies which automatic remediation action to take for an unknown level threat
+    [sr-en] Automatic remediation action to take for an unknown level threat
 
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,19 +21,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_REPORTS_ 
 
 .Parameter RestorePointID
-    Specifies the restore point number, the value 0 returns all restore points
+    [sr-en] Restore point number, the value 0 returns all restore points
 
 .Parameter LastStatus
-    Gets the status of the most recent system restore operation
+    [sr-en] Gets the status of the most recent system restore operation
 
 .Parameter Properties
-    List of properties to expand, comma separated e.g. SequenceNumber,Description. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. SequenceNumber,Description. Use * for all properties
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

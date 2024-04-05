@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -15,67 +15,66 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
 
 .Parameter DriveLetter
-    Specifies the drive letter
+    [sr-en] Drive letter
 
 .Parameter AdAccountOrGroup
-    Specifies an account using the format Domain\User. Adds the account you specify as a key protector for the volume encryption key
+    [sr-en] Account using the format Domain\User. Adds the account you specify as a key protector for the volume encryption key
 
 .Parameter TpmProtector
-    Indicates that BitLocker uses the TPM as a protector for the volume encryption key
+    [sr-en] BitLocker uses the TPM as a protector for the volume encryption key
 
 .Parameter TpmAndPinProtector
-    Indicates that BitLocker uses a combination of the TPM and a PIN as a protector for the volume encryption key
+    [sr-en] BitLocker uses a combination of the TPM and a PIN as a protector for the volume encryption key
 
 .Parameter TpmAndStartupKeyProtector
-    Indicates that BitLocker uses a combination of the TPM and a startup key as a protector for the volume encryption key
+    [sr-en] BitLocker uses a combination of the TPM and a startup key as a protector for the volume encryption key
 
 .Parameter TpmAndPinAndStartupKeyProtector
-    Indicates that BitLocker uses a combination of the TPM, a PIN, and a startup key as a protector for the volume encryption key.
+    [sr-en] BitLocker uses a combination of the TPM, a PIN, and a startup key as a protector for the volume encryption key.
 
 .Parameter StartupKeyProtector
-    Indicates that BitLocker uses a startup key as a protector for the volume encryption key
+    [sr-en] BitLocker uses a startup key as a protector for the volume encryption key
 
 .Parameter Pin
-    Specifies a string object that contains a PIN. BitLocker uses the PIN specified, with other data, as a protector for the volume encryption key
+    [sr-en] PIN. BitLocker uses the PIN specified, with other data, as a protector for the volume encryption key
 
 .Parameter Service
-    Indicates that the system account for this computer unlocks the encrypted volume
+    [sr-en] System account for this computer unlocks the encrypted volume
  
 .Parameter StartupKeyPath
-    Specifies a path to a startup key. The key stored in the specified path acts as a protector for the volume encryption key
+    [sr-en] Path to a startup key. The key stored in the specified path acts as a protector for the volume encryption key
 
 .Parameter RecoveryKeyPath
-    Specifies a path to a recovery key. The key stored in the specified path acts as a protector for the volume encryption key
+    [sr-en] Path to a recovery key. The key stored in the specified path acts as a protector for the volume encryption key
 
 .Parameter Password
-    Specifies a secure string object that contains a password
+    [sr-en] Secure string object that contains a password
 
 .Parameter RecoveryPassword
-    Specifies a recovery password
+    [sr-en] Recovery password
 
 .Parameter EncryptionMethod
-    List of properties to expand, comma separated e.g. VolumeStatus,EncryptionMethod. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. VolumeStatus,EncryptionMethod. Use * for all properties
 
 .Parameter HardwareEncryption
-    Indicates that the volume uses hardware encryption
+    [sr-en] Volume uses hardware encryption
 
 .Parameter SkipHardwareTest
-    Indicates that BitLocker does not perform a hardware test before it begins encryption
+    [sr-en] BitLocker does not perform a hardware test before it begins encryption
 
 .Parameter UsedSpaceOnly
-    Indicates that BitLocker does not encrypt disk space which contains unused data
+    [sr-en] BitLocker does not encrypt disk space which contains unused data
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

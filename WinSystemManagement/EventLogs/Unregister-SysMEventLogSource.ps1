@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,10 +20,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter Source
-    Specifies the event source that unregisters. Enter the source name, not the executable name
+    [sr-en] Event source that unregisters. Enter the source name, not the executable name
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
 #>
 
 [CmdLetBinding()]

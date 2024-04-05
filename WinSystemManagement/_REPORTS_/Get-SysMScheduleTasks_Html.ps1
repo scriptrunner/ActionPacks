@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,16 +21,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_REPORTS_ 
 
 .Parameter TaskName
-    Specifies the name of a scheduled task. Use * for all tasks    
+    [sr-en] Name of a scheduled task. Use * for all tasks    
 
 .Parameter TaskPath 
-    Specifies the path for scheduled task in Task Scheduler namespace. Use * for all paths
+    [sr-en] Path for scheduled task in Task Scheduler namespace. Use * for all paths
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the schedule tasks.
+    [sr-en] Name of the computer from which to retrieve the schedule tasks.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

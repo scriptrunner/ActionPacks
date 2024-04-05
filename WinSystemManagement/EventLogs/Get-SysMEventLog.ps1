@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter CustomLogName
-    Specifies the name of the custom event log, enter the log name (not the LogDisplayName)
+    [sr-en] Name of the custom event log, enter the log name (not the LogDisplayName)
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
 
 .Parameter Properties
-    List of properties to expand, comma separated e.g. Log,LogDisplayName. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. Log,LogDisplayName. Use * for all properties
 #>
 
 [CmdLetBinding()]

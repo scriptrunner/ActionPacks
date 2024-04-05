@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Clients/ComputerRestore
 
 .Parameter EnableRestore
-    Specifies the status of computer restore
+    [sr-en] Status of computer restore
 
 .Parameter DriveLetter
-    Specifies the drive letter, enter a file system drive letter, followed by a colon and a backslash 
+    [sr-en] Drive letter, enter a file system drive letter, followed by a colon and a backslash 
 
 .Parameter DiskSpaceUsagePercent
-    Specifies the Disk Space Usage in percent
+    [sr-en] Disk Space Usage in percent
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,13 +20,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_QUERY_
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer
+    [sr-en] Remote computer, the default is the local computer
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
     
 .Parameter DriveLetter
-    Specifies the drive letter, if the parameter empty all volumes retrieved
+    [sr-en] Drive letter, if the parameter empty all volumes retrieved
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -23,34 +23,34 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter CsvFile
-    Specifies the path and filename of the CSV file to import
+    [sr-en] Path and filename of the CSV file to import
 
 .Parameter Delimiter
-    Specifies the delimiter that separates the property values in the CSV file
+    [sr-en] Delimiter that separates the property values in the CSV file
 
 .Parameter FileEncoding
-    Specifies the type of character encoding that was used in the CSV file
+    [sr-en] Type of character encoding that was used in the CSV file
 
 .Parameter MaxJobCount
-    Maximum number of concurrent executed jobs.
+    [sr-en] Maximum number of concurrent executed jobs.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter DefaultDataType
-    Specifies the default data type the printer uses to record print jobs
+    [sr-en] Default data type the printer uses to record print jobs
 
 .Parameter DefaultProcessor
-    Specifies the default name of the print processor used by the printer
+    [sr-en] Default name of the print processor used by the printer
 
 .Parameter DefaultPortAddress
-    Specifies the default name of the port that is used or created for the printer
+    [sr-en] Default name of the port that is used or created for the printer
 
 .Parameter DefaultPortNumber
-    Specifies the default TCP/IP port number for the printer port added to the specified computer
+    [sr-en] Default TCP/IP port number for the printer port added to the specified computer
 
 .Parameter DefaultRenderingMode
-    Specifies the default rendering mode for the printer
+    [sr-en] Default rendering mode for the printer
 
 .EXAMPLE
     .\Import-Printers.ps1 -CsvFile 'C:\Temp\printers.csv'

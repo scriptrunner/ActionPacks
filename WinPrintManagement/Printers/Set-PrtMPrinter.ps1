@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -23,40 +23,40 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter PrinterName
-    Specifies the name of the printer to modify
+    [sr-en] Name of the printer to modify
 
 .Parameter ComputerName
-    Specifies the name of the computer on which the printer is installed
+    [sr-en] Name of the computer on which the printer is installed
 
 .Parameter DriverName
-    Specifies the name of the printer driver for the printer
+    [sr-en] Name of the printer driver for the printer
 
 .Parameter Shared
-    Indicates whether to share the printer on the network
+    [sr-en] Share the printer on the network
 
 .Parameter ShareName
-    Specifies the name by which to share the printer on the network
+    [sr-en] Name by which to share the printer on the network
 
 .Parameter PortName
-    Specifies the name of the existing port that is used or created for the printer
+    [sr-en] Name of the existing port that is used or created for the printer
 
 .Parameter Comment
-    Specifies the text to add to the Comment field for the specified printer
+    [sr-en] Text to add to the Comment field for the specified printer
 
 .Parameter Location
-    Specifies the location of the printer
+    [sr-en] Location of the printer
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter DataType
-    Specifies the data type the printer uses to record print jobs
+    [sr-en] Data type the printer uses to record print jobs
 
 .Parameter PrintProcessor
-    Specifies the name of the print processor used by the printer
+    [sr-en] Name of the print processor used by the printer
 
 .Parameter RenderingMode
-    Specifies the rendering mode for the printer
+    [sr-en] Rendering mode for the printer
 #>
    
 [CmdLetBinding()]

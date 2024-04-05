@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,16 +22,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Jobs
 
 .Parameter PrinterName
-    Specifies the printer name on which to restart the print job
+    [sr-en] Printer name on which to restart the print job
 
 .Parameter JobID
-    Specifies the ID of the print job to restart on the specified printer
+    [sr-en] ID of the print job to restart on the specified printer
 
 .Parameter ComputerName
-    Specifies the name of the computer on which to restart the print job
+    [sr-en] Name of the computer on which to restart the print job
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

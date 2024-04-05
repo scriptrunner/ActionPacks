@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,13 +22,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter PrinterName
-    Specifies the name of the printer
+    [sr-en] Name of the printer
 
 .Parameter ComputerName
-    Specifies the computer name to the printer 
+    [sr-en] Computer name to the printer 
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
    
 [CmdLetBinding()]

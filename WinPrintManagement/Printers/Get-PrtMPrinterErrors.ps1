@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,10 +20,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter PrinterName
-    Specifies the name of the printer from which to retrieve the status
+    [sr-en] Name of the printer from which to retrieve the status
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the printer information
+    [sr-en] Name of the computer from which to retrieve the printer information
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,10 +20,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_QUERY_
 
 .Parameter ComputerName
-    Gets the active processes on the specified computer. The default is the local computer
+    [sr-en] Gets the active processes on the specified computer. The default is the local computer
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action
+    [sr-en] User account that has permission to perform this action
 #>
 
 [CmdLetBinding()]

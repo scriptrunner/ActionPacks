@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -20,10 +20,10 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/WinPrintManagement/Printers
 
     .Parameter PrinterName
-        Full name of the printer
+        [sr-en] Full name of the printer
         
     .Parameter UseWmi
-        Sets the printer via WMI as default, otherwise via .NET
+        [sr-en] Sets the printer via WMI as default, otherwise via .NET
 #>
 
 [CmdLetBinding()]
@@ -32,7 +32,6 @@ Param(
     [string]$PrinterName,
     [switch]$UseWmi
 )
-
 
 try{    
     function ViaDotNet(){
@@ -59,7 +58,6 @@ try{
             $prs.Dispose()
         }
     }
-
     function ViaWMI(){
         $prObj = Get-CimInstance -Class Win32_Printer -Filter "Name='$($PrinterName)'"
         # set default printer

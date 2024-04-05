@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,25 +22,25 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter PrinterName
-    Specifies the name of the printer from which to retrieve the configuration information
+    [sr-en] Name of the printer from which to retrieve the configuration information
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the printer configuration information
+    [sr-en] Name of the computer from which to retrieve the printer configuration information
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter Collate
-    Specifies whether to collate the output of the printer by default
+    [sr-en] Collate the output of the printer by default
 
 .Parameter Color
-    Specifies whether the printer should use either color or grayscale printing by default
+    [sr-en] Printer should use either color or grayscale printing by default
 
 .Parameter DuplexingMode
-    Specifies the duplexing mode the printer uses by default
+    [sr-en] Duplexing mode the printer uses by default
 
 .Parameter PaperSize
-    Specifies the paper size the printer uses by default
+    [sr-en] Paper size the printer uses by default
 #>
    
 [CmdLetBinding()]

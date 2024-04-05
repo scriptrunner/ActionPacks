@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,7 +20,7 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_QUERY_
 
 .Parameter ComputerName
-    Gets the service running on the specified computer. The default is the local computer
+    [sr-en] Gets the service running on the specified computer. The default is the local computer
 #>
 
 [CmdLetBinding()]

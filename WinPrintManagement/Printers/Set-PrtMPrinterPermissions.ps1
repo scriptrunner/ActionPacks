@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,37 +22,37 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter PrinterName
-    Specifies the name of the printer for which to set the permissions
+    [sr-en] Name of the printer for which to set the permissions
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the printer information
+    [sr-en] Name of the computer from which to retrieve the printer information
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the executing account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the executing account is used.
 
 .Parameter ADMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive permission to the specified printer. Use the comma to separate the members
 
 .Parameter Permission
-    Specifies the permission for the specified printer
+    [sr-en] Permission for the specified printer
 
 .Parameter PrintPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the print permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive the print permission to the specified printer. Use the comma to separate the members
 
 .Parameter ManagePrinterPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the manage printer permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive the manage printer permission to the specified printer. Use the comma to separate the members
 
 .Parameter ManageDocumentsPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the manage documents permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive the manage documents permission to the specified printer. Use the comma to separate the members
 
 .Parameter ReadPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the read permissions permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive the read permissions permission to the specified printer. Use the comma to separate the members
 
 .Parameter ChangePermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the change permissions permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive the change permissions permission to the specified printer. Use the comma to separate the members
 
 .Parameter TakeownershipPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to receive the takeownership permission to the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to receive the takeownership permission to the specified printer. Use the comma to separate the members
 #>
 
 [CmdLetBinding()]

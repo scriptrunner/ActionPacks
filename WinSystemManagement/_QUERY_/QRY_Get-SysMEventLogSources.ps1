@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,10 +20,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_QUERY_
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer
+    [sr-en] Remote computer, the default is the local computer
 #>
 
 [CmdLetBinding()]

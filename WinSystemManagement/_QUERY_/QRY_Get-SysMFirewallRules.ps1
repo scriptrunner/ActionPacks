@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_QUERY_
 
 .Parameter RuleName
-    Specifies that only matching firewall rules of the indicated name or display name are retrieved. Use * for all rules
+    [sr-en] Only matching firewall rules of the indicated name or display name are retrieved. Use * for all rules
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the firewall rules
+    [sr-en] Name of the computer from which to retrieve the firewall rules
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,7 +20,7 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Reporting
 
 .Parameter Status
-    Specifies the status to set for Windows Error Reporting
+    [sr-en] Status to set for Windows Error Reporting
 #>
 
 [CmdLetBinding()]

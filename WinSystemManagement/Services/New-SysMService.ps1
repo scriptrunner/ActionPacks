@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,25 +20,25 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Services
 
 .Parameter ComputerName
-    Gets the service running on the specified computer. The default is the local computer
+    [sr-en] Gets the service running on the specified computer. The default is the local computer
 
 .Parameter BinaryPathName
-    Specifies the path of the executable file for the service
+    [sr-en] Path of the executable file for the service
 
 .Parameter ServiceName
-    Specifies the name of the service
+    [sr-en] Name of the service
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action
+    [sr-en] User account that has permission to perform this action
 
 .Parameter DisplayName
-    Specifies a display name for the service
+    [sr-en] Display name for the service
 
 .Parameter Description
-    Specifies a description of the service.
+    [sr-en] Description of the service.
 
 .Parameter StartupType
-    Sets the startup type of the service
+    [sr-en] Sets the startup type of the service
 #>
 
 [CmdLetBinding()]

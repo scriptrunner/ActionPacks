@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/RemoteDesktop
 
 .Parameter Enable
-    Enable or disable RDP
+    [sr-en] Enable or disable RDP
 
 .Parameter SetFirewallRule
-    Enables or disables the Firewall Rule for Remote Desktop, too
+    [sr-en] Enables or disables the Firewall Rule for Remote Desktop, too
 
 .Parameter FirewallRuleGroupName
-    Specifies the name of the firewall group, e.g. englisch Remote Desktop, german Remotedesktop
+    [sr-en] Name of the firewall group, e.g. englisch Remote Desktop, german Remotedesktop
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

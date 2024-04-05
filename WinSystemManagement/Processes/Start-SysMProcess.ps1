@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,25 +20,25 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Processes
 
 .Parameter FilePath
-    Specifies the path (optional) and file name of the program that runs in the process
+    [sr-en] Path (optional) and file name of the program that runs in the process
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action
+    [sr-en] User account that has permission to perform this action
 
 .Parameter ArgumentList
-    Specifies parameters or parameter values to use when starting the process
+    [sr-en] Parameters or parameter values to use when starting the process
 
 .Parameter NoNewWindow
-    Start the new process in the current console window, by default Windows PowerShell opens a new window.
+    [sr-en] Start the new process in the current console window, by default Windows PowerShell opens a new window.
 
 .Parameter Verb
-    Indicates that this cmdlet gets the file version information for the program that runs in the process.
+    [sr-en] Gets the file version information for the program that runs in the process.
 
 .Parameter WindowStyle
-    Specifies the state of the window that is used for the new process
+    [sr-en] State of the window that is used for the new process
 
 .Parameter WorkingDirectory
-    Specifies the location of the executable file or document that runs in the process
+    [sr-en] Location of the executable file or document that runs in the process
 #>
 
 [CmdLetBinding()]

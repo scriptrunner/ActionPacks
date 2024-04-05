@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Processes
 
 .Parameter ComputerName
-    Computer on which the process is running. The default is the local computer
+    [sr-en] Computer on which the process is running. The default is the local computer
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action
+    [sr-en] User account that has permission to perform this action
 
 .Parameter ProcessID
-    Specifies the process by process ID (PID)
+    [sr-en] Process by process ID (PID)
 
 .Parameter ProcessName
-    Specifies the process by process name
+    [sr-en] Process by process name
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,23 +21,23 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter UserName
-    Specifies an name of user account that explorer settings changes. 
+    [sr-en] Name of user account that explorer settings changes. 
     If the parameter empty the settings of all logged on users where changes
 
 .Parameter HideFileExtensions
-    Specifies the setting "Hide extensions for known file types"
+    [sr-en] Setting "Hide extensions for known file types"
 
 .Parameter ShowHiddenFilesFoldersDrives
-    Specifies the setting "Show hidden files, folders, and drives"
+    [sr-en] Setting "Show hidden files, folders, and drives"
 
 .Parameter CheckBoxesToSelectItems
-    Specifies the setting "Item check boxes"
+    [sr-en] Setting "Item check boxes"
     
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

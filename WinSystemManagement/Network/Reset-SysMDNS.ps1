@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,13 +21,13 @@
 
 
 .Parameter AdapterName
-    Specifies the friendly name of the interface
+    [sr-en] Friendly name of the interface
 
 .Parameter ComputerName
-    Specifies the name of the computer on which to reset the dns
+    [sr-en] Name of the computer on which to reset the dns
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

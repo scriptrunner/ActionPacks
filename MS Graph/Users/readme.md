@@ -30,6 +30,10 @@
 
   Returns collection of this user's license details
 
++ [Get-MgUserMailboxSetting.ps1](./Get-MgUserMailboxSetting.ps1)
+
+  Returns user or contact that is this user's manager 
+
 + [Get-MGUUserManager.ps1](./Get-MGUUserManager.ps1)
 
   Returns user or contact that is this user's manager
@@ -106,9 +110,17 @@
 
   Returns settings for the user
 
++ [Get-MGUUserSponsor.ps1](./Get-MGUUserSponsor.ps1)
+
+  The users and groups responsible for this guest user's privileges in the tenant
+
 + [Get-MGUUserTodoList.ps1](./Get-MGUUserTodoList.ps1)
 
   Returns task lists in the users mailbox
+
++ [Get-MGUUserTodoListExtension.ps1](./Get-MGUUserTodoListExtension.ps1)
+
+  Collection of open extensions defined for the task list
 
 + [Get-MGUUserTodoTaskLinkedResource.ps1](./Get-MGUUserTodoTaskLinkedResource.ps1)
 
@@ -124,15 +136,35 @@
 
 + [Get-MGUUserTodoTaskAttachmentCount.ps1](./Get-MGUUserTodoTaskAttachmentCount.ps1)
 
-  Get the number of the resource  
+  Get the number of the resource
+
++ [Get-MGUUserTodoTaskAttachmentContent.ps1](./Get-MGUUserTodoTaskAttachmentContent.ps1)
+
+  Get media content for the navigation property attachments from users   
 
 + [Get-MGUUserTodoTaskChecklistItem.ps1](./Get-MGUUserTodoTaskChecklistItem.ps1)
 
-  Read the properties and relationships of a taskFileAttachment object
+  Read the properties and relationships of a taskFileAttachment object 
+
++ [Get-MGUUserTodoTaskExtension.ps1](./Get-MGUUserTodoTaskExtension.ps1)
+
+  Collection of open extensions defined for the task  
+
++ [Get-MGUUserTransitiveMemberOf.ps1](./Get-MGUUserTransitiveMemberOf.ps1)
+
+  Returns groups, including nested groups, and directory roles that a user is a member of 
+
++ [Get-MGUUserTransitiveMemberOfCount.ps1](./Get-MGUUserTransitiveMemberOfCount.ps1)
+
+  Get the number of the resource
 
 + [New-MGUUser.ps1](./New-MGUUser.ps1)
 
   Creates a User
+
++ [New-MGUUserExtension.ps1](./New-MGUUserExtension.ps1)
+
+  Create new navigation property to extensions for users
 
 + [New-MGUUserOutlookMasterCategory.ps1](./New-MGUUserOutlookMasterCategory.ps1)
 
@@ -141,6 +173,10 @@
 + [New-MGUUserTodoList.ps1](./New-MGUUserTodoList.ps1)
 
   Creates task list in the users mailbox
+
++ [New-MGUUserTodoListExtension.ps1](./New-MGUUserTodoListExtension.ps1)
+
+  Create new navigation property to extensions for users
 
 + [New-MGUUserTodoListTask.ps1](./New-MGUUserTodoListTask.ps1)
 
@@ -154,6 +190,10 @@
 
   Create a new checklistItem object
 
++ [New-MGUUserTodoListTaskExtension.ps1](./New-MGUUserTodoListTaskExtension.ps1)
+
+  Create new navigation property to extensions for users
+
 + [New-MGUUserTodoListTaskLinkedResource.ps1](./New-MGUUserTodoListTaskLinkedResource.ps1)
 
   Creates resource linked to the task
@@ -161,6 +201,14 @@
 + [Remove-MGUUser.ps1](./Remove-MGUUser.ps1)
 
   Removes a User
+
++ [Remove-MGUUserExtension.ps1](./Remove-MGUUserExtension.ps1)
+
+  Remove navigation property from user
+
++ [Remove-MGUUserLicenseDetail.ps1](./Remove-MGUUserLicenseDetail.ps1)
+
+  Delete navigation property licenseDetails for users
 
 + [Remove-MGUUserManager.ps1](./Remove-MGUUserManager.ps1)
 
@@ -170,9 +218,17 @@
 
   Removes category defined for the user
 
++ [Remove-MGUUserPhoto.ps1](./Remove-MGUUserPhoto.ps1)
+
+  Delete navigation property photo for users
+
 + [Remove-MGUUserTodoList.ps1](./Remove-MGUUserTodoList.ps1)
 
   Removes task list in the users mailbox
+
++ [Remove-MGUUserTodoListExtension.ps1](./Remove-MGUUserTodoListExtension.ps1)
+
+  Delete navigation property extensions for users
 
 + [Remove-MGUUserTodoListTask.ps1](./Remove-MGUUserTodoListTask.ps1)
 
@@ -182,6 +238,10 @@
 
   Delete a checklistItem object
 
++ [Remove-MGUUserTodoListTaskExtension.ps1](./Remove-MGUUserTodoListTaskExtension.ps1)
+
+  Delete navigation property extensions for users
+
 + [Remove-MGUUserTodoListTaskLinkedResource.ps1](./Remove-MGUUserTodoListTaskLinkedResource.ps1)
 
   Removes resource linked to the task
@@ -189,6 +249,18 @@
 + [Set-MGUUser.ps1](./Set-MGUUser.ps1)
 
   Updates a User
+
++ [Set-MGUUserExtension.ps1](./Set-MGUUserExtension.ps1)
+
+  Sets the navigation property extensions in user
+
++ [Set-MGUUserLicenseDetail.ps1](./Set-MGUUserLicenseDetail.ps1)
+
+  Update the navigation property licenseDetails in users
+
++ [Set-MGUUserMailboxSetting.ps1](./Set-MGUUserMailboxSetting.ps1)
+
+  Updates settings for the primary mailbox of the user
 
 + [Set-MGUUserManager.ps1](./Set-MGUUserManager.ps1)
 
@@ -210,6 +282,10 @@
 
   Updates task list in the users mailbox
 
++ [Set-MGUUserTodoListExtension.ps1](./Set-MGUUserTodoListExtension.ps1)
+
+  Update the navigation property extensions in users
+
 + [Set-MGUUserTodoListTask.ps1](./Set-MGUUserTodoListTask.ps1)
 
   Updates task in this task list
@@ -218,9 +294,17 @@
 
   Update the properties of a checklistItem object
 
++ [Set-MGUUserTodoListTaskExtension.ps1](./Set-MGUUserTodoListTaskExtension.ps1)
+
+  Update the navigation property extensions in users
+
 + [Set-MGUUserTodoListTaskLinkedResource.ps1](./Set-MGUUserTodoListTaskLinkedResource.ps1)
 
   Updates resource linked to the task
+
++ [Set-MGUUserTodoTaskAttachmentContent.ps1](./Set-MGUUserTodoTaskAttachmentContent.ps1)
+
+  Update media content for the navigation property attachments in users
 
 ## [Queries](./_QUERY_)
 

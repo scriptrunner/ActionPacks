@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -41,8 +40,7 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
-    $mng = Get-MgUser -UserId $ManagerId | Select-Object ID
+    $null = Get-MgUser -UserId $ManagerId | Select-Object ID
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
                 'OdataId' = "https://graph.microsoft.com/v1.0/directoryObjects/$($ManagerId)"
@@ -51,7 +49,7 @@ try{
     }
     $result = Set-MgUserManagerByRef @cmdArgs
 
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -62,5 +60,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

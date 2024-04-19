@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -25,34 +24,23 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
-        
-    .Parameter PhotoId
-        [sr-en] Unique identifier of profilePhoto
-        [sr-de] Photo ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId,
-    [string]$PhotoId
+    [string]$UserId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
-    }
-    if($PSBoundParameters.ContainsKey('PhotoId') -eq $true){
-        $cmdArgs.Add('ProfilePhotoId',$PhotoId)
-    }
-    else {
-        $cmdArgs.Add('All',$null)
+                'All' = $null
     }
     $result = Get-MgUserPhoto @cmdArgs | Select-Object *
 
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -63,5 +51,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

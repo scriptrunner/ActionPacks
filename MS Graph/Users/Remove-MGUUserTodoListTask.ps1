@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -48,7 +47,6 @@ Import-Module Microsoft.Graph.Users
 
 try{
     [string[]]$Properties = @('Title','Id','CreatedDateTime','Status')
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
@@ -59,7 +57,7 @@ try{
     $null = Remove-MgUserTodoListTask @cmdArgs
     
     $result = Get-MgUserTodoTask -UserId $UserId -TodoTaskListId $TodoTaskListId | Sort-Object Title | Select-Object $Properties | Format-List
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -70,5 +68,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

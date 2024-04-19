@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users 
 #>
 
@@ -26,7 +25,6 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     $result = Get-MgUser -All -Sort DisplayName | Sort-Object DisplayName
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
@@ -42,5 +40,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

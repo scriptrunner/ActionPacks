@@ -29,6 +29,9 @@ Use cases for managing Microsoft Graph
 Use cases to manage users, groups, and services in O365.<br>
 Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online, Skype4Business and MSOnline
 
+## [PowerShell SecretManagement](./PowerShell%20SecretManagement)
+Use cases for managing Microsoft PowerShell SecretManagement
+
 ## [Reporting](./Reporting)
 Report examples
 

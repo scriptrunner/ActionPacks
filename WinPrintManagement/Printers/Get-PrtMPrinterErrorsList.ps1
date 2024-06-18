@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,7 +20,7 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the printer informations
+    [sr-en] Name of the computer from which to retrieve the printer informations
 #>
 
 [CmdLetBinding()]

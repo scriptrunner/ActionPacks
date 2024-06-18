@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns directory objects that were created by the use
+        Returns directory objects that were created by the user
         
     .DESCRIPTION          
 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -32,17 +31,16 @@ param(
     [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Users
+Import-Module Microsoft.Graph.Users 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
                         'All' = $null
     }
     $result = Get-MgUserCreatedObject @cmdArgs | Select-Object * 
   
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -53,5 +51,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

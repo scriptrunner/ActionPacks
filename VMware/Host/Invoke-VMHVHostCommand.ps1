@@ -1,49 +1,57 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Invokes a command for the specified host. 
-    The acceptable commands are: Start, Stop, Suspend, Restart
+    .SYNOPSIS
+        Invokes a command for the specified host. 
+        The acceptable commands are: Start, Stop, Suspend, Restart
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter ID
-    Specifies the ID of the host you want to execute the command
+    .Parameter ID
+        [sr-en] ID of the host you want to execute the command
+        [sr-de] Id des Host
 
-.Parameter Name
-    Specifies the name of the host you want to execute the command
+    .Parameter Name
+        [sr-en] Name of the host you want to execute the command
+        [sr-de] Hostname
 
-.Parameter Command
-    Specifies the command that executed on the host
+    .Parameter Command
+        [sr-en] Command that executed on the host
+        [sr-de] Auszuführender Befehl
 
-.Parameter TimeoutSeconds
-    Specifies a time period in seconds to wait for a heartbeat signal from the host or 
-    to wait for the host to enter standby mode
+    .Parameter TimeoutSeconds
+        [sr-en] Time period in seconds to wait for a heartbeat signal from the host or 
+        to wait for the host to enter standby mode
+        [sr-de] Zeitspanne in Sekunden, um auf eine Antwort vom Host zu warten oder 
+        warten, bis der Host in den Standby-Modus wechselt
 
-.Parameter Evacuate 
-    If the value is $true, vCenter Server automatically reregisters the virtual machines that are compatible for reregistration. 
-    On restart, indicates that vCenter Server automatically reregisters the virtual machines that are compatible for reregistration
+    .Parameter Evacuate 
+        [sr-en] If the value is $true, vCenter Server automatically reregisters the virtual machines that are compatible for reregistration. 
+        On restart, indicates that vCenter Server automatically reregisters the virtual machines that are compatible for reregistration
+        [sr-de] Automatische Registrierung der kompatibelen virtuellen Maschinen
 #>
 
 [CmdLetBinding()]
@@ -70,7 +78,7 @@ Param(
     [switch]$Evacuate
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

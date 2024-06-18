@@ -1,40 +1,45 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the available counters
+    .SYNOPSIS
+        Retrieves the available counters
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Server
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Server
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter CounterName
-    Specifies the name of the counter you want to retrieve, is the parameter empty all counters retrieved
+    .Parameter CounterName
+        [sr-en] Name of the counter you want to retrieve, is the parameter empty all counters retrieved
+        [sr-de] Name des Zählers
 
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Name,Fields. Use * for all properties
-    
-.Parameter ExpandFields
-    Retrieve the expanded property fields
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
+        
+    .Parameter ExpandFields
+        [sr-en] Retrieve the expanded property fields
+        [sr-de] Erweiterte Eigenschaftsfelder
 #>
 
 [CmdLetBinding()]
@@ -49,7 +54,7 @@ Param(
     [switch]$ExpandFields
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     if($Properties -contains '*'){

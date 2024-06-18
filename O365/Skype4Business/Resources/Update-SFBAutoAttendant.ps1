@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,19 +18,18 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Resources
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        The identity for the AA whose resources are to be updated
+        [sr-en] The identity for the AA whose resources are to be updated
 
     .Parameter TenantID
-        Guid of the tenant
+        [sr-en] Guid of the tenant
 #>
 
 param(    

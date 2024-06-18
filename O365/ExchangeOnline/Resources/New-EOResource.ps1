@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -16,28 +16,27 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/Resources
 
     .Parameter Name
-        Specifies the unique name of the resource. The maximum length is 64 characters.
+        [sr-en] Unique name of the resource. The maximum length is 64 characters.
     
     .Parameter AccountDisabled
-        Specifies whether to disable the account that's associated with the resource
+        [sr-en] Disable the account that's associated with the resource
 
     .Parameter Alias
-        Specifies the alias name of the resource
+        [sr-en] Alias name of the resource
 
     .Parameter DisplayName
-        Specifies the display name of the resource
+        [sr-en] Display name of the resource
 
     .Parameter ResourceCapacity
-        Specifies the capacity of the resource
+        [sr-en] Capacity of the resource
 
     .Parameter WindowsEmailAddress
-        Specifies the windows mail address of the resource
+        [sr-en] Windows mail address of the resource
 #>
 
 param(

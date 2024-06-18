@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,29 +16,28 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups
 
     .Parameter TargetGroupNames
-        Specifies the display names of the groups to which to remove members
+        [sr-en] Display names of the groups to which to remove members
 
     .Parameter GroupNames
-        Specifies the display names of the groups to remove from the target groups
+        [sr-en] Display names of the groups to remove from the target groups
 
     .Parameter UserNames
-        Specifies the display names or user principal names of the users to remove from the target groups
+        [sr-en] Display names or user principal names of the users to remove from the target groups
     
     .Parameter GroupObjectIds
-        Specifies the unique IDs of the groups to which to remove members
+        [sr-en] Unique IDs of the groups to which to remove members
 
     .Parameter GroupIds
-        Specifies the unique object IDs of the groups to remove from the group
+        [sr-en] Unique object IDs of the groups to remove from the group
 
     .Parameter UserIds
-        Specifies the unique object IDs of the users to remove from the group
+        [sr-en] Unique object IDs of the users to remove from the group
 #>
 
 param(

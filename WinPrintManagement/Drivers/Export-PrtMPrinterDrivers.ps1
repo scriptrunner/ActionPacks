@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,19 +22,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Drivers
 
 .Parameter ExportFile
-    Specifies the path and filename of the CSV file to export
+    [sr-en] Path and filename of the CSV file to export
 
 .Parameter Delimiter
-    Specifies the delimiter that separates the property values in the CSV file
+    [sr-en] Delimiter that separates the property values in the CSV file
 
 .Parameter FileEncoding
-    Specifies the type of character encoding that was used in the CSV file
+    [sr-en] Type of character encoding that was used in the CSV file
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the printer drivers
+    [sr-en] Name of the computer from which to retrieve the printer drivers
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .EXAMPLE
     .\Export-PrinterDrivers.ps1 -ExportFile 'C:\Temp\drivers.csv'

@@ -1,58 +1,69 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new cluster
+    .SYNOPSIS
+        Creates a new cluster
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Cluster
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Cluster
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter ClusterName
-    Specifies a name for the new cluster
+    .Parameter ClusterName
+        [sr-en] Name for the new cluster
+        [sr-de] Cluster-name
 
-.Parameter LocationName
-    Specifies a datacenter name or folder name where you want to place the host
+    .Parameter LocationName
+        [sr-en] Datacenter name or folder name where you want to place the host
+        [sr-de] Datacenter oderr Ordner
 
-.Parameter DrsAutomationLevel
-    Specifies a DRS (Distributed Resource Scheduler) automation level
+    .Parameter DrsAutomationLevel
+        [sr-en] DRS (Distributed Resource Scheduler) automation level
+        [sr-de] DRS (Distributed Resource Scheduler) Automations-Level
 
-.Parameter DrsEnabled
-    Indicates that VMware DRS (Distributed Resource Scheduler) is enabled
+    .Parameter DrsEnabled
+        [sr-en] VMware DRS (Distributed Resource Scheduler) is enabled
+        [sr-de] VMware DRS (Distributed Resource Scheduler) aktivieren
 
-.Parameter HAAdmissionControlEnabled
-    Indicates that the virtual machines in the cluster will not start if they violate availability constraints
+    .Parameter HAAdmissionControlEnabled
+        [sr-en] Virtual machines in the cluster will not start if they violate availability constraints
+        [sr-de] VMs nicht starten, wenn sie die Verfügbarkeitsbeschränkungen verletzen
 
-.Parameter HAEnabled
-    Indicates that VMware High Availability is enabled
+    .Parameter HAEnabled
+        [sr-en] VMware High Availability is enabled
+        [sr-de] VMware Hoch-Verfügbarkeit aktivieren
 
-.Parameter HAFailoverLevel
-    Specifies a failover level
+    .Parameter HAFailoverLevel
+        [sr-en] Failover level
+        [sr-de] Failover Level
 
-.Parameter HAIsolationResponse
-    Specifies whether the virtual machine should be powered off if a host determines that it is isolated from the rest of the compute resource
+    .Parameter HAIsolationResponse
+        [sr-en] Virtual machine should be powered off if a host determines that it is isolated from the rest of the compute resource
+        [sr-de] Virtuelle Maschine wird ausgeschaltet, wenn sie isoliert ist
 
-.Parameter HARestartPriority
-    Specifies the cluster HA restart priority
+    .Parameter HARestartPriority
+        [sr-en] Cluster HA restart priority
+        [sr-de] Neustart Priorität
 #>
 
 [CmdLetBinding()]
@@ -78,7 +89,7 @@ Param(
     [string]$HARestartPriority
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     [string[]]$Properties = @('Name','Id','HATotalSlots','HAUsedSlots','HAEnabled','HASlotMemoryGB','HASlotNumVCpus')

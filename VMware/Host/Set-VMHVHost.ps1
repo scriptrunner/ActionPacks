@@ -1,49 +1,57 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Modifies the configuration of the host
+    .SYNOPSIS
+        Modifies the configuration of the host
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter ID
-    Specifies the ID of the host you want to modify
+    .Parameter ID
+        [sr-en] ID of the host you want to modify
+        [sr-de] Id des Host
+        
+    .Parameter Name
+        [sr-en] Name of the host you want to modify
+        [sr-de] Hostname
 
-.Parameter Name
-    Specifies the name of the host you want to modify
+    .Parameter State
+        [sr-en] State of the host
+        [sr-de] Status des Hosts
 
-.Parameter State
-    Specifies the state of the host
+    .Parameter Evacuate
+        [sr-en] If the value is $true, vCenter automatically reregisters the virtual machines that are compatible for reregistration
+        [sr-de] Erneute Registrierung aktivieren
 
-.Parameter Evacuate
-     the value is $true, vCenter automatically reregisters the virtual machines that are compatible for reregistration
+    .Parameter LicenseKey
+        [sr-en] License key to be used by the host
+        [sr-de] Lizenz
 
-.Parameter LicenseKey
-    Specifies the license key to be used by the host
-
-.Parameter TimeZoneName
-    Specifies the time zone for the host by using its name
+    .Parameter TimeZoneName
+        [sr-en] Time zone for the host by using its name
+        [sr-de] Zeitzone des Hosts
 #>
 
 [CmdLetBinding()]
@@ -73,7 +81,7 @@ Param(
     [string]$TimeZoneName
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     [string[]]$Properties = @('Name','Id','PowerState','ConnectionState','IsStandalone','LicenseKey')

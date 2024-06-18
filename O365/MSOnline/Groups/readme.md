@@ -1,9 +1,9 @@
-# Manage Groups
+﻿# Manage Groups
 The use of the scripts requires the PowerShell Module MSOnline
 This is the older MSOnline V1 PowerShell module for Azure Active Directory. 
 Customers are encouraged to use the newer Azure Active Directory V2 PowerShell module instead of this module
 
-> Note: The use of the scripts requires the PowerShell Module ActiveDirectory v1 and ScriptRunner Version 4.x or higher.
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory
 
 + [Add-MsOMembersToGroups.ps1](./Add-MsOMembersToGroups.ps1)
 

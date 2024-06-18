@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,31 +18,30 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Assigned
-        Specifies the function of the telephone number
+        [sr-en] Function of the telephone number
 
     .Parameter ExpandLocation
-        Displays the location parameter with its value
+        [sr-en] Displays the location parameter with its value
 
     .Parameter InventoryType
-        Specifies the target telephone number type for the cmdlet
+        [sr-en] Target telephone number type for the cmdlet
 
     .Parameter IsNotAssigned
-        Specifying treturn only telephone numbers which are not assigned
+        [sr-en] Return only telephone numbers which are not assigned
 
     .Parameter ResultSize
-        Specifies the number of records returned by the cmdlet
+        [sr-en] Number of records returned by the cmdlet
 
     .Parameter TelephoneNumber
-        Specifies the target telephone number
+        [sr-en] Target telephone number
 #>
 
 param(    

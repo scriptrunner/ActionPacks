@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,37 +22,37 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Ports
 
 .Parameter PortName
-    Specifies the name of the printer port
+    [sr-en] Name of the printer port
 
 .Parameter HostName
-    Specifies the host name of the computer on which to add LPR printer port
+    [sr-en] Host name of the computer on which to add LPR printer port
 
 .Parameter PrinterName
-    Specifies the name of the printer installed on the LPR printer port
+    [sr-en] Name of the printer installed on the LPR printer port
 
 .Parameter PrinterHostAddress
-    Specifies the host address of the TCP/IP printer port added to the specified computer
+    [sr-en] Host address of the TCP/IP printer port added to the specified computer
 
 .Parameter PortNumber
-    Specifies the TCP/IP port number for the printer port added to the specified computer
+    [sr-en] TCP/IP port number for the printer port added to the specified computer
 
 .Parameter LprHostAddress
-    Specifies the LPR host address when installing a TCP/IP printer port in LPR mode
+    [sr-en] LPR host address when installing a TCP/IP printer port in LPR mode
 
 .Parameter LprQueueName
-    Specifies the LPR queue name when installing a TCP/IP printer port in LPR mode.
+    [sr-en] LPR queue name when installing a TCP/IP printer port in LPR mode.
 
 .Parameter SNMP
-    Enables SNMP and specifies the index for TCP/IP printer port management
+    [sr-en] Enables SNMP and specifies the index for TCP/IP printer port management
 
 .Parameter SNMPCommunity
-    Specifies the SNMP community name for TCP/IP printer port management
+    [sr-en] SNMP community name for TCP/IP printer port management
 
 .Parameter ComputerName
-    Specifies the name of the computer to which to add the printer port
+    [sr-en] Name of the computer to which to add the printer port
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used
 #>
 
 [CmdLetBinding()]

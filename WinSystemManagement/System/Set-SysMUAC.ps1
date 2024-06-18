@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,20 +21,20 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter UACSetting
-    Specifies the option to configure UAC  
+    [sr-en] Option to configure UAC  
     1 -> Notify always
     2 -> Default 
     3 -> Notify when applications try to make change
     4 -> Never notify
     
 .Parameter RebootAfterChanges
-    Reboots the remote computer after change the setting
+    [sr-en] Reboots the remote computer after change the setting
 
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

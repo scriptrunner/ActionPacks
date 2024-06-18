@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Sql
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -49,7 +49,7 @@ param(
     [guid]$OperationId = [guid]::Empty
 )
 
-Import-Module Az
+Import-Module Az.Sql
 
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'

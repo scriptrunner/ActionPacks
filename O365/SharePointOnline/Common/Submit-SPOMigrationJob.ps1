@@ -17,34 +17,33 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter ExecuteCredentials
-        Credentials of a site collection administrator to use to connect to the site collection
+        [sr-en] Credentials of a site collection administrator to use to connect to the site collection
 
     .Parameter FileContainerUri
-        A fully qualified URL and SAS token representing the Azure Blob Storage container that holds the package content files
+        [sr-en] A fully qualified URL and SAS token representing the Azure Blob Storage container that holds the package content files
 
     .Parameter PackageContainerUri
-        A fully qualified URL and SAS token representing the Azure Blob Storage container that holds the package metadata files
+        [sr-en] A fully qualified URL and SAS token representing the Azure Blob Storage container that holds the package metadata files
 
     .Parameter TargetWebUrl
-        The fully qualified target web URL where the package will be imported into
+        [sr-en] The fully qualified target web URL where the package will be imported into
 
     .Parameter AzureQueueUri
-        An optional fully qualified URL and SAS token representing the Azure Storage Reporting Queue where import operations will list events during import
+        [sr-en] An optional fully qualified URL and SAS token representing the Azure Storage Reporting Queue where import operations will list events during import
 
     .Parameter EncryptionParameters
-        Parameters of the encryption
+        [sr-en] Parameters of the encryption
 
     .Parameter MigrationPackageAzureLocations
-        A set of fully qualified URLs and SAS tokens representing the Azure Blob Storage containers that hold the package content and metadata files and an optional Azure Storage Reporting Queue
+        [sr-en] A set of fully qualified URLs and SAS tokens representing the Azure Blob Storage containers that hold the package content and metadata files and an optional Azure Storage Reporting Queue
 
     .Parameter NoLogFile
-        Indicates to not create a log file
+        [sr-en] Indicates to not create a log file
 #>
 
 param(     

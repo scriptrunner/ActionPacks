@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -25,32 +25,31 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine whose firmware is to be retrieved.Parameter VMName
-        Specifies the name or identifier of the virtual machine whose BIOS is to be retrieved
+        [sr-en] Name or identifier of the virtual machine whose firmware is to be retrieved
 
     .Parameter EnableSecureBoot
-        Specifies whether to enable secure boot
+        [sr-en] Enable secure boot
 
     .Parameter StartUpOrder1
-        Specifies the boot device #1 in the BIOS of the virtual machine
+        [sr-en] Boot device #1 in the BIOS of the virtual machine
 
     .Parameter StartUpOrder2
-        Specifies the boot device #2 in the BIOS of the virtual machine
+        [sr-en] Boot device #2 in the BIOS of the virtual machine
 
     .Parameter StartUpOrder3
-        Specifies the boot device #3 in the BIOS of the virtual machine
+        [sr-en] Boot device #3 in the BIOS of the virtual machine
 
     .Parameter PreferredNetworkBootProtocol
-        Specifies the IP protocol version to use during a network boot
+        [sr-en] IP protocol version to use during a network boot
 #>
 
 param(
@@ -66,7 +65,7 @@ param(
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('On','Off')]
-    $EnableSecureBoot = 'Off',
+    [string]$EnableSecureBoot = 'Off',
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('DVDDrive', 'HardDiskDrive', 'NetworkAdapter')]
@@ -82,7 +81,7 @@ param(
     [Parameter(ParameterSetName = "Win2K12R2 or Win8.x")]
     [Parameter(ParameterSetName = "Newer Systems")]
     [ValidateSet('IPv4', 'IPv6')]
-    $PreferredNetworkBootProtocol = 'IPv4'
+    [string]$PreferredNetworkBootProtocol = 'IPv4'
 )
 
 Import-Module Hyper-V

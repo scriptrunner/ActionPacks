@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
 
 .Parameter FolderName
-    Specifies the folder name with the path
+    [sr-en] Folder name with the path
 
 .Parameter Destination
-    Specifies the path to the location where the folder are being moved
+    [sr-en] Path to the location where the folder are being moved
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
-
-.EXAMPLE
-
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

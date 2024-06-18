@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter DriveLetter
-    Specifies a letter used to identify a drive or volume in the system
+    [sr-en] Letter used to identify a drive or volume in the system
 
 .Parameter OfflineScanAndFix
-    Performs and offline scan and fix of any errors found in the file system
+    [sr-en] Performs and offline scan and fix of any errors found in the file system
 
 .Parameter Scan
-    Scans the volume
+    [sr-en] Scans the volume
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

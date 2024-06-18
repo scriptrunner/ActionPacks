@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter LoginName
-        Specifies the login name of the user which user profile is deleted
+        [sr-en] Login name of the user which user profile is deleted
 #>
 
 param(     

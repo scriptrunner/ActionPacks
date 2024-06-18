@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Firewall
 
 .Parameter RuleName
-    Specifies the name or display name of the firewall rule that will be enabled or disabled
+    [sr-en] Name or display name of the firewall rule that will be enabled or disabled
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the firewall rule
+    [sr-en] Name of the computer from which to retrieve the firewall rule
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter Enable
-    Enable or disable the firewall rule
+    [sr-en] Enable or disable the firewall rule
 #>
 
 [CmdLetBinding()]

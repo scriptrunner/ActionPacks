@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Compute
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -44,7 +44,7 @@ param(
     [string]$Location
 )
 
-Import-Module Az
+Import-Module Az.Compute
 
 try{
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}

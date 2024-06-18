@@ -17,34 +17,33 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        The site design Id
+        [sr-en] The site design Id
 
     .Parameter Title
-        The display name of the site design
+        [sr-en] The display name of the site design
 
     .Parameter WebTemplate
-        Identifies which base template to add the design to
+        [sr-en] Identifies which base template to add the design to
 
     .Parameter Description
-        The display description of the site design
+        [sr-en] The display description of the site design
 
     .Parameter SiteScript
-        A site script
+        [sr-en] A site script
 
     .Parameter IsDefault
-        Applies the site design to the default site template
+        [sr-en] Applies the site design to the default site template
 
     .Parameter PreviewImageAltText
-        The alt text description of the image for accessibility
+        [sr-en] The alt text description of the image for accessibility
 
     .Parameter PreviewImageUrl
-        The URL of a preview image
+        [sr-en] The URL of a preview image
 #>
 
 param(   

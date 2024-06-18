@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,22 +24,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the virtual machine to be configured
+        [sr-en] Virtual machine to be configured
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter Action
-        Specifies the action the virtual machine is to take upon start
+        [sr-en] Action the virtual machine is to take upon start
 
     .Parameter StartDelay
-        Specifies the number of seconds by which the virtual machine’s start should be delayed
+        [sr-en] Number of seconds by which the virtual machine’s start should be delayed
 #>
 
 param(

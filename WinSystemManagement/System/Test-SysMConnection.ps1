@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter ComputerNames
-    Specifies the computers to ping. Type the computer names or type IP addresses in IPv4 or IPv6 format. Use the comma to separate the names
+    [sr-en] Computers to ping. Type the computer names or type IP addresses in IPv4 or IPv6 format. Use the comma to separate the names
 
 .Parameter Count
-    Specifies the number of echo requests to send
+    [sr-en] Number of echo requests to send
 
 .Parameter DcomAuthentication
-    Specifies the authentication level that this cmdlet uses with WMI
+    [sr-en] Authentication level that this cmdlet uses with WMI
 
 .Parameter Delay
-    Specifies the interval between pings, in seconds
+    [sr-en] Interval between pings, in seconds
 #>
 
 [CmdLetBinding()]

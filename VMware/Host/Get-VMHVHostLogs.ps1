@@ -1,50 +1,58 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves entries from vSphere logs
+    .SYNOPSIS
+        Retrieves entries from vSphere logs
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of the host you want to retrieve logs
+    .Parameter HostName
+        [sr-en] Name of the host you want to retrieve logs
+        [sr-de] Hostname
 
-.Parameter LogFileKey
-    Specifies the key identifier of the log file you want to retrieve. 
-    If the parameter is empty, the first key of the log types is used
+    .Parameter LogFileKey
+        [sr-en] Key identifier of the log file you want to retrieve. 
+        If the parameter is empty, the first key of the log types is used
+        [sr-de] Id der Logdatei
 
-.Parameter StartLineNumber
-    Specifies the start line number for reading from the logs
+    .Parameter StartLineNumber
+        [sr-en] Start line number for reading from the logs
+        [sr-de] Startzeile des Logs
 
-.Parameter LineNumbers
-    Specifies the number of the lines you want to retrieve from the logs
+    .Parameter LineNumbers
+        [sr-en] Number of the lines you want to retrieve from the logs
+        [sr-de] Anzahl der Zeilen
 
-.Parameter Bundle
-    Indicates whether to retrieve a diagnostic bundle of logs from vCenter Server
+    .Parameter Bundle
+        [sr-en] Retrieve a diagnostic bundle of logs from vCenter Server
+        [sr-de] Mehrere Diagnose-Logs 
 
-.Parameter DestinationPath
-    Specifies a local file path where you want to save the log bundle
+    .Parameter DestinationPath
+        [sr-en] Local file path where you want to save the log bundle
+        [sr-de] Dateiname der Logdatei
 #>
 
 [CmdLetBinding()]
@@ -62,7 +70,7 @@ Param(
     [string]$DestinationPath
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{    
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

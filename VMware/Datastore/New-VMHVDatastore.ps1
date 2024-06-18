@@ -1,57 +1,68 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Creates a new datastore
+    .SYNOPSIS
+        Creates a new datastore
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Datastore
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Datastore
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of a host where you want to create the new datastore
+    .Parameter HostName
+        [sr-en] Name of a host where you want to create the new datastore
+        [sr-de] Hostname
 
-.Parameter StoreName
-    Specifies a name for the new datastore
+    .Parameter StoreName
+        [sr-en] Name for the new datastore
+        [sr-de] Name des Datastore
 
-.Parameter Path
-    If you want to create an NFS datastore, specify the remote path of the NFS mount point. 
-    If you want to create a VMFS datastore, specify the canonical name of the SCSI logical unit that will contain new VMFS datastores
+    .Parameter Path
+        [sr-en] If you want to create an NFS datastore, specify the remote path of the NFS mount point. 
+        If you want to create a VMFS datastore, specify the canonical name of the SCSI logical unit that will contain new VMFS datastores
+        [sr-de] Zum Erstellen des NFS-Datenspeichers, Remote-Pfad des NFS-Mount Point angeben
+        Zum Erstellen des VMFS-Datenspeicherden kanonischen Namen der logischen SCSI-Einheit angeben
 
-.Parameter FileSystemVersion
-    Specifies the file system you want to use on the new datastore
+    .Parameter FileSystemVersion
+        [sr-en] File system you want to use on the new datastore
+        [sr-de] Dateisystem des datastores
 
-.Parameter BlockSizeMB
-    Specifies the maximum file size of VMFS in megabytes (MB)
+    .Parameter BlockSizeMB
+        [sr-en] Maximum file size of VMFS in megabytes (MB)
+        [sr-de] Maximale Dateigröße, in Megabyte
 
-.Parameter NfsHost
-    Specifies the NFS host where you want to create the new datastore
+    .Parameter NfsHost
+        [sr-en] NFS host where you want to create the new datastore
+        [sr-de] NFS Host des neuen Datastore
 
-.Parameter Kerberos
-    By default, NFS datastores are created with AUTH_SYS as the authentication protocol. 
-    This parameter indicates that the NFS datastore uses Kerberos version 5 for authentication
+    .Parameter Kerberos
+        [sr-en] By default, NFS datastores are created with AUTH_SYS as the authentication protocol. 
+        This parameter indicates that the NFS datastore uses Kerberos version 5 for authentication
+        [sr-de] Kerberos aktivieren
 
-.Parameter ReadOnly
-    Indicates that the access mode for the mount point is ReadOnly
+    .Parameter ReadOnly
+        [sr-en] Access mode for the mount point is ReadOnly
+        [sr-de] Mount Point Zugriffsmodus
 #>
 
 [CmdLetBinding()]
@@ -84,7 +95,7 @@ Param(
     [switch]$ReadOnly
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

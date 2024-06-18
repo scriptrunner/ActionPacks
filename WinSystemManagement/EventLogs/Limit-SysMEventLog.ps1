@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,22 +20,22 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
-    Specifies the event log, enter the log name (not the LogDisplayName)
+    [sr-en] Event log, enter the log name (not the LogDisplayName)
 
 .Parameter CustomLogName
-    Specifies the name of the custom event log, enter the log name (not the LogDisplayName)
+    [sr-en] Name of the custom event log, enter the log name (not the LogDisplayName)
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
     
 .Parameter MaximumSize
-    Specifies the maximum size of the event logs in bytes. The value must be divisible by 64 KB (65536).
+    [sr-en] Maximum size of the event logs in bytes. The value must be divisible by 64 KB (65536).
     
 .Parameter OverflowAction
-    Specifies what happens when the event log reaches its maximum size
+    [sr-en] What happens when the event log reaches its maximum size
 
 .Parameter RetentionDays
-    Specifies the minimum number of days that an event must remain in the event log
+    [sr-en] Minimum number of days that an event must remain in the event log
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules NetTcpIp
 
 <#
@@ -22,22 +22,22 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Network
 
 .Parameter AdapterName
-    Specifies the friendly name of the interface. The cmdlet modifies IP addresses that match the alias
+    [sr-en] Friendly name of the interface. The cmdlet modifies IP addresses that match the alias
     
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the dns client
+    [sr-en] Name of the computer from which to retrieve the dns client
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter IPAddress
-    Specifies the IPv4 or IPv6 address to replace
+    [sr-en] IPv4 or IPv6 address to replace
 
 .Parameter DefaultGateway 
-    Specifies the IPv4 address or IPv6 address of the default gateway for the host
+    [sr-en] IPv4 address or IPv6 address of the default gateway for the host
 
 .Parameter AddressFamily
-    Specifies an array of IP address families. The cmdlet modifies the IP address configuration that matches the families
+    [sr-en] Array of IP address families. The cmdlet modifies the IP address configuration that matches the families
 #>
 
 [CmdLetBinding()]

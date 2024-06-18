@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -69,13 +68,11 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
                 'TodoTaskId' = $TodoTaskId
                 'LinkedResourceId' = $LinkedResourceId
-                'PassThru' = $null
                 'Confirm' = $false
     }
     if($PSBoundParameters.ContainsKey('ApplicationName') -eq $true){
@@ -89,7 +86,7 @@ try{
     }
     $null = Update-MgUserTodoListTaskLinkedResource @cmdArgs
 
-    $result = Get-MgUserTodoListTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
+    $result = Get-MgUserTodoTaskLinkedResource -UserId $UserId -TodoTaskListId $TodoTaskListId -TodoTaskId $TodoTaskId | Sort-Object ApplicationName
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
@@ -101,5 +98,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

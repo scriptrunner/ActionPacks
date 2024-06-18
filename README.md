@@ -7,7 +7,7 @@ Use cases for managing users, groups and computers in on prem AD
 ## [Azure](./Azure)
 Use cases for managing Microsoft Azure
 
-## [Automation Booster](./Automation%20Booster)
+## [User Management](./User%20Management)
 Solutions and sample scripts for selected use cases
 
 ## [Citrix](./Citrix)
@@ -22,9 +22,15 @@ Use cases for managing mailboxes, distribution lists, resources, and services in
 ## [Hyper-V](./Hyper-V)
 Use cases for managing the Hyper-V virtualization platform
 
+## [MS Graph](./MS%20Graph)
+Use cases for managing Microsoft Graph
+
 ## [Office 365](./O365)
 Use cases to manage users, groups, and services in O365.<br>
 Solutions with Azure AD, Exchange Online, MS-Teams. PowerApps, SharePoint online, Skype4Business and MSOnline
+
+## [PowerShell SecretManagement](./PowerShell%20SecretManagement)
+Use cases for managing Microsoft PowerShell SecretManagement
 
 ## [Reporting](./Reporting)
 Report examples

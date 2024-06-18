@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,13 +20,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Firewall
 
 .Parameter RuleName
-    Specifies the name or display name of the firewall rule that will be removed
+    [sr-en] Name or display name of the firewall rule that will be removed
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to remove the firewall rule
+    [sr-en] Name of the computer from which to remove the firewall rule
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

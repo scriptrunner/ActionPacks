@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter CustomLogName
-    Specifies the name of the custom event log, enter the log name (not the LogDisplayName)
+    [sr-en] Name of the custom event log, enter the log name (not the LogDisplayName)
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter BackupPath
-    Specifies the path on the computer to save the backup
+    [sr-en] Path on the computer to save the backup
 
 .EXAMPLE
     Export-CltMEventLog -LogName Security -BackupPath C:\Temp

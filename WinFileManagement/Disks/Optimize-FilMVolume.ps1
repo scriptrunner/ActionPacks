@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,28 +20,28 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter DriveLetter
-    Specifies a letter used to identify a drive or volume in the system
+    [sr-en] Letter used to identify a drive or volume in the system
 
 .Parameter Analyze
-    Analyzes the volume specified for fragmentation statistics. Performs analysis only and reports the current optimization state of the volume
+    [sr-en] Analyzes the volume specified for fragmentation statistics. Performs analysis only and reports the current optimization state of the volume
 
 .Parameter Defrag
-    Indicates that the cmdlet initiates defragmentation on the specified volume. Defragmentation consolidates fragmented regions of files to improve performance of sequential reads or writes
+    [sr-en] Initiates defragmentation on the specified volume. Defragmentation consolidates fragmented regions of files to improve performance of sequential reads or writes
 
 .Parameter ReTrim
-    Generates TRIM and Unmap hints for all currently unused sectors of the volume, notifying the underlying storage that the sectors are no longer needed and can be purged. This can recover unused capacity on thinly provisioned drives
+    [sr-en] Generates TRIM and Unmap hints for all currently unused sectors of the volume, notifying the underlying storage that the sectors are no longer needed and can be purged. This can recover unused capacity on thinly provisioned drives
 
 .Parameter SlabConsolidate
-    Indicates that the cmdlet performs slab consolidation on the storage to optimize slab allocations and to reduce the number of used slabs
+    [sr-en] Slab consolidation on the storage to optimize slab allocations and to reduce the number of used slabs
 
 .Parameter TierOptimize
-    Indicates that the cmdlet performs tier optimization of the volume, which places file data on the optimal storage tier according to heat or desired placement. This parameter only applies to tiered spaces volumes with more than one storage tier
+    [sr-en] Performs tier optimization of the volume, which places file data on the optimal storage tier according to heat or desired placement. This parameter only applies to tiered spaces volumes with more than one storage tier
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to repair the volume object. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

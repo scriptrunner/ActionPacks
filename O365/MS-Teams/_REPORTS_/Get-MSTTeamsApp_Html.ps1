@@ -16,9 +16,6 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module microsoftteams 1.0.3 or greater
-    Requires .NET Framework Version 4.7.2.
-    Requires a ScriptRunner Microsoft 365 target
     Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
 .LINK

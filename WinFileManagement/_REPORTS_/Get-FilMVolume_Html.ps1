@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,10 +21,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_REPORTS_
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the volume object informations. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to retrieve the volume object informations. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,23 +16,22 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
 
     .Parameter RoleIds
-        Specifies the unique IDs of the roles to which to add members
+        [sr-en] Unique IDs of the roles to which to add members
 
     .Parameter RoleNames
-        Specifies the display names of the roles to which to add members
+        [sr-en] Display names of the roles to which to add members
     
     .Parameter UserIds
-        Specifies the unique object IDs of the users to add to the roles
+        [sr-en] Unique object IDs of the users to add to the roles
 
     .Parameter UserNames
-        Specifies the display names or user principal names of the users to add to the roles
+        [sr-en] Display names or user principal names of the users to add to the roles
 #>
 
 param(

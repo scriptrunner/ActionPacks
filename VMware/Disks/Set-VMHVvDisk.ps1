@@ -2,52 +2,52 @@
 #Requires -Modules VMware.VimAutomation.Storage
 
 <#
-.SYNOPSIS
-    Renames, inflates, or extends the size of the specified VDisk objects
+    .SYNOPSIS
+        Renames, inflates, or extends the size of the specified VDisk objects
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.VimAutomation.Storage
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Storage
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
-    [sr-de] IP Adresse oder Name des vSphere Servers
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder Name des vSphere Servers
 
-.Parameter VICredential
-    [sr-en] PSCredential object that contains credentials for authenticating with the server
-    [sr-de] Benutzerkonto um diese Aktion durchzuführen
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto um diese Aktion durchzuführen
 
-.Parameter DiskName
-    [sr-en] Name of the VDisk
-    [sr-de] Name der vDisk
+    .Parameter DiskName
+        [sr-en] Name of the VDisk
+        [sr-de] Name der vDisk
 
-.Parameter DiskID
-    [sr-en] ID of the VDisk
-    [sr-de] ID der vDisk
+    .Parameter DiskID
+        [sr-en] ID of the VDisk
+        [sr-de] ID der vDisk
 
-.Parameter NewName
-    [sr-en] New name for the VDisk object
-    [sr-de] Neuer Name der vDisk
+    .Parameter NewName
+        [sr-en] New name for the VDisk object
+        [sr-de] Neuer Name der vDisk
 
-.Parameter CapacityGB
-    [sr-en] New capacity of the VDisk object in gigabytes (GB)
-    [sr-de] Neue Größe der vDisk in Gigabytes (GB)
+    .Parameter CapacityGB
+        [sr-en] New capacity of the VDisk object in gigabytes (GB)
+        [sr-de] Neue Größe der vDisk in Gigabytes (GB)
 
-.Parameter Inflate
-    [sr-en] Indicates to inflate the specified VDisk object
-    [sr-de] VDisk-Objekt erweitern
+    .Parameter Inflate
+        [sr-en] Indicates to inflate the specified VDisk object
+        [sr-de] VDisk-Objekt erweitern
 #>
 
 [CmdLetBinding()]

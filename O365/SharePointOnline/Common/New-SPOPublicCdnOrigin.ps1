@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter CdnUrl
-        Specify the URL that will be enabled for Public CDN in your tenant
+        [sr-en] URL that will be enabled for Public CDN in your tenant
 #>
 
 param(     

@@ -17,17 +17,16 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter UserEmails 
-        Specifies one or more user logins to be enqueued for the creation of a Personal Site, comma separated. 
+        [sr-en] One or more user logins to be enqueued for the creation of a Personal Site, comma separated. 
         You can specify between 1 and 200 users
 
     .Parameter NoWait
-        Continues without the status being polled
+        [sr-en] Continues without the status being polled
 #>
 
 param(   

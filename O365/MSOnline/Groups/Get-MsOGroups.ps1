@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,26 +16,25 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Groups
 
     .Parameter IsAgentRole
-        Specifies that this cmdlet returns only agent groups. This value applies only to partner users
+        [sr-en] Only agent groups. This value applies only to partner users
 
     .Parameter HasLicenseErrorsOnly
-        Specifies whether this cmdlet returns only security groups that have license errors
+        [sr-en] Only security groups that have license errors
 
     .Parameter HasErrorsOnly
-        Indicates that this cmdlet returns only groups that have validation errors
+        [sr-en] Only groups that have validation errors
     
     .Parameter GroupType
-        Specifies the type of groups to get
+        [sr-en] Type of groups to get
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

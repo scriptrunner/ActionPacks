@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,37 +18,36 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter AssignmentStatus
-        Specifies whether the retrieved addresses have been assigned to users or not
+        [sr-en] Retrieved addresses have been assigned to users or not
 
     .Parameter City
-        Specifies the city of the target civic address
+        [sr-en] City of the target civic address
 
     .Parameter CivicAddressId
-        Specifies the identification number of the civic address to return
+        [sr-en] Identification number of the civic address to return
 
     .Parameter CountryOrRegion
-        Specifies the country or region of the target civic address
+        [sr-en] Country or region of the target civic address
 
     .Parameter Description
-        Specifies the administrator defined description of the target civic address
+        [sr-en] Administrator defined description of the target civic address
     
     .Parameter NumberOfResultsToSkip
-        Specifies the number of results to skip
+        [sr-en] Number of results to skip
 
     .Parameter ResultSize
-        Specifies the maximum number of results to return
+        [sr-en] Maximum number of results to return
 
     .Parameter ValidationStatus
-        Specifies the validation status of the addresses to be returned
+        [sr-en] Validation status of the addresses to be returned
 #>
 
 param(    

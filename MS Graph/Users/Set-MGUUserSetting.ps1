@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Updates settings for the user
+        Updates settings for the user 
         
     .DESCRIPTION          
 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -45,11 +44,9 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
                         'Confirm' = $false
-                        'PassThru' = $null
     }
     if($PSBoundParameters.ContainsKey('ContributionToContentDiscoveryDisabled') -eq $true){
         $cmdArgs.Add('ContributionToContentDiscoveryDisabled',$ContributionToContentDiscoveryDisabled)
@@ -71,5 +68,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

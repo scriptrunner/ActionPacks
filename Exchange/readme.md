@@ -1,8 +1,6 @@
-# Action Pack for Exchange Server
+﻿# Action Pack for Exchange Server
 Use cases for managing mailboxes, distribution lists, resources, and services in on prem Exchange Server environments
 >Note: The use of the scripts requires a remote PowerShell session to Microsoft Exchange Server<br>
-Requirements: 
-ScriptRunner Version 4.x or higher
 
 ## [Manage Address lists](./AddressLists)
 + Get/Set properties of the address list

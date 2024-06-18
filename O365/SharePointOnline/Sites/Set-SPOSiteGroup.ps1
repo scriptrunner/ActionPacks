@@ -17,28 +17,27 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Group
-        Specifies the name of the group
+        [sr-en] Name of the group
 
     .Parameter Site
-        Specifies the site collection the group belongs to
+        [sr-en] Site collection the group belongs to
 
     .Parameter Name
-        Specifies the new name of the group
+        [sr-en] New name of the group
 
     .Parameter Owner
-        Specifies the owner (individual or a security group) of the group to be created
+        [sr-en] Owner (individual or a security group) of the group to be created
 
     .Parameter PermissionLevelsToAdd
-        Specifies the permission levels to grant to the group
+        [sr-en] Permission levels to grant to the group
         
     .Parameter PermissionLevelsToRemove
-        Specifies the permission levels to remove from the group
+        [sr-en] Permission levels to remove from the group
 #>
 
 param(            

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,10 +21,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/_REPORTS_
 
 .Parameter ObjectName
-    Specifies the folder or file name with the path
+    [sr-en] Folder or file name with the path
 
 .Parameter ObjectClass
-    Specifies the type of the accounts
+    [sr-en] Type of the accounts
 
 .EXAMPLE
 

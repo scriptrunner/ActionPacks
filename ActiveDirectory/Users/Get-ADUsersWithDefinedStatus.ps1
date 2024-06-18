@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -154,7 +154,7 @@ try{
         }
     } 
     
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $resultMessage 
     }
     else{

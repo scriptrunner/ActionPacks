@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,19 +24,19 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Host
     
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter Minimum
-        Specifies the minimum MAC address using a valid hexadecimal value
+        [sr-en] Minimum MAC address using a valid hexadecimal value
 
     .Parameter Maximum
-        Specifies the maximum MAC address using a valid hexadecimal value
+        [sr-en] Maximum MAC address using a valid hexadecimal value
 #>
 
 param(

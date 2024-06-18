@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,20 +24,20 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the state of the virtual machines
+        [sr-en] State of the virtual machines
 
     .Parameter SnapshotName
-        Specifies the name of the snapshot to be taken. 
+        [sr-en] Name of the snapshot to be taken. 
         If not provided, a combination of the virtual machine's name and a current timestamp is used       
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action    
+        [sr-en] User account that have permission to perform this action    
 #>
 
 param(

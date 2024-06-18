@@ -1,55 +1,65 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Copies a virtual hard disk to another destination
+    .SYNOPSIS
+        Copies a virtual hard disk to another destination
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to copy the hard disk
+    .Parameter VMName
+        [sr-en] Virtual machine from which you want to retrieve the hard disks
+        [sr-de] Virtuelle Maschine
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to copy the hard disk
+    .Parameter TemplateName
+        [sr-en] Virtual machine template from which you want to retrieve the hard disks
+        [sr-de] Vorlage
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to copy the hard disk
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to retrieve the hard disks
+        [sr-de] Snapshotname
 
-.Parameter DatastoreName
-    Specifies the name of the datastore where you want to copy the hard disk
+    .Parameter DatastoreName
+        [sr-en] Name of the datastore where you want to copy the hard disk
+        [sr-de] Datastore 
 
-.Parameter DiskName
-    Specifies the name of the SCSI hard disk you want to copy
+    .Parameter DiskName
+        [sr-en] Name of the SCSI hard disk you want to copy
+        [sr-de] Festplatten-Name
 
-.Parameter DiskID
-    Specifies the ID of the hard disk you want to copy
-    
-.Parameter DestinationPath
-    Specifies the path to the folder where you want to copy the hard disk
+    .Parameter DiskID
+        [sr-en] ID of the hard disk you want to copy
+        [sr-de] Id der Festplatte
+        
+    .Parameter DestinationPath
+        [sr-en] Path to the folder where you want to copy the hard disk
+        [sr-en] Ordnerpfad
 
-.Parameter DestinationStorageFormat
-    Specifies the type of the hard disk copy
+    .Parameter DestinationStorageFormat
+        [sr-en] Type of the hard disk copy
+        [sr-en] Typ der Festplatte
 #>
 
 [CmdLetBinding()]
@@ -92,7 +102,7 @@ Param(
     [string]$DestinationStorageFormat = "Thick"
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     if([System.String]::IsNullOrWhiteSpace($DiskName) -eq $true){

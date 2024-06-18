@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter CdnType
-        Specifies the CDN type
+        [sr-en] CDN type
 
     .Parameter LibraryUrl
-        Indicates the absolute URL of the library to be designated as a central location for organization assets
+        [sr-en] Absolute URL of the library to be designated as a central location for organization assets
 
     .Parameter OrgAssetType
-        Indicates the type of content in this library
+        [sr-en] Type of content in this library
 
     .Parameter ThumbnailUrl
-        Indicates the URL of the background image used when the library is publicly displayed
+        [sr-en] URL of the background image used when the library is publicly displayed
 #>
 
 param(        

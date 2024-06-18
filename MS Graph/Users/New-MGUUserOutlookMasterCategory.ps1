@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Define category for the user
+        Create an outlookCategory object in the user's master list of categories
     
     .DESCRIPTION          
 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -31,8 +30,8 @@
         [sr-de] Farbe
 
     .Parameter DisplayName
-        [sr-en] Display name
-        [sr-de] Anzeigename
+        [sr-en] A unique name that identifies a category in the user's mailbox
+        [sr-de] Eindeutiger Anzeigename
 #>
 
 param( 
@@ -47,16 +46,15 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
                         'Color' = $Color
                         'DisplayName' = $DisplayName
                         'Confirm' = $false
     }
-    $result = New-MgUserOutlookMasterCategory @cmdArgs
+    $result = New-MgUserOutlookMasterCategory @cmdArgs | Select-Object *
     
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -67,5 +65,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

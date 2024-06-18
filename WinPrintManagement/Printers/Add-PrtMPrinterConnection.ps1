@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,7 +22,7 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter ConnectionName
-    Specifies the name of a shared printer to which to connect    
+    [sr-en] Name of a shared printer to which to connect    
 #>
 
    

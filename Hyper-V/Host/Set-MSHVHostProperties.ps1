@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -25,28 +25,28 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Host
     
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter PathVirtualHardDisks
-        Specifies the default folder to store virtual hard disks on the Hyper-V host
+        [sr-en] Default folder to store virtual hard disks on the Hyper-V host
 
     .Parameter PathVirtualMachines
-        Specifies the default folder to store virtual machine configuration files on the Hyper-V host
+        [sr-en] Default folder to store virtual machine configuration files on the Hyper-V host
 
     .Parameter EnableNumaSpanning
-        Specifies whether virtual machines on the Hyper-V host can use resources from more than one NUMA node
+        [sr-en] Virtual machines on the Hyper-V host can use resources from more than one NUMA node
 
     .Parameter MaximumStorageMigrations
-        Specifies the maximum number of storage migrations that can be performed at the same time on the Hyper-V host
+        [sr-en] Maximum number of storage migrations that can be performed at the same time on the Hyper-V host
 
     .Parameter EnableEnhancedSessionMode
-        Indicates whether users can use enhanced mode when they connect to virtual machines on this server by using Virtual Machine Connection
+        [sr-en] Users can use enhanced mode when they connect to virtual machines on this server by using Virtual Machine Connection
 #>
 
 param(

@@ -5,8 +5,11 @@ Use cases for managing teams with Microsoft Graph
 ## [Authentication](./Authentication)
 
 + Add, get, set, remove environment
-+ Get context, profile
-+ Find Graph permission
++ Get context
++ Get, set Graph option
++ Get, set Graph request context
++ Invoke Graph request
++ Find Graph permission, Graph command
 
 ## [Contacts](./Contacts)
 
@@ -21,6 +24,10 @@ Use cases for managing teams with Microsoft Graph
 
 + Get, set, remove device
 + Get device extension, member groups, member object, member of, transitive member of, registered owner, registered user
+
+## [Device Management](./DeviceManagement)
++ ### [Devices](./DeviceManagement/Devices)
++ ### [Policies](./DeviceManagement/Policies)
 
 ## [Domain](./Domain)
 
@@ -94,21 +101,26 @@ Use cases for managing teams with Microsoft Graph
 ## [Users](./Users)
 
 + New, get, set, remove user
-+ Get, new, set, remove Outlook master categories
++ Get, set user photo content
++ Get, set, remove user manager
++ Get user photo
++ Get user count
++ Get, set user setting
++ Get user extension
++ Get user member of, member of count
++ Get direct report, direct report count
++ Get license detail
++ Get, new, set, remove, count Outlook master categories
++ Get owned object. As group, as application, count
++ Get owned device. As device, count
++ Get registered device. As device, count
++ Get created object
++ Get OAuth permission grant
 + Get, new, set, remove todo list
 + Get, new, set, remove todo list task
++ Get, new, remove, count task attachment
++ Get, new, set, remove task check list item
 + Get, new, set, remove todo list task linked resource
-+ Get, remove user manager
-+ Get, set user setting
-+ Get registered device, owned device, owned object, created object
-+ Get transitive member
-+ Get member of
-+ Get OAuth permission grant
-+ Get license detail
-+ Get extension
-+ Get direct report, scoped role
-+ Get user photo
-+ Get, set user photo content
 
 ## [Library](./_LIB_)
 

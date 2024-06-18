@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -20,10 +20,10 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
         
     .Parameter ComputerName
-        Specifies the computer that cleans up Windows Update. The default is the local computer
+        [sr-en] Computer that cleans up Windows Update. The default is the local computer
 
     .Parameter ExecutionCredential
-        Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
+        [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used
 #>
 
 param( 

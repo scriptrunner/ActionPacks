@@ -27,7 +27,7 @@ param(
 
 Import-Module Microsoft.Graph.Authentication 
 
-try{
+try{ 
     ConnectMSGraph 
     $result = Get-MgContext -ErrorAction Stop | Select-Object *
 

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,28 +20,28 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Processes
 
 .Parameter ComputerName
-    Gets the active processes on the specified computer. The default is the local computer
+    [sr-en] Gets the active processes on the specified computer. The default is the local computer
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action
+    [sr-en] User account that has permission to perform this action
 
 .Parameter ProcessID
-    Specifies the process by process ID (PID)
+    [sr-en] Process by process ID (PID)
 
 .Parameter ProcessName
-    Specifies the process by process name
+    [sr-en] Process by process name
 
 .Parameter FileVersionInfo
-    Indicates that this cmdlet gets the file version information for the program that runs in the process.
+    [sr-en] Gets the file version information for the program that runs in the process.
 
 .Parameter IncludeUserName
-    Indicates that the UserName value of the Process object is returned with results of the command
+    [sr-en] UserName value of the Process object is returned with results of the command
 
 .Parameter Module
-    Indicates that this cmdlet gets the modules that have been loaded by the processes
+    [sr-en] Gets the modules that have been loaded by the processes
     
 .Parameter Properties
-    List of properties to expand, comma separated e.g. Name,ID. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. Name,ID. Use * for all properties
 #>
 
 [CmdLetBinding()]

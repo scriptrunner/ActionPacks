@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -16,37 +16,36 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set properties
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set properties
     
     .Parameter Alias
-        Specifies the alias name of the mailbox
+        [sr-en] Alias name of the mailbox
 
     .Parameter DisplayName
-        Specifies the display name of the mailbox
+        [sr-en] Display name of the mailbox
 
     .Parameter WindowsEmailAddress
-        Specifies the windows mail address of the mailbox
+        [sr-en] Windows mail address of the mailbox
 
     .Parameter FirstName
-        Specifies the user's first name
+        [sr-en] User's first name
 
     .Parameter LastName
-        Specifies the user's last name
+        [sr-en] User's last name
 
     .Parameter Office
-        Specifies the user's physical office name or number
+        [sr-en] User's physical office name or number
 
     .Parameter Phone
-        Specifies the user's telephone number
+        [sr-en] User's telephone number
 
     .Parameter ResetPasswordOnNextLogon
-        Specifies whether the user is required to change their password the next time they log on to their mailbox
+        [sr-en] User is required to change their password the next time they log on to their mailbox
 #>
 
 param(

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,34 +15,33 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/AddressLists
 
     .Parameter ListName
-        Specifies the unique name of the address list. The maximum length is 64 characters.
+        [sr-en] Unique name of the address list. The maximum length is 64 characters.
 
     .Parameter NameOfList
-        Specifies the unique name of the address list. The maximum length is 64 characters.
+        [sr-en] Unique name of the address list. The maximum length is 64 characters.
 
     .Parameter DisplayName
-        Specifies the display name of the address list
+        [sr-en] Display name of the address list
 
     .Parameter MailContacts
-        Adds mail contacts to the recipients of the address list
+        [sr-en] Adds mail contacts to the recipients of the address list
     
     .Parameter MailboxUsers
-        Adds mailbox users to the recipients of the address list
+        [sr-en] Adds mailbox users to the recipients of the address list
 
     .Parameter MailGroups
-        Adds mail groups to the recipients of the address list
+        [sr-en] Adds mail groups to the recipients of the address list
 
     .Parameter MailUsers
-        Adds mail users to the recipients of the address list
+        [sr-en] Adds mail users to the recipients of the address list
 
     .Parameter Resources
-        Adds resources to the recipients of the address list
+        [sr-en] Adds resources to the recipients of the address list
 #>
 
 param(

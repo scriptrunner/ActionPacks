@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the SharePoint Online site collection for which you want to request a copy for the new Upgrade or Evaluation site collection
+        [sr-en] SharePoint Online site collection for which you want to request a copy for the new Upgrade or Evaluation site collection
 
     .Parameter NoEmail
-        Specifies that the system not send the requester and site collection administrators an email message at the end of the upgrade evaluation site creation process
+        [sr-en] System not send the requester and site collection administrators an email message at the end of the upgrade evaluation site creation process
 
     .Parameter NoUpgrade
-        Specifies that the system not perform an upgrade as part of the evaluation site creation process
+        [sr-en] System not perform an upgrade as part of the evaluation site creation process
 #>
 
 param(   

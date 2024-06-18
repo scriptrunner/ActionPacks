@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,37 +20,37 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/ScheduledTasks
 
 .Parameter TaskName
-    Specifies the name of a scheduled task
+    [sr-en] Name of a scheduled task
 
 .Parameter ComputerName
-    Specifies the name of the computer on which to modify the schedule task
+    [sr-en] Name of the computer on which to modify the schedule task
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
     
 .Parameter AllowDemandStart
-    Specifies the task can be started by using either the Run command or the Context menu
+    [sr-en] Task can be started by using either the Run command or the Context menu
     
 .Parameter AllowHardTerminate
-    Specifies that the task can be terminated by using TerminateProcess
+    [sr-en] Task can be terminated by using TerminateProcess
     
 .Parameter StartWhenAvailable
-    Indicates that Task Scheduler can start the task at any time after its scheduled time has passed
+    [sr-en] Task Scheduler can start the task at any time after its scheduled time has passed
     
 .Parameter RestartInterval
-    Specifies the amount of time that Task Scheduler attempts to restart the task
+    [sr-en] Amount of time that Task Scheduler attempts to restart the task
     
 .Parameter RestartCount
-    Specifies the number of times that Task Scheduler attempts to restart the task
+    [sr-en] Number of times that Task Scheduler attempts to restart the task
     
 .Parameter ExecutionTimeLimit
-    Specifies the amount of time that Task Scheduler is allowed to complete the task
+    [sr-en] Amount of time that Task Scheduler is allowed to complete the task
 
 .Parameter MultipleInstancesRule
-    Specifies the policy that defines how Task Scheduler handles multiple instances of the task
+    [sr-en] Policy that defines how Task Scheduler handles multiple instances of the task
     
 .Parameter Compatibility
-    Indicates which version of Task Scheduler with which a task is compatible
+    [sr-en] Version of Task Scheduler with which a task is compatible
 #>
 
 [CmdLetBinding()]

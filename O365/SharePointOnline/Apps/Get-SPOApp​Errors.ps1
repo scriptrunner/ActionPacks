@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Apps
 
     .Parameter ProductID
-        Specifies the application’s GUID
+        [sr-en] Application’s GUID
 
     .Parameter EndTimeInUtc
-        Specifies the end time in UTC to search for monitoring errors
+        [sr-en] End time in UTC to search for monitoring errors
 
     .Parameter StartTimeInUtc
-        Specifies the start time in UTC to search for monitoring errors
+        [sr-en] Start time in UTC to search for monitoring errors
 #>
 
 param(   

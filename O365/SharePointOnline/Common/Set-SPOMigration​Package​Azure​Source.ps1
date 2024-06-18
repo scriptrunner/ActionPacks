@@ -17,51 +17,50 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter AccountKey
-        The account key for the Azure Storage account
+        [sr-en] The account key for the Azure Storage account
     
     .Parameter AccountName
-        The account name for the Azure Storage account
+        [sr-en] The account name for the Azure Storage account
 
     .Parameter MigrationPackageAzureLocations
-        A set of fully qualified URLs and SAS tokens representing the Azure Blob Storage 
+        [sr-en] A set of fully qualified URLs and SAS tokens representing the Azure Blob Storage 
         containers that hold the package content and metadata files and an optional Azure Storage Reporting Queue
 
     .Parameter SourceFilesPath
-        The directory location where the package’s source content files exist
+        [sr-en] The directory location where the package’s source content files exist
 
     .Parameter SourcePackagePath
-        The directory location where the package’s metadata files exist
+        [sr-en] The directory location where the package’s metadata files exist
 
     .Parameter FileContainerName
-        The optional name of the Azure Blob Storage container that will be created if it does not currently exist
+        [sr-en] The optional name of the Azure Blob Storage container that will be created if it does not currently exist
 
     .Parameter NoLogFile
-        Indicates to not create a log file
+        [sr-en] Indicates to not create a log file
 
     .Parameter NoSnapshotCreation
-        Indicates to not perform snapshots on the content in the containers
+        [sr-en] Indicates to not perform snapshots on the content in the containers
 
     .Parameter NoUpload
-        Indicates to not upload the package files
+        [sr-en] Indicates to not upload the package files
 
     .Parameter PackageContainerName
-        The optional name of the Azure Blob Storage container that will be created if it does not currently exist
+        [sr-en] The optional name of the Azure Blob Storage container that will be created if it does not currently exist
 
     .Parameter AzureQueueName
-        An optional name of the Azure Storage Reporting Queue where import operations lists events during import
+        [sr-en] An optional name of the Azure Storage Reporting Queue where import operations lists events during import
     
     .Parameter Overwrite
 
     .Parameter EncryptionMetaInfo
 
     .Parameter EncryptionParameters
-        Parameters of the encryption
+        [sr-en] Parameters of the encryption
 #>
 
 param(     

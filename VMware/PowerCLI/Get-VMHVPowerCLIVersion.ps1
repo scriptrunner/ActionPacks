@@ -1,4 +1,5 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
+# Requires -Module VMware.VimAutomation.Core
 
 <#
 .SYNOPSIS
@@ -15,19 +16,17 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    Requires Module VMware.PowerCLI
+    Requires Module VMware.VimAutomation.Core
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/VMware/PowerCLI
-
-
 #>
 
 [CmdLetBinding()]
 Param(
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     $result =  Get-Module -Name VMware.PowerCLI -ErrorAction Stop | Format-List

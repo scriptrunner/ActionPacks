@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,31 +18,30 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        Specifies the user to retrieve
+        [sr-en] User to retrieve
 
     .Parameter Select
-        Filter the output
+        [sr-en] Filter the output
 
     .Parameter Skip
-        Skips (does not select) the specified number of items
+        [sr-en] Skips (does not select) the specified number of items
 
     .Parameter SortDescending
-        Indicates that the cmdlet sorts the objects in descending order
+        [sr-en] Sorts the objects in descending order
 
     .Parameter First
-        Returns the first X number of users from the list of all the users enabled for dial-in conferencing
+        [sr-en] Returns the first X number of users from the list of all the users enabled for dial-in conferencing
 
     .Parameter TenantID
-        Unique identifier for the tenant
+        [sr-en] Unique identifier for the tenant
 #>
 
 param(    

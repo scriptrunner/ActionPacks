@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -25,58 +25,58 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine to be retrieved   
+        [sr-en] Name or identifier of the virtual machine to be retrieved   
 
     .Parameter Notes
-        Specifies notes to be associated with the virtual machine
+        [sr-en] Notes to be associated with the virtual machine
 
     .Parameter SnapshotFileLocation
-        Specifies the folder in which the virtual machine is to store its snapshot files
+        [sr-en] Folder in which the virtual machine is to store its snapshot files
 
     .Parameter ProcessorCount
-        Specifies the number of virtual processors for the virtual machine
+        [sr-en] Number of virtual processors for the virtual machine
 
     .Parameter NewName
-        Specifies the name to which the virtual machine is to be renamed
+        [sr-en] Name to which the virtual machine is to be renamed
 
     .Parameter MemoryType 
-        Specifies that the virtual machine is to be configured to use static or dynamic memory
+        [sr-en] Virtual machine is to be configured to use static or dynamic memory
 
     .Parameter MemoryOnStartup 
-        Specifies the amount of memory that the virtual machine is to be allocated upon startup, in bytes
+        [sr-en] Amount of memory that the virtual machine is to be allocated upon startup, in bytes
 
     .Parameter MemoryMinimum 
-        Specifies the minimum amount of memory that the virtual machine is to be allocated, in bytes
+        [sr-en] Minimum amount of memory that the virtual machine is to be allocated, in bytes
         
     .Parameter MemoryMaximum
-        Specifies the maximum amount of memory that the virtual machine is to be allocated, in bytes
+        [sr-en] Maximum amount of memory that the virtual machine is to be allocated, in bytes
 
     .Parameter MemoryBuffer
-        Specifies the percentage of memory to reserve as a buffer in the virtual machine to be configured
+        [sr-en] Percentage of memory to reserve as a buffer in the virtual machine to be configured
 
     .Parameter MemoryPriority
-        Sets the priority for memory availability to this virtual machine relative to other virtual machines on the virtual machine host
+        [sr-en] Sets the priority for memory availability to this virtual machine relative to other virtual machines on the virtual machine host
 
     .Parameter SwitchName
-        Specifies the name of the virtual switch to which the virtual network adapter is to be connected
+        [sr-en] Name of the virtual switch to which the virtual network adapter is to be connected
 
     .Parameter DisconnectExistingAdapters
-        Disconnects existing network adapters from the virtual machine
+       [sr-en] Disconnects existing network adapters from the virtual machine
 
     .Parameter SnapshotFileLocation
-        Specifies the folder in which the virtual machine is to store its snapshot files
+        [sr-en] Folder in which the virtual machine is to store its snapshot files
 
     .Parameter SmartPagingFilePath
-        Specifies the folder in which the Smart Paging file is to be stored
+        [sr-en] Folder in which the Smart Paging file is to be stored
 #>
 
 param(

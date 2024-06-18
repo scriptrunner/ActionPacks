@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,37 +24,37 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Host
     
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter Action
-        Enables/disables the migration
+        [sr-en] Enables/disables the migration
 
     .Parameter MaxVirtualMachineMigrations
-        Specifies the maximum number of live migrations that can be performed at the same time on the Hyper-V host
+        [sr-en] Maximum number of live migrations that can be performed at the same time on the Hyper-V host
 
     .Parameter EnableUseAnyNetworkForMigration
-        Specifies how networks are selected for incoming live migration traffic. 
+        [sr-en] How networks are selected for incoming live migration traffic. 
         If set to $TRUE, any available network on the host can be used for this traffic. 
         If set to $FALSE, incoming live migration traffic is transmitted only on the networks specified in the MigrationNetworks property of the host
 
     .Parameter VMMigrationAuthenticationType
-        Specifies the type of authentication to be used for live migrations
+        [sr-en] Type of authentication to be used for live migrations
 
     .Parameter VMMigrationPerformanceOption
-        Specifies the performance option to use for live migration
+        [sr-en] Performance option to use for live migration
 
     .Parameter NetworksToAdd
-        Specifies a string representing one or more IPv4 or IPv6 subnet masks that specifies the networks to be added for virtual machine migration. 
+        [sr-en] String representing one or more IPv4 or IPv6 subnet masks that specifies the networks to be added for virtual machine migration. 
         Use comma to separate the addresses
 
     .Parameter NetworksToRemove
-        Specifies a string representing one or more IPv4 or IPv6 subnet masks that specifies the networks to be removed from virtual machine migration. 
+        [sr-en] String representing one or more IPv4 or IPv6 subnet masks that specifies the networks to be removed from virtual machine migration. 
         Use comma to separate the addresses
 #>
 

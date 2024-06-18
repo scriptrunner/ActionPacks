@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,43 +15,42 @@
         © ScriptRunner Software GmbH 
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/Resources
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the resource from which to set properties
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the resource from which to set properties
     
     .Parameter AccountDisabled
-        Specifies whether to disable the account that's associated with the resource
+        [sr-en] Disable the account that's associated with the resource
 
     .Parameter Alias
-        Specifies the alias name of the resource
+        [sr-en] Alias name of the resource
 
     .Parameter DisplayName
-        Specifies the display name of the resource
+        [sr-en] Display name of the resource
 
     .Parameter ResourceCapacity
-        Specifies the capacity of the resource
+        [sr-en] Capacity of the resource
 
     .Parameter AllBookInPolicy
-        Specifies whether to automatically approve in-policy requests from all users
+        [sr-en] Automatically approve in-policy requests from all users
 
     .Parameter AllowRecurringMeetings
-        Specifies whether to allow recurring meetings
+        [sr-en] Allow recurring meetings
 
     .Parameter BookingWindowInDays
-        Specifies the maximum number of days in advance that the resource can be reserved
+        [sr-en] Maximum number of days in advance that the resource can be reserved
 
     .Parameter EnforceSchedulingHorizon
-        Specifies the behavior of recurring meetings that extend beyond the date specified by the BookingWindowInDays parameter
+        [sr-en] Behavior of recurring meetings that extend beyond the date specified by the BookingWindowInDays parameter
 
     .Parameter MaximumDurationInMinutes
-        Specifies duration in minutes for meeting requests
+        [sr-en] Duration in minutes for meeting requests
 
     .Parameter ScheduleOnlyDuringWorkHours
-        Specifies whether to allow meetings to be scheduled outside of the working hours that are defined for the resource
+        [sr-en] Allow meetings to be scheduled outside of the working hours that are defined for the resource
 #>
 
 param(    

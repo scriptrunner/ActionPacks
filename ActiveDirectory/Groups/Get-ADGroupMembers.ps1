@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -51,7 +51,7 @@
     
     .Parameter AuthType
         Specifies the authentication method to use
-        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an#>
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
 #>
 
 param(
@@ -158,7 +158,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Group $($GroupName) not found"
         }    
-        Throw "Group $($GroupName) not found"
+        throw "Group $($GroupName) not found"
     }   
 }
 catch{

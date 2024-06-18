@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,10 +20,10 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Network
 
 .Parameter ComputerName
-    Specifies the name of the computer on which to clear the dns cache
+    [sr-en] Name of the computer on which to clear the dns cache
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

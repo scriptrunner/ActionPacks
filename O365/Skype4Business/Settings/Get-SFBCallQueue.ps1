@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,25 +18,24 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Settings
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Descending
-        The Descending parameter sorts Call Queues in descending order
+        [sr-en] Descending parameter sorts Call Queues in descending order
 
     .Parameter ExcludeContent
-        The ExcludeContent parameter only displays the Name and Id of the Call Queues
+        [sr-en] ExcludeContent parameter only displays the Name and Id of the Call Queues
 
     .Parameter First
-        The First parameter gets the first N Call Queues
+        [sr-en] First parameter gets the first N Call Queues
 
     .Parameter Skip
-        The Skip parameter skips the first N Call Queues
+        [sr-en] Skip parameter skips the first N Call Queues
 #>
 
 param(    

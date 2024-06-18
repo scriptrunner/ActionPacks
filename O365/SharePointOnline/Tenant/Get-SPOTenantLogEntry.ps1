@@ -17,28 +17,27 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter User
-        Specifies the log-on identity as a filter
+        [sr-en] Log-on identity as a filter
 
     .Parameter CorrelationId
-        Specifies the Correlation ID as a filter
+        [sr-en] Correlation ID as a filter
 
     .Parameter Source
-        Specifies the component that logs the errors
+        [sr-en] Component that logs the errors
 
     .Parameter EndTime
-        Specifies the end time to search for logs
+        [sr-en] End time to search for logs
 
     .Parameter StartTime
-        Specifies the start time to search for logs
+        [sr-en] Start time to search for logs
 
     .Parameter MaxRows
-        Specifies the maximum number of rows in the descending order of timestamp
+        [sr-en] Maximum number of rows in the descending order of timestamp
 #>
 
 param(   

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter FriendlyName
-    Gets the disk with the specified friendly name. If the parameter is empty, all disks are retrieved
+    [sr-en] Gets the disk with the specified friendly name. If the parameter is empty, all disks are retrieved
 
 .Parameter Number
-    Specifies the disk number for which to get the associated Disk object. If the parameter less than 0, all disks are retrieved
+    [sr-en] Disk number for which to get the associated Disk object. If the parameter less than 0, all disks are retrieved
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the disk informations. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer from which to retrieve the disk informations. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter Properties
-    List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. Name,Description. Use * for all properties
 #>
 
 [CmdLetBinding()]

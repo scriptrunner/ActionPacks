@@ -17,16 +17,15 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter Identity
-        Identity (ID) of the Hive
+        [sr-en] Identity (ID) of the Hive
 
     .Parameter License
-        License key (ID) of the Hive
+        [sr-en] License key (ID) of the Hive
 #>
 
 param(     

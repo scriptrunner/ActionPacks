@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter LoginName
-        Specifies the user name
+        [sr-en] User name
 
     .Parameter Site
-        Specifies the full URL of the site collection
+        [sr-en] Full URL of the site collection
 
     .Parameter IsSiteCollectionAdmin
-        Specifies whether the user is a site collection administrator
+        [sr-en] User is a site collection administrator
 #>
 
 param(            

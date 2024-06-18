@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,19 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/ExchangeOnline/MailBoxes
 
     .Parameter InactiveMailboxOnly
-        Specifies whether to include only inactive mailboxes in the results
+        [sr-en] Include only inactive mailboxes in the results
 
     .Parameter IncludeInactiveMailbox
-        Specifies whether to include inactive mailboxes in the results
+        [sr-en] Include inactive mailboxes in the results
 
     .Parameter ExcludeResources
-        Specifies whether to exclude resource mailboxes in the results
+        [sr-en] Exclude resource mailboxes in the results
 #>
 
 param(

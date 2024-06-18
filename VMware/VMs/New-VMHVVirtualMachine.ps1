@@ -1,5 +1,5 @@
 ﻿#Requires -Version 5.0
-# Requires -Modules VMware.PowerCLI
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
     .SYNOPSIS
@@ -16,17 +16,17 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module VMware.PowerCLI
+        Requires Module VMware.VimAutomation.Core
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
     .Parameter VIServer
-        [sr-en] Specifies the IP address or the DNS name of the vSphere server to which you want to connect
-        [sr-de] IP Adresse oder DNS des VSphere Servers
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
     .Parameter VICredential
-        [sr-en] Specifies a PSCredential object that contains credentials for authenticating with the server
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
         [sr-de] Benutzerkonto für die Ausführung
 
     .Parameter HostName
@@ -132,7 +132,7 @@ Param(
     [string]$VMSwapfilePolicy = "Inherit"
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     [string[]]$Properties = @('Name','Id','NumCpu','CoresPerSocket','Notes','GuestId','MemoryGB','VMSwapfilePolicy','ProvisionedSpaceGB','Folder')

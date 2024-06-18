@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] List of properties to expand. Use * for all properties
 #>
 
 param(         

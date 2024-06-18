@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,25 +24,25 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine whose BIOS is to be retrieved
+        [sr-en] Name or identifier of the virtual machine whose BIOS is to be retrieved
 
     .Parameter Number
-        Specifies the Id (1 or 2) of the COM port to be configured
+        [sr-en] Id (1 or 2) of the COM port to be configured
 
     .Parameter DebuggerMode 
-        Specifies the state of the COM port for use by debuggers
+        [sr-en] State of the COM port for use by debuggers
 
     .Parameter Path 
-        Specifies a named pipe path for the COM port to be configured. 
+        [sr-en] A named pipe path for the COM port to be configured. 
         Specify local pipes as "\\.\pipe\PipeName" and remote pipes as "\\RemoteServer\pipe\PipeName". 
         If the parameter empty or $null, the port is set to no assignment
 #>

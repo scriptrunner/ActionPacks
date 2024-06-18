@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
 
 .Parameter DriveLetter
-    Specifies the drive letter
+    [sr-en] Drive letter
 
 .Parameter ProtectorID
-    Specifies the ID for a key protector or a KeyProtector object. A BitLocker volume object includes a KeyProtector object
+    [sr-en] ID for a key protector or a KeyProtector object. A BitLocker volume object includes a KeyProtector object
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

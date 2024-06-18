@@ -17,25 +17,24 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter ExcludedFileExtensions
-        Blocks certain file types from syncing with the new sync client (OneDrive.exe)
+        [sr-en] Blocks certain file types from syncing with the new sync client (OneDrive.exe)
 
     .Parameter BlockMacSync
-        Block Mac sync clients
+        [sr-en] Block Mac sync clients
 
     .Parameter DomainGuids
-        Sets the domain GUID to add to the safe recipient list, comma separated
+        [sr-en] Sets the domain GUID to add to the safe recipient list, comma separated
 
     .Parameter Enable
-        Enables the feature to block sync originating from domains that are not present in the safe recipients list
+        [sr-en] Enables the feature to block sync originating from domains that are not present in the safe recipients list
 
     .Parameter GrooveBlockOption
-        Controls whether or not a tenant’s users can sync OneDrive for Business libraries with the old OneDrive for Business sync client
+        [sr-en] Controls whether or not a tenant’s users can sync OneDrive for Business libraries with the old OneDrive for Business sync client
 
     .Parameter DisableReportProblemDialog
 #>

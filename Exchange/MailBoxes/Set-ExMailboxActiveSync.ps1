@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,16 +15,15 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set ActiveSync
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the mailbox from which to set ActiveSync
 
     .Parameter Activate
-        Enables or disables Exchange ActiveSync for the mailbox
+        [sr-en] Enables or disables Exchange ActiveSync for the mailbox
 #>
 
 param(

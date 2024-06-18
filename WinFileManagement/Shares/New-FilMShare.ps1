@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,37 +20,37 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Shares
 
 .Parameter ShareName
-    Specifies a name for the share
+    [sr-en] Name for the share
 
 .Parameter Path
-    Specifies the path of the location of the folder to share
+    [sr-en] Path of the location of the folder to share
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to create the share
+    [sr-en] Name of the computer from which to create the share
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter Description
-    Specifies an optional description of the share
+    [sr-en] Optional description of the share
 
 .Parameter ScopeName
-    Specifies the scope name of the share
+    [sr-en] Scope name of the share
 
 .Parameter EncryptData
-    Indicates that the share is encrypted
+    [sr-en] Share is encrypted
 
 .Parameter ModifyAccess
-    Specifies which accounts are granted modify permission to access the share. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted modify permission to access the share. Multiple accounts can be specified comma separated
 
 .Parameter FullControlAccess
-    Specifies which accounts are granted full permission to access the share. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted full permission to access the share. Multiple accounts can be specified comma separated
 
 .Parameter ReadAccess
-    Specifies which accounts are granted read permission to access the share. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted read permission to access the share. Multiple accounts can be specified comma separated
 
 .Parameter NoAccess
-    Specifies which accounts are denied access to the share. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are denied access to the share. Multiple accounts can be specified comma separated
 #>
 
 [CmdLetBinding()]

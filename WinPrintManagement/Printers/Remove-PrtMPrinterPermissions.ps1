@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,41 +22,40 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Printers
 
 .Parameter PrinterName
-    Specifies the name of the printer for which to remove the permissions
+    [sr-en] Name of the printer for which to remove the permissions
 
 .Parameter ComputerName
-    Specifies the name of the computer on which the printer is installed
+    [sr-en] Name of the computer on which the printer is installed
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the executing account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the executing account is used.
 
 .Parameter ADMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the permission from the specified printer. Use the comma to separate the members
 
 .Parameter Permission
-    Specifies the permission for the specified printer
+    [sr-en] Permission for the specified printer
 
 .Parameter ADMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the permission from the specified printer. Use the comma to separate the members
 
 .Parameter PrintPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the print permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the print permission from the specified printer. Use the comma to separate the members
 
 .Parameter ManagePrinterPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the manage printer permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the manage printer permission from the specified printer. Use the comma to separate the members
 
 .Parameter ManageDocumentsPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the manage documents permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the manage documents permission from the specified printer. Use the comma to separate the members
 
 .Parameter ReadPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the read permissions permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the read permissions permission from the specified printer. Use the comma to separate the members
 
 .Parameter ChangePermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the change permissions permission from the specified printer. Use the comma to separate the members
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the change permissions permission from the specified printer. Use the comma to separate the members
 
 .Parameter TakeownershipPermissionMembers
-    SamAccountName or user principal name (UPN) of the users and groups to remove the takeownership permission from the specified printer. Use the comma to separate the members
-
+    [sr-en] SamAccountName or user principal name (UPN) of the users and groups to remove the takeownership permission from the specified printer. Use the comma to separate the members
 #>
 
 [CmdLetBinding()]

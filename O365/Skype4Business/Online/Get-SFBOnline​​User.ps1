@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,25 +18,24 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        Indicates the Identity of the user account to be retrieved
+        [sr-en] Identity of the user account to be retrieved
 
     .Parameter OnModernServer
-        Returns a collection of users homed on Skype for Business
+        [sr-en] Returns a collection of users homed on Skype for Business
 
     .Parameter ResultSize
-        Enables you to limit the number of records returned by the cmdlet
+        [sr-en] Enables you to limit the number of records returned by the cmdlet
 
     .Parameter UnassignedUser
-        Enables you to return a collection of all the users who have been enabled for Skype for Business but are not currently assigned to a Registrar pool
+        [sr-en] Enables you to return a collection of all the users who have been enabled for Skype for Business but are not currently assigned to a Registrar pool
 #>
 
 param(    

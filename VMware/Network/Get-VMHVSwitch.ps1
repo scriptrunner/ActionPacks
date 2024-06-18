@@ -1,37 +1,41 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Vds
 
 <#
-.SYNOPSIS
-    Retrieves vSphere distributed switches
+    .SYNOPSIS
+        Retrieves vSphere distributed switches
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Vds
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter SwitchName
-    Specifies the name of the vSphere distributed switch that you want to retrieve, is the parameter empty all distributed switches retrieved
-
-.Parameter SwitchID
-    Specifies the ID of the vSphere distributed switch that you want to retrieve
+    .Parameter SwitchName
+        [sr-en] Name of the vSphere distributed switch that you want to retrieve, is the parameter empty all distributed switches retrieved
+        [sr-de] Name der Switch
+        
+    .Parameter SwitchID
+        [sr-en] ID of the vSphere distributed switch that you want to retrieve
+        [sr-de] ID der Switch
 #>
 
 [CmdLetBinding()]
@@ -48,7 +52,7 @@ Param(
     [string]$SwitchID
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Vds
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

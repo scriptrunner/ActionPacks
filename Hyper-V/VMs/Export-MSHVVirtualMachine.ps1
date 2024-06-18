@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,22 +24,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the name of the virtual machine to be exported
+        [sr-en] Name of the virtual machine to be exported
 
     .Parameter Path
-        Specifies the path to the folder into which the virtual machine is to be exported
+        [sr-en] Path to the folder into which the virtual machine is to be exported
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter CaptureLiveState
-        Specifies how Hyper-V captures the running virtual machine memory state. The acceptable values for this parameter are:
+        [sr-en] Hyper-V captures the running virtual machine memory state. The acceptable values for this parameter are:
         CaptureCrashConsistentState: Do nothing to handle virtual machine state. CaptureSavedState: Include memory state. CaptureDataConsistentState: Use Production Checkpoint technology.
 #>
 

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,19 +18,18 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Policies
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        Unique identifier of the voice routing policy to be retrieved
+        [sr-en] Unique identifier of the voice routing policy to be retrieved
 
     .Parameter LocalStore
-        Retrieves the voice policy data from the local replica of the Central Management store rather than from the Central Management store itself
+        [sr-en] Retrieves the voice policy data from the local replica of the Central Management store rather than from the Central Management store itself
 #>
 
 param(    

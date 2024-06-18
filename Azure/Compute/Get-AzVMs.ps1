@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Compute
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -32,9 +32,7 @@
 
     .Parameter ResourceGroupName
         [sr-en] Specifies the name of the resource group of the virtual machine
-        Mandatory when parameter name is set!
         [sr-de] Name der resource group die die virtuelle Maschine enthält
-        Mandatory, wenn der Parameter Name angegeben wird
         
     .Parameter Properties
         [sr-en] List of properties to expand. Use * for all properties
@@ -42,9 +40,15 @@
 #>
 
 param( 
+    [Parameter(Mandatory = $true,ParameterSetName = 'ResourceGroup')]
     [string]$Name,
+    [Parameter(Mandatory = $true,ParameterSetName = 'ResourceGroup')]
     [string]$ResourceGroupName,
+    [Parameter(Mandatory = $true,ParameterSetName = 'Location')]
     [string]$Location,
+    [Parameter(ParameterSetName = 'All')]
+    [Parameter(ParameterSetName = 'Location')]
+    [Parameter(ParameterSetName = 'ResourceGroup')]
     [ValidateSet('*','Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')]
     [string[]]$Properties = @('Name', 'Location', 'ResourceGroupName', 'Tags', 'VmId', 'StatusCode', 'ID')
 )
@@ -57,11 +61,11 @@ try{
     }
     [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'}
     
-    if([System.String]::IsNullOrWhiteSpace($Name) -eq $false){
+    if($PSCmdlet.ParameterSetName -eq 'ResourceGroup'){
         $cmdArgs.Add('Name',$Name)
         $cmdArgs.Add('ResourceGroupName',$ResourceGroupName)
     }
-    if([System.String]::IsNullOrWhiteSpace($Location) -eq $false){
+    if($PSCmdlet.ParameterSetName -eq 'Location'){
         $cmdArgs.Add('Location',$Location)
     }
 

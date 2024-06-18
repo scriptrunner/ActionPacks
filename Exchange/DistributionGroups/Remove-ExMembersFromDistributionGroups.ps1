@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,19 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/DistributionGroups
 
     .Parameter GroupObjectIds
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to which to removes members
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to which to removes members
 
     .Parameter GroupIds
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to removes from the Universal distribution groups
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution groups to removes from the Universal distribution groups
 
     .Parameter UserIds
-        Specifies the Alias, Display name, Distinguished name, Guid or Mail address of the mailboxes to removes from the groups
+        [sr-en] Alias, Display name, Distinguished name, Guid or Mail address of the mailboxes to removes from the groups
 #>
 
 param(

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,33 +15,32 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxIds
-        Specifies the Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
+        [sr-en] Aliases, Display names, Distinguished names, SamAccountNames, Guid or user principal names of the mailboxes from which to set out of office
 
     .Parameter InternalText
-        Specifies the Automatic Replies message that's sent to internal senders or senders within the organization
+        [sr-en] Automatic Replies message that's sent to internal senders or senders within the organization
 
     .Parameter AutoReplyType 
-        Specifies whether Automatic Replies are sent to external senders.
+        [sr-en] Automatic Replies are sent to external senders.
 
     .Parameter ExternalText 
-        Specifies the Automatic Replies message that's sent to external senders or senders outside the organization
+        [sr-en] Automatic Replies message that's sent to external senders or senders outside the organization
 
     .Parameter StartDate
-        Specifies the start date that Automatic Replies are sent for the specified mailbox
+        [sr-en] Start date that Automatic Replies are sent for the specified mailbox
         The text StartDate will be replaced by the defined start date
 
     .Parameter EndDate
-        Specifies the end date that Automatic Replies are sent for the specified mailbox
+        [sr-en] End date that Automatic Replies are sent for the specified mailbox
         The text EndDate will be replaced by the defined end date
 
     .Parameter GenerateReport
-        Generates a report with the current mailbox settings        
+        [sr-en] Generates a report with the current mailbox settings        
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 #>
 

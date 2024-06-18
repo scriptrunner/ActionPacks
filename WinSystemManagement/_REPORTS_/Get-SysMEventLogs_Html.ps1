@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,13 +21,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/_REPORTS_ 
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter LogType
-    Specifies the entry type of the events that this cmdlet gets
+    [sr-en] Entry type of the events that this cmdlet gets
     
 .Parameter MaxItems
-    Specifies the number of the newest events
+    [sr-en] Number of the newest events
 #>
 
 [CmdLetBinding()]

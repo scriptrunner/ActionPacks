@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -25,23 +24,33 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter TodoTaskListId 
+        [sr-en] Id of todo task list
+        [sr-de] Todo-Tasklist ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [string]$TodoTaskListId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
     }
+    if($PSBoundParameters.ContainsKey('TodoTaskListId') -eq $true){
+        $cmdArgs.Add('TodoTaskListId',$TodoTaskListId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
+    }
     $result = Get-MgUserTodoList @cmdArgs | Select-Object *
     
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -52,5 +61,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

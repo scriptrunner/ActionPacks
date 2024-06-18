@@ -35,6 +35,9 @@ function ConnectMSGraph(){
 
         .Parameter SecretValue
             Client Secret value
+
+        .Parameter v1
+            Connect for 1s modules
         #>
 
         [CmdLetBinding()]
@@ -48,7 +51,8 @@ function ConnectMSGraph(){
             [Parameter(Mandatory = $true,ParameterSetName = "Certificate")]  
             [string]$CertificateThumbprint,
             [Parameter(Mandatory = $true,ParameterSetName = "ClientSecret")]
-            [string]$SecretValue
+            [string]$SecretValue,
+            [switch]$v1
             )
         
         try{
@@ -68,8 +72,14 @@ function ConnectMSGraph(){
                     grant_type    = "client_credentials"
                     }
                 $tokenRequest = Invoke-WebRequest –Method Post –Uri $uri –ContentType "application/x-www-form-urlencoded" –Body $body –UseBasicParsing
-                $mgToken =($tokenRequest.Content | ConvertFrom-Json).access_token
-                $cmdArgs.Add('AccessToken', $mgToken)
+                [string]$mgToken =($tokenRequest.Content | ConvertFrom-Json).access_token
+                if($v1.IsPresent -eq $false){
+                    [securestring]$secToken = ConvertTo-SecureString -String $mgToken -AsPlainText -Force
+                    $cmdArgs.Add('AccessToken', $secToken)
+                }
+                else{
+                    $cmdArgs.Add('AccessToken', $mgToken)
+                }
             }
             $null = Connect-MgGraph @cmdArgs                        
         }
@@ -108,7 +118,7 @@ function DisconnectMSGraph(){
 
         try{
             if($null -ne (Get-MgContext)){
-                Disconnect-MgGraph 
+                $null = Disconnect-MgGraph 
             }
         }
         catch{

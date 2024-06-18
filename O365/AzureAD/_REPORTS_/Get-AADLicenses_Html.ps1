@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
+        Azure Active Directory Powershell Module 
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK

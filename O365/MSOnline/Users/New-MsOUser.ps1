@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,59 +16,58 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Users
 
     .Parameter UserPrincipalName
-        Specifies the user ID for this user
+        [sr-en] User ID for this user
 
     .Parameter Password
-        Specifies the new password for the user
+        [sr-en] New password for the user
 
     .Parameter DisplayName
-        Specifies the display name of the user
+        [sr-en] Display name of the user
 
     .Parameter FirstName
-        Specifies the first name of the user
+        [sr-en] First name of the user
 
     .Parameter LastName
-        Specifies the last name of the user
+        [sr-en] Last name of the user
 
     .Parameter PostalCode
-        Specifies the postal code of the user
+        [sr-en] Postal code of the user
 
     .Parameter City
-        Specifies the city of the user
+        [sr-en] City of the user
 
     .Parameter Street
-        Specifies the street address of the user
+        [sr-en] Street address of the user
 
     .Parameter PhoneNumber
-        Specifies the phone number of the user
+        [sr-en] Phone number of the user
 
     .Parameter MobilePhone
-        Specifies the mobile phone number of the user
+        [sr-en] Mobile phone number of the user
 
     .Parameter Office
-        Specifies the office of the user
+        [sr-en] Office of the user
 
     .Parameter Department
-        Specifies the department of the user
+        [sr-en] Department of the user
 
     .Parameter ForceChangePassword
-        Indicates that the user is required to change their password the next time they sign in
+        [sr-en] User is required to change their password the next time they sign in
 
     .Parameter PasswordNeverExpires
-        Specifies whether the user password expires periodically
+        [sr-en] User password expires periodically
 
     .Parameter Enabled
-        Specifies whether the user is able to log on using their user ID
+        [sr-en] User is able to log on using their user ID
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

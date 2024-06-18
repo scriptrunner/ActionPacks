@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,28 +18,27 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Online
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        Specifies the default dial-in service number string
+        [sr-en] Default dial-in service number string
 
     .Parameter BridgeId
-        Specifies the globally-unique identifier (GUID) for the audio conferencing bridge
+        [sr-en] Globally-unique identifier (GUID) for the audio conferencing bridge
 
     .Parameter BridgeName
-        Specifies the name of the audio conferencing bridge
+        [sr-en] Name of the audio conferencing bridge
 
     .Parameter City
-        Specifies the city geocode to be used
+        [sr-en] City geocode to be used
 
     .Parameter ResultSize
-        Specifies the number of records returned by the cmdlet
+        [sr-en] Number of records returned by the cmdlet
 #>
 
 param(    

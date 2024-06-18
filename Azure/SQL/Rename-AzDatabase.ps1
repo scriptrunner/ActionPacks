@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Sql
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -51,7 +51,7 @@ param(
     [string]$Tenant
 )
 
-Import-Module Az
+Import-Module Az.Sql
 
 try{
     [string[]]$Properties = @('DatabaseName','ResourceGroupName','ServerName','Location','DatabaseId','Edition','CollationName','Status','CreationDate','Tags')

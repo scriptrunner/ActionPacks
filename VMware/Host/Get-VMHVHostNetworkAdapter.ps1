@@ -1,49 +1,57 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the host network adapters on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the host network adapters on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the name of the host whose network adapters you want to retrieve
+    .Parameter HostName
+        [sr-en] Name of the host whose network adapters you want to retrieve
+        [sr-de] Hostname
 
-.Parameter Console
-    Indicates that you want to retrieve only service console virtual network adapters
+    .Parameter Console
+        [sr-en] Retrieve only service console virtual network adapters
+        [sr-de] Konsolen Netzwerk-Adapter
 
-.Parameter Physical
-    Indicates that you want to retrieve only physical network adapters
+    .Parameter Physical
+        [sr-en] Retrieve only physical network adapters
+        [sr-de] Physische Netzwerk-Adapter
 
-.Parameter VMKernel
-    Indicates that you want to retrieve only VMKernel virtual network adapters
+    .Parameter VMKernel
+        [sr-en] Retrieve only VMKernel virtual network adapters
+        [sr-de] VMKernel Netzwerk-Adapter
 
-.Parameter AdapterName
-    Specifies the name of the host network adapter you want to retrieve
+    .Parameter AdapterName
+        [sr-en] Name of the host network adapter you want to retrieve
+        [sr-de] Name des Netzwerk-Adapters
 
-.Parameter PortGroupName
-    Specifies the name of the port group to which network adapters that you want to retrieve are connected
+    .Parameter PortGroupName
+        [sr-en] Name of the port group to which network adapters that you want to retrieve are connected
+        [sr-de] Name der Portgruppe
 #>
 
 [CmdLetBinding()]
@@ -60,7 +68,7 @@ Param(
     [string]$PortGroupName
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     if([System.String]::IsNullOrWhiteSpace($HostName) -eq $true){

@@ -1,46 +1,53 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the host storages on a vCenter Server system
+    .SYNOPSIS
+        Retrieves the host storages on a vCenter Server system
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Host
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter HostName
-    Specifies the hosts for which you want to retrieve storage information
+    .Parameter HostName
+        [sr-en] Host for which you want to retrieve storage information
+        [sr-de] Hostname
 
-.Parameter Id
-    Specifies the IDs of the host storages that you want to retrieve
-    
-.Parameter Refresh  
-    Indicates whether the cmdlet refreshes the storage system information before retrieving the specified host storages
+    .Parameter Id
+        [sr-en] ID of the host storages that you want to retrieve
+        [sr-de] Id des Host
+        
+    .Parameter Refresh  
+        [sr-en] Refreshes the storage system information before retrieving the specified host storages
+        [sr-de] Informationen zuvor aktualisieren
 
-.Parameter RescanAllHba  
-    Indicates whether to issue a request to rescan all virtual machine hosts bus adapters for new storage devices prior to retrieving the storage information
+    .Parameter RescanAllHba  
+        [sr-en] Rescan all virtual machine hosts bus adapters for new storage devices prior to retrieving the storage information
+        [sr-de] Host-Bus-Adapter der virtuellen Maschine zuvor aktualisieren
 
-.Parameter RescanVmfs  
-    Indicates whether to perform a re-scan for new virtual machine file systems 
+    .Parameter RescanVmfs  
+        [sr-en] Re-scan for new virtual machine file systems 
+        [sr-de] Dateisysteme zuvor aktualisieren
 #>
 
 [CmdLetBinding()]
@@ -56,7 +63,7 @@ Param(
     [switch]$RescanVmfs
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     $Script:vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

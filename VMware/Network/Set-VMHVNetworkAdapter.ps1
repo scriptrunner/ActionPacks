@@ -1,61 +1,73 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Modifies the configuration of the virtual network adapter
+    .SYNOPSIS
+        Modifies the configuration of the virtual network adapter
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to configure the virtual network adapter
+    .Parameter VMName
+        [sr-en] Snapshot from which you want to configure virtual network adapters
+        [sr-de] VM der Netzwerk-Adapter
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to configure the virtual network adapter
+    .Parameter TemplateName
+        [sr-en] Template from which you want to configure virtual network adapters
+        [sr-de] Vorlage der Netzwerk-Adapter
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to configure the virtual network adapter
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to configure virtual network adapters
+        [sr-de] Snapshot des Netzwerk-Adapters
 
-.Parameter AdapterName
-    Specifies the name of the virtual network adapter you want to modify
+    .Parameter AdapterName
+        [sr-en] Name of the virtual network adapter you want to modify
+        [sr-de] Name des Netzwerk-Adapters
 
-.Parameter AdapterType
-    Specifies the type of the network adapter
+    .Parameter AdapterType
+        [sr-en] Type of the network adapter 
+        [sr-de] Typ des Netzwerk-Adapters
 
-.Parameter Network
-    Specifies the name of the network to which you want to connect the virtual network adapter   
+    .Parameter Network
+        [sr-en] Name of the network to which you want to connect the virtual network adapter   
+        [sr-de] Netzwerkname
 
-.Parameter MacAddress
-    Specifies an optional MAC address for the virtual network adapter
+    .Parameter MacAddress
+        [sr-en] Optional MAC address for the virtual network adapter
+        [sr-de] Optionale MAC-Adresse der Netzwerk-Adapters
 
-.Parameter Connected
-    If the value is $true, the virtual network adapter is connected after its creation  
+    .Parameter Connected
+        [sr-en] If the value is $true, the virtual network adapter is connected after its creation
+        [sr-de] Virtuellee Netzwerk-Adapter nach seiner Erstellung verbinden 
 
-.Parameter StartConnected
-    If the value is $true, the virtual network adapter starts connected when its associated virtual machine powers on
+    .Parameter StartConnected
+        [sr-en] If the value is $true, the virtual network adapter starts connected when its associated virtual machine powers on
+        [sr-de] Netzwerk-Adapter verbinden, wenn die zugehörige virtuelle Maschine eingeschaltet wird
 
-.Parameter WakeOnLan
-    Indicates that wake-on-LAN is enabled on the virtual network adapter
+    .Parameter WakeOnLan
+        [sr-en] Wake-on-LAN is enabled on the virtual network adapter
+        [sr-de] Wake-On-Lan aktivieren
 #>
 
 [CmdLetBinding()]
@@ -106,7 +118,7 @@ Param(
     [bool]$WakeOnLan
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     if([System.String]::IsNullOrWhiteSpace($AdapterName) -eq $true){

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,13 +20,13 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter EnableCredSSP
-    Enable or disable Credential Security Support Provider (CredSSP) authentication 
+    [sr-en] Enable or disable Credential Security Support Provider (CredSSP) authentication 
 
 .Parameter Role
-    Specifies whether to disable CredSSP as a client or as a server
+    [sr-en] Disable CredSSP as a client or as a server
 
 .Parameter DelegateComputer 
-    Specifies servers to which client credentials are delegated
+    [sr-en] Servers to which client credentials are delegated
 #>
 
 [CmdLetBinding()]

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,28 +20,25 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
 
 .Parameter FolderName
-    Specifies a name for the folder
+    [sr-en] Name for the folder
 
 .Parameter Path
-    Specifies the path of the folder location
+    [sr-en] Path of the folder location
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter ModifyAccess
-    Specifies which accounts are granted modify permission to access the folder. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted modify permission to access the folder. Multiple accounts can be specified comma separated
 
 .Parameter FullControlAccess
-    Specifies which accounts are granted full control permission to access the folder. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted full control permission to access the folder. Multiple accounts can be specified comma separated
 
 .Parameter ReadAccess
-    Specifies which accounts are granted read permission to access the folder. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted read permission to access the folder. Multiple accounts can be specified comma separated
 
 .Parameter ReadAndExecuteAccess
-    Specifies which accounts are granted read and execute permission to access the folder. Multiple accounts can be specified comma separated
-
-.EXAMPLE
-
+    [sr-en] Accounts are granted read and execute permission to access the folder. Multiple accounts can be specified comma separated
 #>
 
 [CmdLetBinding()]

@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Billing
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -74,7 +74,7 @@ param(
     [string[]]$Properties = @('UsageStart','UsageEnd','BillingPeriodName','InstanceName')
 )
 
-Import-Module Az
+Import-Module Az.Billing
 
 try{
     if($Properties -contains '*'){

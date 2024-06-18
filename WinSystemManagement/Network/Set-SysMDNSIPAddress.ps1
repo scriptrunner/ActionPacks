@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/Network
 
 .Parameter AdapterName
-    Specifies the friendly name of the interface. The cmdlet modifies IP addresses that match the alias
+    [sr-en] Friendly name of the interface. The cmdlet modifies IP addresses that match the alias
     
 .Parameter ComputerName
-    Specifies the name of the computer from which to retrieve the dns client
+    [sr-en] Name of the computer from which to retrieve the dns client
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter IPAddresses
-    Specifies a list of DNS server IP addresses to set for the interface
+    [sr-en] List of DNS server IP addresses to set for the interface
 #>
 
 [CmdLetBinding()]

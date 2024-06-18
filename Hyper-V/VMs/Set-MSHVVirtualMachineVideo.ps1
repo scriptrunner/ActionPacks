@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -23,22 +23,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine whose BIOS is to be retrieved
+        [sr-en] Name or identifier of the virtual machine whose BIOS is to be retrieved
 
     .Parameter ResolutionType
-        Specifies the resolution type for the virtual machine display
+        [sr-en] Resolution type for the virtual machine display
 
     .Parameter HorizontalResolution 
-        Specifies the horizontal resolution for the virtual machine display
+        [sr-en] Horizontal resolution for the virtual machine display
 
     .Parameter VerticalResolution 
-        Specifies the vertical resolution for the virtual machine display
+        [sr-en] Vertical resolution for the virtual machine display
 #>
 
 param(    

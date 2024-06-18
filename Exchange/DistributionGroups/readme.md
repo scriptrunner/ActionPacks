@@ -1,7 +1,6 @@
-# Manage Distribution groups
+﻿# Manage Distribution groups
 
 Note: The use of the scripts requires a remote PowerShell session to Microsoft Exchange Server.<br>
-Requirements: ScriptRunner Version 4.x or higher
 
 + [Add-ExMembersToDistributionGroups.ps1](./Add-ExMembersToDistributionGroups.ps1)
 

@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns oauth2PermissionGrants from users
+        Get oauth2PermissionGrants from users
     
     .DESCRIPTION          
 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -25,27 +24,36 @@
     .Parameter UserId
         [sr-en] User identifier
         [sr-de] Benutzer ID
+
+    .Parameter OAuth2PermissionGrantId
+        [sr-en] Unique identifier of oAuth2PermissionGrant
+        [sr-de] Eindeutige ID des oAuth2PermissionGrant
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$UserId
+    [string]$UserId,
+    [string]$OAuth2PermissionGrantId
 )
 
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+                        'UserId'= $UserId                        
+    }
+    if($PSBoundParameters.ContainsKey('OAuth2PermissionGrantId') -eq $true){
+        $cmdArgs.Add('OAuth2PermissionGrantId',$OAuth2PermissionGrantId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
     }
     $result = Get-MgUserOauth2PermissionGrant @cmdArgs | Select-Object *
 
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -56,5 +64,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

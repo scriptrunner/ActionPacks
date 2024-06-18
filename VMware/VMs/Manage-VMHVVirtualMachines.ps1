@@ -1,36 +1,41 @@
-# Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Start, stop or restart VMWare virtual machines
+    .SYNOPSIS
+        Start, stop or restart VMWare virtual machines
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner.
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner.
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function,
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    ©ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner.
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner.
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function,
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        ©ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
-    
-.LINK
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.Parameter Action
-    Specifies the Action for the virtual machines
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter Action
+        [sr-en] Action for the virtual machines
+        [sr-de] Aktion die für die virtuellen Maschinen ausgeführt wird
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VirtualMachines
-    Specifies the virtual machines to be start, stop, restart, suspend or shutdown
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
+
+    .Parameter VirtualMachines
+        [sr-en] Virtual machines to be start, stop, restart, suspend or shutdown
+        [sr-de] Virtuelle Maschinen
 #>
 
 param(
@@ -44,7 +49,7 @@ param(
     [string[]]$VirtualMachines
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try {
     $vmServer = Connect-VIServer -Server $VIServer -Credential $VICredential -ErrorAction Stop

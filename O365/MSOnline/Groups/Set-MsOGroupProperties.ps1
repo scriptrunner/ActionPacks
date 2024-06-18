@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -17,26 +17,25 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/Groups
 
     .Parameter GroupObjectId
-        Specifies the unique ID of the group to update
+        [sr-en] Unique ID of the group to update
 
     .Parameter GroupName
-        Specifies the display name of the group to remove
+        [sr-en] Display name of the group to remove
 
     .Parameter Description
-        Specifies a description of the group
+        [sr-en] Description of the group
 
     .Parameter DisplayName
-        Specifies the new display name of the group
+        [sr-en] New display name of the group
 
     .Parameter TenantId
-        Specifies the unique ID of the tenant on which to perform the operation
+        [sr-en] Unique ID of the tenant on which to perform the operation
 #>
 
 param(

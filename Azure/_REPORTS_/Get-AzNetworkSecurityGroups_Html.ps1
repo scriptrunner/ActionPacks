@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Network
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -26,7 +26,7 @@
 param( 
 )
 
-Import-Module Az
+Import-Module Az.Network
 
 try{
     [string[]]$Properties = @('Name','Location','ResourceGroupName','ProvisioningState','Subnets','ResourceGuid','Etag','Id')

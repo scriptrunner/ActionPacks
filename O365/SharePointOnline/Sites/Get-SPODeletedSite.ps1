@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the URL of the deleted site collection to be returned
+        [sr-en] URL of the deleted site collection to be returned
 
     .Parameter Limit
-        Specifies the maximum number of site collections to return
+        [sr-en] Maximum number of site collections to return
 
     .Parameter IncludeOnlyPersonalSite
-        Only include Personal Sites in the returned results
+        [sr-en] Only include Personal Sites in the returned results
 
     .Parameter IncludePersonalSite
-        Use this switch parameter to include Personal Sites with the returned results
+        [sr-en] Use this switch parameter to include Personal Sites with the returned results
 #>
 
 param(        

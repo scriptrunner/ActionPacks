@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,70 +20,70 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/FolderAndFiles
 
 .Parameter ObjectName
-    Specifies the folder or file name with the path
+    [sr-en] Folder or file name with the path
 
 .Parameter ModifyType
-    Specifies the change type
+    [sr-en] Change type
 
 .Parameter AccessControlType
-    Specifies permission is set to allow or deny access
+    [sr-en] Permission is set to allow or deny access
 
 .Parameter AccessType
-    Specifies the common access right to grant or denied to the trustee
+    [sr-en] Common access right to grant or denied to the trustee
 
 .Parameter Permission
-    Specifies the common or special access right to grant or denied to the trustee
+    [sr-en] Common or special access right to grant or denied to the trustee
 
 .Parameter PermissionAccounts
-    Specifies which accounts are granted or denied the permission to access the object, e.g. Contoso\John.Doe . Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted or denied the permission to access the object, e.g. Contoso\John.Doe . Multiple accounts can be specified comma separated
 
 .Parameter AccountsToBeAuthorize
-    Specifies which accounts are granted or denied the special permissions to access the object, e.g. Contoso\John.Doe . Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted or denied the special permissions to access the object, e.g. Contoso\John.Doe . Multiple accounts can be specified comma separated
 
 .Parameter ChangePermissions
-    Specifies the right to change the security and audit rules associated with a file or folder
+    [sr-en] Right to change the security and audit rules associated with a file or folder
 
 .Parameter CreateDirectories
-    Specifies the right to create a folder
+    [sr-en] Right to create a folder
 
 .Parameter CreateFiles
-    Specifies the right to create a file
+    [sr-en] Right to create a file
 
 .Parameter Delete
-    Specifies the right to delete a folder or file
+    [sr-en] Right to delete a folder or file
 
 .Parameter DeleteSubdirectoriesAndFiles
-    Specifies the right to delete a folder and any files contained within that folder
+    [sr-en] Right to delete a folder and any files contained within that folder
 
 .Parameter ListDirectory
-    Specifies the right to read the contents of a directory
+    [sr-en] Right to read the contents of a directory
 
 .Parameter ReadPermissions
-    Specifies the right to open and copy access and audit rules from a folder or file. This does not include the right to read data, file system attributes, and extended file system attributes
+    [sr-en] Right to open and copy access and audit rules from a folder or file. This does not include the right to read data, file system attributes, and extended file system attributes
 
 .Parameter ReadAttributes
-    Specifies the right to open and copy file system attributes from a folder or file. For example, this value specifies the right to view the file creation or modified date. This does not include the right to read data, extended file system attributes, or access and audit rules
+    [sr-en] Right to open and copy file system attributes from a folder or file. For example, this value specifies the right to view the file creation or modified date. This does not include the right to read data, extended file system attributes, or access and audit rules
 
 .Parameter ReadExtendedAttributes
-    Specifies the right to open and copy extended file system attributes from a folder or file. For example, this value specifies the right to view author and content information. This does not include the right to read data, file system attributes, or access and audit rules
+    [sr-en] Right to open and copy extended file system attributes from a folder or file. For example, this value specifies the right to view author and content information. This does not include the right to read data, file system attributes, or access and audit rules
 
 .Parameter WriteAttributes
-    Specifies the right to open and write file system attributes to a folder or file. This does not include the ability to write data, extended attributes, or access and audit rules
+    [sr-en] Right to open and write file system attributes to a folder or file. This does not include the ability to write data, extended attributes, or access and audit rules
 
 .Parameter WriteExtendedAttributes
-    Specifies the right to open and write extended file system attributes to a folder or file. This does not include the ability to write data, attributes, or access and audit rules
+    [sr-en] Right to open and write extended file system attributes to a folder or file. This does not include the ability to write data, attributes, or access and audit rules
 
 .Parameter TakeOwnership
-    Specifies the right to change the owner of a folder or file. Note that owners of a resource have full access to that resource
+    [sr-en] Right to change the owner of a folder or file. Note that owners of a resource have full access to that resource
 
 .Parameter Traverse
-    Specifies the right to list the contents of a folder and to run applications contained within that folder
+    [sr-en] Right to list the contents of a folder and to run applications contained within that folder
 
 .Parameter Inheritance
-    Inheritance specify the inheritance for the object
+    [sr-en] Inheritance specify the inheritance for the object
 
 .Parameter OnlyThisContainer
-    Apply the permissions to objects and/or containers within this container only    
+    [sr-en] Apply the permissions to objects and/or containers within this container only    
 #>
 
 [CmdLetBinding()]

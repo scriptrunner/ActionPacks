@@ -3,7 +3,8 @@
 
 <#
     .SYNOPSIS        
-    
+        Add-MgEnvironment
+        
     .DESCRIPTION          
 
     .NOTES
@@ -22,15 +23,15 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Authentication
 
     .Parameter Name
-        [sr-en] 
+        [sr-en] Name
         [sr-de]
 
     .Parameter AzureADEndpoint
-        [sr-en]
+        [sr-en] AzureADEndpoint
         [sr-de]
 
     .Parameter GraphEndpoint
-        [sr-en]
+        [sr-en] GraphEndpoint
         [sr-de]
 #>
 

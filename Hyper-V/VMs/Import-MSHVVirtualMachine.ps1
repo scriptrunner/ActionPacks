@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,34 +24,34 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter Path
-        Specifies the path to the exported virtual machine to be imported
+        [sr-en] Path to the exported virtual machine to be imported
 
     .Parameter Copy
-        Specifies that the imported virtual machine's files should be copied to the server's default locations, as opposed to registering the virtual machine in-place
+        [sr-en] Imported virtual machine's files should be copied to the server's default locations, as opposed to registering the virtual machine in-place
     
     .Parameter VirtualMachinePath
-        Specifies the path where the virtual machine configuration files are to be stored
+        [sr-en] Path where the virtual machine configuration files are to be stored
 
     .Parameter GenerateNewId
-        Specifies that the imported virtual machine should be copied and given a new unique identifier
+        [sr-en] Imported virtual machine should be copied and given a new unique identifier
 
     .Parameter Register
-        Specifies that the imported virtual machine is to be registered in-place, as opposed to copying its files to the server's default locations
+        [sr-en] Imported virtual machine is to be registered in-place, as opposed to copying its files to the server's default locations
 
     .Parameter SnapshotFilePath
-        Specifies the path for any snapshot files associated with the virtual machine
+        [sr-en] Path for any snapshot files associated with the virtual machine
 
     .Parameter VhdDestinationPath
-        Specifies the folder to which the virtual machine's VHD files are to be copied
+        [sr-en] Folder to which the virtual machine's VHD files are to be copied
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 #>
 
 param(

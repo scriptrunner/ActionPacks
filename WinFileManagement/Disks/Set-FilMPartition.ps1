@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,31 +20,31 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Disks
 
 .Parameter Number
-    Specifies the disk number
+    [sr-en] Disk number
 
 .Parameter PartitionNumber
-    Specifies the number of the partition
+    [sr-en] Number of the partition
 
 .Parameter ComputerName
-    Specifies the name of the computer on which the partition modifies. If Computername is not specified, the current computer is used.
+    [sr-en] Name of the computer on which the partition modifies. If Computername is not specified, the current computer is used.
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter NewDriveLetter
-    Specifies the new drive letter for the partition
+    [sr-en] New drive letter for the partition
 
 .Parameter IsActive
-    Specifies that the object is marked active
+    [sr-en] The object is marked active
 
 .Parameter IsHidden
-    Specifies that is a hidden partition
+    [sr-en] Is a hidden partition
 
 .Parameter IsOffline
-    Takes the partition offline until explicitly brought back online, or until an access path is added to the partition
+    [sr-en] Takes the partition offline until explicitly brought back online, or until an access path is added to the partition
 
 .Parameter IsReadOnly
-    Sets the partition to be read-only
+    [sr-en] Sets the partition to be read-only
 #>
 
 [CmdLetBinding()]

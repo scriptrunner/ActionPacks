@@ -23,7 +23,7 @@
         
     .Parameter TargetOUPath
         [sr-en] Specifies the new location for the object
-        [sr-de] Pfad der neuen OU für das  Objekt
+        [sr-de] Pfad der neuen OU für das Objekt
 
     .Parameter ObjectName
         [sr-en] DistinguishedName or GUID of the Active Directory object

@@ -17,13 +17,12 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Tenant
 
     .Parameter ReplicatedContentTypes
-        Name of the content types for replication, comma separated
+        [sr-en] Name of the content types for replication, comma separated
 #>
 
 param( 

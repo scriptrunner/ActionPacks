@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -52,7 +52,6 @@
     .Parameter AuthType
         Specifies the authentication method to use
         [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
-
 #>
 
 param(    
@@ -123,13 +122,13 @@ try{
                 'Identity' = $Script:User.SamAccountName
                 }
         if($NeverExpires -eq $true){
-           Set-ADUser @cmdArgs -AccountExpirationDate $null        
+            $null = Set-ADUser @cmdArgs -AccountExpirationDate $null        
         }
         else{
             if($ExpirationDate.ToFileTimeUtc() -lt [DateTime]::Now.ToFileTimeUtc()){
-                Throw "Expiration date is in the past"
+                throw "Expiration date is in the past"
             }
-            Set-ADUser @cmdArgs -AccountExpirationDate $ExpirationDate
+            $null = Set-ADUser @cmdArgs -AccountExpirationDate $ExpirationDate
         }
         Start-Sleep -Seconds 5 # wait
         $Script:User = Get-ADUser @cmdArgs -Properties *
@@ -152,7 +151,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "User $($Username) not found"
         }    
-        Throw "User $($Username) not found"
+        throw "User $($Username) not found"
     }   
 }
 catch{

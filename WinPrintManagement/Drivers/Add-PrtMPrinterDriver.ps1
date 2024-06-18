@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules PrintManagement
 
 <#
@@ -22,16 +22,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinPrintManagement/Drivers
     
 .Parameter DriverName
-    Specifies the name of the printer driver
+    [sr-en] Name of the printer driver
 
 .Parameter ComputerName
-    Specifies the name of the computer on which to install the printer driver
+    [sr-en] Name of the computer on which to install the printer driver
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 
 .Parameter InfFilePath
-    Specifies the path of the printer driver INF file in the driver store. INF files contain information about the printer and the printer driver.
+    [sr-en] Path of the printer driver INF file in the driver store. INF files contain information about the printer and the printer driver.
 #>
 
 [CmdLetBinding()]

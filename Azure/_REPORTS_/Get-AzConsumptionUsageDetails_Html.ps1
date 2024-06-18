@@ -16,7 +16,7 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Module Az
+        Requires Module Az.Billing
         Requires Library script AzureAzLibrary.ps1
 
     .LINK
@@ -48,7 +48,7 @@ param(
     [datetime]$EndDate
 )
 
-Import-Module Az
+Import-Module Az.Billing
 
 try{
     [string[]]$Properties = @('UsageStart','UsageEnd','BillingPeriodName','InstanceName')

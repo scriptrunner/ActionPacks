@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -36,10 +36,6 @@
     .Parameter DomainName
         Name of Active Directory Domain
         [sr-de] Name der Active Directory Domäne
-        
-    .Parameter SearchScope
-        Specifies the scope of an Active Directory search
-        [sr-de] Gibt den Suchumfang einer Active Directory-Suche an
     
     .Parameter AuthType
         Specifies the authentication method to use
@@ -60,12 +56,8 @@ param(
     [string]$DomainName,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateSet('Base','OneLevel','SubTree')]
-    [string]$SearchScope='SubTree',
-    [Parameter(ParameterSetName = "Local or Remote DC")]
-    [Parameter(ParameterSetName = "Remote Jumphost")]
     [ValidateSet('Basic', 'Negotiate')]
-    [string]$AuthType="Negotiate"
+    [string]$AuthType = "Negotiate"
 )
 
 Import-Module ActiveDirectory
@@ -90,8 +82,6 @@ try{
                 'Server' = $Domain.PDCEmulator
                 'AuthType' = $AuthType
                 'Identity' = $GroupName
-                'SearchBase' = $OUPath 
-                'SearchScope' = $SearchScope
                 }
     if($null -ne $DomainAccount){
         $cmdArgs.Add("Credential", $DomainAccount)
@@ -111,7 +101,7 @@ try{
         Remove-ADGroup @cmdArgs
         
         if($SRXEnv) {
-            $SRXEnv.ResultMessage="Group $($GroupName) deleted"
+            $SRXEnv.ResultMessage = "Group $($GroupName) deleted"
         }
         else
         {
@@ -122,7 +112,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "Group $($GroupName) not found"
         }    
-        Throw "Group $($GroupName) not found"
+        throw "Group $($GroupName) not found"
     }   
 }
 catch{

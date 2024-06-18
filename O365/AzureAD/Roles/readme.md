@@ -1,5 +1,5 @@
-# Manage Roles
-> Note: The use of the scripts requires the PowerShell Module ActiveDirectory v2 and ScriptRunner Version 4.x or higher.
+﻿# Manage Roles
+> Note: The use of the scripts requires the PowerShell Module ActiveDirectory
 
 + [Enable-AADRole.ps1](./Enable-AADRole.ps1)
 

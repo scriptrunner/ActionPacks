@@ -1,61 +1,73 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Register a new virtual machine
+    .SYNOPSIS
+        Register a new virtual machine
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/VMs
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP-Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Anmeldedaten für die Authentifizierung beim Server
 
-.Parameter VMFilePath
-    Specifies a path to the virtual machine you want to register
+    .Parameter VMFilePath
+        [sr-en] Path to the virtual machine you want to register
+        [sr-de] Pfad der virtuellen Maschinendatei 
 
-.Parameter HostName
-    Specifies the name of the host on which you want to create the new virtual machine
+    .Parameter HostName
+        [sr-en] Name of the host on which you want to create the new virtual machine
+        [sr-de] Hostname der virtuellen Maschine 
 
-.Parameter VMName
-    Specifies a name for the new virtual machine
+    .Parameter VMName
+        [sr-en] Name for the new virtual machine
+        [sr-de] Name der virtuellen Maschine
 
-.Parameter NameOfVM
-    Specifies a name for the new virtual machine
+    .Parameter NameOfVM
+        [sr-en] Name for the new virtual machine
+        [sr-de] Name der virtuellen Maschine
 
-.Parameter ClusterName
-    Specifies the datastore cluster where you want to place the new virtual machine
+    .Parameter ClusterName
+        [sr-en] Datastore cluster where you want to place the new virtual machine
+        [sr-de] Cluster der virtuellen Maschine
 
-.Parameter Notes
-    Provides a description of the new virtual machine
+    .Parameter Notes
+        [sr-en] Description of the new virtual machine
+        [sr-de] Beschreibung der virtuellen Maschine
 
-.Parameter Location
-    Specifies the folder where you want to place the new virtual machine
-    
-.Parameter DrsAutomationLevel
-    Specifies a DRS (Distributed Resource Scheduler) automation level
+    .Parameter Location
+        [sr-en] Folder where you want to place the new virtual machine
+        [sr-de] Ordner der virtuellen Maschine
+        
+    .Parameter DrsAutomationLevel
+        [sr-en] DRS (Distributed Resource Scheduler) automation level
+        [sr-de] DRS Automationsebene
 
-.Parameter HAIsolationResponse
-    Indicates whether the virtual machine should be powered off if a host determines that it is isolated from the rest of the compute resource
+    .Parameter HAIsolationResponse
+        [sr-en] Virtual machine should be powered off if a host determines that it is isolated from the rest of the compute resource
+        [sr-de] Virtuelle Maschine soll ausgeschaltet werden, falls sie isoliert ist
 
-.Parameter HARestartPriority
-    Specifies the virtual machine HA restart priority
+    .Parameter HARestartPriority
+        [sr-en] Virtual machine HA restart priority
+        [sr-de] HA Restartpriorität
 #>
 
 [CmdLetBinding()]
@@ -95,7 +107,7 @@ Param(
     [string]$HARestartPriority
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     [string[]]$Properties = @('Name','Id','NumCpu','CoresPerSocket','Notes','GuestId','MemoryGB','VMSwapfilePolicy','ProvisionedSpaceGB','Folder')

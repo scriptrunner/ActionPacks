@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,16 +15,15 @@
         © ScriptRunner Software GmbH 
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/Resources
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the resource from which to get properties
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the resource from which to get properties
 
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] Properties to expand. Use * for all properties
 #>
 
 param(

@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Group
-        Specifies the name of the group to add
+        [sr-en] Name of the group to add
 
     .Parameter Site
-        Specifies the site collection to add the group to
+        [sr-en] Site collection to add the group to
 
     .Parameter PermissionLevel
-        Specifies the permission level to grant to the newly created group
+        [sr-en] Permission level to grant to the newly created group
 #>
 
 param(            

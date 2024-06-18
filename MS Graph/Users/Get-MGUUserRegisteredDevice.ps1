@@ -5,7 +5,7 @@
     .SYNOPSIS
         Returns devices that are registered for the user
         
-    .DESCRIPTION          
+    .DESCRIPTION
 
     .NOTES
         This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -35,7 +34,6 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
                         'All' = $null
@@ -64,7 +62,7 @@ try{
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -75,5 +73,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

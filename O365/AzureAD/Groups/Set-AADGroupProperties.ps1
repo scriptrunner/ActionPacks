@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -17,23 +17,22 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Groups
 
     .Parameter GroupObjectId
-        Specifies the unique ID of the group to update
+        [sr-en] Unique ID of the group to update
 
     .Parameter GroupName
-        Specifies the display name of the group to update
+        [sr-en] Display name of the group to update
 
     .Parameter Description
-        Specifies a description of the group
+        [sr-en] Description of the group
 
     .Parameter DisplayName
-        Specifies the new display name of the group
+        [sr-en] New display name of the group
 #>
 
 param(

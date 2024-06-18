@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,13 +15,12 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/AddressLists
 
     .Parameter ListName
-        Specifies the Name, Display name, Distinguished name or Guid of the address list to remove
+        [sr-en] Name, Display name, Distinguished name or Guid of the address list to remove
 #>
 
 param(

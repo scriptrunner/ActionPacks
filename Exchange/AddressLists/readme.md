@@ -1,7 +1,6 @@
-# Manage Address lists
+﻿# Manage Address lists
 
 Note: The use of the scripts requires a remote PowerShell session to Microsoft Exchange Server.<br>
-Requirements: ScriptRunner Version 4.x or higher
 
 + [Get-ExAddressListProperties.ps1](./Get-ExAddressListProperties.ps1)
 

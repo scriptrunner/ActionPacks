@@ -17,19 +17,18 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter ArchiveUrl
-        URL that the target site will be archived to
+        [sr-en] URL that the target site will be archived to
 
     .Parameter SourceUrl
-        URL of the source site
+        [sr-en] URL of the source site
 
     .Parameter TargetUrl
-        URL of the target site that the source site will be swapped to
+        [sr-en] URL of the target site that the source site will be swapped to
 #>
 
 param(        

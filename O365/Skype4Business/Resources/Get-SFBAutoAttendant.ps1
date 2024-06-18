@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules SkypeOnlineConnector
 
 <#
@@ -18,28 +18,27 @@
     .COMPONENT
         Requires Module SkypeOnlineConnector
         Requires Library script SFBLibrary.ps1
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/Skype4Business/Resources
 
     .Parameter SFBCredential
-        Credential object containing the Skype for Business user/password
+        [sr-en] Credential object containing the Skype for Business user/password
 
     .Parameter Identity
-        The identity for the AA to be retrieved
+        [sr-en] The identity for the AA to be retrieved
 
     .Parameter Descending
-        The retrieved auto attendants would be sorted in descending order
+        [sr-en] The retrieved auto attendants would be sorted in descending order
 
     .Parameter ExcludeContent
-        Only auto attendants' names, identities and associated application instances will be retrieved
+        [sr-en] Only auto attendants' names, identities and associated application instances will be retrieved
 
     .Parameter IncludeStatus
-        The status records for each auto attendant in the result set are also retrieved
+        [sr-en] The status records for each auto attendant in the result set are also retrieved
 
     .Parameter TenantID
-        Guid of the tenant
+        [sr-en] Guid of the tenant
 #>
 
 param(    

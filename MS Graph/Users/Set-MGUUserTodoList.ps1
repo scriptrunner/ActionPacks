@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -44,7 +43,7 @@
 
     .Parameter WellknownListName
         [sr-en] Wellknown list name
-        [sr-de] Wellknown Listname
+        [sr-de] Wellknown Listname 
 #>
 
 param( 
@@ -62,12 +61,10 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'UserId' = $UserId
                 'TodoTaskListId' = $TodoTaskListId
                 'Confirm' = $false
-                'PassThru' = $null
     }
     if($PSBoundParameters.ContainsKey('DisplayName') -eq $true){
         $cmdArgs.Add('DisplayName',$DisplayName)
@@ -95,5 +92,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

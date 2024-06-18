@@ -17,43 +17,42 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Sites
 
     .Parameter Identity
-        Specifies the URL of the site collection to update
+        [sr-en] URL of the site collection to update
     
     .Parameter Owner
-        Specifies the user name of the site collection’s primary owner
+        [sr-en] User name of the site collection’s primary owner
 
     .Parameter StorageQuota
-        Specifies the storage quota for this site collection in megabytes
+        [sr-en] Storage quota for this site collection in megabytes
  
     .Parameter Url
-        Specifies the full URL of the new site collection
+        [sr-en] Full URL of the new site collection
 
     .Parameter Title
-        Specifies the title of the site collection
+        [sr-en] Title of the site collection
 
     .Parameter CompatibilityLevel
-        Specifies the version of templates to use when you are creating a new site collection
+        [sr-en] Version of templates to use when you are creating a new site collection
 
     .Parameter LocaleId
-        Specifies the language of this site collection
+        [sr-en] Language of this site collection
 
     .Parameter NoWait
-        Specifies to continue executing script immediately
+        [sr-en] Continue executing script immediately
     
     .Parameter ResourceQuota
-        Specifies the quota for this site collection in Sandboxed Solutions units
+        [sr-en] Quota for this site collection in Sandboxed Solutions units
     
     .Parameter Template
-        Specifies the site collection template type
+        [sr-en] Site collection template type
 
     .Parameter TimeZoneId
-        Specifies the time zone of the site collection
+        [sr-en] Time zone of the site collection
 #>
 
 param(

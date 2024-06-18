@@ -1,46 +1,53 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the virtual SCSI controller assigned to the specified HardDisk, VirtualMachine, Template, or Snapshot object
+    .SYNOPSIS
+        Retrieves the virtual SCSI controller assigned to the specified HardDisk, VirtualMachine, Template, or Snapshot object
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Disks
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to retrieve the SCSI controllers 
+    .Parameter VMName
+        [sr-en] Virtual machine from which you want to retrieve the hard disks
+        [sr-de] Virtuelle Maschine
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to retrieve the SCSI controllers 
+    .Parameter TemplateName
+        [sr-en] Virtual machine template from which you want to retrieve the hard disks
+        [sr-de] Vorlage
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to retrieve the SCSI controllers 
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to retrieve the hard disks
+        [sr-de] Snapshotname
 
-.Parameter DiskName
-    Specifies the name of the SCSI hard disk you want to retrieve the SCSI controllers 
+    .Parameter DiskName
+        [sr-en] Name of the SCSI hard disk you want to retrieve the SCSI controllers 
+        [sr-de] Name der Festplatte
 
-.Parameter ControllerName
-    Specifies the names of the SCSI controllers you want to retrieve, is the parameter empty all SCSI controllers retrieved
+    .Parameter ControllerName
+        [sr-en] Name of the SCSI controller you want to retrieve, is the parameter empty all SCSI controllers retrieved
+        [sr-de] Name des SCSI Kontrollers
 #>
 
 [CmdLetBinding()]
@@ -70,7 +77,7 @@ Param(
     [string]$ControllerName
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     if([System.String]::IsNullOrWhiteSpace($DiskName) -eq $true){

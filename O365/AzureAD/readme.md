@@ -37,3 +37,4 @@ Use cases to manage groups, users and roles with Azure Active Directory Powershe
 ## [_QUERY_](./_QUERY_)
 
 + Search group users, licenses
++ Search groups, group members

@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,58 +16,57 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
 
     .Parameter UserPrincipalName
-        [sr-en] Specifies the user ID for this user
+        [sr-en] User ID for this user
         [sr-de] UPN des neuen Benutzers
 
     .Parameter Password
-        [sr-en] Specifies the new password for the user
+        [sr-en] New password for the user
         [sr-de] Initiales Passwort 
 
     .Parameter DisplayName
-        [sr-en] Specifies the display name of the user
+        [sr-en] Display name of the user
         [sr-de] Anzeigename
 
     .Parameter Enabled
-        [sr-en] Specifies whether the user is able to log on using their user ID
+        [sr-en] User is able to log on using their user ID
         [sr-de] Aktiviere Log On 
 
     .Parameter FirstName
-        [sr-en] Specifies the first name of the user
+        [sr-en] First name of the user
         [sr-de] Vorname
 
     .Parameter LastName
-        [sr-en] Specifies the last name of the user
+        [sr-en] Last name of the user
         [sr-de] Nachname
 
     .Parameter PostalCode
-        [sr-en] Specifies the postal code of the user
+        [sr-en] Postal code of the user
         [sr-de] Postleitzahl
 
     .Parameter City
-        [sr-en] Specifies the city of the user
+        [sr-en] City of the user
         [sr-de] Ort
 
     .Parameter Street
-        [sr-en] Specifies the street address of the user
+        [sr-en] Street address of the user
         [sr-de] Strasse
 
     .Parameter PhoneNumber
-        [sr-en] Specifies the phone number of the user
+        [sr-en] Phone number of the user
         [sr-de] Telefonnummer
 
     .Parameter MobilePhone
-        [sr-en] Specifies the mobile phone number of the user
+        [sr-en] Mobile phone number of the user
         [sr-de] Telefonnummer mobil
 
     .Parameter Department
-        [sr-en] Specifies the department of the user
+        [sr-en] Department of the user
         [sr-de] Abteilung
 
     .Parameter ForceChangePasswordNextLogin
@@ -75,7 +74,7 @@
         [sr-de] Benutzer muss das Passwort beim nächsten LogIn ändern
 
     .Parameter ShowInAddressList 
-        [sr-en] Specifies show this user in the address list
+        [sr-en] Show this user in the address list
         [sr-de] Benutzer in der Adresslisten anzeigen
 
     .Parameter UserType 

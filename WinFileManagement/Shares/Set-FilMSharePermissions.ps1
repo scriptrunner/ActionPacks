@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,19 +20,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Shares
 
 .Parameter ShareName
-    Specifies the name of the share
+    [sr-en] Name of the share
 
 .Parameter AccessType
-    Specifies the access right to grant or denied to the trustee
+    [sr-en] Access right to grant or denied to the trustee
 
 .Parameter PermissionAccounts
-    Specifies which accounts are granted or denied the permission to access the share. Multiple accounts can be specified comma separated
+    [sr-en] Accounts are granted or denied the permission to access the share. Multiple accounts can be specified comma separated
 
 .Parameter ComputerName
-    Specifies the name of the computer on which to set the share permissions
+    [sr-en] Name of the computer on which to set the share permissions
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

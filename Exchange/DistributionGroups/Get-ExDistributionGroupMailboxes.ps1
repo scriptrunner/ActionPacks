@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,19 +15,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/DistributionGroups
 
     .Parameter GroupName
-        Specifies the Name, Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group from which to get the mailboxes
+        [sr-en] Name, Alias, Display name, Distinguished name, Guid or Mail address of the Universal distribution group from which to get the mailboxes
     
     .Parameter Nested
-        Shows group members nested 
+        [sr-en] Shows group members nested 
     
     .Parameter MemberObjectTypes
-        Specifies the member object types
+        [sr-en] Member object types
 #>
 
 param(

@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,32 +20,32 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter CustomLogName
-    Specifies the name of the custom event log, enter the log name (not the LogDisplayName)
+    [sr-en] Name of the custom event log, enter the log name (not the LogDisplayName)
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
 
 .Parameter EntryType
-    Specifies the entry type of the events
+    [sr-en] Entry type of the events
 
 .Parameter Index
-    Specifies the index values
+    [sr-en] Index values
 
 .Parameter InstanceId
-    Specifies the instance IDs
+    [sr-en] Instance IDs
 
 .Parameter MaximumItems
-    Specifies the maximum number of events, beginning with the newest event in the log.
+    [sr-en] Maximum number of events, beginning with the newest event in the log.
 
 .Parameter Message
-    Specifies a string in the event message. 
+    [sr-en] String in the event message. 
     You can use this property to search for messages that contain certain words or phrases. Wildcards are permitted
 
 .Parameter Properties
-    List of properties to expand, comma separated e.g. EventID,Index. Use * for all properties
+    [sr-en] List of properties to expand, comma separated e.g. EventID,Index. Use * for all properties
 #>
 
 [CmdLetBinding()]

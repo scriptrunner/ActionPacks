@@ -1,46 +1,53 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core
 
 <#
-.SYNOPSIS
-    Retrieves the available resource pools
+    .SYNOPSIS
+        Retrieves the available resource pools
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/ResourcePool
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/ResourcePool
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter ID
-    Specifies the ID of the resource pool you want to retrieve
+    .Parameter Id
+        [sr-en] ID of the resource pool
+        [sr-de] ID des Ressourcen Pool
 
-.Parameter Name
-    Specifies the name of the resource pool you want to retrieve, is the parameter empty all hosts retrieved
+    .Parameter Name
+        [sr-en] Name of the resource pool
+        [sr-de] Name des Ressourcen Pool
 
-.Parameter VM
-    Specifies the virtual machine whose resource pool you want to retrieve
+    .Parameter VM
+        [sr-en] Virtual machine whose resource pool you want to retrieve
+        [sr-de] Virtuelle Maschine des Ressource Pools
 
-.Parameter NoRecursion
-    Indicates that you want to disable the recursive behavior
+    .Parameter NoRecursion
+        [sr-en] Disable the recursive behavior
+        [sr-de] Rekursives Verhalten deaktivieren
 
-.Parameter Properties
-    List of properties to expand, comma separated e.g. Name,Id. Use * for all properties
+    .Parameter Properties
+        [sr-en] List of properties to expand. Use * for all properties
+        [sr-de] Liste der zu anzuzeigenden Eigenschaften. Verwenden Sie * für alle Eigenschaften
 #>
 
 [CmdLetBinding()]
@@ -70,7 +77,7 @@ Param(
     [string[]]$Properties = @('Name','Id','MemReservationGB','MemLimitGB','CpuLimitMHz','CpuReservationMHz')
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
 
 try{
     if($Properties -contains '*'){

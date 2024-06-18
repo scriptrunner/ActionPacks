@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -22,10 +22,10 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
                 
     .Parameter ComputerName
-        Specifies the computer from which the profiles are listed
+        [sr-en] Computer from which the profiles are listed
                 
     .Parameter AccessAccount
-        Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used
+        [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used
 #>
 
 param(

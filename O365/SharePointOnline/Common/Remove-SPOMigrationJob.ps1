@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter ExecuteCredential
-        Credentials of a site collection administrator to use to connect to the site collection
+        [sr-en] Credentials of a site collection administrator to use to connect to the site collection
 
     .Parameter JobId
-        Id of a previously created migration job that exists on the target site collection
+        [sr-en] Id of a previously created migration job that exists on the target site collection
 
     .Parameter TargetWebUrl
-        The fully qualified URL of the site collection where the job will be deleted if found
+        [sr-en] The fully qualified URL of the site collection where the job will be deleted if found
 
     .Parameter NoLogFile
-        Indicates to not create a log file
+        [sr-en] Indicates to not create a log file
 #>
 
 param(     

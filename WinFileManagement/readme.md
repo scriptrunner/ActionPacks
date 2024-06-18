@@ -1,6 +1,13 @@
-# Action Pack for Windows File Server and Windows Storage Management
+# Action Pack for Windows File Server, Distributed File System and Windows Storage Management
 Use cases for managing file servers, file & folder access rights, reports and more.<br>
 Also managing storages, disks, partitions and volumes
+
+## [Distributed File System](./DFS)
++ Get, set, move, add, remove DFS folder
++ Get, set, add, remove DFS namespace
++ Get, set, add, remove root target
++ Get, grant, revoke, remove DFS folder accounts
++ Get, set server configuration
 
 ## [Manage Disks](./Disks)
 

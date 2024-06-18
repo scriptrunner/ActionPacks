@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules AzureAD
 
 <#
@@ -16,23 +16,22 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v2
-        ScriptRunner Version 4.x or higher
+        Azure Active Directory Powershell Module
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/AzureAD/Users
 
     .Parameter RoleIds
-        Specifies the unique IDs of the roles from which to remove members
+        [sr-en] Unique IDs of the roles from which to remove members
 
     .Parameter RoleNames
-        Specifies the names of the roles from which to remove members
+        [sr-en] Names of the roles from which to remove members
     
     .Parameter UserIds
-        Specifies the unique object IDs of the users to remove from the roles
+        [sr-en] Unique object IDs of the users to remove from the roles
 
     .Parameter UserNames
-        Specifies the Display names or user principal names of the users to remove from the roles
+        [sr-en] Display names or user principal names of the users to remove from the roles
 #>
 
 param(

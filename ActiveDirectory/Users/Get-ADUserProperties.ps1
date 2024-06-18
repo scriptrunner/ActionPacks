@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules ActiveDirectory
 
 <#
@@ -47,7 +47,8 @@
     
     .Parameter AuthType
         Specifies the authentication method to use
-        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an#>
+        [sr-de] Gibt die zu verwendende Authentifizierungsmethode an
+#>
 
 param(
     [Parameter(Mandatory = $true,ParameterSetName = "Local or Remote DC")]
@@ -60,7 +61,7 @@ param(
     [PSCredential]$DomainAccount,
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
-    [ValidateSet('*','GivenName','Surname','DisplayName','DistinguishedName','Description','Enabled','Office','EmailAddress','OfficePhone','Title','Department','Company','StreetAddress','PostalCode','City','SAMAccountName','UserPrincipalName','MemberOf','LastLogonDate','LastBadPasswordAttempt','AccountExpirationDate','CanonicalName')]
+    [ValidateSet('*','Name','GivenName','Surname','DisplayName','DistinguishedName','Description','Enabled','Office','EmailAddress','OfficePhone','Title','Department','Company','StreetAddress','PostalCode','City','SAMAccountName','UserPrincipalName','MemberOf','LastLogonDate','LastBadPasswordAttempt','AccountExpirationDate','CanonicalName')]
     [string[]]$Properties = @('Name','GivenName','Surname','DisplayName','Description','Office','EmailAddress','OfficePhone','Title','Department','Company','StreetAddress','PostalCode','City','SAMAccountName'),
     [Parameter(ParameterSetName = "Local or Remote DC")]
     [Parameter(ParameterSetName = "Remote Jumphost")]
@@ -133,7 +134,7 @@ try{
         if($SRXEnv) {
             $SRXEnv.ResultMessage = "User $($Username) not found"
         }    
-        Throw "User $($Username) not found"
+        throw "User $($Username) not found"
     }   
 }
 catch{

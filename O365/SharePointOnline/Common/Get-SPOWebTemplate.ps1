@@ -17,22 +17,21 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter CompatibilityLevel
-        Specifies the compatibility level of the site template
+        [sr-en] Compatibility level of the site template
 
     .Parameter LocaleId
-        Specifies the Locale ID of the site template
+        [sr-en] Locale ID of the site template
 
     .Parameter Name
-        Specifies the name of the site template
+        [sr-en] Name of the site template
 
     .Parameter Title
-        Specifies the title of the site template
+        [sr-en] Title of the site template
 #>
 
 param(  

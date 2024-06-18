@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,16 +20,16 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/System
 
 .Parameter CortanaSearch
-    Enable or disable Cortana search
+    [sr-en] Enable or disable Cortana search
 
 .Parameter AllowSearchToUseLocation
-    Enable or disable the use of position data for search and Cortana
+    [sr-en] Enable or disable the use of position data for search and Cortana
     
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

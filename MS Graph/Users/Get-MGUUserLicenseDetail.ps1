@@ -3,10 +3,9 @@
 
 <#
     .SYNOPSIS
-        Returns collection of this user's license details
+        Returns a collection of the user's license details
     
-    .DESCRIPTION  
-        
+    .DESCRIPTION          
 
     .NOTES
         This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
@@ -17,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -36,17 +34,13 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
-                        'UserId'= $UserId
-                        'All' = $null
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                'UserId' = $UserId
+                'All' = $null
     }
     $result = Get-MgUserLicenseDetail @cmdArgs | Select-Object *
 
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -57,5 +51,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

@@ -17,58 +17,57 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter ExecuteCredential
-        Fill out the Regular Credentials
+        [sr-en] Fill out the Regular Credentials
 
     .Parameter SourceFilesPath
-        Defines the temporary Path where are located the XML source files
+        [sr-en] Defines the temporary Path where are located the XML source files
 
     .Parameter SourcePackagePath
-        Defines the source package path location 
+        [sr-en] Defines the source package path location 
 
     .Parameter TargetDocumentLibraryPath
-        Defines the target document library path
+        [sr-en] Defines the target document library path
 
     .Parameter TargetListPath
-        Defines the Target list path
+        [sr-en] Defines the Target list path
 
     .Parameter TargetWebUrl
-        The fully qualified URL of the site collection where the job will be deleted if found
+        [sr-en] The fully qualified URL of the site collection where the job will be deleted if found
 
     .Parameter AzureADUserCredentials
-        Receives Azure Active Directory User Credentials
+        [sr-en] Receives Azure Active Directory User Credentials
 
     .Parameter TargetWebUrl
-        The fully qualified URL of the site collection where the job will be deleted if found
+        [sr-en] The fully qualified URL of the site collection where the job will be deleted if found
     
     .Parameter OutputPackagePath
-        Output package path
+        [sr-en] Output package path
 
     .Parameter ParallelImport
-        Boost file share migration performance
+        [sr-en] Boost file share migration performance
 
     .Parameter NoAzureADLookup
-        If the command should or should not look up for Azure AD
+        [sr-en] If the command should or should not look up for Azure AD
     
     .Parameter NoLogFile
-        Indicates to not create a log file
+        [sr-en] Indicates to not create a log file
 
     .Parameter PartitionSizeInBytes
-        Define the partition size in Bytes where it will be located the target package
+        [sr-en] Define the partition size in Bytes where it will be located the target package
 
     .Parameter TargetDocumentLibrarySubFolderPath
-        Defines the target document library subfolder path
+        [sr-en] Defines the target document library subfolder path
 
     .Parameter TargetEnvironment
-        Defines the Target environment
+        [sr-en] Defines the Target environment
  
     .Parameter UserMappingFile
-        Defines the file mapping of the user 
+        [sr-en] Defines the file mapping of the user 
 #>
 
 param(     

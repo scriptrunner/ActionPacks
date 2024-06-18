@@ -1,46 +1,53 @@
-#Requires -Version 4.0
-# Requires -Modules VMware.PowerCLI
+﻿#Requires -Version 5.0
+# Requires -Modules VMware.VimAutomation.Core,VMware.VimAutomation.Vds
 
 <#
-.SYNOPSIS
-    Modifies the configuration of the virtual network adapter
+    .SYNOPSIS
+        Modifies the configuration of the virtual network adapter
 
-.DESCRIPTION
+    .DESCRIPTION
 
-.NOTES
-    This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-    The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-    The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-    the use and the consequences of the use of this freely available script.
-    PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-    © ScriptRunner Software GmbH
+    .NOTES
+        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
+        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
+        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
+        the use and the consequences of the use of this freely available script.
+        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
+        © ScriptRunner Software GmbH
 
-.COMPONENT
-    Requires Module VMware.PowerCLI
+    .COMPONENT
+        Requires Module VMware.VimAutomation.Core, VMware.VimAutomation.Vds
 
-.LINK
-    https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
+    .LINK
+        https://github.com/scriptrunner/ActionPacks/tree/master/VMware/Network
 
-.Parameter VIServer
-    Specifies the IP address or the DNS name of the vSphere server to which you want to connect
+    .Parameter VIServer
+        [sr-en] IP address or the DNS name of the vSphere server to which you want to connect
+        [sr-de] IP Adresse oder DNS des vSphere Servers
 
-.Parameter VICredential
-    Specifies a PSCredential object that contains credentials for authenticating with the server
+    .Parameter VICredential
+        [sr-en] PSCredential object that contains credentials for authenticating with the server
+        [sr-de] Benutzerkonto für die Ausführung
 
-.Parameter VMName
-    Specifies the virtual machine from which you want to configure the virtual network adapter
+    .Parameter VMName
+        [sr-en] Virtual machine from which you want to configure the virtual network adapter
+        [sr-de] VM des Netzwerk-Adapters
+        
+    .Parameter TemplateName
+        [sr-en] Virtual machine template from which you want to configure the virtual network adapter
+        [sr-de] Vorlage des Netzwerk-Adapters
 
-.Parameter TemplateName
-    Specifies the virtual machine template from which you want to configure the virtual network adapter
+    .Parameter SnapshotName
+        [sr-en] Snapshot from which you want to configure the virtual network adapter
+        [sr-de] Snapshot des Netzwerk-Adapters
 
-.Parameter SnapshotName
-    Specifies the snapshot from which you want to configure the virtual network adapter
+    .Parameter AdapterName
+        [sr-en] Name of the virtual network adapter you want to modify
+        [sr-de] Name des Netzwerk-Adapters
 
-.Parameter AdapterName
-    Specifies the name of the virtual network adapter you want to modify
-
-.Parameter PortGroupName
-    Specifies the name of a standard or a distributed port group to which you want to connect the network adapter
+    .Parameter PortGroupName
+        [sr-en] Name of a standard or a distributed port group to which you want to connect the network adapter
+        [sr-de] Name der Portgruppe des Netzwerk-Adapters
 #>
 
 [CmdLetBinding()]
@@ -70,7 +77,8 @@ Param(
     [string]$AdapterName
 )
 
-Import-Module VMware.PowerCLI
+Import-Module VMware.VimAutomation.Core
+Import-Module VMware.VimAutomation.Vds
 
 try{
     if([System.String]::IsNullOrWhiteSpace($AdapterName) -eq $true){

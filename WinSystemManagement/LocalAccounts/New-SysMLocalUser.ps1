@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
@@ -15,40 +15,39 @@
     © ScriptRunner Software GmbH
 
 .COMPONENT
-    ScriptRunner Version 4.2.x or higher
 
 .LINK
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/LocalAccounts
 
 .Parameter Name
-    Specifies the user name for the user account
+    [sr-en] User name for the user account
 
 .Parameter Description
-    Specifies a comment for the user account. The maximum length is 48 characters    
+    [sr-en] Comment for the user account. The maximum length is 48 characters    
 
 .Parameter AccountNeverExpires
-    Indicates that the account does not expire
+    [sr-en] Indicates that the account does not expire
 
 .Parameter FullName
-    Specifies the full name for the user account. The full name differs from the user name of the user account
+    [sr-en] Full name for the user account. The full name differs from the user name of the user account
 
 .Parameter Password
-    Specifies a password for the user account
+    [sr-en] Password for the user account
 
 .Parameter PasswordNeverExpires
-    Indicates whether the password expires
+    [sr-en] Password expires
 
 .Parameter UserMayNotChangePassword
-    Indicates that the user can change the password on the user account
+    [sr-en] User can change the password on the user account
 
 .Parameter Disabled
-    Indicates that this cmdlet creates the user account as disabled
+    [sr-en] Creates the user account as disabled
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

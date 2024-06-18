@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,22 +21,22 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/EventLogs
 
 .Parameter LogName
-    Specifies the event log
+    [sr-en] Event log
 
 .Parameter SourceName
-    Specifies the names of the event log sources, such as application programs that write to the event log
+    [sr-en] Names of the event log sources, such as application programs that write to the event log
 
 .Parameter ComputerName
-    Specifies remote computer, the default is the local computer.
+    [sr-en] Remote computer, the default is the local computer.
 
 .Parameter CategoryResourceFile
-    Specifies the path of the file that contains category strings for the source events
+    [sr-en] Path of the file that contains category strings for the source events
 
 .Parameter MessageResourceFile
-    Specifies the path of the file that contains message formatting strings for the source events
+    [sr-en] Path of the file that contains message formatting strings for the source events
 
 .Parameter ParameterResourceFile
-    Specifies the path of the file that contains strings used for parameter substitutions in event descriptions
+    [sr-en] Path of the file that contains strings used for parameter substitutions in event descriptions
 #>
 
 [CmdLetBinding()]

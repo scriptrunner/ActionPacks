@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -25,28 +25,28 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/VMs
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter VMName
-        Specifies the name or identifier of the virtual machine to be retrieved
+        [sr-en] Name or identifier of the virtual machine to be retrieved
 
     .Parameter Command
-        Specifies the command that executed on the virtual machine 
+        [sr-en] Command that executed on the virtual machine 
 
     .Parameter RecoverySnapshot
-        Specifies the recovery snapshot to use during a failover
+        [sr-en] Recovery snapshot to use during a failover
 
     .Parameter TestIt
-        Creates a test virtual machine using the chosen recovery point. You can use a test virtual machine to validate a Replica virtual machine
+        [sr-en] Test virtual machine using the chosen recovery point. You can use a test virtual machine to validate a Replica virtual machine
 
     .Parameter Prepare
-        Starts the planned failover on the primary virtual machine and replicates any pending changes
+        [sr-en] Planned failover on the primary virtual machine and replicates any pending changes
 #>
 
 param(

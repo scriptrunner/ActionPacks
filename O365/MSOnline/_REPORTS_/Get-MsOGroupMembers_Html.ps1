@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules MSOnline
 
 <#
@@ -16,18 +16,18 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        Azure Active Directory Powershell Module v1
+        Azure Active Directory Powershell Module
         Requires Library Script ReportLibrary from the Action Pack Reporting\_LIB_
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/MSOnline/_REPORTS_
 
     .Parameter GroupObjectId
-        [sr-en] Specifies the unique ID of the group from which to get members
+        [sr-en] Unique ID of the group from which to get members
         [sr-de] Gibt die eindeutige ID der Gruppe an
 
     .Parameter GroupName
-        [sr-en] Specifies the display name of the group from which to get members
+        [sr-en] Display name of the group from which to get members
         [sr-de] Gibt den Namen der Gruppe an
 
     .Parameter Nested
@@ -35,11 +35,11 @@
         [sr-de] Gruppenmitglieder rekursiv anzeigen
 
     .Parameter MemberObjectTypes
-        [sr-en] Specifies the member object types
+        [sr-en] Member object types
         [sr-de] Gruppen, Benutzer oder alle anzeigen
 
     .Parameter TenantId
-        [sr-en] Specifies the unique ID of a tenant
+        [sr-en] Unique ID of a tenant
         [sr-de] Die eindeutige ID eines Mandanten
 #>
 

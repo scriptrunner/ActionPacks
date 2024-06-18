@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,16 +15,15 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter MailboxId
-        Specifies the Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the Mailbox from which to get statistics
+        [sr-en] Alias, Display name, Distinguished name, SamAccountName, Guid or user principal name of the Mailbox from which to get statistics
 
     .Parameter Archive
-        Specifies whether to return mailbox statistics for the archive mailbox associated with the specified mailbox
+        [sr-en] Return mailbox statistics for the archive mailbox associated with the specified mailbox
 #>
 
 param(

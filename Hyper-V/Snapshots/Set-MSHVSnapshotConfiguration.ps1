@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 #Requires -Modules Hyper-V
 
 <#
@@ -24,22 +24,22 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Hyper-V/Snapshots
 
     .Parameter VMHostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter HostName
-        Specifies the name of the Hyper-V host
+        [sr-en] Name of the Hyper-V host
 
     .Parameter VMName
-        Specifies the virtual machine to be configured
+        [sr-en] Virtual machine to be configured
 
     .Parameter AccessAccount
-        Specifies the user account that have permission to perform this action
+        [sr-en] User account that have permission to perform this action
 
     .Parameter SnapshotType
-        Specifies the type of snapshots created by Hyper-V
+        [sr-en] Type of snapshots created by Hyper-V
 
     .Parameter SnapshotLocation
-        Specifies the folder in which the virtual machine is to store its snapshot files
+        [sr-en] Folder in which the virtual machine is to store its snapshot files
 #>
 
 param(

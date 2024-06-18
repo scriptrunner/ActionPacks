@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -15,19 +15,18 @@
         © ScriptRunner Software GmbH 
 
     .COMPONENT       
-        ScriptRunner Version 4.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/Exchange/MailBoxes
 
     .Parameter EnabledMailboxOnly
-        Specifies whether to include only enabled mailboxes in the results
+        [sr-en] Include only enabled mailboxes in the results
 
     .Parameter ExcludeResources
-        Specifies whether to exclude resource mailboxes in the results
+        [sr-en] Exclude resource mailboxes in the results
 
     .Parameter Properties
-        List of properties to expand. Use * for all properties
+        [sr-en] Properties to expand. Use * for all properties
 #>
 
 param(

@@ -17,29 +17,28 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Users
 
     .Parameter Filter
-        Limits the results to only those users whose first name, last name, or email address 
+        [sr-en] Limits the results to only those users whose first name, last name, or email address 
         begins with the text in the string using a case-insensitive comparison
 
     .Parameter PageSize
-        Specifies the maximum number of users to be returned in the collection
+        [sr-en] Maximum number of users to be returned in the collection
 
     .Parameter Position
-        Use to specify the zero-based index of the position in the sorted collection of the first result to be returned
+        [sr-en] Use to specify the zero-based index of the position in the sorted collection of the first result to be returned
 
     .Parameter ShowOnlyUsersWithAcceptingAccountNotMatchInvitedAccount
-        Shows users who have accepted an invite but not using the account the invite was sent to
+        [sr-en] Shows users who have accepted an invite but not using the account the invite was sent to
 
     .Parameter SiteUrl
-        Specifies the site to retrieve external users for
+        [sr-en] Site to retrieve external users for
 
     .Parameter SortOrder
-        Specifies the sort results in Ascending or Descending order on the SPOUser.Email property should occur
+        [sr-en] Sort results in Ascending or Descending order on the SPOUser.Email property should occur
 #>
 
 param(            

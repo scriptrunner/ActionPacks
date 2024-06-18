@@ -1,4 +1,4 @@
-﻿#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
     .SYNOPSIS
@@ -22,51 +22,51 @@
         https://github.com/scriptrunner/ActionPacks/tree/master/Statistics/Samples
 
     .Parameter Name
-        [sr-en] Specifies the unique name of the mailbox. The maximum length is 64 characters.
+        [sr-en] Unique name of the mailbox. The maximum length is 64 characters.
         [sr-de] Eindeutiger Name der Mailbox, max. 64 Zeichen
     
     .Parameter UserPrincipalName
-        [sr-en] Specifies the logon name for the user account
+        [sr-en] Logon name for the user account
         [sr-de] UPN des Benutzers
 
     .Parameter Password
-        [sr-en] Specifies the password for the mailbox 
+        [sr-en] Password for the mailbox 
         [sr-de] Passwort der Mailbox
 
     .Parameter Alias
-        [sr-en] Specifies the alias name of the resource
+        [sr-en] Alias name of the resource
         [sr-de] Aliasname
 
     .Parameter DisplayName
-        [sr-en] Specifies the display name of the resource
+        [sr-en] Display name of the resource
         [sr-de] Anzeigename
 
     .Parameter WindowsEmailAddress
-        [sr-en] Specifies the windows mail address of the mailbox
+        [sr-en] Windows mail address of the mailbox
         [sr-de] Windows Mailadresse
 
     .Parameter FirstName
-        [sr-en] Specifies the user's first name
+        [sr-en] User's first name
         [sr-de] Vorname
 
     .Parameter LastName
-        [sr-en] Specifies the user's last name
+        [sr-en] User's last name
         [sr-de] Nachname
 
     .Parameter Office
-        [sr-en] Specifies the user's physical office name or number
+        [sr-en] User's physical office name or number
         [sr-de] Büro
 
     .Parameter Phone
-        [sr-en] Specifies the user's telephone number
+        [sr-en] User's telephone number
         [sr-de] Telefonnummer
 
     .Parameter ResetPasswordOnNextLogon
-        [sr-en] Specifies whether the user is required to change their password the next time they log on to their mailbox    
+        [sr-en] User is required to change their password the next time they log on to their mailbox    
         [sr-de] Benutzer muss bei der nächsten Anmeldung das Passwort ändern
 
     .Parameter AccountDisabled
-        [sr-en] Specifies whether to disable the account that's associated with the resource 
+        [sr-en] Disable the account that's associated with the resource 
         [sr-de] Konto sperren
 
     .Parameter CostReduction

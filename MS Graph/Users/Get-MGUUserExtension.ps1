@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Returns a collection of open extensions defined for the user
+        Returns a collection of open extensions defined for the user 
     
     .DESCRIPTION          
 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Users
 
     .LINK
@@ -35,17 +34,16 @@ param(
 Import-Module Microsoft.Graph.Users
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'UserId'= $UserId
                         'All' = $null
     }
-    $result = Get-MgUserExtension @cmdArgs
+    $result = Get-MgUserExtension @cmdArgs | Select-Object *
 
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -56,5 +54,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

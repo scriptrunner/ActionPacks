@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -21,19 +21,19 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinFileManagement/Shares
 
 .Parameter SourceShareName
-    Specifies the name of the share
+    [sr-en] Name of the share
 
 .Parameter TargetShareName
-    Specifies the name of the new share
+    [sr-en] Name of the new share
 
 .Parameter Path
-    Specifies the path of the location of the folder to share. If the parameter is empty, the share is set to the source path
+    [sr-en] Path of the location of the folder to share. If the parameter is empty, the share is set to the source path
 
 .Parameter ComputerName
-    Specifies the name of the computer from which to rename the share
+    [sr-en] Name of the computer from which to rename the share
     
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

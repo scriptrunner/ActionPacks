@@ -17,32 +17,31 @@
 
     .COMPONENT
         Requires Module Microsoft.Online.SharePoint.PowerShell
-        ScriptRunner Version 4.2.x or higher
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/O365/SharePointOnline/Common
 
     .Parameter EncryptionParameters
-        Parameters of the encryption, it doesn't accept wildcard characters.
+        [sr-en] Parameters of the encryption, it doesn't accept wildcard characters.
         It accepts parameters like SHA384, SHA256, etc.
 
     .Parameter MigrationSourceLocations
-        Possible Source locations to migrate
+        [sr-en] Possible Source locations to migrate
 
     .Parameter SourceFilesPath
-        Defines the temporary Path where are located the XML source files
+        [sr-en] Defines the temporary Path where are located the XML source files
 
     .Parameter SourcePackagePath
-        Defines the source package path location
+        [sr-en] Defines the source package path location
 
     .Parameter TargetFilesPath
-        Defines the temporary Path where are located the XML source files
+        [sr-en] Defines the temporary Path where are located the XML source files
 
     .Parameter TargetPackagePath
-        Defines the source package path location of the package to be encrypted
+        [sr-en] Defines the source package path location of the package to be encrypted
 
     .Parameter NoLogFile
-        Determine if you should get or not a log file
+        [sr-en] Determine if you should get or not a log file
 #>
 
 param(     

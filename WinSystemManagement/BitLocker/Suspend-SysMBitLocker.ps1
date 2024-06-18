@@ -1,4 +1,4 @@
-#Requires -Version 4.0
+﻿#Requires -Version 5.0
 
 <#
 .SYNOPSIS
@@ -20,17 +20,17 @@
     https://github.com/scriptrunner/ActionPacks/tree/master/WinSystemManagement/BitLocker
 
 .Parameter DriveLetter
-    Specifies the drive letter
+    [sr-en] Drive letter
 
 .Parameter RebootCount
-    Specifies the number of computer restarts before BitLocker restores protection. 
+    [sr-en] Number of computer restarts before BitLocker restores protection. 
     The acceptable values for this parameter are:integers from 0 to 15
  
 .Parameter ComputerName
-    Specifies an remote computer, if the name empty the local computer is used
+    [sr-en] Remote computer, if the name empty the local computer is used
 
 .Parameter AccessAccount
-    Specifies a user account that has permission to perform this action. If Credential is not specified, the current user account is used.
+    [sr-en] User account that has permission to perform this action. If Credential is not specified, the current user account is used.
 #>
 
 [CmdLetBinding()]

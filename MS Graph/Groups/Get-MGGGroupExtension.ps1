@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -25,20 +24,30 @@
     .Parameter GroupId
         [sr-en] Group identifier
         [sr-de] Gruppen ID
+
+    .Parameter ExtensionId
+        [sr-en] Unique identifier of extension
+        [sr-de] Extension ID
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$GroupId
+    [string]$GroupId,
+    [string]$ExtensionId
 )
 
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'GroupId'= $GroupId
-                        'All' = $null
+                        
+    }
+    if($PSBoundParameters.ContainsKey('ExtensionId') -eq $true){
+        $cmdArgs.Add('ExtensionId', $ExtensionId)
+    }
+    else{
+        $cmdArgs.Add('All', $null)
     }
     $result = Get-MgGroupExtension @cmdArgs | Select-Object *
 
@@ -53,5 +62,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

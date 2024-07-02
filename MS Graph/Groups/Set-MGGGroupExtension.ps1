@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -27,8 +26,8 @@
         [sr-de] Gruppen ID
         
     .Parameter Id
-        [sr-en] 
-        [sr-de] 
+        [sr-en] Unique identifier for an entity
+        [sr-de] ID
         
     .Parameter ExtensionID
         [sr-en] Id of extension
@@ -47,7 +46,6 @@ param(
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'GroupId'= $GroupId    
                         'Id'= $Id
@@ -68,5 +66,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -25,19 +24,53 @@
     .Parameter GroupId
         [sr-en] Group identifier
         [sr-de] Gruppen ID
+
+    .Parameter ResultType
+        [sr-en] Type of the result
+        [sr-de] Ergebnistyp
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$GroupId
+    [string]$GroupId,
+    [Validateset('AsApplication','AsDevice','AsGroup','AsOrgContact','AsServicePrincipal','AsUser')]
+    [string]$ResultType
 )
 
 Import-Module Microsoft.Graph.Groups
 
 try{
     $result = $null
-    GetGroupOwners -GroupID $GroupId -Owners ([ref]$result)
-    if($SRXEnv) {
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'GroupId'= $GroupId
+                        'All' = $null
+    }
+
+    switch($ResultType){
+        'AsApplication'{
+            $result = Get-MgGroupOwnerAsApplication @cmdArgs
+        }
+        'AsDevice'{            
+            $result = Get-MgGroupOwnerAsDevice @cmdArgs
+        }
+        'AsGroup'{
+            $result = Get-MgGroupOwnerAsGroup @cmdArgs
+        }
+        'AsOrgContact'{
+            $result = Get-MgGroupOwnerAsOrgContact @cmdArgs
+        }
+        'AsServicePrincipal'{
+            $result = Get-MgGroupOwnerAsServicePrincipal @cmdArgs
+        }
+        'AsUser'{
+            $result = Get-MgGroupOwnerAsUser @cmdArgs
+        }
+        default{
+            $result = Get-MgGroupOwner @cmdArgs
+        }
+    }
+
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{

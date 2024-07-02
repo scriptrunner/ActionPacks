@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -33,6 +32,10 @@
     .Parameter ConversationThreadId
         [sr-en] Conversation thread identifier
         [sr-de] Konversation Thread ID
+        
+    .Parameter PostId
+        [sr-en] Post identifier
+        [sr-de] Post ID
 
     .Parameter Properties
         [sr-en] List of properties to expand. Use * for all properties
@@ -46,6 +49,7 @@ param(
     [string]$ConversationId,
     [Parameter(Mandatory = $true)]
     [string]$ConversationThreadId,
+    [string]$PostId,
     [ValidateSet('ReceivedDateTime','Id','CreatedDateTime','HasAttachments','Attachments','LastModifiedDateTime','MultiValueExtendedProperties','Extensions','ChangeKey','Categories')]
     [string[]]$Properties = @('Id','CreatedDateTime','ReceivedDateTime','LastModifiedDateTime','HasAttachments')
 )
@@ -53,14 +57,19 @@ param(
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'GroupId'= $GroupId
                         'ConversationId' = $ConversationId
                         'ConversationThreadId' = $ConversationThreadId
     }
-
+    if($PSBoundParameters.ContainsKey('PostId') -eq $true){
+        $cmdArgs.Add('PostId',$PostId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
+    }
     $result = Get-MgGroupConversationThreadPost @cmdArgs | Select-Object $Properties
+
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
@@ -72,5 +81,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

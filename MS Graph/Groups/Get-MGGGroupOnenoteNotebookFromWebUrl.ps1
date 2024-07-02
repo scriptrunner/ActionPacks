@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -41,7 +40,6 @@ param(
 Import-Module Microsoft.Graph.Groups 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                     'GroupId' = $GroupId
                     'WebUrl' = $WebUrl
@@ -59,5 +57,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

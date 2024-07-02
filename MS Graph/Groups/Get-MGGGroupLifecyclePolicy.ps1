@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Get entity from groupLifecyclePolicies by key
+        Retrieve the properties and relationships of a groupLifecyclePolicies object
     
     .DESCRIPTION          
 
@@ -16,11 +16,14 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Groups
+        
+    .Parameter GroupId
+        [sr-en] Group identifier
+        [sr-de] Gruppen ID
       
     .Parameter GroupLifecyclePolicyId
         [sr-en] Id of groupLifecyclePolicy
@@ -28,21 +31,30 @@
 #>
 
 param( 
+    [Parameter(Mandatory = $true, ParameterSetName = 'byGroup')]
+    [string]$GroupId,
+    [Parameter(ParameterSetName = 'PolicyId')]
     [string]$GroupLifecyclePolicyId
 )
 
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
+    $result = $null
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
-    if($PSBoundParameters.ContainsKey('GroupLifecyclePolicyId') -eq $true){
-        $cmdArgs.Add('GroupLifecyclePolicyId',$GroupLifecyclePolicyId)
+    if($PSCmdlet.ParameterSetName -eq 'byGroup'){
+        $cmdArgs.Add('GroupId',$GroupId)
+        $result = Get-MgGroupLifecyclePolicyByGroup @cmdArgs | Select-Object *
     }
-    else {
-        $cmdArgs.Add('All',$null)
+    else{
+        if($PSBoundParameters.ContainsKey('GroupLifecyclePolicyId') -eq $true){
+            $cmdArgs.Add('GroupLifecyclePolicyId',$GroupLifecyclePolicyId)
+        }
+        else {
+            $cmdArgs.Add('All',$null)
+            $result = Get-MgGroupLifecyclePolicy @cmdArgs | Select-Object *
+        }
     }
-    $result = Get-MgGroupLifecyclePolicy @cmdArgs | Select-Object *
 
     if($SRXEnv) {
         $SRXEnv.ResultMessage = $result
@@ -55,5 +67,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

@@ -25,23 +25,54 @@
     .Parameter GroupId
         [sr-en] Group identifier
         [sr-de] Gruppen ID
+
+    .Parameter ResultType
+        [sr-en] Type of the result
+        [sr-de] Ergebnistyp
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$GroupId
+    [string]$GroupId,
+    [Validateset('AsApplication','AsDevice','AsGroup','AsOrgContact','AsServicePrincipal','AsUser')]
+    [string]$ResultType
 )
 
 Import-Module Microsoft.Graph.Groups
 
 try{
     $result = $null
-    GetGroupMembers -GroupID $GroupId -Memberships ([ref]$result)
-    
+    [hashtable]$cmdArgs = @{'ErrorAction' = 'Stop'
+                    'GroupId' = $GroupId
+                    'All' = $null
+    }
+    switch($ResultType){
+        'AsApplication'{
+            $result = Get-MgGroupMemberAsApplication @cmdArgs | Select-Object DisplayName,ID
+        }
+        'AsDevice'{
+            $result = Get-MgGroupMemberAsDevice @cmdArgs | Select-Object DisplayName,ID
+        }
+        'AsGroup'{
+            $result = Get-MgGroupMemberAsGroup @cmdArgs | Select-Object DisplayName,ID
+        }
+        'AsOrgContact'{
+            $result = Get-MgGroupMemberAsOrgContact @cmdArgs | Select-Object DisplayName,ID
+        }
+        'AsServicePrincipal'{
+            $result = Get-MgGroupMemberAsServicePrincipal @cmdArgs | Select-Object DisplayName,ID
+        }
+        'AsUser'{
+            $result = Get-MgGroupMemberAsUser @cmdArgs | Select-Object DisplayName,ID
+        }
+        default{
+            $result = Get-MgGroupMember @cmdArgs | Select-Object DisplayName,ID
+        }
+    }    
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{

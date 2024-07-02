@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -33,14 +32,13 @@
 
 param( 
     [string]$GroupId,
-    [ValidateSet('AcceptedSenders','CreatedDateTime','DeletedDateTime','Description','DisplayName','Id','IsArchived','Mail','MailEnabled','MailNickname','MemberOf','Members','Owners','Specialization','Visibility','GroupTypes','PreferredLanguage','ProxyAddresses','RenewedDateTime','SecurityEnabled','SecurityIdentifier')]
+    [ValidateSet('AcceptedSenders','CreatedDateTime','DeletedDateTime','Description','DisplayName','Id','IsArchived','Mail','MailEnabled','MailNickname','MemberOf','Members','Owners','Visibility','GroupTypes','PreferredLanguage','ProxyAddresses','RenewedDateTime','SecurityEnabled','SecurityIdentifier')]
     [string[]]$Properties = @('DisplayName','Id','Description','CreatedDateTime','Mail','MailEnabled')
 )
 
 Import-Module Microsoft.Graph.Groups 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     if($PSBoundParameters.ContainsKey('GroupID') -eq $true){
         $cmdArgs.Add('GroupId',$GroupId)
@@ -65,5 +63,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

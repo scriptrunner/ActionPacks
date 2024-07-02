@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Groups
+#requires -Modules Microsoft.Graph.Groups 
 
 <#
     .SYNOPSIS
-        Returns groups that this group is a member of
+        Groups that this group is a member of
     
     .DESCRIPTION          
 
@@ -16,62 +16,59 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
-        Requires Modules Microsoft.Graph.Groups
+        Requires Modules Microsoft.Graph.Groups 
 
     .LINK
         https://github.com/scriptrunner/ActionPacks/tree/master/MS%20Graph/Groups
-
+      
     .Parameter GroupId
         [sr-en] Group identifier
         [sr-de] Gruppen ID
+
+    .Parameter ResultType
+        [sr-en] Type of the result
+        [sr-de] Ergebnistyp
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$GroupId
+    [string]$GroupId,
+    [Validateset('AsAdministrativeUnit','AsGroup')]
+    [string]$ResultType
 )
 
 Import-Module Microsoft.Graph.Groups
 
-try{
-    ConnectMSGraph 
+try{    
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'GroupId'= $GroupId
+                        'ConsistencyLevel' = 'eventual'
                         'All' = $null
     }
-    $mships = Get-MgGroupMemberof @cmdArgs | Select-Object *
-
-    [PSCustomObject]$result = @()
-    # memberships
-    foreach($itm in $mships){
-        [PSCustomObject]$ship = [PSCustomObject] @{DisplayName='';MailNickname='';Type=''}
-        if($itm.AdditionalProperties.ContainsKey('@odata.type')){
-            $ship.Type = $itm.AdditionalProperties.Item('@odata.type').Replace('#microsoft.graph.','')
+    $result = $null
+    switch ($ResultType) {
+        'AsAdministrativeUnit' {  
+            $result = Get-MgGroupMemberOfAsAdministrativeUnit @cmdArgs | Select-Object *
+            break
         }
-        if($itm.AdditionalProperties.ContainsKey('displayName')){
-            $ship.DisplayName = $itm.AdditionalProperties.displayName
+        'AsGroup' {  
+            $result = Get-MgGroupMemberOfAsGroup @cmdArgs | Select-Object *
+            break
         }
-        if($itm.AdditionalProperties.ContainsKey('mailNickname')){
-            $ship.MailNickname = $itm.AdditionalProperties.mailnickname
+        Default {
+            $result = Get-MgGroupMemberOf @cmdArgs | Select-Object *
         }
-        $result += $ship
     }
-    $result = $result | Sort-Object DisplayName
-
-    if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
-        ConvertTo-ResultHtml -Result $result
-    }
-    if($SRXEnv) {
+    
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
         Write-Output $result
-    }    
+    }
 }
 catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

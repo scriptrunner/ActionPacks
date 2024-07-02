@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups
 
     .LINK
@@ -25,23 +24,50 @@
     .Parameter GroupId
         [sr-en] Group identifier
         [sr-de] Gruppen ID
+
+    .Parameter ResultType
+        [sr-en] Type of the result
+        [sr-de] Ergebnistyp
 #>
 
 param( 
     [Parameter(Mandatory = $true)]
-    [string]$GroupId
+    [string]$GroupId,
+    [Validateset('AsApplication','AsDevice','AsGroup','AsOrgContact','AsServicePrincipal','AsUser')]
+    [string]$ResultType
 )
 
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
+    $mships = $null
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'GroupId'= $GroupId
                         'All' = $null
     }
-    $mships = Get-MgGroupMemberWithLicenseError @cmdArgs | Select-Object *
-
+    switch ($ResultType){
+        'AsApplication'{
+            $mships = Get-MgGroupMemberWithLicenseErrorAsApplication @cmdArgs | Select-Object *
+        }
+        'AsDevice'{
+            $mships = Get-MgGroupMemberWithLicenseErrorAsDevice @cmdArgs | Select-Object *
+        }
+        'AsGroup'{
+            $mships = Get-MgGroupMemberWithLicenseErrorAsGroup @cmdArgs | Select-Object *
+        }
+        'AsOrgContact'{
+            $mships = Get-MgGroupMemberWithLicenseErrorAsOrgContact @cmdArgs | Select-Object *
+        }
+        'AsServicePrincipal'{
+            $mships = Get-MgGroupMemberWithLicenseErrorAsServicePrincipal @cmdArgs | Select-Object *
+        }
+        'AsUser'{
+            $mships = Get-MgGroupMemberWithLicenseErrorAsUser @cmdArgs | Select-Object *
+        }
+        default{
+            $mships = Get-MgGroupMemberWithLicenseError @cmdArgs | Select-Object *
+        }
+    }
     [PSCustomObject]$result = @()
     # memberships
     foreach($itm in $mships){
@@ -62,7 +88,7 @@ try{
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }
     else{
@@ -73,5 +99,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

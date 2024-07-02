@@ -17,7 +17,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 #>
 
@@ -27,7 +26,6 @@ param(
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph  
     $result = Get-MgGroup -All -Sort DisplayName | Sort-Object DisplayName
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
@@ -43,5 +41,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

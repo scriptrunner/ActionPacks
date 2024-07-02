@@ -3,7 +3,7 @@
 
 <#
     .SYNOPSIS
-        Restores a group
+        Get the number of the resource
     
     .DESCRIPTION          
 
@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -25,32 +24,37 @@
     .Parameter GroupId
         [sr-en] Group identifier
         [sr-de] Gruppen ID
+        
+    .Parameter ConversationId
+        [sr-en] Conversation identifier
+        [sr-de] Konversation ID
 #>
 
 param( 
-    [string]$GroupId
+    [Parameter(Mandatory = $true)]
+    [string]$GroupId,
+    [Parameter(Mandatory = $true)]
+    [string]$ConversationId
 )
 
-Import-Module Microsoft.Graph.Groups 
+Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
-    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
-                            'GroupId' = $GroupId
-                            'Confirm' = $false
-    }    
-    $mgGroup = Restore-MgGroup @cmdArgs
-
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
+                        'GroupId'= $GroupId
+                        'ConversationId' = $ConversationId
+    }
+    $result = Get-MgGroupConversationThreadCount @cmdArgs | Select-Object *
+    
     if($SRXEnv) {
-        $SRXEnv.ResultMessage = $mgGroup
+        $SRXEnv.ResultMessage = $result
     }
     else{
-        Write-Output $mgGroup
+        Write-Output $result
     }
 }
 catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

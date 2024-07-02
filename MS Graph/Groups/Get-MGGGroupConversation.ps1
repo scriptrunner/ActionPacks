@@ -16,7 +16,6 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Library script MS Graph\_LIB_\MGLibrary
         Requires Modules Microsoft.Graph.Groups 
 
     .LINK
@@ -46,12 +45,14 @@ param(
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'    
                         'GroupId'= $GroupId
     }
     if($PSBoundParameters.ContainsKey('ConversationId') -eq $true){
         $cmdArgs.Add('ConversationId',$ConversationId)
+    }
+    else{
+        $cmdArgs.Add('All',$null)
     }
 
     $result = Get-MgGroupConversation @cmdArgs | Select-Object $Properties
@@ -66,5 +67,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

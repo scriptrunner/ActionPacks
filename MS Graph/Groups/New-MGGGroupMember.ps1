@@ -45,7 +45,6 @@ param(
 Import-Module Microsoft.Graph.Groups
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                             'Confirm' = $false
                             'GroupId' = $GroupId
@@ -72,5 +71,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

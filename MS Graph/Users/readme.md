@@ -246,6 +246,10 @@
 
   Removes resource linked to the task
 
++ [Revoke-MGUUserSignInSession.ps1](./Revoke-MGUUserSignInSession.ps1)
+
+  Invalidates all the refresh tokens issued to applications for a user
+
 + [Set-MGUUser.ps1](./Set-MGUUser.ps1)
 
   Updates a User

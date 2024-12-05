@@ -1,6 +1,6 @@
 ﻿#Requires -Version 5.0
 
-function MyFunc(){
+function MyFunc{
     <#
         .SYNOPSIS
             Function sample

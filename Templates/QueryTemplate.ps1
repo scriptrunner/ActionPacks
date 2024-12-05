@@ -31,7 +31,7 @@ param( # parameter block
 # Import the required modules, e.g. Import-Module ActiveDirectory
 
 try{ #error handling
-    $result = Get-ADUser # e.g. read Active Directory Users
+    $result = Get-ADUser - Filter * # e.g. read Active Directory Users
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
             $null = $SRXEnv.ResultList.Add($itm.DistinguishedName) # Value

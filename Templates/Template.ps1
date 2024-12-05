@@ -33,7 +33,7 @@ param( # parameter block
 
 try{ #error handling
     
-    if($SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = "My result"
     }
     else{

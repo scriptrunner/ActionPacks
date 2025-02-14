@@ -152,7 +152,7 @@ try{
         }
         $GroupNames = $founded
     }
-    if($null = $SRXEnv) {
+    if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $res
     }
     else{

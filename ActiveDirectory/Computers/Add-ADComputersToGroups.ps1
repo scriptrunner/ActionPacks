@@ -31,7 +31,7 @@
 
     .Parameter GroupNames
         [sr-en] Comma separated names of the groups to which the computers added
-        [sr-de] Kommagetrennte Namen der Gruppen zu denen die Benutzer hinzugefügt werden
+        [sr-de] Kommagetrennte Namen der Gruppen zu denen die Computer hinzugefügt werden
        
     .Parameter DomainAccount
         [sr-en] Active Directory Credential for remote execution without CredSSP

@@ -40,7 +40,6 @@ param(
 Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     if($PSBoundParameters.ContainsKey('Id') -eq $true){
         $cmdArgs.Add('OrganizationId',$Id)
@@ -64,5 +63,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

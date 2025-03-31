@@ -27,7 +27,6 @@ Import-Module Microsoft.Graph.Teams
 
 try{
     [string[]]$Properties = @('DisplayName','Id')
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     $mgApps = Get-MgAppCatalogTeamApp @cmdArgs | Sort-Object DisplayName | Select-Object $Properties
     foreach($itm in $mgApps){ # fill result lists
@@ -44,5 +43,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

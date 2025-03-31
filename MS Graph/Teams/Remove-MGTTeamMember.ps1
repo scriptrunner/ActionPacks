@@ -48,7 +48,6 @@ try{
                         'Confirm' = $false
     }
 
-    ConnectMSGraph 
     $null = Remove-MgTeamMember @cmdArgs
     $mgMembers = Get-MgTeamMember -TeamID $TeamId | Sort-Object DisplayName | Select-Object $Properties 
     if($SRXEnv) {
@@ -62,5 +61,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

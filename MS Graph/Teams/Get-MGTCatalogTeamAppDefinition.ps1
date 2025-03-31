@@ -44,7 +44,6 @@ try{
     if($Properties -contains '*'){
         $Properties = @('*')
     }
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'TeamsAppId' = $TeamsAppId
     }
@@ -61,5 +60,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

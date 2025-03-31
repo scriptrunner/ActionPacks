@@ -35,7 +35,6 @@ param(
 Import-Module Microsoft.Graph.Teams 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                     'UserId' = $UserId
     }
@@ -55,5 +54,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

@@ -34,7 +34,6 @@ param(
 Import-Module Microsoft.Graph.Authentication 
 
 try{ 
-    ConnectMSGraph 
     $result = Set-MgGraphOption -EnableLoginByWAM $EnableLoginByWAM -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
@@ -48,5 +47,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

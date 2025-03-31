@@ -47,7 +47,6 @@ param(
 Import-Module Microsoft.Graph.Authentication 
 
 try{ 
-    ConnectMSGraph 
     $result = Invoke-MgGraphRequest -Uri $Uri -Method $Method -Body $Body -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
@@ -61,5 +60,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

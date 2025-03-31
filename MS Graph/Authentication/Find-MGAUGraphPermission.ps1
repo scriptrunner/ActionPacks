@@ -40,7 +40,6 @@ param(
 Import-Module Microsoft.Graph.Authentication 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{
         ErrorAction = 'Stop'
         All = $null
@@ -64,5 +63,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

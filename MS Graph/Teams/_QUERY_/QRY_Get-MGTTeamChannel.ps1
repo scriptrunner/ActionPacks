@@ -37,7 +37,6 @@ try{
                         'TeamID' = $TeamId
     }
 
-    ConnectMSGraph 
     $mgChannels = Get-MgTeamChannel @cmdArgs | Select-Object $Properties | Sort-Object DisplayName
 
     foreach($itm in $mgChannels){ # fill result lists
@@ -54,5 +53,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

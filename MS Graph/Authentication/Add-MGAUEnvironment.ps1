@@ -47,7 +47,6 @@ param(
 Import-Module Microsoft.Graph.Authentication 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'AzureADEndpoint' = $AzureADEndpoint
                 'GraphEndpoint' = $GraphEndpoint
@@ -67,5 +66,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

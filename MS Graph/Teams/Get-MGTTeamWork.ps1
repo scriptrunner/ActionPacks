@@ -30,7 +30,6 @@ param(
 Import-Module Microsoft.Graph.Teams 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     $mgTeam = Get-MgTeamWork @cmdArgs | Select-Object *
 
@@ -45,5 +44,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

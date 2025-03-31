@@ -35,7 +35,6 @@ param(
 Import-Module Microsoft.Graph.Teams 
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     $mgApps = Get-MgAppCatalogTeamApp @cmdArgs | Sort-Object DisplayName | Select-Object $Properties
 
@@ -50,5 +49,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

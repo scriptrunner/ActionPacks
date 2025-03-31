@@ -29,7 +29,6 @@ param(
 Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                             'All' = $null
     }
@@ -49,5 +48,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

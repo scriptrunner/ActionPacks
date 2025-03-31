@@ -28,7 +28,6 @@ param()
 Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     $result = Get-MgSubscribedSku @cmdArgs | Select-Object *
 
@@ -46,5 +45,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

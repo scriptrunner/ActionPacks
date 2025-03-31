@@ -40,7 +40,6 @@ param(
 Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                 'OrganizationId' = $OrganizationId
                 'SecurityEnabledOnly' = $SecurityEnabledOnly.IsPresent
@@ -58,5 +57,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

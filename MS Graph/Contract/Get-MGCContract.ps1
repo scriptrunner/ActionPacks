@@ -34,7 +34,6 @@ param(
 Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     if($PSBoundParameters.ContainsKey('ContractId') -eq $true){
         $cmdArgs.Add('ContractId',$ContractId)
@@ -52,5 +51,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

@@ -54,7 +54,6 @@ Import-Module Microsoft.Graph.Teams
 
 try{
     [string[]]$Properties = @('DisplayName','Id','WebUrl')
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
                         'TeamID' = $TeamId
                         'ChannelID' = $ChannelId
@@ -74,5 +73,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

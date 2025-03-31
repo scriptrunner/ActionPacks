@@ -42,7 +42,6 @@ param(
 Import-Module Microsoft.Graph.Identity.DirectoryManagement
 
 try{
-    ConnectMSGraph 
     [hashtable]$cmdArgs = @{ErrorAction = 'Stop'}
     if($PSBoundParameters.ContainsKey('DeviceId') -eq $true){
         $cmdArgs.Add('DeviceId',$DeviceId)
@@ -63,5 +62,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

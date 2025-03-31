@@ -28,7 +28,6 @@ Import-Module Microsoft.Graph.Groups
 Import-Module Microsoft.Graph.Teams 
 
 try{
-    ConnectMSGraph 
     $result = Get-MgGroup -All | Sort-Object DisplayName | ForEach-Object{Get-MgTeam -TeamId $_.ID -ErrorAction Ignore}
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
@@ -44,5 +43,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

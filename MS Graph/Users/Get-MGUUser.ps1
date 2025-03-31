@@ -51,6 +51,9 @@ try{
     }
     $result = Get-MgUser @cmdArgs | Select-Object $Properties
 
+    [system.datetime]$test
+    $test
+
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result
     }

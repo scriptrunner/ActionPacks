@@ -28,7 +28,6 @@ param(
 Import-Module Microsoft.Graph.Authentication 
 
 try{ 
-    ConnectMSGraph 
     $result = Get-MgContext -ErrorAction Stop | Select-Object *
 
     if($SRXEnv) {
@@ -42,5 +41,4 @@ catch{
     throw 
 }
 finally{
-    DisconnectMSGraph
 }

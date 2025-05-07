@@ -49,10 +49,7 @@ try{
         $cmdArgs.Add('All',$null)
         $cmdArgs.Add('Sort','DisplayName')
     }
-    $result = Get-MgUser @cmdArgs | Select-Object $Properties
-
-    [system.datetime]$test
-    $test
+    $result = Get-MgUser @cmdArgs -Property $Properties | Select-Object $Properties
 
     if (Get-Command 'ConvertTo-ResultHtml' -ErrorAction Ignore) {
         ConvertTo-ResultHtml -Result $result

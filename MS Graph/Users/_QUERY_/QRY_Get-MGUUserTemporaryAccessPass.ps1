@@ -1,9 +1,9 @@
 ﻿#Requires -Version 5.0
-#requires -Modules Microsoft.Graph.Users
+#requires -Modules Microsoft.Graph.Identity.SignIns
 
 <#
     .SYNOPSIS
-        Returns all users 
+        Retrieve the user's single temporaryAccessPassAuthenticationMethod objects
     
     .DESCRIPTION          
 
@@ -16,28 +16,36 @@
         © ScriptRunner Software GmbH
 
     .COMPONENT
-        Requires Modules Microsoft.Graph.Users 
+        Requires Modules Microsoft.Graph.Identity.SignIns
+
+    .Parameter UserId
+        [sr-en] User identifier
+        [sr-de] Benutzer ID
 #>
 
 param( 
+    [Parameter(Mandatory = $true)]
+    [string]$UserId
 )
 
-Import-Module Microsoft.Graph.Users
+Import-Module Microsoft.Graph.Identity.SignIns
 
 try{
-    $result = Get-MgUser -All -Sort DisplayName | Sort-Object DisplayName
+    [hashtable]$cmdArgs = @{ErrorAction = 'Stop'
+                        'UserId' = $UserId
+    }
+    $result = Get-MgUserAuthenticationTemporaryAccessPassMethod @cmdArgs -All 
+
     foreach($itm in $result){ # fill result lists
         if($null -ne $SRXEnv) {            
-            $null = $SRXEnv.ResultList.Add($itm.UserPrincipalName) # Value
-            $null = $SRXEnv.ResultList2.Add($itm.DisplayName) # DisplayValue            
+            $null = $SRXEnv.ResultList.Add($itm.Id) # Value
+            $null = $SRXEnv.ResultList2.Add("Started: $($itm.StartDateTime)") # DisplayValue            
         }
         else{
-            Write-Output $itm.DisplayName 
+            Write-Output $itm.StartDateTime 
         }
-    }
+    }  
 }
 catch{
     throw 
-}
-finally{
 }

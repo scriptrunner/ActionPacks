@@ -63,9 +63,8 @@ try{
                 'LifetimeInMinutes' = $LifetimeInMinutes
                 'MethodUsabilityReason' = $UsabilityReason
     }
-    $null = New-MgUserAuthenticationTemporaryAccessPassMethod @cmdArgs -Confirm:$false
+    $result = New-MgUserAuthenticationTemporaryAccessPassMethod @cmdArgs -Confirm:$false
     
-    $result = Get-MgUserAuthenticationTemporaryAccessPassMethod $UserId -All -ErrorAction Stop
     if($null -ne $SRXEnv) {
         $SRXEnv.ResultMessage = $result
     }

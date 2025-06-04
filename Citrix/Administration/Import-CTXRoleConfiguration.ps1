@@ -7,19 +7,10 @@
     .DESCRIPTION  
 
     .NOTES
-        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-        the use and the consequences of the use of this freely available script.
-        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-        © ScriptRunner Software GmbH
+        This PowerShell script was originally developed for ScriptRunner and has been adapted for a non-ScriptRunner environment.
 
     .COMPONENT
-        Requires the library script CitrixLibrary.ps1
         Requires PSSnapIn Citrix*
-
-    .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Citrix/Administration
         
     .Parameter SiteServer
         [sr-en] Specifies the address of a XenDesktop controller. 
@@ -29,37 +20,12 @@
     .Parameter Path
         [sr-en] Path to the file containing the role configuration data
         [sr-de] Pfad und Name der Rollenkonfiguration
-
-    .Parameter Id
-        [sr-en] Role configurations with the specified id
-        [sr-de] Identifier der Rollenkonfiguration
-
-    .Parameter Locale
-        [sr-en] Role configurations with the specified locale
-        [sr-de] Rollenkonfiguration die entsprechend lokalisiert sind
-
-    .Parameter Priority
-        [sr-en] Role configurations with the specified priority
-        [sr-de] Rollenkonfiguration die entsprechend priorisiert sind
-
-    .Parameter Version
-        [sr-en] Role configurations with the matching version number
-        [sr-de] Rollenkonfiguration der entsprechenden Version
-
-    .Parameter MaxRecordCount	
-        [sr-en] Maximum number of records to return	
-        [sr-de] Maximale Anzahl der Ergebnisse
 #>
 
 param(
     [Parameter(Mandatory = $true)]
     [string]$Path,
-    [string]$Id,
-    [string]$SiteServer,
-    [string]$Locale,
-    [string]$Priority,
-    [string]$Version,
-    [int]$MaxRecordCount = 250
+    [string]$SiteServer
 )                                                            
 
 $LogID = $null
@@ -77,12 +43,7 @@ try{
     
     $ret = Import-AdminRoleConfiguration @cmdArgs | Select-Object *
     $success = $true
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret
-    }
-    else{
-        Write-Output $ret
-    }
+    Write-Output $ret
 }
 catch{
     throw 

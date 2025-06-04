@@ -8,19 +8,10 @@
     .DESCRIPTION  
         
     .NOTES
-        This PowerShell script was developed and optimized for ScriptRunner. The use of the scripts requires ScriptRunner. 
-        The customer or user is authorized to copy the script from the repository and use them in ScriptRunner. 
-        The terms of use for ScriptRunner do not apply to this script. In particular, ScriptRunner Software GmbH assumes no liability for the function, 
-        the use and the consequences of the use of this freely available script.
-        PowerShell is a product of Microsoft Corporation. ScriptRunner is a product of ScriptRunner Software GmbH.
-        © ScriptRunner Software GmbH
+        This PowerShell script was originally developed for ScriptRunner and has been adapted for a non-ScriptRunner environment.
 
     .COMPONENT
         Requires Module Az.Sql
-        Requires Library script AzureAzLibrary.ps1
-
-    .LINK
-        https://github.com/scriptrunner/ActionPacks/blob/master/Azure/SQL 
 
     .Parameter PoolName
         [sr-en] Specifies the name of the elastic pool
@@ -33,9 +24,6 @@
     .Parameter ResourceGroupName
         [sr-en] Specifies the name of the resource group that contains the elastic pool 
         [sr-de] Name der resource group die den elastic pool enthält
-
-    .Parameter ResourceGroupName
-        Specifies the name of the resource group to which assigns the elastic pool
 
     .Parameter Edition
         [sr-en] Specifies the edition of the Azure SQL Database used for the elastic pool 
@@ -114,12 +102,7 @@ try{
 
     $ret = New-AzSqlElasticPool @cmdArgs
 
-    if($SRXEnv) {
-        $SRXEnv.ResultMessage = $ret 
-    }
-    else{
-        Write-Output $ret
-    }
+    Write-Output $ret
 }
 catch{
     throw

@@ -23,9 +23,9 @@
 'Dot source the script in your PowerShell session to make the contained commands available.'
 ''
 # For conveniance you can set your ScriptRunner server here, and run the functions without the endpoint parameter.
-# The default is http://localhost:8091/, to e.g. use the built-in local loopback connector
+# The default is http://localhost:80/, to e.g. use the built-in local loopback connector
 # directly on the ScriptRunner host.
-$defaultserver = 'localhost:8091'
+$defaultserver = 'localhost:80'
 $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 
 'The ScriptRunner WebService Connector provides three different endpoint APIs to start an Action:'
@@ -35,7 +35,7 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 ''
 'Use the Start-AsrWebSvcConnector, Start-AsrWebhook, and Start-AsrWebSvcConnector2 function respectively'
 'to give it a try. '
-'The built-in default endpoint URI http://localhost:8091/ScriptRunner will work on the ScriptRunner host only.'
+'The default endpoint URI http://localhost:80/ScriptRunner will work on the ScriptRunner host only.'
 ''
 
 #################################################################
@@ -61,11 +61,11 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 
 	.PARAMETER ActionID
 	The ID of the ScriptRunner Action to execute.
-	You find the ID of an Action in the Admin App, on the first card of the Action Edit Wizard.
+	You find the ID of an Action on the Overview card of the Portal.
 
 	.PARAMETER Endpoint
 	The ScriptRunner endpoint for the WebService connector, like 'http://server:port/ScriptRunner/' or
-	'https://server:port/ScriptRunner/'. The default server:port value is localhost:8091.
+	'https://server:port/ScriptRunner/'. The default server:port value is localhost:80.
 	The ScriptRunner Apps show the UI endpoint they use in the About dialog.
 	Note that a different IP port may apply for the WebService Connector, depending on your
 	authentication settings (STS endpoint, Basic Auth,...).
@@ -75,15 +75,20 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 	The Webhook URI for an Action is something like "http://server:port/ScriptRunner/api2/PostWebhook/ID",
 	with the proper ScriptRunner endpoint for your WebService Connector (http/https, server, port) 
 	and the ID of the Action.
-	You find the Webhook URI of an Action in the Admin App, on the first card of the Action Edit Wizard.
+	You find the Webhook URI of an Action on the Overview card of the Portal.
 
 	.PARAMETER WaitForResult
 	Optional: Do not only trigger the given Action in ScriptRunner, but also wait for the Action to 
 	finish, and fetch and output the results of the Action.
 
 	.PARAMETER BasicAuthCreds
-	Optional: Basic Auth credentials, to use Basic Authentication (on the ScriptRunner STS port).
-	Without this parameter, the call will use Windows Integrated Auth for the current user
+	Optional: Basic Auth credentials, to use Basic Authentication (v6: on the ScriptRunner STS port).
+	Without Creds parameters, the call will use Windows Integrated Auth for the current user
+	(Invoke-WebRequest -UseDefaultCredentials).
+
+	.PARAMETER ApiKeyAuthCreds
+	Optional: API Key Auth credentials, to use API key authentication (v6: on the ScriptRunner STS port).
+	Without Creds parameters, the call will use Windows Integrated Auth for the current user
 	(Invoke-WebRequest -UseDefaultCredentials).
 
 	.EXAMPLE
@@ -91,10 +96,10 @@ $defaultendpoint = "http://$defaultserver/ScriptRunner/"
 
 		This command will start the Action with ID 10 in ScriptRunner, with a raw body value 'somerawvalue' (no JSON),
 		and will print the results after the respective script has finished.
-		This command assumes ScriptRunner to listen on the endpoint URI http://localhost:8091/ScriptRunner
+		This command assumes ScriptRunner to listen on the endpoint URI http://localhost:80/ScriptRunner
 		(unless you did not change the default at the top of this script); which means you have to run
 		this example locally on the ScriptRunner host, and did not switch ScriptRunner to HTTPS or
-		to a port different than 8091.
+		to a port different than 80.
 		Alternatively you can run Start-AsrWebhook (locally or from remote) and add the -Endpoint parameter with a
 		proper endpoint URI.
 
@@ -120,7 +125,8 @@ function Start-AsrWebhook {
 		[Parameter(ParameterSetName="ID")]
 		[string]$Endpoint,
 		[switch]$WaitForResult,
-		[PSCredential]$BasicAuthCreds = $null
+		[PSCredential]$BasicAuthCreds = $null,
+		[PSCredential]$ApiKeyAuthCreds = $null
 	)
 
 	$uri = ''
@@ -136,8 +142,13 @@ function Start-AsrWebhook {
 	$Headers = $null
 	if ($BasicAuthCreds) {
 		_GetBasicAuthHeader -basicAuthCreds $BasicAuthCreds -header ([ref]$Headers)
+		$auth = 'Basic Auth'
+	} elseif ($ApiKeyAuthCreds) {
+		_GetApiKeyAuthHeader -apiKeyAuthCreds $ApiKeyAuthCreds -header ([ref]$Headers) -xHeader
+		$auth = 'API Key Auth'
+	} else {
+		$auth = 'Windows Integrated'
 	}
-	$auth = if ($Headers) { 'Basic Auth' } else { 'Windows Integrated' }
 
 	# JSON body example:
 	#$BodyString = '{ "data": "This is JSON" }'
@@ -151,13 +162,14 @@ function Start-AsrWebhook {
 	# This is the web request (POST with JSON body data as defined above).
 	# Sending the request with e.g. CURL.EXE would be very similar!
 	$json = $null
+	$defaultInvokeParams = _GetDefaultInvokeParameters
 	if ($Headers) {
-		# Basic Auth
-		$json = Invoke-WebRequest -Uri $uri -Body $BodyString -Method Post -Headers $Headers -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		# Basic/API Key Auth
+		$json = Invoke-WebRequest -Uri $uri -Body $BodyString -Method Post -Headers $Headers @defaultInvokeParams
 	}
 	else {
 		# Windows Integrated Auth
-		$json = Invoke-WebRequest -Uri $uri -Body $BodyString -Method Post -UseDefaultCredentials -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		$json = Invoke-WebRequest -Uri $uri -Body $BodyString -Method Post -UseDefaultCredentials @defaultInvokeParams
 	}
 	#$json
 	if (!$json) {
@@ -179,7 +191,7 @@ function Start-AsrWebhook {
 			# Then the JobControl structure will contain the results along with the script execution report:
 			if ($WaitForResult.IsPresent) {
 				$jc = $null
-				_WaitForResultFromUri -Uri $jcuri -basicAuthHeader $Headers -jc ([ref]$jc)
+				_WaitForResultFromUri -Uri $jcuri -authHeader $Headers -jc ([ref]$jc)
 				# if the job has finished, we can access the results.
 				_OutputReport -jc $jc -withReport
 			} else {
@@ -213,14 +225,19 @@ function Start-AsrWebhook {
 
 	.PARAMETER Endpoint
 	Optional: The ScriptRunner endpoint for the WebService connector, like 'http://server:port/ScriptRunner/' or
-	'https://server:port/ScriptRunner/'. The default server:port value is localhost:8091.
+	'https://server:port/ScriptRunner/'. The default server:port value is localhost:80.
 	The ScriptRunner Apps show the UI endpoint they use in the About dialog.
-	Note that a different IP port may apply for the WebService Connector, depending on your
+	Note that in ScriptRunner v6 a different IP port may apply for the WebService Connector, depending on your
 	authentication settings (STS endpoint, Basic Auth,...).
 
 	.PARAMETER BasicAuthCreds
-	Optional: Basic Auth credentials, to use Basic Authentication (on the ScriptRunner STS port).
-	Without this parameter, the call will use Windows Integrated Auth for the current user
+	Optional: Basic Auth credentials, to use Basic Authentication (v6: on the ScriptRunner STS port).
+	Without Creds parameters, the call will use Windows Integrated Auth for the current user
+	(Invoke-WebRequest -UseDefaultCredentials).
+
+	.PARAMETER ApiKeyAuthCreds
+	Optional: API Key Auth credentials, to use API key authentication (v6: on the ScriptRunner STS port).
+	Without Creds parameters, the call will use Windows Integrated Auth for the current user
 	(Invoke-WebRequest -UseDefaultCredentials).
 
 	.PARAMETER ActionName
@@ -228,7 +245,7 @@ function Start-AsrWebhook {
 
 	.PARAMETER ActionID
 	The ID of the ScriptRunner Action to execute.
-	You find the ID of an Action in the Admin App, on the first card of the Action Edit Wizard.
+	You find the ID of an Action on the Overview card of the Portal.
 
 	.PARAMETER ParamNames
 	Optional: List of parameter names required for the action (e.g., "abra","bebra")
@@ -248,7 +265,7 @@ function Start-AsrWebhook {
 	.PARAMETER WaitTime
 	Optional: Time (in seconds) to block the server internally waiting for the script to finish.
 	Use with care, to avoid blowing up your ScriptRunner instance!
-	Alternatively, if you really need the results in your calling system, consider 
+	Alternatively, if you really need the results in your calling system, consider
 	* explicitly calling back into the calling system with a new status, directly
 	  in your script executing in ScriptRunner, or
 	* poll ScriptRunner asynchronously for the results in your calling system (as shown in the code below):
@@ -262,6 +279,7 @@ function Start-AsrWebSvcConnector {
 	(
 		[string]$Endpoint,
 		[PSCredential]$BasicAuthCreds = $null,
+		[PSCredential]$ApiKeyAuthCreds = $null,
 		[Parameter(Mandatory=$true, ParameterSetName="Name")]
 		[string]$ActionName,
 		[Parameter(Mandatory=$true, ParameterSetName="ID")]
@@ -273,13 +291,18 @@ function Start-AsrWebSvcConnector {
 		[int]$WaitTime = 3
 	)
 
-	# Compute the endpoint. Default is localhost loopback on port 8091.
+	# Compute the endpoint. Default is localhost loopback on port 80.
 	$Endpoint = _GetEndpointUri -endpoint $Endpoint
 	$Headers = $null
 	if ($BasicAuthCreds) {
 		_GetBasicAuthHeader -basicAuthCreds $BasicAuthCreds -header ([ref]$Headers)
+		$auth = 'Basic Auth'
+	} elseif ($ApiKeyAuthCreds) {
+		_GetApiKeyAuthHeader -apiKeyAuthCreds $ApiKeyAuthCreds -header ([ref]$Headers) -xHeader
+		$auth = 'API Key Auth'
+	} else {
+		$auth = 'Windows Integrated'
 	}
-	$auth = if ($Headers) { 'Basic Auth' } else { 'Windows Integrated' }
 
 	$bodyobj = @{}
 	if ($PSCmdlet.ParameterSetName -eq 'Name') {
@@ -315,13 +338,14 @@ function Start-AsrWebSvcConnector {
 	# This is the web request (POST with JSON body data as defined above).
 	# Sending the request with e.g. CURL.EXE would be very similar!
 	$json = $null
+	$defaultInvokeParams = _GetDefaultInvokeParameters
 	if ($Headers) {
 		# Basic Auth
-		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -Headers $Headers -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -Headers $Headers @defaultInvokeParams
 	}
 	else {
 		# Windows Integrated Auth
-		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -UseDefaultCredentials -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -UseDefaultCredentials @defaultInvokeParams
 	}
 	if (!$json) {
 		throw 'Start-AsrWebSvcConnector request failed.'
@@ -340,7 +364,7 @@ function Start-AsrWebSvcConnector {
 	# GET to URI "http://server:port/ScriptRunner/JobControl($jcid)"
 	$jcuri = $Endpoint + "JobControl($jcid)"
 	$jc = $null
-	_WaitForResultFromUri -Uri $jcuri -basicAuthHeader $Headers -jc ([ref]$jc)
+	_WaitForResultFromUri -Uri $jcuri -authHeader $Headers -jc ([ref]$jc)
 	# if the job has finished, we can access the results.
 	_OutputReport -jc $jc -withReport
 }
@@ -359,14 +383,19 @@ function Start-AsrWebSvcConnector {
 
 	.PARAMETER Endpoint
 	Optional: The ScriptRunner endpoint for the WebService connector, like 'http://server:port/ScriptRunner/' or
-	'https://server:port/ScriptRunner/'. The default server:port value is localhost:8091.
+	'https://server:port/ScriptRunner/'. The default server:port value is localhost:80.
 	The ScriptRunner Apps show the UI endpoint they use in the About dialog.
-	Note that a different IP port may apply for the WebService Connector, depending on your
+	Note that in ScriptRunner v6 a different IP port may apply for the WebService Connector, depending on your
 	authentication settings (STS endpoint, Basic Auth,...).
 
 	.PARAMETER BasicAuthCreds
-	Optional: Basic Auth credentials, to use Basic Authentication (on the ScriptRunner STS port).
-	Without this parameter, the call will use Windows Integrated Auth for the current user
+	Optional: Basic Auth credentials, to use Basic Authentication (v6: on the ScriptRunner STS port).
+	Without Creds parameters, the call will use Windows Integrated Auth for the current user
+	(Invoke-WebRequest -UseDefaultCredentials).
+
+	.PARAMETER ApiKeyAuthCreds
+	Optional: API Key Auth credentials, to use API key authentication (v6: on the ScriptRunner STS port).
+	Without Creds parameters, the call will use Windows Integrated Auth for the current user
 	(Invoke-WebRequest -UseDefaultCredentials).
 
 	.PARAMETER ActionName
@@ -378,12 +407,6 @@ function Start-AsrWebSvcConnector {
 
 	.PARAMETER ParamValues
 	Optional: List of parameter values (matching the ParamNames list; e.g., "val1","val2")
-
-	.PARAMETER StartedBy
-	Optional: Name or email of the end user to run this action for.
-	If this parameter is specified, this name will show in the report as Started By,
-	and will be set to $SRXEnv.SRXStartedBy for your script. Otherwise the
-	WebServiceConnector service account will be used.
 
 	.PARAMETER TargetName
 	Optional: Target override - the name (exact displayname string) of the target to use.
@@ -400,22 +423,27 @@ function Start-AsrWebSvcConnector2 {
 	(
 		[string]$Endpoint,
 		[PSCredential]$BasicAuthCreds = $null,
+		[PSCredential]$ApiKeyAuthCreds = $null,
 		[Parameter(Mandatory=$true)]
 		[string]$ActionName,
 		[string[]]$ParamNames,
 		[string[]]$ParamValues,
-		[string]$StartedBy = '',
 		[string]$TargetName,
 		[string]$Reason = ''
 	)
 
-	# Compute the endpoint. Default is localhost loopback on port 8091.
+	# Compute the endpoint. Default is localhost loopback on port 80.
 	$Endpoint = _GetEndpointUri -endpoint $Endpoint
 	$Headers = $null
 	if ($BasicAuthCreds) {
 		_GetBasicAuthHeader -basicAuthCreds $BasicAuthCreds -header ([ref]$Headers)
+		$auth = 'Basic Auth'
+	} elseif ($ApiKeyAuthCreds) {
+		_GetApiKeyAuthHeader -apiKeyAuthCreds $ApiKeyAuthCreds -header ([ref]$Headers) -xHeader
+		$auth = 'API Key Auth'
+	} else {
+		$auth = 'Windows Integrated'
 	}
-	$auth = if ($Headers) { 'Basic Auth' } else { 'Windows Integrated' }
 
 	Write-Host "Starting action $ActionName ($auth)..."
 	$uri = $Endpoint + "api2/StartAction"
@@ -432,7 +460,6 @@ function Start-AsrWebSvcConnector2 {
 			$bodyobj['sr_' + $pname] = $pvalue
 		}
 	}
-	if ($StartedBy) { $bodyobj['StartedBy'] = $StartedBy }
 	if ($TargetName) { $bodyobj['TargetName'] = $TargetName }
 	if ($Reason) { $bodyobj['Reason'] = $Reason }
 	$bodyobj['WaitTime'] = 0
@@ -445,13 +472,14 @@ function Start-AsrWebSvcConnector2 {
 	# This is the web request (POST with JSON body data as defined above).
 	# Sending the request with e.g. CURL.EXE would be very similar!
 	$json = $null
+	$defaultInvokeParams = _GetDefaultInvokeParameters
 	if ($Headers) {
 		# Basic Auth
-		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -Headers $Headers -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -Headers $Headers @defaultInvokeParams
 	}
 	else {
 		# Windows Integrated Auth
-		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -UseDefaultCredentials -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		$json = Invoke-WebRequest -Uri $uri -Body $body -Method Post -UseDefaultCredentials @defaultInvokeParams
 	}
 	if (!$json) {
 		throw 'Start-AsrWebSvcConnector2 request failed.'
@@ -479,7 +507,7 @@ function Start-AsrWebSvcConnector2 {
 	}
 
 	$jc = $null
-	_WaitForResultFromUri -Uri $jcuri -basicAuthHeader $Headers -jc ([ref]$jc)
+	_WaitForResultFromUri -Uri $jcuri -authHeader $Headers -jc ([ref]$jc)
 	# if the job has finished, we can access the result report.
 	_OutputReport -jc $jc -withReport
 }
@@ -488,19 +516,29 @@ function Start-AsrWebSvcConnector2 {
 #################### Helper Functions ####################
 ##########################################################
 
+function _GetDefaultInvokeParameters
+{
+	$parms = @{
+		UseBasicParsing = $true
+		ContentType = 'application/json; charset=utf-8'
+	}
+	if ($PSEdition -and $PSEdition -eq 'Core') { $parms.AllowUnencryptedAuthentication = $true }
+	return $parms
+}
 
 function _GetJobControlFromUri
 {
 	PARAM (
 		[string]$uri,
-		$basicAuthHeader = $null,
+		$authHeader = $null,
 		[ref]$jc
 	)
 	$json = $null
-	if ($basicAuthHeader) {
-		$json = Invoke-WebRequest -Uri $uri -Method Get -Headers $basicAuthHeader -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+	$defaultInvokeParams = _GetDefaultInvokeParameters
+	if ($authHeader) {
+		$json = Invoke-WebRequest -Uri $uri -Method Get -Headers $authHeader @defaultInvokeParams
 	} else {
-		$json = Invoke-WebRequest -Uri $uri -Method Get -UseDefaultCredentials -ContentType 'application/json;charset=utf-8' -UseBasicParsing
+		$json = Invoke-WebRequest -Uri $uri -Method Get -UseDefaultCredentials @defaultInvokeParams
 	}
 	if (!$json) {
 		throw '_GetJobControlFromUri request failed.'
@@ -516,7 +554,7 @@ function _WaitForResultFromUri
 {
 	PARAM (
 		[string]$uri,
-		$basicAuthHeader = $null,
+		$authHeader = $null,
 		[ref]$jc
 	)
 	
@@ -528,7 +566,7 @@ function _WaitForResultFromUri
 	{
 		$running = $false
 		$tmp = $null
-		_GetJobControlFromUri -uri $uri -basicAuthHeader $basicAuthHeader -jc ([ref]$tmp)
+		_GetJobControlFromUri -uri $uri -authHeader $authHeader -jc ([ref]$tmp)
 		$running = $running -OR $tmp.Running
 		if ($running) {
 			Write-Host '.' -NoNewline
@@ -566,9 +604,27 @@ function _GetBasicAuthHeader {
 		[ref]$header
 	)
 	if ($basicAuthCreds) {
-		# Basic Auth, on ScriptRunner STS port
+		# Basic Auth header, in ScriptRunner v6 on the STS port
 		$basicAuthValue = 'Basic ' + [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("$($basicAuthCreds.UserName):$($basicAuthCreds.GetNetworkCredential().Password)"))
 		$header.Value = @{ Authorization = $basicAuthValue }
+	}
+}
+
+function _GetApiKeyAuthHeader {
+	PARAM (
+		[PSCredential]$apiKeyAuthCreds,
+		[ref]$header,
+		[switch]$xHeader
+	)
+	if ($apiKeyAuthCreds) {
+		# API key auth header, on ScriptRunner v6 on the STS port
+		if ($xHeader) {
+			$header.Value = @{ 'x-api-key' = $($apiKeyAuthCreds.GetNetworkCredential().Password) }
+		}
+		else {
+			$apiKeyAuthValue = 'ApiKey ' + $($apiKeyAuthCreds.GetNetworkCredential().Password)
+			$header.Value = @{ Authorization = $apiKeyAuthValue }
+		}
 	}
 }
 
@@ -582,3 +638,4 @@ function _GetEndpointUri {
 	if (!$ep.EndsWith('ScriptRunner/')) { $ep += 'ScriptRunner/' }
 	return $ep
 }
+

@@ -37,11 +37,14 @@
         Write-Output "Not running on ScriptRunner PowerShell Host"
     }
     else{
+     	# The values can contain user input, so they must not be rendered as markup.
+		$displayName = [System.Net.WebUtility]::HtmlEncode($SrxEnv.SRXDisplayName)
+		$startedBy = [System.Net.WebUtility]::HtmlEncode($SrxEnv.SRXStartedBy)
         [string]$preContent = "<div class='sr-header'>
             <div class='sr-info'>
                <ul>
-                   <li>Action: $($SrxEnv.SRXDisplayName)</li>
-                   <li>Started by: $($SrxEnv.SRXStartedBy)</li>
+                   <li>Action: $displayName</li>
+                   <li>Started by: $startedBy</li>
                    <li>Date: $(Get-Date -Format 'MM/dd/yyy HH:mm:ss')</li>
                </ul>
             </div>
@@ -52,7 +55,7 @@
         $SRXEnv.ResultMessage = $Result
         [string]$head = @"
                 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-                <title>$($SrxEnv.SRXDisplayName) $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $($SrxEnv.SRXStartedBy)</title>
+                <title>$displayName $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $startedBy</title>
 "@
         [string]$resHtml = ($Result | ConvertTo-Html -PreContent $preContent -CssUri './sr-table.css' `
             -Head $head -As Table)

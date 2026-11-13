@@ -37,11 +37,14 @@
         Write-Output "Not running on ScriptRunner PowerShell Host"
     }
     else{
+        # The values can contain user input, so they must not be rendered as markup.
+        $displayName = [System.Net.WebUtility]::HtmlEncode($SrxEnv.SRXDisplayName)
+        $startedBy = [System.Net.WebUtility]::HtmlEncode($SrxEnv.SRXStartedBy)
         [string]$preContent = "<div class='sr-header'>
             <div class='sr-info'>
                <ul>
-                   <li>Action: $($SrxEnv.SRXDisplayName)</li>
-                   <li>Started by: $($SrxEnv.SRXStartedBy)</li>
+                   <li>Action: $displayName</li>
+                   <li>Started by: $startedBy</li>
                    <li>Date: $(Get-Date -Format 'MM/dd/yyy HH:mm:ss')</li>
                </ul>
             </div>
@@ -52,7 +55,7 @@
         $SRXEnv.ResultMessage = $Result
         [string]$head = @"
                 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-                <title>$($SrxEnv.SRXDisplayName) $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $($SrxEnv.SRXStartedBy)</title>
+                <title>$displayName $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $startedBy</title>
                 <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 "@
         [string]$resHtml = ($Result | ConvertTo-Html -PreContent $preContent -CssUri './sr-table.css' `
@@ -124,14 +127,14 @@ function Get-ActionIdHtml(){
 
         [string]$head = @"
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
-        <title>$($SrxEnv.SRXDisplayName) $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $($SrxEnv.SRXStartedBy)</title>
+        <title>$([System.Net.WebUtility]::HtmlEncode($SrxEnv.SRXDisplayName)) $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $([System.Net.WebUtility]::HtmlEncode($SrxEnv.SRXStartedBy))</title>
         <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 "@
 
         if($ScriptRunnerURI.EndsWith('/') -eq $false){
             $ScriptRunnerURI += '/'
         }
-        $ScriptRunnerURI = "<a href='$($ScriptRunnerURI)portal/#/actions/$($ActionId)"
+        $ScriptRunnerURI = "$($ScriptRunnerURI)portal/#/actions/$($ActionId)"
         [bool]$bFirst = $true
         foreach($pKey in $ActionParams.Keys){
             if($bFirst -eq $true){
@@ -143,7 +146,8 @@ function Get-ActionIdHtml(){
             }
             $ScriptRunnerURI += "param_$($pKey.toLower())=$($ActionParams[$pKey])"        
         }
-        $ScriptRunnerURI += "' target=_parent>$($LinkTitle)</a>"        
+        # The parameter values and the title can contain user input; encoding the URI keeps it inside the href attribute.
+        $ScriptRunnerURI = "<a href='$([System.Net.WebUtility]::HtmlEncode($ScriptRunnerURI))' target=_parent>$([System.Net.WebUtility]::HtmlEncode($LinkTitle))</a>"
         $SRXEnv.ResultHtml = ((ConvertTo-Html -Head $head -InputObject $null) -join '')
         [int]$bodyIdx = $SRXEnv.ResultHtml.IndexOf('<body>') + 6
         $SRXEnv.ResultHtml = "$($SRXEnv.ResultHtml.Substring(0,$bodyIdx))$($ScriptRunnerURI)$($SRXEnv.ResultHtml.Substring($bodyIdx))"

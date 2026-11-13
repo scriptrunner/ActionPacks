@@ -102,7 +102,7 @@ function Open-REPDocument(){
     <head>
         <meta charset='$($CharSet)'>
         <link rel='icon' href='$($FavIcon)' />
-        <title>$($Title)</title>
+        <title>$([System.Net.WebUtility]::HtmlEncode($Title))</title>
         <style>
             body,
             html {
@@ -300,19 +300,19 @@ function Get-REPHeader(){
     if($PSBoundParameters.ContainsKey('OpeningLine') -eq $true){ # first line
         $result += @"
 
-                    <li>$($OpeningLine)</li>
+                    <li>$([System.Net.WebUtility]::HtmlEncode($OpeningLine))</li>
 "@
     }
     if($PSBoundParameters.ContainsKey('ActionName') -eq $true){ # action name
         $result += @"
 
-                    <li>$($ActionLabel): $($ActionName)</li>
+                    <li>$($ActionLabel): $([System.Net.WebUtility]::HtmlEncode($ActionName))</li>
 "@
     }
     if($PSBoundParameters.ContainsKey('StartedBy') -eq $true){ # started by
         $result += @"
 
-                    <li>$($StartedByLabel): $($StartedBy)</li>
+                    <li>$($StartedByLabel): $([System.Net.WebUtility]::HtmlEncode($StartedBy))</li>
 "@
     }
     if($PSBoundParameters.ContainsKey('TimeStamp') -eq $true){ # time stamp 
@@ -329,25 +329,25 @@ function Get-REPHeader(){
     if(($PSBoundParameters.ContainsKey('AdditionalLine1') -eq $true) -or ($PSBoundParameters.ContainsKey('AdditionalLine2') -eq $true) -or ($PSBoundParameters.ContainsKey('AdditionalLine3') -eq $true)){ # additional line 1
         $result += @"
 
-                    <li>$($AdditionalLine1)</li>
+                    <li>$([System.Net.WebUtility]::HtmlEncode($AdditionalLine1))</li>
 "@
     }
     if(($PSBoundParameters.ContainsKey('AdditionalLine2') -eq $true) -or ($PSBoundParameters.ContainsKey('AdditionalLine3') -eq $true)){ # additional line 2
         $result += @"
 
-                    <li>$($AdditionalLine2)</li>
+                    <li>$([System.Net.WebUtility]::HtmlEncode($AdditionalLine2))</li>
 "@
     }
     if($PSBoundParameters.ContainsKey('AdditionalLine3') -eq $true){ # additional line 3
         $result += @"
 
-                    <li>$($AdditionalLine3)</li>
+                    <li>$([System.Net.WebUtility]::HtmlEncode($AdditionalLine3))</li>
 "@
     }
     if($PSBoundParameters.ContainsKey('ClosingLine') -eq $true){ # last line
         $result += @"
 
-                    <li>$($ClosingLine)</li>
+                    <li>$([System.Net.WebUtility]::HtmlEncode($ClosingLine))</li>
 "@
     }
 
@@ -360,6 +360,17 @@ function Get-REPHeader(){
 "@
 
     Return $result
+}
+function ConvertTo-REPJsString(){
+    <#
+        .SYNOPSIS
+            Escapes a value for use inside a single or double quoted JavaScript string in an inline script block.
+            < > & are escaped so the value cannot close the script block.
+    #>
+    param(
+        [string]$Value
+    )
+    return $Value.Replace('\','\\').Replace("'","\'").Replace('"','\"').Replace("`r",'\r').Replace("`n",'\n').Replace('<','\u003c').Replace('>','\u003e').Replace('&','\u0026').Replace([string][char]0x2028,'\u2028').Replace([string][char]0x2029,'\u2029')
 }
 function Get-BarChart(){
     <#
@@ -499,9 +510,9 @@ function Get-BarChart(){
         </div>
 "@
 
-    $Bars | ForEach-Object{$_.Description = "'$($_.Description)'"}
-    $Bars | ForEach-Object{$_.BackgroundColor = "'$($_.BackgroundColor)'"}
-    $Bars | ForEach-Object{$_.BorderColor = "'$($_.BorderColor)'"}
+    $Bars | ForEach-Object{$_.Description = "'$(ConvertTo-REPJsString $_.Description)'"}
+    $Bars | ForEach-Object{$_.BackgroundColor = "'$(ConvertTo-REPJsString $_.BackgroundColor)'"}
+    $Bars | ForEach-Object{$_.BorderColor = "'$(ConvertTo-REPJsString $_.BorderColor)'"}
     # js code for the charts
     [string]$buildChart = @"
 
@@ -512,7 +523,7 @@ function Get-BarChart(){
 "@
         if($MultiData.IsPresent -eq $true){ # one label for the x axis
             $buildChart += @"
-                        labels: ['$($LabelXAxis)'],
+                        labels: ['$(ConvertTo-REPJsString $LabelXAxis)'],
                         datasets: [
 "@                        
         }
@@ -548,7 +559,7 @@ function Get-BarChart(){
             $buildChart += @"
 
                         {
-                            label: '$($LabelXAxis)',
+                            label: '$(ConvertTo-REPJsString $LabelXAxis)',
                             data: [$(($Bars | Select-Object -ExpandProperty Value) -join ',')],
                             backgroundColor: [$($itemColors)],
                             borderColor: [$($itemBorders)],
@@ -579,7 +590,7 @@ function Get-BarChart(){
                                 display: $($DisplayYTicks.ToString().ToLower())
                             },
                             scaleLabel: {
-                                labelString: '$($LabelYAxis)',
+                                labelString: '$(ConvertTo-REPJsString $LabelYAxis)',
                                 display: $(($LabelYAxis.Length -gt 0).ToString().ToLower())
                             }
                         }],
